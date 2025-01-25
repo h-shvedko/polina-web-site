@@ -1,0 +1,4 @@
+- `docker-compose up -d`
+- `docker ps` -> continer ID
+- `docker exec -it CONTAINER_ID bash`
+- `npm run server-watch`

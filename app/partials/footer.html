@@ -1,0 +1,245 @@
+<div id="rec500073028" class="r t-rec" style=" " data-animationappear="off" data-record-type="706">
+    <script>t_onReady(function () {
+        setTimeout(function () {
+            t_onFuncLoad('tcart__init', function () {
+                tcart__init('500073028');
+            });
+        }, 50);
+        var userAgent = navigator.userAgent.toLowerCase();
+        var body = document.body;
+        if (!body) return;
+        /* fix Instagram iPhone keyboard bug */
+        if (userAgent.indexOf('instagram') !== -1 && userAgent.indexOf('iphone') !== -1) {
+            body.style.position = 'relative';
+        }
+        var rec = document.querySelector('#rec500073028');
+        if (!rec) return;
+        var cartWindow = rec.querySelector('.t706__cartwin,.t706__cartpage');
+        var allRecords = document.querySelector('.t-records');
+        var currentMode = allRecords.getAttribute('data-tilda-mode');
+        if (cartWindow && currentMode !== 'edit' && currentMode !== 'preview') {
+            cartWindow.addEventListener(
+                'scroll',
+                t_throttle(function () {
+                    if (window.lazy === 'y' || document.querySelector('#allrecords').getAttribute('data-tilda-lazy') === 'yes') {
+                        t_onFuncLoad('t_lazyload_update', function () {
+                            t_lazyload_update();
+                        });
+                    }
+                }, 500)
+            );
+        }
+    });</script>
+    <div class="t706" data-cart-countdown="yes" data-opencart-onorder="yes"
+         data-project-currency="$" data-project-currency-side="l" data-project-currency-sep="." data-project-currency-code="USD">
+        <div class="t706__carticon" style="right:25px;">
+            <div class="t706__carticon-text t-name t-name_xs"></div>
+            <div class="t706__carticon-wrapper">
+                <div class="t706__carticon-imgwrap">
+                    <svg role="img" class="t706__carticon-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <path fill="none" stroke-width="2" stroke-miterlimit="10" d="M44 18h10v45H10V18h10z"/>
+                        <path fill="none" stroke-width="2" stroke-miterlimit="10" d="M22 24V11c0-5.523 4.477-10 10-10s10 4.477 10 10v13"/>
+                    </svg>
+                </div>
+                <div class="t706__carticon-counter js-carticon-counter" style="background-color:#000000;"></div>
+            </div>
+        </div>
+        <div class="t706__cartwin" style="display: none;">
+            <div class="t706__close t706__cartwin-close">
+                <button type="button" class="t706__close-button t706__cartwin-close-wrapper" aria-label="Закрыть корзину">
+                    <svg role="presentation" class="t706__close-icon t706__cartwin-close-icon" width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g stroke="none" stroke-width="1" fill="#fff" fill-rule="evenodd">
+                            <rect transform="translate(11.313708, 11.313708) rotate(-45.000000) translate(-11.313708, -11.313708) " x="10.3137085" y="-3.6862915" width="2" height="30"></rect>
+                            <rect transform="translate(11.313708, 11.313708) rotate(-315.000000) translate(-11.313708, -11.313708) " x="10.3137085" y="-3.6862915" width="2" height="30"></rect>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <div class="t706__cartwin-content">
+                <div class="t706__cartwin-top">
+                    <div class="t706__cartwin-heading t-name t-name_xl">CART | Корзина</div>
+                </div>
+                <div class="t706__cartwin-products"></div>
+                <div class="t706__cartwin-bottom">
+                    <div class="t706__cartwin-prodamount-wrap t-descr t-descr_sm"><span class="t706__cartwin-prodamount-label"></span><span class="t706__cartwin-prodamount"></span></div>
+                </div>
+                <div class="t706__orderform ">
+                    <form
+                            id="form500073028" name='form500073028' role="form" action='' method='POST' data-formactiontype="2" data-inputbox=".t-input-group"
+                            class="t-form js-form-proccess t-form_inputs-total_4 " data-formsended-callback="t706_onSuccessCallback"><input type="hidden" name="formservices[]" value="71165f8756f548ab43622debf5145274" class="js-formaction-services"><input type="hidden" name="formservices[]" value="f9018240e78237bc27507ee41fe1a707" class="js-formaction-services"><input type="hidden" name="tildaspec-formname" tabindex="-1" value="Cart">
+                        <div class="js-successbox t-form__successbox t-text t-text_md"
+                             aria-live="polite"
+                             style="display:none;color:#000000;background-color:#ffffff;"
+                             data-success-message="&lt;p style=&quot;text-align: center;&quot;&gt;Thanks for your choice! Data sent successfully.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You will receive an answer by mail!&lt;/p&gt;&lt;br /&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Спасибо за ваш выбор! Данные успешно отправлены.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Вы получите ответ по почте!&lt;/p&gt;"></div>
+                        <div class="t-form__inputsbox t-form__inputsbox_inrow">
+                            <div
+                                    class="t-input-group t-input-group_nm " data-input-lid="1496239431201" data-field-type="nm"
+                            ><label for='input_1496239431201' class="t-input-title t-descr t-descr_md" id="field-title_1496239431201" data-redactor-toolbar="no" field="li_title__1496239431201" style="color:;">Name | Имя </label>
+                                <div class="t-input-block "><input type="text"
+                                                                   autocomplete="name"
+                                                                   name="Name"
+                                                                   id="input_1496239431201"
+                                                                   class="t-input js-tilda-rule "
+                                                                   value="" data-tilda-req="1" aria-required="true" data-tilda-rule="name"
+                                                                   aria-describedby="error_1496239431201"
+                                                                   style="color:#000000;border:1px solid #000000;">
+                                    <div class="t-input-error" aria-live="polite" id="error_1496239431201"></div>
+                                </div>
+                            </div>
+                            <div
+                                    class="t-input-group t-input-group_em " data-input-lid="1496239459190" data-field-type="em"
+                            ><label for='input_1496239459190' class="t-input-title t-descr t-descr_md" id="field-title_1496239459190" data-redactor-toolbar="no" field="li_title__1496239459190" style="color:;">Email</label>
+                                <div class="t-input-block "><input type="email"
+                                                                   autocomplete="email"
+                                                                   name="Email"
+                                                                   id="input_1496239459190"
+                                                                   class="t-input js-tilda-rule "
+                                                                   value="" data-tilda-req="1" aria-required="true" data-tilda-rule="email"
+                                                                   aria-describedby="error_1496239459190"
+                                                                   style="color:#000000;border:1px solid #000000;"
+                                >
+                                    <div class="t-input-error" aria-live="polite" id="error_1496239459190"></div>
+                                </div>
+                            </div>
+                            <div
+                                    class="t-input-group t-input-group_ph " data-input-lid="1496239478607" data-field-type="ph"
+                            ><label for='input_1496239478607' class="t-input-title t-descr t-descr_md" id="field-title_1496239478607" data-redactor-toolbar="no" field="li_title__1496239478607" style="color:;">Your phone number | Телефон</label>
+                                <div class="t-input-block "><input type="tel"
+                                                                   autocomplete="tel"
+                                                                   name="Phone"
+                                                                   id="input_1496239478607"
+                                                                   class="t-input js-tilda-rule "
+                                                                   value="" data-tilda-req="1" aria-required="true" data-tilda-rule="phone"
+                                                                   pattern="[0-9]*"
+                                                                   aria-describedby="error_1496239478607"
+                                                                   style="color:#000000;border:1px solid #000000;">
+                                    <div class="t-input-error" aria-live="polite" id="error_1496239478607"></div>
+                                </div>
+                            </div>
+                            <div
+                                    class="t-input-group t-input-group_in " data-input-lid="1669892794202" data-field-type="in"
+                            ><label for='input_1669892794202' class="t-input-title t-descr t-descr_md" id="field-title_1669892794202" data-redactor-toolbar="no" field="li_title__1669892794202" style="color:;">Сountry | Страна</label>
+                                <div class="t-input-block "><input type="text"
+                                                                   name="Сountry Страна"
+                                                                   id="input_1669892794202"
+                                                                   class="t-input js-tilda-rule "
+                                                                   value="" data-tilda-req="1" aria-required="true" aria-describedby="error_1669892794202"
+                                                                   style="color:#000000;border:1px solid #000000;"
+                                >
+                                    <div class="t-input-error" aria-live="polite" id="error_1669892794202"></div>
+                                </div>
+                            </div>
+                            <div class="t-form__errorbox-middle"><!--noindex-->
+                                <div
+                                        class="js-errorbox-all t-form__errorbox-wrapper"
+                                        style="display:none;" data-nosnippet
+                                        tabindex="-1"
+                                        aria-label="Ошибки при заполнении формы"
+                                >
+                                    <ul
+                                            role="list"
+                                            class="t-form__errorbox-text t-text t-text_md"
+                                    >
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-all"></li>
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-req"></li>
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-email"></li>
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-name"></li>
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-phone"></li>
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-minlength"></li>
+                                        <li class="t-form__errorbox-item js-rule-error js-rule-error-string"></li>
+                                    </ul>
+                                </div><!--/noindex--> </div>
+                            <div class="t-form__submit">
+                                <button
+                                        type="submit"
+                                        class="t-submit"
+                                        style="color:#ffffff;background-color:#000000;" data-field="buttontitle" data-buttonfieldset="button"
+                                >Place order | Оформить заказ
+                                </button>
+                            </div>
+                        </div>
+                        <div class="t-form__errorbox-bottom"><!--noindex-->
+                            <div
+                                    class="js-errorbox-all t-form__errorbox-wrapper"
+                                    style="display:none;" data-nosnippet
+                                    tabindex="-1"
+                                    aria-label="Ошибки при заполнении формы"
+                            >
+                                <ul
+                                        role="list"
+                                        class="t-form__errorbox-text t-text t-text_md"
+                                >
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-all"></li>
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-req"></li>
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-email"></li>
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-name"></li>
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-phone"></li>
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-minlength"></li>
+                                    <li class="t-form__errorbox-item js-rule-error js-rule-error-string"></li>
+                                </ul>
+                            </div><!--/noindex--> </div>
+                    </form>
+                    <style>
+                        #rec500073028 input::-webkit-input-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 input::-moz-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 input:-moz-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 input:-ms-input-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 textarea::-webkit-input-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 textarea::-moz-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 textarea:-moz-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }
+
+                    #rec500073028 textarea:-ms-input-placeholder {
+                        color: #000000;
+                        opacity: 0.5;
+                    }</style>
+                </div>
+            </div>
+        </div>
+        <div class="t706__cartdata"></div>
+    </div>
+    <style>.t-menuwidgeticons__cart .t-menuwidgeticons__icon-counter {
+        background-color: #000000;
+    }</style>
+</div>
+<div id="rec500073029" class="r t-rec t-rec_pt_60 t-rec_pb_30" style="padding-top:60px;padding-bottom:30px;background-color:#0d0d0d; " data-record-type="56" data-bg-color="#0d0d0d"><!-- T046 -->
+    <div class="t046">
+        <div class="t-container">
+            <div class="t-col t-col_6 t-prefix_3">
+                <div class="t046__text t-text t-text_xs" field="text">© 2024 POLINA SHVEDKO</div>
+            </div>
+        </div>
+    </div>
+    <style> #rec500073029 .t046__text {
+        color: #ffffff;
+    }</style>
+</div>
+</div>
+</body>
+</html>
