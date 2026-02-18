@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx gulp:*)"
+      "Bash(npx gulp:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
