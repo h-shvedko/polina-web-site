@@ -22,21 +22,11 @@
 <div id="rec500073021" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-animationappear="off" data-record-type="754">
     <div class="t754" data-show-count="">
         <div class="t754__parent t754__container_mobile-grid">
-            {{> gallery/aquarell/1.html}}
-            {{> gallery/aquarell/4.html}}
-            {{> gallery/aquarell/5.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/aquarell/6.html}}
-            {{> gallery/aquarell/9.html}}
-            {{> gallery/aquarell/23.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/aquarell/24.html}}
-            {{> gallery/aquarell/25.html}}
-            {{> gallery/aquarell/26.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/aquarell/27.html}}
-            {{> gallery/aquarell/28.html}}
-            {{> gallery/aquarell/29.html}}
+            {{#aquarell_gallery}}
+                {{#artworks}}
+                    {{> gallery/gallery_card.html}}
+                {{/artworks}}
+            {{/aquarell_gallery}}
         </div>
         <div class="t-popup" style="background-color: rgba(255,255,255,1);">
             <div class="t-popup__close" style="background-color: #ffffff;">
@@ -60,18 +50,11 @@
                 <div class="t754__close-text t-descr t-descr_xxs" style="color:#000000;">CONTINUE SHOPPING</div>
             </div>
             <div class="t-popup__container t-popup__container-static" style="background-color:#ffffff;">
-                {{> gallery/aquarell/1_details.html}}
-                {{> gallery/aquarell/4_details.html}}
-                {{> gallery/aquarell/5_details.html}}
-                {{> gallery/aquarell/6_details.html}}
-                {{> gallery/aquarell/9_details.html}}
-                {{> gallery/aquarell/23_details.html}}
-                {{> gallery/aquarell/24_details.html}}
-                {{> gallery/aquarell/25_details.html}}
-                {{> gallery/aquarell/26_details.html}}
-                {{> gallery/aquarell/27_details.html}}
-                {{> gallery/aquarell/28_details.html}}
-                {{> gallery/aquarell/29_details.html}}
+                {{#aquarell_gallery}}
+                    {{#artworks}}
+                        {{> gallery/gallery_details.html}}
+                    {{/artworks}}
+                {{/aquarell_gallery}}
             </div>
         </div>
 

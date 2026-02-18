@@ -112,5 +112,349 @@
         "clear_after": true
       }
     ]
+  },
+  "pastel_gallery": {
+    "carousel_id": "500073021",
+    "artworks": [
+      {
+        "lid": "1714474492132",
+        "title": "Fishing village",
+        "description": "This pastel painting captures the charm of a quaint waterfront village. Vibrant colors bring life to the houses, blooming trees, and moored boats, while their soft reflections dance across the water's surface. The expressive strokes and dreamlike atmosphere evoke the beauty of a serene harbor scene. This piece celebrates the timeless allure of small-town coastal life with a touch of artistic whimsy.",
+        "medium": "Pastel, Pastelpapier",
+        "dimensions": "32 х 32cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture12_1.jpeg",
+        "preview2": "img/gallery/picture12_1.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture12_1.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492122",
+        "title": "Hortensien",
+        "description": "This pastel painting showcases a vibrant arrangement of hydrangeas in full bloom, set in a simple yet elegant pot. The rich purples and blues of the flowers contrast beautifully with the lush green leaves, while the soft gray tones of the background enhance their vividness. The delicate play of light and shadow on the tiled surface adds depth and realism to the composition. This piece captures the quiet beauty of a garden moment, evoking a sense of serenity and grace.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 29,7 x 42 cm<br>Frame (wood and glass)",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture2_1_preview.jpg",
+        "preview2": "img/gallery/picture2_2.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture2_0.jpg" },
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture2_1.jpg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture2_2.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492123",
+        "title": "Bouquet of wild flowers",
+        "description": "This pastel painting captures the delicate beauty of a wildflower bouquet arranged in a soft, rounded vase. The vibrant yellows, pinks, and whites of the flowers stand out against a warm, muted background, creating a sense of natural elegance. The subtle highlights on the vase add a touch of light, completing this serene and timeless composition.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 32 х 41cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture3_1_preview.jpg",
+        "preview2": "img/gallery/picture3_1_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture3_1.jpg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492130",
+        "title": "Hamburg, Main railway station",
+        "description": "This pastel painting showcases the iconic Hamburg Main Railway Station, a masterpiece of historic architecture set against a dramatic sky. The intricate details of the clock tower and arched glass roofs are brought to life with rich textures and vibrant pastel tones. The soft hues of the evening sky add a sense of tranquility, balancing the grandeur of this bustling urban landmark. It's a tribute to Hamburg's vibrant history and timeless charm.",
+        "medium": "Pastel, Pastelpapier",
+        "dimensions": "32 х 41cm<br>Frame (plastic and glass)",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture10_1_preview.jpg",
+        "preview2": "img/gallery/picture10_1_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture10_1.jpg" },
+          { "slide_index": "1", "bullet_index": "2", "path": "img/gallery/picture10_2.jpg" },
+          { "slide_index": "1", "bullet_index": "3", "path": "img/gallery/picture10_3.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492124",
+        "title": "Afternoon Ride in the Countryside",
+        "description": "This pastel painting features two cyclists on a leisurely journey along a tree-lined path, framed by rolling green hills. Subtle shifts in color and soft pastel strokes evoke the gentle warmth of a late afternoon glow. The scene exudes calm and simple joy, inviting you to share in the peaceful rhythm of the countryside.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 41 х 32cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture17_1_preview.jpeg",
+        "preview2": "img/gallery/picture17_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture17_1.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492125",
+        "title": "Blossoms in a Blue Pot",
+        "description": "This pastel painting captures the vibrant beauty of pink hydrangeas in full bloom, arranged in a simple blue pot. The soft blending of textures and colors highlights the lush greenery and delicate petals. With a muted, warm background, the composition exudes a timeless charm, inviting you to savor the serenity and natural elegance of the scene.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 31,5 х 23,5cm<br>Frame (wood and glass)",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture18_1_preview.jpeg",
+        "preview2": "img/gallery/picture18_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture18_1.jpeg" },
+          { "slide_index": "1", "bullet_index": "2", "path": "img/gallery/picture18_2.jpg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492126",
+        "title": "Forget-Me-Nots in Glass",
+        "description": "This pastel painting delicately portrays a bouquet of vibrant blue forget-me-nots arranged in a simple glass jar. The soft strokes bring life to the delicate flowers, while the warm, textured background adds depth and contrast. Gentle highlights on the jar and leaves evoke a sense of light and airiness, enhancing the painting's natural elegance. This piece captures the timeless beauty of a humble yet heartfelt floral arrangement.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 31,5 х 23,5cm<br>Frame (wood and glass)",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture19_1_preview.jpg",
+        "preview2": "img/gallery/picture19_1_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture19_1.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492127",
+        "title": "Lilacs in Bloom",
+        "description": "This pastel painting captures the timeless beauty of lilacs in a delicate glass vase. The soft purples and whites of the blossoms are contrasted with rich green leaves, creating a harmonious and vibrant composition. Subtle highlights and shadows bring depth and texture to the floral arrangement, while the muted background enhances its elegance. This piece evokes a sense of freshness and the fleeting charm of springtime.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 31,5 х 23,5cm<br>Frame (wood and glass)",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture20_1_preview.jpg",
+        "preview2": "img/gallery/picture20_1_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture20_1.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492128",
+        "title": "Elegance in Roses",
+        "description": "This pastel painting exudes the delicate beauty of soft pink and blush roses arranged in a graceful bouquet. Subtle highlights and gentle textures bring the petals to life, while vibrant green leaves provide a fresh contrast. The dreamy, muted background in shades of lilac and gray enhances the composition's ethereal charm. This piece captures the timeless elegance and romantic allure of blooming roses.",
+        "medium": "Pastel, pastel paper",
+        "dimensions": "Size 31,5 х 23,5cm<br>Frame (wood and glass)",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture21_1_preview.jpg",
+        "preview2": "img/gallery/picture21_1_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture21_1.jpg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492129",
+        "title": "Winter Magic: A Göttingen Holiday Tribute",
+        "description": "These pastel paintings, created for Copernicus GmbH, beautifully capture the festive spirit of the holiday season. The first artwork portrays a charming view of a historic building adorned with wintery decorations, with a sparkling emblem and evergreen branches enhancing its festive atmosphere. The second painting leads viewers down a snowy street lit by glowing lanterns, with a whimsical Santa figure adding warmth to the serene night scene. Together, these pieces evoke the magic and charm of winter traditions and holiday cheer.",
+        "medium": "Pastel and ink, pastel paper",
+        "dimensions": "Size 26,5 х 37cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture_22_1_preview.jpg",
+        "preview2": "img/gallery/picture_22_2_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture_22_1.jpg" },
+          { "slide_index": "1", "bullet_index": "2", "path": "img/gallery/picture_22_2.jpg" }
+        ]
+      }
+    ]
+  },
+  "aquarell_gallery": {
+    "carousel_id": "500073021",
+    "artworks": [
+      {
+        "lid": "1714474492121",
+        "title": "Blossoms at the Biergarten",
+        "description": "This ink and watercolor painting captures the serene beauty of a quiet Biergarten in full bloom. Vibrant splashes of pink blossoms contrast with the crisp black ink lines of the empty chairs and tables, creating a delicate balance between nature and structure. The soft, scattered petals add a touch of whimsy, evoking the peaceful charm of a spring day under the flowering trees. The scene invites viewers to imagine a tranquil moment in this picturesque setting.",
+        "medium": "Aquarell, Ink",
+        "dimensions": "Size 29,7 x 42 cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture1_1.JPG",
+        "preview2": "img/gallery/picture1_2.JPG",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture1_1.JPG" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture1_2.JPG" }
+        ]
+      },
+      {
+        "lid": "1714474492124",
+        "title": "Springtime Along the Canal",
+        "description": "This watercolor and ink painting captures the quiet charm of a canal-side street adorned with blooming pink and purple trees. The soft splashes of color contrast beautifully with the crisp lines of the brick walls and lampposts, creating a harmonious balance between nature and architecture. The tranquil water reflects the vibrant blossoms, adding to the serene and dreamlike atmosphere of a peaceful spring day.",
+        "medium": "Aquarell, Ink",
+        "dimensions": "Size 29,7 x 42 cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture4_1.jpg",
+        "preview2": "img/gallery/picture4_1.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture4_1.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492125",
+        "title": "Golden Hour on the Corner",
+        "description": "This vibrant watercolor painting depicts a sunlit corner building, its elegant balconies and warm facade glowing under the soft light of the golden hour. Dynamic brushstrokes and splashes of color bring energy and depth to the scene, while the interplay of shadow and light highlights the building's intricate architectural details. The composition invites viewers to experience the charm and vibrancy of urban life at its most picturesque moment.",
+        "medium": "Aquarell, Ink",
+        "dimensions": "Size 29,7 x 42 cm",
+        "price": "100",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture5_1.jpg",
+        "preview2": "img/gallery/picture5_2.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture5_1.jpg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture5_2.jpg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492126",
+        "title": "St. Albani in the Afternoon",
+        "description": "This watercolor and ink painting portrays the historic charm of St. Albani Church bathed in soft daylight. The detailed brushwork highlights the building's timeless architecture, while the vibrant sky adds a sense of calm and openness. A scooter parked in the foreground adds a contemporary touch, blending past and present in this serene urban scene. The composition invites viewers to appreciate the quiet beauty of a peaceful moment in front of a storied landmark.",
+        "medium": "Aquarell, Ink",
+        "dimensions": "26 x 38 cm<br>Frame (plastic and glass)",
+        "price": "350",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture6_1.png",
+        "preview2": "img/gallery/picture6_3.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture6_1.png" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture6_2.jpg" },
+          { "slide_index": "2", "bullet_index": "3", "path": "img/gallery/picture6_3.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492129",
+        "title": "By the Old Watermill",
+        "description": "This watercolor and ink painting captures the tranquil charm of a historic watermill scene. The soft hues of purple and blue reflect off the calm water, while the intricate architectural details of the mill and bridge are brought to life through delicate linework. A lone cyclist crossing the bridge adds a touch of modern life to the peaceful, timeless setting. This piece evokes a sense of quiet nostalgia and connection to the past.",
+        "medium": "Aquarell, Ink",
+        "dimensions": "29,7 x 42 cm<br>Frame (plastic and glass)",
+        "price": "350",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture9_1.jpg",
+        "preview2": "img/gallery/picture9_1.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture9_1.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492131",
+        "title": "Café on a Sunny Corner",
+        "description": "This watercolor painting captures the lively charm of a bustling café with its vibrant red awnings and the gentle shade of nearby trees. The soft, flowing brushstrokes bring the warmth of a sunny day to life, while the subtle interplay of light and shadow enhances the building's character. The scene invites viewers to pause and soak in the relaxed ambiance of a perfect moment in a quaint urban setting.",
+        "medium": "Aquarell, ink",
+        "dimensions": "Size 30 х 42cm",
+        "price": "100",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture23_1_preview.jpeg",
+        "preview2": "img/gallery/picture23_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture23_1.jpeg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492132",
+        "title": "The Street of Timeless Charm",
+        "description": "This watercolor and ink painting captures the elegance of a quiet urban street corner. The building's warm tones contrast beautifully with the cool blues of the surrounding scene, evoking a peaceful yet vibrant atmosphere. The delicate lines and soft washes of color highlight the timeless character of the architecture, inviting viewers to wander through this charming street.",
+        "medium": "Aquarell, ink",
+        "dimensions": "Size 21 х 30cm",
+        "price": "100",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture24_1_preview.jpeg",
+        "preview2": "img/gallery/picture24_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture24_1.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492133",
+        "title": "Under the Red Awning",
+        "description": "This watercolor and ink painting depicts the cozy charm of a café on a quiet street corner, framed by a vibrant red awning. Silhouetted figures pass by, adding life and movement to the scene. The soft washes of color and subtle reflections on the ground evoke the tranquil beauty of a rainy urban afternoon. The composition invites viewers to pause and enjoy the warmth of a fleeting moment.",
+        "medium": "Aquarell, ink",
+        "dimensions": "Size 30 х 42cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture25_1_preview.jpeg",
+        "preview2": "img/gallery/picture25_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture25_1.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492134",
+        "title": "The Corner Café in Perspective",
+        "description": "This watercolor and ink painting captures a dynamic urban scene from a bird's-eye perspective, showcasing a café with striking red awnings nestled at a street corner. Bold lines and soft washes of blue and gray create depth, while the vibrant red provides a focal point amidst the bustling streets. The interplay of light and shadow evokes a lively city atmosphere, inviting viewers to explore the energy of this architectural composition.",
+        "medium": "Aquarell, ink",
+        "dimensions": "Size 30 х 42cm",
+        "price": "250",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture26_1_preview.jpeg",
+        "preview2": "img/gallery/picture26_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture26_1.jpeg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492135",
+        "title": "The Lone Windmill",
+        "description": "This ink and watercolor painting captures the rustic charm of a solitary windmill standing against a minimalist backdrop. The bold, expressive lines emphasize the windmill's structure, while soft washes of gray and muted tones evoke a quiet, nostalgic atmosphere. The piece invites viewers to reflect on the enduring beauty of simple, rural landscapes.",
+        "medium": "Aquarell, ink",
+        "dimensions": "Size 21 х 29.5cm",
+        "price": "100",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture27_1_preview.jpeg",
+        "preview2": "img/gallery/picture27_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture27_1.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492136",
+        "title": "A Quiet Stroll in the Park",
+        "description": "This ink and watercolor painting captures the serene charm of a peaceful park scene. The gentle curves of the pathway lead the viewer's eye through the composition, past bare trees and simple benches. Soft washes of gray and subtle hints of color evoke a calm, contemplative atmosphere, inviting viewers to reflect on the quiet beauty of a leisurely walk in nature.",
+        "medium": "Aquarell, ink",
+        "dimensions": "Size 30 х 21cm",
+        "price": "100",
+        "col_class": "t-col_4",
+        "sold": true,
+        "preview1": "img/gallery/picture28_1_preview.jpeg",
+        "preview2": "img/gallery/picture28_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture28_1.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492137",
+        "title": "Sunny Village Square",
+        "description": "This watercolor and ink painting captures the warmth and charm of a quiet village square bathed in sunlight. The rustic stone buildings, adorned with red-tiled roofs, create a cozy and inviting atmosphere. Soft washes of color and fine architectural details bring life to the scene, while figures casually strolling add a sense of everyday simplicity. The artwork evokes the timeless beauty of rural life.",
+        "medium": "Aquarell",
+        "dimensions": "Size 40 х 29.5cm",
+        "price": "100",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture29_1_preview.jpeg",
+        "preview2": "img/gallery/picture29_1_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture29_1.jpeg" }
+        ]
+      }
+    ]
   }
 }

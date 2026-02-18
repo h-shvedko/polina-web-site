@@ -2,6 +2,11 @@
      data-product-lid="{{lid}}"><a class="js-product-link" href="#prodpopup">
     <div class="t754__content">
         <div class="t754__imgwrapper t1002__picture-wrapper " style="padding-bottom:97.222222222222%;">
+            {{#sold}}
+            <div class="t754__markwrapper">
+                <div class="t754__mark" field="li_mark__{{lid}}" style="color:#ffffff;background-color:#ff0000;">SOLD</div>
+            </div>
+            {{/sold}}
             <div class="t754__bgimg t754__bgimg_first_hover t-bgimg js-product-img"
                  data-original="{{{preview1}}}"
                  style="background-image:url('{{{preview1}}}')"

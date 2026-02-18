@@ -33,19 +33,11 @@
 <div id="rec500073024" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-animationappear="off" data-record-type="754">
     <div class="t754" data-show-count="">
         <div class="t754__parent t754__container_mobile-grid">
-            {{> gallery/pastel/12.html}}
-            {{> gallery/pastel/2.html}}
-            {{> gallery/pastel/3.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/pastel/10.html}}
-            {{> gallery/pastel/17.html}}
-            {{> gallery/pastel/18.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/pastel/19.html}}
-            {{> gallery/pastel/20.html}}
-            {{> gallery/pastel/21.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/pastel/22.html}}
+            {{#pastel_gallery}}
+                {{#artworks}}
+                    {{> gallery/gallery_card.html}}
+                {{/artworks}}
+            {{/pastel_gallery}}
         </div>
         <div class="t-popup" style="background-color: rgba(255,255,255,1);">
             <div class="t-popup__close" style="background-color: #ffffff;">
@@ -69,16 +61,11 @@
                 <div class="t754__close-text t-descr t-descr_xxs" style="color:#000000;">CONTINUE SHOPPING</div>
             </div>
             <div class="t-popup__container t-popup__container-static" style="background-color:#ffffff;">
-                {{> gallery/pastel/12_details.html}}
-                {{> gallery/pastel/2_details.html}}
-                {{> gallery/pastel/3_details.html}}
-                {{> gallery/pastel/10_details.html}}
-                {{> gallery/pastel/17_details.html}}
-                {{> gallery/pastel/18_details.html}}
-                {{> gallery/pastel/19_details.html}}
-                {{> gallery/pastel/20_details.html}}
-                {{> gallery/pastel/21_details.html}}
-                {{> gallery/pastel/22_details.html}}
+                {{#pastel_gallery}}
+                    {{#artworks}}
+                        {{> gallery/gallery_details.html}}
+                    {{/artworks}}
+                {{/pastel_gallery}}
             </div>
         </div>
 
