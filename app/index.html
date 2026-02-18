@@ -417,7 +417,7 @@
                                     <div class="t754__price t754__price-item t-name t-name_xs" style="">
                                         <div class="t754__price-currency">€</div>
                                         <div class="t754__price-value js-product-price notranslate" translate="off"
-                                             field="li_price__1714474492133">1000
+                                             field="li_price__1714474492133">500
                                         </div>
                                     </div>
                                 </div>
@@ -1310,7 +1310,7 @@
                                 <div class="t754__price t754__price-item t-name t-name_xs" style="">
                                     <div class="t754__price-currency">€</div>
                                     <div class="t754__price-value js-product-price notranslate" translate="off"
-                                         field="li_price__1714474492133">1000
+                                         field="li_price__1714474492133">500
                                     </div>
                                 </div>
                             </div>
@@ -1580,7 +1580,7 @@
                             </div>
                             <div class="t754__price-wrapper ">
                                 <p style="font-size: 16px; margin-bottom: 1rem;font-weight:normal" class="t754__price t754__price-item t-name t-name_xs">
-                                    "Sunset Harbor Dreams" captures the gentle glow of late evening as a sailboat glides across calm, sun-kissed waters. Soft reflections dance along the surface, while hints of coral and honey paint the sky with serene beauty. This fleeting moment of dusk invites you to pause and embrace the tranquility of day's end.</p>
+                                    "Sunset Harbor Dreams" captures the gentle glow of late evening as a sailboat glides across calm, sun-kissed waters. Soft reflections dance along the surface, while hints of coral and honey paint the sky with serene beauty. This fleeting moment of dusk invites you to pause and embrace the tranquility of day's end. Background: Synthetic paper (polymer-based) on a wooden frame, 90 cm × 60 cm.</p>
                                 <div class="t754__price t754__price-item t-name t-name_xs" style="">
                                     <div class="t754__price-currency">€</div>
                                     <div class="t754__price-value js-product-price notranslate" translate="off"
@@ -1589,7 +1589,7 @@
                                 </div>
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
-                                <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 60 х 90cm</div>
+                                <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 90 х 60cm</div>
                             </div>
                         </div>
                     </div>
@@ -6279,6 +6279,29 @@
         color: #ffffff;
     }</style>
 </div>
+<!-- Cookie Consent Banner -->
+<div id="cookie-consent" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:99999; background:#1a1a1a; color:#fff; padding:16px 24px; font-family:TildaSans,Arial,sans-serif; font-size:14px; line-height:1.5; box-shadow:0 -2px 10px rgba(0,0,0,0.2);">
+    <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <p style="margin:0; flex:1; min-width:200px;">This website uses cookies to ensure you get the best experience. By continuing to browse, you agree to our use of cookies.</p>
+        <button id="cookie-accept" style="background:#fff; color:#1a1a1a; border:none; padding:10px 28px; font-size:14px; font-weight:500; cursor:pointer; border-radius:30px; font-family:TildaSans,Arial,sans-serif; white-space:nowrap;">Accept</button>
+    </div>
+</div>
+<script>
+    (function () {
+        if (!localStorage.getItem('cookie_consent')) {
+            var banner = document.getElementById('cookie-consent');
+            if (banner) banner.style.display = 'block';
+        }
+        var btn = document.getElementById('cookie-accept');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                localStorage.setItem('cookie_consent', '1');
+                var banner = document.getElementById('cookie-consent');
+                if (banner) banner.style.display = 'none';
+            });
+        }
+    })();
+</script>
 </div>
 </body>
 </html>
