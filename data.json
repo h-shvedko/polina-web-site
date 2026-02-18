@@ -456,5 +456,36 @@
         ]
       }
     ]
-  }
+  },
+  "socialmedia_images": [
+    { "src": "img/gallery/picture30_1_preview.jpg" },
+    { "src": "img/gallery/picture31_1_preview.jpg" },
+    { "src": "img/gallery/picture11_1_preview.jpeg" },
+    { "src": "img/gallery/picture14_1_preview.jpeg" },
+    { "src": "img/gallery/picture13_1.jpeg" },
+    { "src": "img/gallery/picture15_1_preview.jpeg" },
+    { "src": "img/gallery/picture16_1_preview.jpeg" },
+    { "src": "img/gallery/picture12_1.jpeg" },
+    { "src": "img/gallery/picture2_1_preview.jpg" },
+    { "src": "img/gallery/picture3_1_preview.jpg" },
+    { "src": "img/gallery/picture10_1_preview.jpg" },
+    { "src": "img/gallery/picture17_1_preview.jpeg" },
+    { "src": "img/gallery/picture18_1_preview.jpeg" },
+    { "src": "img/gallery/picture19_1_preview.jpg" },
+    { "src": "img/gallery/picture20_1_preview.jpg" },
+    { "src": "img/gallery/picture21_1_preview.jpg" },
+    { "src": "img/gallery/picture_22_1_preview.jpg" },
+    { "src": "img/gallery/picture1_1.JPG" },
+    { "src": "img/gallery/picture4_1.jpg" },
+    { "src": "img/gallery/picture5_1.jpg" },
+    { "src": "img/gallery/picture6_1.png" },
+    { "src": "img/gallery/picture9_1.jpg" },
+    { "src": "img/gallery/picture23_1_preview.jpeg" },
+    { "src": "img/gallery/picture24_1_preview.jpeg" },
+    { "src": "img/gallery/picture25_1_preview.jpeg" },
+    { "src": "img/gallery/picture26_1_preview.jpeg" },
+    { "src": "img/gallery/picture27_1_preview.jpeg" },
+    { "src": "img/gallery/picture28_1_preview.jpeg" },
+    { "src": "img/gallery/picture29_1_preview.jpeg" }
+  ]
 }

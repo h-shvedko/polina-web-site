@@ -22,46 +22,59 @@
         <div class="t680__container t-container ">
             <div class="t680__row t680__row_indent-20px t-row">
                 <div class="t680__tile t680__tile_left t680__tile_big-img t680__top" itemscope itemtype="http://schema.org/ImageObject">
-                    <meta itemprop="image" content="/img/gallery/picture1_1.JPG">
-                    <div class="t680__bgimg t680__bgimg_lg t-bgimg" data-original="/img/gallery/picture1_1.jpg"
-                         bgimgfield="gi_img__0" data-zoomable="yes" data-zoom-target="0" data-img-zoom-url="/img/gallery/picture1_1.jpg"
-                         style="background: url('/img/gallery/picture1_1.jpg') center center no-repeat;background-size: cover;"
+                    <div class="t680__bgimg t680__bgimg_lg t-bgimg js-socialmedia-img" data-slot="0"
+                         style="background: #eee center center no-repeat;background-size: cover;"
                     ></div>
                 </div>
                 <div class="t680__tile t680__tile_right ">
                     <div class="t680__bgimg_wrapper t680__bgimg_wrapper_left" itemscope itemtype="http://schema.org/ImageObject">
-                        <meta itemprop="image" content="/img/gallery/picture2_1.jpg">
-                        <div class="t680__bgimg t680__bgimg_sm t-bgimg" data-original="/img/gallery/picture2_1.jpg"
-                             bgimgfield="gi_img__1" data-zoomable="yes" data-zoom-target="1" data-img-zoom-url="/img/gallery/picture2_1.jpg"
-                             style="background: url('/img/gallery/picture2_1.jpg') center center no-repeat;background-size: cover;"
+                        <div class="t680__bgimg t680__bgimg_sm t-bgimg js-socialmedia-img" data-slot="1"
+                             style="background: #eee center center no-repeat;background-size: cover;"
                         ></div>
                     </div>
                     <div class="t680__bgimg_wrapper t680__bgimg_wrapper_right" itemscope itemtype="http://schema.org/ImageObject">
-                        <meta itemprop="image" content="/img/gallery/picture3_1.jpg">
-                        <div class="t680__bgimg t680__bgimg_sm t-bgimg" data-original="/img/gallery/picture3_1.jpg"
-                             bgimgfield="gi_img__2" data-zoomable="yes" data-zoom-target="2" data-img-zoom-url="/img/gallery/picture3_1.jpg"
-                             style="background: url('/img/gallery/picture3_1.jpg') center center no-repeat;background-size: cover;"
+                        <div class="t680__bgimg t680__bgimg_sm t-bgimg js-socialmedia-img" data-slot="2"
+                             style="background: #eee center center no-repeat;background-size: cover;"
                         ></div>
                     </div>
                     <div class="t680__gap"></div>
                     <div class="t680__bgimg_wrapper t680__bgimg_wrapper_left" itemscope itemtype="http://schema.org/ImageObject">
-                        <meta itemprop="image" content="/img/gallery/picture4_1.jpg">
-                        <div class="t680__bgimg t680__bgimg_sm t-bgimg" data-original="/img/gallery/picture4_1.jpg"
-                             bgimgfield="gi_img__4" data-zoomable="yes" data-zoom-target="4" data-img-zoom-url="/img/gallery/picture4_1.jpg"
-                             style="background: url('/img/gallery/picture4_1.jpg') center center no-repeat;background-size: cover;"
+                        <div class="t680__bgimg t680__bgimg_sm t-bgimg js-socialmedia-img" data-slot="3"
+                             style="background: #eee center center no-repeat;background-size: cover;"
                         ></div>
                     </div>
                     <div class="t680__bgimg_wrapper t680__bgimg_wrapper_right" itemscope itemtype="http://schema.org/ImageObject">
-                        <meta itemprop="image" content="/img/gallery/picture5_1.jpg">
-                        <div class="t680__bgimg t680__bgimg_sm t-bgimg" data-original="/img/gallery/picture5_1.jpg"
-                             bgimgfield="gi_img__5" data-zoomable="yes" data-zoom-target="5" data-img-zoom-url="/img/gallery/picture5_1.jpg"
-                             style="background: url('/img/gallery/picture5_1.jpg') center center no-repeat;background-size: cover;"
+                        <div class="t680__bgimg t680__bgimg_sm t-bgimg js-socialmedia-img" data-slot="4"
+                             style="background: #eee center center no-repeat;background-size: cover;"
                         ></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        (function () {
+            var images = [
+                {{#socialmedia_images}}
+                "{{{src}}}",
+                {{/socialmedia_images}}
+            ];
+
+            // Fisher-Yates shuffle
+            for (var i = images.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = images[i];
+                images[i] = images[j];
+                images[j] = tmp;
+            }
+
+            var slots = document.querySelectorAll('.js-socialmedia-img');
+            for (var s = 0; s < slots.length && s < images.length; s++) {
+                slots[s].style.background = "url('" + images[s] + "') center center no-repeat";
+                slots[s].style.backgroundSize = "cover";
+            }
+        })();
+    </script>
     <!--[if (IE 8)|(IE 9)]>
     <style>.t680__bgimg_lg {
         padding-bottom: 100%;
