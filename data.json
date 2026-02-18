@@ -1,1 +1,116 @@
-{}
+{
+  "oil_gallery": {
+    "carousel_id": "500073021",
+    "artworks": [
+      {
+        "lid": "1714474492215",
+        "title": "Turquoise Silence of the Verdon Gorge",
+        "description": "\"Turquoise Silence of the Verdon Gorge\" immerses you in the tranquil embrace of a hidden canyon lake, where steep, textured cliffs rise dramatically above the water. Paddlers drift in solitude across the luminous blue, dwarfed by nature's monumental architecture. The painting evokes a meditative calm, blending stillness with the awe of raw, unspoiled beauty.",
+        "medium": "Oil, Canvas",
+        "dimensions": "80 х 80cm",
+        "price": "8000",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture30_1_preview.jpg",
+        "preview2": "img/gallery/picture30_2_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture30_1.png" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture30_2.jpg" },
+          { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture30_3.jpg" },
+          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/picture30_4.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492216",
+        "title": "Whispers of the Coastal Wind",
+        "description": "\"Whispers of the Coastal Wind\" captures a serene cove where gentle waves kiss the sand and weathered boats rest in quiet anticipation. A rugged rock formation crowned with wind-swept trees stands watch over the bay, echoing nature's enduring presence. The soft interplay of sunlight and shadow invites a sense of nostalgia, as if time itself slows along this peaceful shoreline.",
+        "medium": "Oil, Canvas",
+        "dimensions": "80 х 80cm",
+        "price": "8000",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture31_1_preview.jpg",
+        "preview2": "img/gallery/picture31_3_preview.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture31_1.png" },
+          { "slide_index": "3", "bullet_index": "2", "path": "img/gallery/picture31_3.jpg" }
+        ]
+      },
+      {
+        "lid": "1714474492131",
+        "title": "Vibrant Cliffs of the Brava Coast",
+        "description": "Vibrant Cliffs of the Brava Coast (Inspired by P. Molina) captures warm twilight on a rugged Mediterranean coast. Painted in oil on an 18 × 24 cm canvas, golden hues merge with deep blues, evoking serenity at day's end. Layered brushstrokes enhance the coastline's charm, inviting the viewer to savor nature's fleeting beauty.",
+        "medium": "Oil, Canvas",
+        "dimensions": "18 х 24cm",
+        "price": "300",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture11_1_preview.jpeg",
+        "preview2": "img/gallery/picture11_2_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture11_1.jpeg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture11_2.jpeg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492114",
+        "title": "Cala Secreta: A Costa Brava Hideaway",
+        "description": "\"Cala Secreta: A Costa Brava Hideaway\" (Inspired by P. Molina) reveals a secluded cove embraced by sun-kissed cliffs. Vibrant oranges and reds enliven the rocky landscape, while turquoise waters shimmer in gentle contrast. Soft brushstrokes capture the dreamlike allure of this hidden gem. The painting invites you to escape into the tranquil harmony of nature's vibrant palette.",
+        "medium": "Oil, Canvas",
+        "dimensions": "18 х 24cm",
+        "price": "300",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture14_1_preview.jpeg",
+        "preview2": "img/gallery/picture14_2_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture14_1.jpeg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture14_2.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492133",
+        "title": "Boats in the Bay of Roses",
+        "description": "Boats in the Bay of Roses (Inspired by P. Molina) depicts a tranquil moment of repose. Painted in oil on a 30 × 24 cm canvas, gentle brushstrokes and soft sunlight create an atmosphere of warmth and serenity. Muted hues and subtle details invite viewers to pause and embrace the painting's calming aura.",
+        "medium": "Oil, Canvas",
+        "dimensions": "30 х 24cm",
+        "price": "1000",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture13_1.jpeg",
+        "preview2": "img/gallery/picture13_2.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture13_1.jpeg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture13_2.jpeg" }
+        ]
+      },
+      {
+        "lid": "1714474492115",
+        "title": "Evening Glow on the Brava Shore",
+        "description": "\"Evening Glow on the Brava Shore (Inspired by P. Molina)\" casts a tender pink hue across a tranquil harbor. A warm, dusky sky envelops the moored boats in gentle reflections, while a cozy villa onshore glimmers in the fading light. Vibrant blooms add to the dreamy twilight ambiance, merging nature's palette with architectural charm. The soft brushstrokes evoke quiet contemplation, inviting you to linger in the moment between day and night.",
+        "medium": "Oil, Canvas",
+        "dimensions": "30 х 24cm",
+        "price": "500",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture15_1_preview.jpeg",
+        "preview2": "img/gallery/picture15_2_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture15_1.jpeg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture15_2.jpeg" }
+        ],
+        "clear_after": true
+      },
+      {
+        "lid": "1714474492116",
+        "title": "Sunset in a honey dream",
+        "description": "\"Sunset Harbor Dreams\" captures the gentle glow of late evening as a sailboat glides across calm, sun-kissed waters. Soft reflections dance along the surface, while hints of coral and honey paint the sky with serene beauty. This fleeting moment of dusk invites you to pause and embrace the tranquility of day's end.",
+        "medium": "Oil, Canvas",
+        "dimensions": "60 х 90cm",
+        "price": "1500",
+        "col_class": "t-col_4",
+        "preview1": "img/gallery/picture16_1_preview.jpeg",
+        "preview2": "img/gallery/picture16_2_preview.jpeg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture16_1.jpeg" }
+        ],
+        "clear_after": true
+      }
+    ]
+  }
+}

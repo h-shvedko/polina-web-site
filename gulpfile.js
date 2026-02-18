@@ -27,7 +27,7 @@ gulp.task('server', () => {
 
 //images processing
 gulp.task('img', () => {
-    gulp.src('src/img/**/*.*')
+    return gulp.src('src/img/**/*.*')
         .pipe(imagemin({
             interlaced: true,
             progressive: true,
@@ -42,7 +42,7 @@ gulp.task('img', () => {
 });
 
 gulp.task('validateHtml', () => {
-    gulp.src('app/*.html')
+    return gulp.src('app/*.html')
         .pipe(htmlValidator())
         .pipe(htmlValidator.reporter());
 });
@@ -84,7 +84,7 @@ gulp.task('sitemap', () => {
 
 //copy fonts
 gulp.task('fonts', () => {
-    gulp.src('src/css/webfonts/**/*.*')
+    return gulp.src('src/css/webfonts/**/*.*')
         .pipe(gulp.dest('app/css/webfonts'));
 });
 

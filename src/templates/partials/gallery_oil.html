@@ -33,16 +33,11 @@
 <div id="rec500073023" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-animationappear="off" data-record-type="754">
     <div class="t754" data-show-count="">
         <div class="t754__parent t754__container_mobile-grid">
-            {{> gallery/oil/30.html}}
-            {{> gallery/oil/31.html}}
-            {{> gallery/oil/11.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/oil/14.html}}
-            {{> gallery/oil/13.html}}
-            {{> gallery/oil/15.html}}
-            {{> gallery/clear.html}}
-            {{> gallery/oil/16.html}}
-            {{> gallery/clear.html}}
+            {{#oil_gallery}}
+                {{#artworks}}
+                    {{> gallery/gallery_card.html}}
+                {{/artworks}}
+            {{/oil_gallery}}
         </div>
         <div class="t-popup" style="background-color: rgba(255,255,255,1);">
             <div class="t-popup__close" style="background-color: #ffffff;">
@@ -66,13 +61,11 @@
                 <div class="t754__close-text t-descr t-descr_xxs" style="color:#000000;">CONTINUE SHOPPING</div>
             </div>
             <div class="t-popup__container t-popup__container-static" style="background-color:#ffffff;">
-                {{> gallery/oil/11_details.html}}
-                {{> gallery/oil/14_details.html}}
-                {{> gallery/oil/13_details.html}}
-                {{> gallery/oil/15_details.html}}
-                {{> gallery/oil/16_details.html}}
-                {{> gallery/oil/30_details.html}}
-                {{> gallery/oil/31_details.html}}
+                {{#oil_gallery}}
+                {{#artworks}}
+                {{> gallery/gallery_details.html}}
+                {{/artworks}}
+                {{/oil_gallery}}
             </div>
         </div>
 
@@ -118,6 +111,7 @@
             color: #949494;
             font-weight: 400;
         }
+
         .t-slds__bullet_active .t-slds__bullet_body {
             background-color: #222 !important;
         }
