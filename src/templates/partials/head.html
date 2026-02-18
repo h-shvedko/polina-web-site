@@ -87,7 +87,12 @@
     <script src="js/tilda-zoom-2.0.min.js" charset="utf-8" async onerror="this.loaderr='y';"></script>
     <script src="js/tilda-events-1.0.min.js" charset="utf-8" async onerror="this.loaderr='y';"></script>
     <script src="js/w3.js"></script>
-    <script type="text/javascript">window.dataLayer = window.dataLayer || [];</script>
+    <!-- Google Analytics (gtag.js) — replace G-XXXXXXXXXX with your Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script type="text/javascript">window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');</script>
     <script type="text/javascript">(function () {
         if ((/bot|google|yandex|baidu|bing|msn|duckduckbot|teoma|slurp|crawler|spider|robot|crawling|facebook/i.test(navigator.userAgent)) === false && typeof (sessionStorage) != 'undefined' && sessionStorage.getItem('visited') !== 'y' && document.visibilityState) {
             var style = document.createElement('style');

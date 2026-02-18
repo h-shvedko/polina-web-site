@@ -54,6 +54,6 @@
 ## Nice to Have (Future)
 
 - [x] **Cookie Consent Banner** — Required for EU visitors under GDPR if analytics are added.
-- [ ] **Google Analytics** — `dataLayer` is initialized in `head.html` but no tracking code is loaded. Zero visitor data collected.
-- [ ] **Lightbox on Instagram Mosaic** — Random carousel images in the Instagram section aren't clickable. Link to Instagram profile or make zoomable.
-- [ ] **Smooth Scroll Animations** — Fade-in artwork cards on scroll. Tilda animation CSS/JS is loaded but `data-animationappear="off"` is set on galleries.
+- [x] **Google Analytics** — Added gtag.js snippet to `head.html`. Replace `G-XXXXXXXXXX` with your actual Measurement ID.
+- [x] **Lightbox on Instagram Mosaic** — All 5 mosaic tiles now link to the Instagram profile (`instagram.com/polina_shvedko`).
+- [x] **Smooth Scroll Animations** — Enabled `data-animationappear="on"` on all 3 gallery sections and the Instagram mosaic. Cards fade in on scroll.
