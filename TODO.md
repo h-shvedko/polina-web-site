@@ -31,10 +31,10 @@
 ## High Impact (Visitor Experience)
 
 - [ ] **Navigation Menu** — Add sticky top nav with anchor links (Oil / Pastel / Aquarelle / About / Contact). No navigation exists currently; visitors must scroll the entire page.
-- [ ] **Hero Section CTA** — Add "View Gallery" or "Explore Artworks" button to the hero. Currently only a title, email link, and a tiny scroll arrow.
+- [x] **Hero Section CTA** — Add "View Gallery" or "Explore Artworks" button to the hero. Currently only a title, email link, and a tiny scroll arrow.
 - [ ] **"Add to Cart" / "Inquire" button in artwork popup** — The detail popup shows artwork info but has no buy/inquire action. Visitors must close the popup and find the floating cart icon.
 - [ ] **Gallery Filtering** — Add filter by availability (available / sold / all). 10+ items are sold; visitors scroll past artwork they can't buy.
-- [ ] **Back to Top Button** — Floating button for the long single-page layout, especially important on mobile.
+- [x] **Back to Top Button** — Floating button for the long single-page layout, especially important on mobile.
 
 ## Medium Impact (Trust & Professionalism)
 
@@ -45,11 +45,11 @@
 ## Quick Fixes (Bugs & SEO)
 
 - [ ] **Fix empty `og:image`** — `og:image` meta tag in `head.html` has no value. Social sharing on Facebook/WhatsApp/iMessage shows no preview image.
-- [ ] **Fix currency mismatch** — Prices display as € (EUR) but the cart widget in `footer.html` is configured for $ (USD).
-- [ ] **Update copyright year** — Hardcoded as "2024" in `footer.html`. Should be 2025 or dynamic.
-- [ ] **Fix grammar in About Me** — "I'm free artist" in `aboutme.html` should be "I'm a freelance artist".
-- [ ] **Fix mixed languages** — Cart heading says "CART | Корзина" (English/Russian). Form success message is also bilingual. Should be consistent.
-- [ ] **Fix sitemap URL typo** — `gulpfile.js` has `polins-shvedko.artist` instead of `polina-shvedko.art`.
+- [x] **Fix currency mismatch** — Cart widget changed from $ (USD) to € (EUR) to match displayed prices.
+- [x] **Update copyright year** — Updated from "2024" to "2025" in `footer.html`.
+- [x] **Fix grammar in About Me** — Changed "I'm free artist" to "I'm a freelance artist" in `aboutme.html`.
+- [x] **Fix mixed languages** — Removed all Russian text from cart (heading, labels, button, success message, aria-labels). Now English only.
+- [x] **Fix sitemap URL typo** — Changed `polins-shvedko.artist` to `polina-shvedko.art` in `gulpfile.js`.
 
 ## Nice to Have (Future)
 

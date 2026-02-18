@@ -77,7 +77,7 @@ gulp.task('sitemap', () => {
         read: false
     })
         .pipe(sitemap({
-            siteUrl: 'http://www.polins-shvedko.artist'
+            siteUrl: 'https://polina-shvedko.art'
         }))
         .pipe(gulp.dest('./app'));
 });
