@@ -241,7 +241,7 @@
     }</style>
 </div>
 <!-- Back to Top Button -->
-<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:80px; right:25px; z-index:99998; width:48px; height:48px; border-radius:50%; border:2px solid #000; background:#fff; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); transition:opacity 0.3s;">
+<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:80px; right:25px; z-index:99998; width:39px; height:48px; border-radius:50%; border:2px solid #000; background:#fff; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); transition:opacity 0.3s;">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
         <path d="M9 15V3M9 3L3 9M9 3L15 9" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
@@ -254,7 +254,10 @@
             btn.style.display = window.scrollY > 600 ? 'block' : 'none';
         });
         btn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            var target = document.getElementById('rec500073019');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     })();
 </script>

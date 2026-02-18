@@ -136,7 +136,7 @@
                         <div class="t102__title t-title t-animate" data-animate-style="fadein" data-animate-group="yes" field="title">POLINA SHVEDKO ART</div>
                         <div class="t102__descr t-descr t-descr_md t102__descr_center t-animate" data-animate-style="fadein" data-animate-group="yes" field="descr"><span style="color: rgb(255, 255, 255);"><a href="mailto:polina.shvedko.artist@gmail.com">polina.shvedko.artist@gmail.com</a></span></div>
                         <div class="t102__buttons t-animate" data-animate-style="fadein" data-animate-group="yes" style="padding-top:40px;">
-                            <a href="#rec500073020" class="t-btn t-btn_md js-hero-cta" style="color:#ffffff;border:2px solid #ffffff;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;background-color:transparent;font-weight:400;padding:2rem;font-size:2rem;letter-spacing:0.05em;transition:background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;text-decoration:none;display:inline-block;">
+                            <a href="#rec500073020" class="t-btn t-btn_md js-hero-cta" style="color:#ffffff;border:2px solid #ffffff;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;background-color:transparent;font-weight:400;padding:1rem;font-size:2rem;letter-spacing:0.05em;transition:background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;text-decoration:none;display:inline-block;">
                                 <table role="presentation" style="width:100%;height:100%;"><tr><td>Explore Artworks</td></tr></table>
                             </a>
                         </div>
@@ -6329,7 +6329,10 @@
             btn.style.display = window.scrollY > 600 ? 'block' : 'none';
         });
         btn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            var target = document.getElementById('rec500073019');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     })();
 </script>
