@@ -3,6 +3,27 @@
     "carousel_id": "500073021",
     "artworks": [
       {
+        "lid": "1714474492218",
+        "title": "Affectionate Farewell, Cap d'Antibes, France",
+        "description": "The weary sun was tenderly bidding farewell to the sea.<br>The blue of day still rippled, yet gently and relentlessly the twilight was absorbing it.<br>A soundless advance, a sweet captivity.<br>Dinner was being prepared aboard the yachts, and white wine in translucent glasses held the already pale sun resting at the bottom.<br>Antibes would soon become alluring in the shimmer of its lights, yet they could not rival the stars.",
+        "medium": "Oil, Canvas",
+        "dimensions": "190 х 45cm",
+        "price": "8000",
+        "col_class": "t-col_12",
+        "img_padding": "32.407407407407%",
+        "preview1": "img/gallery/picture32_1.jpg",
+        "preview2": "img/gallery/picture32_2.jpg",
+        "detail_images": [
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture32_1.jpg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture32_2.jpg" },
+          { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture32_3.jpg" },
+          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/picture32_4.jpg" },
+          { "slide_index": "5", "bullet_index": "5", "path": "img/gallery/picture32_5.jpg" },
+          { "slide_index": "6", "bullet_index": "6", "path": "img/gallery/picture32_6.jpg" }
+        ],
+        "clear_after": true
+      },
+      {
         "lid": "1714474492215",
         "title": "Turquoise Silence of the Verdon Gorge",
         "description": "\"Turquoise Silence of the Verdon Gorge\" immerses you in the tranquil embrace of a hidden canyon lake, where steep, textured cliffs rise dramatically above the water. Paddlers drift in solitude across the luminous blue, dwarfed by nature's monumental architecture. The painting evokes a meditative calm, blending stillness with the awe of raw, unspoiled beauty.",
@@ -486,6 +507,7 @@
     { "src": "img/gallery/picture26_1_preview.jpeg" },
     { "src": "img/gallery/picture27_1_preview.jpeg" },
     { "src": "img/gallery/picture28_1_preview.jpeg" },
-    { "src": "img/gallery/picture29_1_preview.jpeg" }
+    { "src": "img/gallery/picture29_1_preview.jpeg" },
+    { "src": "img/gallery/picture32_1.jpg" }
   ]
 }

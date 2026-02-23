@@ -3,11 +3,11 @@
 ## Highest Priority — Content Updates (from Etsy)
 
 ### 1. Add new artwork: "Affectionate Farewell, Cap d'Antibes, France" (Oil)
-- [ ] Add to oil gallery as top item, full width (`t-col_12`, 3 columns)
-- [ ] Need from Etsy listing: description, dimensions, price, medium details
-- [ ] Download images from Etsy → `src/img/gallery/picture32_*.jpg`
-- [ ] Etsy link: `https://www.etsy.com/de-en/listing/4446504625`
-- **Status: BLOCKED** — Etsy blocks automated scraping; need manual image download and metadata
+- [x] Add to oil gallery as top item, full width (`t-col_12`, 3 columns)
+- [x] Description, dimensions (190x45cm), price (€8000), medium (Oil, Canvas) added
+- [x] Images already in `src/img/gallery/picture32_*.jpg` (6 images)
+- [x] Added to socialmedia_images pool
+- **Status: DONE**
 
 ### 2. Update existing artworks
 
