@@ -37,7 +37,8 @@
           { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture30_1.png" },
           { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture30_2.jpg" },
           { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture30_3.jpg" },
-          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/picture30_4.jpg" }
+          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/picture30_4.jpg" },
+          { "slide_index": "5", "bullet_index": "5", "path": "img/gallery/picture30_5.jpg" }
         ]
       },
       {
@@ -52,7 +53,8 @@
         "preview2": "img/gallery/picture31_3_preview.jpg",
         "detail_images": [
           { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture31_1.png" },
-          { "slide_index": "3", "bullet_index": "2", "path": "img/gallery/picture31_3.jpg" }
+          { "slide_index": "3", "bullet_index": "2", "path": "img/gallery/picture31_3.jpg" },
+          { "slide_index": "4", "bullet_index": "3", "path": "img/gallery/picture31_4.jpg" }
         ]
       },
       {
@@ -163,8 +165,9 @@
         "preview2": "img/gallery/picture2_2.jpg",
         "detail_images": [
           { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture2_0.jpg" },
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture2_1.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture2_2.jpg" }
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture2_1.jpg" },
+          { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture2_2.jpg" },
+          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/interior.jpg" }
         ]
       },
       {
@@ -241,7 +244,8 @@
         "preview1": "img/gallery/picture19_1_preview.jpg",
         "preview2": "img/gallery/picture19_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture19_1.jpg" }
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture19_1.jpg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/interior.jpg" }
         ]
       },
       {
@@ -255,7 +259,8 @@
         "preview1": "img/gallery/picture20_1_preview.jpg",
         "preview2": "img/gallery/picture20_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture20_1.jpg" }
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture20_1.jpg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/interior.jpg" }
         ]
       },
       {
@@ -269,7 +274,8 @@
         "preview1": "img/gallery/picture21_1_preview.jpg",
         "preview2": "img/gallery/picture21_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture21_1.jpg" }
+          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture21_1.jpg" },
+          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/interior.jpg" }
         ],
         "clear_after": true
       },
