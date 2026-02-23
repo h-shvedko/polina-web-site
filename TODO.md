@@ -12,16 +12,16 @@
 ### 2. Update existing artworks
 
 #### 2.1 Pastel "Elegance in Roses" & Oil "Sunset in a honey dream"
-- [ ] Update dimensions: 32 cm × 23.5 cm on a frame (wood and glass — 50 cm × 40 cm)
-- [ ] Add photos from Etsy: interior shots and without frame (3 photos total)
-- [ ] Change price to 300€
+- [x] Update dimensions: 32 cm × 23.5 cm on a frame (wood and glass — 50 cm × 40 cm)
+- [ ] Add photos from Etsy: interior shots and without frame (3 photos total) — **BLOCKED: needs manual download**
+- [x] Change price to 300€
 
 #### 2.2 Oil "Sunset in a honey dream"
 - [x] Add to description: "... background Synthetic paper (polymer-based) on a wooden frame, 90 cm × 60 cm"
 
 #### 2.3 Pastel flower artworks: Lilacs in Bloom, Forget-Me-Nots in Glass, Hortensien, Blossoms in a Blue Pot
-- [ ] Update dimensions and frame info (similar to 2.1)
-- [ ] Add interior/Etsy photos
+- [x] Update dimensions and frame info (Lilacs, Forget-Me-Nots, Blossoms: 32×23.5cm, frame 50×40cm; Hortensien: 29.7×42cm, formatted consistently)
+- [ ] Add interior/Etsy photos — **BLOCKED: needs manual download**
 
 #### 2.4 Oil "Boats in the Bay of Roses"
 - [x] Change price to 500€
@@ -44,7 +44,7 @@
 
 ## Quick Fixes (Bugs & SEO)
 
-- [ ] **Fix empty `og:image`** — `og:image` meta tag in `head.html` has no value. Social sharing on Facebook/WhatsApp/iMessage shows no preview image.
+- [x] **Fix empty `og:image`** — Set to `https://polina-shvedko.art/img/gallery/picture32_1.jpg` (Affectionate Farewell panoramic).
 - [x] **Fix currency mismatch** — Cart widget changed from $ (USD) to € (EUR) to match displayed prices.
 - [x] **Update copyright year** — Updated from "2024" to "2025" in `footer.html`.
 - [x] **Fix grammar in About Me** — Changed "I'm free artist" to "I'm a freelance artist" in `aboutme.html`.
