@@ -17,6 +17,7 @@ Each ADR documents a significant decision, analysis, or implementation plan.
 | **Partially Implemented** | Some items done, remainder tracked as open |
 | **Superseded** | Replaced by a later ADR (link provided) |
 | **Proposed** | Under discussion, not yet committed |
+| **N/A** | Decided not to pursue |
 
 ---
 
@@ -24,8 +25,8 @@ Each ADR documents a significant decision, analysis, or implementation plan.
 
 | ADR | Title | Status | Date | Summary |
 |---|---|---|---|---|
-| [ADR-0001](ADR0001-ga4-analysis-and-recommendations.md) | GA4 Analytics Analysis & Growth Recommendations | Partially Implemented | 2026-04-15 | 90-day GA4 analysis; 7 prioritised actions; CI/CD FTP deploy workflow |
-| [ADR-0002](ADR0002-ux-feature-backlog.md) | UX & Feature Backlog — Open TODO Items | Active | 2026-04-15 | Sticky nav, popup inquire button, gallery filtering, commission section, CV section, artwork years |
+| [ADR-0001](ADR0001-ga4-analysis-and-recommendations.md) | GA4 Analytics Analysis & Growth Recommendations | Partially Implemented | 2026-04-15 | 90-day GA4 analysis; conversion tracking, JSON-LD, SEO, CI/CD deploy, bot guidance |
+| [ADR-0002](ADR0002-ux-feature-backlog.md) | UX & Feature Backlog | Partially Implemented | 2026-04-15 | Sticky nav, popup inquiry, gallery filtering, artwork year, blog system |
 
 ---
 
@@ -36,16 +37,48 @@ Each ADR documents a significant decision, analysis, or implementation plan.
 | 1.1 Track `contact_click` GA4 event | **Done** — `src/js/analytics.js` |
 | 1.2 Track `artwork_view` on popup open | **Done** — `src/js/analytics.js` |
 | 1.3 Track cart interactions (`cart_order`, `purchase_inquiry`) | **Done** — `src/js/analytics.js` |
-| 2 — Instagram UTM tagging for bio link | **Open** — manual step for Polina |
-| 3 — Mobile hero background fix | **Done** — `header.html` CSS media query, replaced missing image refs |
+| 2 — Instagram UTM tagging for bio link | **N/A** — removed from scope |
+| 3 — Mobile hero background fix | **Done** — `header.html` CSS + replaced missing image refs |
 | 4.1 JSON-LD VisualArtwork structured data | **Done** — `src/templates/partials/structured_data.html` |
 | 4.2 Descriptive `<title>` and `<meta description>` | **Done** — `src/templates/partials/head.html` |
-| 4.3 Blog / "About the artwork" article | **Open** — content needed from Polina |
-| 5.1 Newsletter signup | **Open** |
-| 5.2 Instagram embed / feed widget | **Open** |
-| 6 — Suppress bot traffic in GA4 (Columbus/Prineville) | **Open** — manual GA4 admin step |
-| Mark `contact_click` as Key Event in GA4 Admin | **Open** — manual GA4 admin step |
+| 4.3 Blog system | **Done** — static HTML blog at `/blog/`, template system via Gulp/Mustache |
+| 5.1 Newsletter signup | **N/A** — removed from scope |
+| 5.2 Instagram feed embed | **N/A** — removed from scope |
+| 6 — Suppress bot traffic in GA4 (Columbus/Prineville) | **Open** — see guidance below |
+| Mark `contact_click` as Key Event in GA4 Admin | **Open** — see guidance below |
 | GitHub Actions CI/CD deploy workflow | **Done** — `.github/workflows/deploy.yml` (SFTP via lftp) |
+
+### Guidance: Mark `contact_click` as a GA4 Key Event
+
+1. Go to [analytics.google.com](https://analytics.google.com) → select property **Polina Shvedko Art**
+2. Left sidebar → **Admin** (gear icon, bottom left)
+3. Under **Data display** → **Events**
+4. Find `contact_click` in the events list (it appears once someone has clicked the email link)
+5. Click the toggle in the **Mark as key event** column → confirm
+6. Also mark `artwork_view` as a key event for funnel tracking
+
+Key events appear in the **Conversions** report and can be used as goals in GA4 Explore.
+
+### Guidance: Suppress bot traffic in GA4 (Columbus OH / Prineville OR)
+
+These are AWS (Prineville) and Meta (Columbus) infrastructure locations generating near-zero-engagement sessions.
+
+**Option A — IP filter (recommended):**
+1. GA4 Admin → **Data Streams** → select your stream → **Configure tag settings**
+2. **Define internal traffic** → **Create** → add IP ranges for known bot ASNs
+   - This requires knowing the actual IPs from your server access log, not just the city
+
+**Option B — Audience exclusion in reports:**
+1. In any Exploration report → click **+** next to Filters
+2. Add filter: `City` does not contain `Columbus` AND `City` does not contain `Prineville`
+3. Save this exploration as a template for regular use
+
+**Option C — Enable "Google signals" bot filtering:**
+1. GA4 Admin → **Data collection and modification** → **Data collection**
+2. Enable **Google signals data collection** (already on for most properties)
+3. GA4 Admin → **Data Settings** → **Data Filters** → check if "Internal Traffic" filter is active
+
+The simplest immediate action is Option B for reporting; Option A permanently removes them from all data.
 
 ---
 
@@ -53,13 +86,33 @@ Each ADR documents a significant decision, analysis, or implementation plan.
 
 | Item | Status |
 |---|---|
-| H1 — Sticky navigation menu | **Open** |
-| H2 — Inquire/Add to Cart button in artwork popup | **Open** |
-| H3 — Gallery filtering (Available / Sold / All) | **Open** |
-| M1 — Exhibition / CV section | **Open** — content needed from Polina |
-| M2 — Commission request section | **Open** — copy needed from Polina |
-| M3 — Artwork creation year in data.json | **Open** |
-| B1 — Additional Etsy photos for 5 pastel artworks | **Blocked** — photos needed from Polina |
+| H1 — Sticky navigation menu | **Done** — `src/templates/partials/nav.html` + `src/css/nav.css` + `src/js/nav.js` |
+| H2 — Inquire button in artwork popup | **Done** — `src/templates/partials/gallery/gallery_details.html` (mailto pre-filled with title) |
+| H3 — Gallery filtering (Available / Sold / All) | **Done** — `src/js/gallery-filter.js`, filter bars in each gallery partial |
+| M1 — Exhibition / CV section | **N/A** — removed from scope |
+| M2 — Commission request section | **N/A** — removed from scope |
+| M3 — Artwork creation year in data.json | **Done** — `year` field added to all 30 artworks in `data.json`; displayed in popup |
+| B1 — Additional Etsy photos for 5 pastel artworks | **N/A** — removed from scope |
+
+### Blog System Architecture
+
+Static HTML blog with no framework or backend. All pages are pre-generated by the existing Gulp/Mustache pipeline.
+
+**Files:**
+- `src/templates/blog/index.html` → `app/blog/index.html` — blog listing page
+- `src/templates/blog/[slug]/index.html` → `app/blog/[slug]/index.html` — individual posts
+- `src/templates/partials/blog_head.html` — shared blog page head (GA, fonts, nav)
+- `src/templates/partials/blog_footer.html` — shared footer
+- `src/css/blog.css` — blog styles (listing cards, post layout)
+- `data.json → blog_posts[]` — post metadata for the listing page
+
+**Adding a new blog post:**
+1. Add an entry to `blog_posts[]` in `data.json` (slug, title, date, excerpt, preview image, tags)
+2. Create `src/templates/blog/[slug]/index.html` — write the post HTML, include nav manually (no Mustache partial loops on individual post pages)
+3. Run `npx gulp html css` to rebuild
+4. Push to main → CI deploys automatically
+
+**URL structure:** `/blog/` (listing), `/blog/cap-dantibes/` (post) — clean URLs, no `.html` extension
 
 ---
 
@@ -68,4 +121,4 @@ Each ADR documents a significant decision, analysis, or implementation plan.
 1. Name the file `ADR{NNNN}-short-title.md` (zero-padded, e.g. `ADR0003-...`)
 2. Use the frontmatter: `Date`, `Status`
 3. Add a row to the registry table above
-4. Add an implementation tracker section above if the ADR has actionable items
+4. Add an implementation tracker section if the ADR has actionable items

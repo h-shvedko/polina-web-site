@@ -47,6 +47,8 @@
         <link rel="stylesheet" href="css/tilda-zoom-2.0.min.css" type="text/css" media="all"/>
     </noscript>
     <link rel="stylesheet" href="css/fonts-tildasans.css" type="text/css" media="all" onerror="this.loaderr='y';"/>
+    <link rel="stylesheet" href="css/nav.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="css/blog.css" type="text/css" media="all"/>
     <script nomodule src="js/tilda-polyfill-1.0.min.js" charset="utf-8"></script>
     <script type="text/javascript">function t_onReady(func) {
         if (document.readyState != 'loading') {
@@ -94,6 +96,8 @@
     gtag('js', new Date());
     gtag('config', 'G-G10K54YDPQ');</script>
     <script src="js/analytics.js" defer></script>
+    <script src="js/nav.js" defer></script>
+    <script src="js/gallery-filter.js" defer></script>
     <script type="text/javascript">(function () {
         if ((/bot|google|yandex|baidu|bing|msn|duckduckbot|teoma|slurp|crawler|spider|robot|crawling|facebook/i.test(navigator.userAgent)) === false && typeof (sessionStorage) != 'undefined' && sessionStorage.getItem('visited') !== 'y' && document.visibilityState) {
             var style = document.createElement('style');
@@ -120,6 +124,19 @@
 </head>
 <body class="t-body" style="margin:0;">
 <div id="allrecords" class="t-records" data-hook="blocks-collection-content-node" data-tilda-project-id="6178144" data-tilda-page-id="30893661" data-tilda-formskey="b1ca965895cd2c7bfe71572456178144" data-tilda-lazy="yes" data-tilda-root-zone="com">
+<nav id="site-nav" aria-label="Site navigation">
+    <div class="site-nav__inner">
+        <a class="site-nav__logo" href="/">Polina Shvedko</a>
+        <ul class="site-nav__links" role="list">
+            <li><a href="#gallery-oil">Oil</a></li>
+            <li><a href="#gallery-pastel">Pastel</a></li>
+            <li><a href="#gallery-aquarelle">Aquarelle</a></li>
+            <li><a href="#section-about">About</a></li>
+            <li><a href="#section-contact">Contact</a></li>
+            <li><a href="/blog/" class="site-nav__blog">Blog</a></li>
+        </ul>
+    </div>
+</nav>
 <!--HEADER START-->
 <div id="rec500073018" class="r t-rec" style=" " data-animationappear="off" data-record-type="14"><!-- cover -->
     <div class="t-cover" id="recorddiv500073018" bgimgfield="img" style="height:100vh;background-image:url('img/IMG_3272%20(1).jpg');">
@@ -251,6 +268,7 @@
 </div>
 <!--ABOUT END-->
 <!--GALLERY START-->
+<a id="gallery-oil" style="display:block;position:relative;top:-60px;" aria-hidden="true"></a>
 <div class="t029">
     <div class="t029__container t-container">
         <div class="t029__col t-col t-col_8">
@@ -284,6 +302,11 @@
 </div>
 <div id="rec500073023" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-animationappear="on" data-record-type="754">
     <div class="t754" data-show-count="">
+        <div class="gallery-filter" data-gallery-target="rec500073023">
+            <button class="gallery-filter__btn gallery-filter__btn--active" data-filter="all">All</button>
+            <button class="gallery-filter__btn" data-filter="available">Available</button>
+            <button class="gallery-filter__btn" data-filter="sold">Sold</button>
+        </div>
         <div class="t754__parent t754__container_mobile-grid">
                     <div class="t754__col t-col t-col_12 t-align_center t-item t754__col_mobile-grid js-product"
                          data-product-lid="1714474492218"><a class="js-product-link" href="#prodpopup">
@@ -848,6 +871,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 190 х 45cm</div>
+                                <span class="artwork-year">2024</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Affectionate Farewell, Cap d'Antibes, France"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1062,6 +1093,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 80 х 80cm</div>
+                                <span class="artwork-year">2023</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Turquoise Silence of the Verdon Gorge"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1232,6 +1271,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 80 х 80cm</div>
+                                <span class="artwork-year">2023</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Whispers of the Coastal Wind"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1380,6 +1427,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 18 х 24cm</div>
+                                <span class="artwork-year">2022</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Vibrant Cliffs of the Brava Coast"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1528,6 +1583,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 18 х 24cm</div>
+                                <span class="artwork-year">2022</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Cala Secreta: A Costa Brava Hideaway"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1676,6 +1739,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 30 х 24cm</div>
+                                <span class="artwork-year">2022</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Boats in the Bay of Roses"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1824,6 +1895,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 30 х 24cm</div>
+                                <span class="artwork-year">2021</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Evening Glow on the Brava Shore"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1950,6 +2029,14 @@
                             </div>
                             <div class="t754__descr t-descr t-descr_xxs">
                                 <div style="font-size: 20px;" data-customstyle="yes">Oil, Canvas <br> 90 х 60cm</div>
+                                <span class="artwork-year">2021</span>
+                            </div>
+                            <div class="artwork-inquiry-wrap">
+                                <a class="artwork-inquiry-btn"
+                                   href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Sunset in a honey dream"
+                                   target="_blank">
+                                    Inquire about this artwork
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -2046,6 +2133,7 @@
 </div>
 <!--GALLERY END-->
 <!--GALLERY START-->
+<a id="gallery-pastel" style="display:block;position:relative;top:-60px;" aria-hidden="true"></a>
 <div class="t029">
     <div class="t029__container t-container">
         <div class="t029__col t-col t-col_8">
@@ -2079,6 +2167,11 @@
 </div>
 <div id="rec500073024" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-animationappear="on" data-record-type="754">
     <div class="t754" data-show-count="">
+        <div class="gallery-filter" data-gallery-target="rec500073024">
+            <button class="gallery-filter__btn gallery-filter__btn--active" data-filter="all">All</button>
+            <button class="gallery-filter__btn" data-filter="available">Available</button>
+            <button class="gallery-filter__btn" data-filter="sold">Sold</button>
+        </div>
         <div class="t754__parent t754__container_mobile-grid">
                     <div class="t754__col t-col t-col_4 t-align_center t-item t754__col_mobile-grid js-product"
                          data-product-lid="1714474492132"><a class="js-product-link" href="#prodpopup">
@@ -2617,6 +2710,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, Pastelpapier <br> 32 х 32cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Fishing village"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -2809,6 +2910,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> 29.7 х 42cm<br>Frame (wood and glass)</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Hortensien"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -2935,6 +3044,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> Size 32 х 41cm</div>
+                                        <span class="artwork-year">2022</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Bouquet of wild flowers"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3105,6 +3222,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, Pastelpapier <br> 32 х 41cm<br>Frame (plastic and glass)</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Hamburg, Main railway station"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3231,6 +3356,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> Size 41 х 32cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Afternoon Ride in the Countryside"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3379,6 +3512,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> 32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Blossoms in a Blue Pot"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3527,6 +3668,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> 32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Forget-Me-Nots in Glass"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3675,6 +3824,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> 32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Lilacs in Bloom"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3823,6 +3980,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel, pastel paper <br> 32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Elegance in Roses"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -3971,6 +4136,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Pastel and ink, pastel paper <br> Size 26,5 х 37cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Winter Magic: A Göttingen Holiday Tribute"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -4077,6 +4250,7 @@
 </div>
 <!--GALLERY END-->
 <!--GALLERY START-->
+<a id="gallery-aquarelle" style="display:block;position:relative;top:-60px;" aria-hidden="true"></a>
 <div id="rec500073020" class="r t-rec t-rec_pt_0 t-rec_pb_60"
      style="padding-top:30px;padding-bottom:0px; " data-record-type="484"><!-- t484 -->
     <div class="t484">
@@ -4099,6 +4273,11 @@
 </div>
 <div id="rec500073021" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-animationappear="on" data-record-type="754">
     <div class="t754" data-show-count="">
+        <div class="gallery-filter" data-gallery-target="rec500073021">
+            <button class="gallery-filter__btn gallery-filter__btn--active" data-filter="all">All</button>
+            <button class="gallery-filter__btn" data-filter="available">Available</button>
+            <button class="gallery-filter__btn" data-filter="sold">Sold</button>
+        </div>
         <div class="t754__parent t754__container_mobile-grid">
                     <div class="t754__col t-col t-col_4 t-align_center t-item t754__col_mobile-grid js-product"
                          data-product-lid="1714474492121"><a class="js-product-link" href="#prodpopup">
@@ -4747,6 +4926,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, Ink <br> Size 29,7 x 42 cm</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Blossoms at the Biergarten"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -4873,6 +5060,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, Ink <br> Size 29,7 x 42 cm</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Springtime Along the Canal"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5021,6 +5216,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, Ink <br> Size 29,7 x 42 cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Golden Hour on the Corner"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5191,6 +5394,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, Ink <br> 26 x 38 cm<br>Frame (plastic and glass)</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20St. Albani in the Afternoon"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5317,6 +5528,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, Ink <br> 29,7 x 42 cm<br>Frame (plastic and glass)</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20By the Old Watermill"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5443,6 +5662,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, ink <br> Size 30 х 42cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Café on a Sunny Corner"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5569,6 +5796,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, ink <br> Size 21 х 30cm</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20The Street of Timeless Charm"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5695,6 +5930,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, ink <br> Size 30 х 42cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Under the Red Awning"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5821,6 +6064,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, ink <br> Size 30 х 42cm</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20The Corner Café in Perspective"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -5947,6 +6198,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, ink <br> Size 21 х 29.5cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20The Lone Windmill"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -6073,6 +6332,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell, ink <br> Size 30 х 21cm</div>
+                                        <span class="artwork-year">2024</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20A Quiet Stroll in the Park"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -6199,6 +6466,14 @@
                                     </div>
                                     <div class="t754__descr t-descr t-descr_xxs">
                                         <div style="font-size: 20px;" data-customstyle="yes">Aquarell <br> Size 40 х 29.5cm</div>
+                                        <span class="artwork-year">2023</span>
+                                    </div>
+                                    <div class="artwork-inquiry-wrap">
+                                        <a class="artwork-inquiry-btn"
+                                           href="mailto:polina.shvedko.artist@gmail.com?subject=Inquiry%3A%20Sunny Village Square"
+                                           target="_blank">
+                                            Inquire about this artwork
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -6294,6 +6569,7 @@
 </div>
 <!--GALLERY END-->
 <!--ABOUT ME START-->
+<a id="section-about" style="display:block;position:relative;top:-60px;" aria-hidden="true"></a>
 <div id="rec519401272" class="r t-rec t-rec_pt_0 t-rec_pb_0" style="padding-top:0px;padding-bottom:0px; " data-record-type="363"><!-- T029 20 -->
     <div class="t029">
         <div class="t029__container t-container">
@@ -6449,6 +6725,7 @@
     }</style><![endif]--></div>
 <!--SOCIAL MEDIA END-->
 <!--CONTACT START-->
+<a id="section-contact" style="display:block;position:relative;top:-60px;" aria-hidden="true"></a>
 <div id="rec500073027" class="r t-rec t-rec_pt_60 t-rec_pb_60" style="padding-top:60px;padding-bottom:60px; " data-record-type="578"><!-- t578-->
     <div class="t578">
         <div class="t-container">

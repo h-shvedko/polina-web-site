@@ -1,0 +1,149 @@
+/* ── Sticky Navigation ─────────────────────────────────────────────────────── */
+#site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    transition: transform 0.25s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#site-nav.site-nav--visible {
+    transform: translateY(0);
+}
+
+.site-nav__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.site-nav__logo {
+    font-family: 'TildaSans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.site-nav__logo:hover {
+    color: #555;
+}
+
+.site-nav__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.site-nav__links::-webkit-scrollbar {
+    display: none;
+}
+
+.site-nav__links li a {
+    display: block;
+    padding: 0 14px;
+    height: 52px;
+    line-height: 52px;
+    font-family: 'TildaSans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s;
+}
+
+.site-nav__links li a:hover {
+    color: #888;
+}
+
+/* ── Gallery Filter Bar ───────────────────────────────────────────────────── */
+.gallery-filter {
+    text-align: center;
+    padding: 0 0 32px;
+}
+
+.gallery-filter__btn {
+    display: inline-block;
+    margin: 0 6px;
+    padding: 7px 20px;
+    font-family: 'TildaSans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.gallery-filter__btn:hover {
+    color: #000;
+    border-color: #000;
+}
+
+.gallery-filter__btn--active {
+    color: #000;
+    border-color: #000;
+}
+
+/* ── Artwork Year ─────────────────────────────────────────────────────────── */
+.artwork-year {
+    font-size: 14px;
+    color: #aaa;
+    font-weight: 300;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ── Popup Inquiry Button ─────────────────────────────────────────────────── */
+.artwork-inquiry-wrap {
+    margin-top: 24px;
+}
+
+.artwork-inquiry-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: 'TildaSans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+
+.artwork-inquiry-btn:hover {
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ── Blog Link in Nav ─────────────────────────────────────────────────────── */
+.site-nav__links li a.site-nav__blog {
+    font-style: italic;
+}

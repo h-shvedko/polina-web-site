@@ -14,14 +14,39 @@
         "preview1": "img/gallery/picture32_1.jpg",
         "preview2": "img/gallery/picture32_2.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture32_1.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture32_2.jpg" },
-          { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture32_3.jpg" },
-          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/picture32_4.jpg" },
-          { "slide_index": "5", "bullet_index": "5", "path": "img/gallery/picture32_5.jpg" },
-          { "slide_index": "6", "bullet_index": "6", "path": "img/gallery/picture32_6.jpg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture32_1.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture32_2.jpg"
+          },
+          {
+            "slide_index": "3",
+            "bullet_index": "3",
+            "path": "img/gallery/picture32_3.jpg"
+          },
+          {
+            "slide_index": "4",
+            "bullet_index": "4",
+            "path": "img/gallery/picture32_4.jpg"
+          },
+          {
+            "slide_index": "5",
+            "bullet_index": "5",
+            "path": "img/gallery/picture32_5.jpg"
+          },
+          {
+            "slide_index": "6",
+            "bullet_index": "6",
+            "path": "img/gallery/picture32_6.jpg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2024
       },
       {
         "lid": "1714474492215",
@@ -34,12 +59,33 @@
         "preview1": "img/gallery/picture30_1_preview.jpg",
         "preview2": "img/gallery/picture30_2_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture30_1.png" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture30_2.jpg" },
-          { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture30_3.jpg" },
-          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/picture30_4.jpg" },
-          { "slide_index": "5", "bullet_index": "5", "path": "img/gallery/picture30_5.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture30_1.png"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture30_2.jpg"
+          },
+          {
+            "slide_index": "3",
+            "bullet_index": "3",
+            "path": "img/gallery/picture30_3.jpg"
+          },
+          {
+            "slide_index": "4",
+            "bullet_index": "4",
+            "path": "img/gallery/picture30_4.jpg"
+          },
+          {
+            "slide_index": "5",
+            "bullet_index": "5",
+            "path": "img/gallery/picture30_5.jpg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492216",
@@ -52,10 +98,23 @@
         "preview1": "img/gallery/picture31_1_preview.jpg",
         "preview2": "img/gallery/picture31_3_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture31_1.png" },
-          { "slide_index": "3", "bullet_index": "2", "path": "img/gallery/picture31_3.jpg" },
-          { "slide_index": "4", "bullet_index": "3", "path": "img/gallery/picture31_4.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture31_1.png"
+          },
+          {
+            "slide_index": "3",
+            "bullet_index": "2",
+            "path": "img/gallery/picture31_3.jpg"
+          },
+          {
+            "slide_index": "4",
+            "bullet_index": "3",
+            "path": "img/gallery/picture31_4.jpg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492131",
@@ -68,10 +127,19 @@
         "preview1": "img/gallery/picture11_1_preview.jpeg",
         "preview2": "img/gallery/picture11_2_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture11_1.jpeg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture11_2.jpeg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture11_1.jpeg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture11_2.jpeg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2022
       },
       {
         "lid": "1714474492114",
@@ -84,9 +152,18 @@
         "preview1": "img/gallery/picture14_1_preview.jpeg",
         "preview2": "img/gallery/picture14_2_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture14_1.jpeg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture14_2.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture14_1.jpeg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture14_2.jpeg"
+          }
+        ],
+        "year": 2022
       },
       {
         "lid": "1714474492133",
@@ -99,9 +176,18 @@
         "preview1": "img/gallery/picture13_1.jpeg",
         "preview2": "img/gallery/picture13_2.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture13_1.jpeg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture13_2.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture13_1.jpeg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture13_2.jpeg"
+          }
+        ],
+        "year": 2022
       },
       {
         "lid": "1714474492115",
@@ -114,10 +200,19 @@
         "preview1": "img/gallery/picture15_1_preview.jpeg",
         "preview2": "img/gallery/picture15_2_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture15_1.jpeg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture15_2.jpeg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture15_1.jpeg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture15_2.jpeg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2021
       },
       {
         "lid": "1714474492116",
@@ -130,9 +225,14 @@
         "preview1": "img/gallery/picture16_1_preview.jpeg",
         "preview2": "img/gallery/picture16_2_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture16_1.jpeg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture16_1.jpeg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2021
       }
     ]
   },
@@ -150,8 +250,13 @@
         "preview1": "img/gallery/picture12_1.jpeg",
         "preview2": "img/gallery/picture12_1.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture12_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture12_1.jpeg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492122",
@@ -164,11 +269,28 @@
         "preview1": "img/gallery/picture2_1_preview.jpg",
         "preview2": "img/gallery/picture2_2.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture2_0.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture2_1.jpg" },
-          { "slide_index": "3", "bullet_index": "3", "path": "img/gallery/picture2_2.jpg" },
-          { "slide_index": "4", "bullet_index": "4", "path": "img/gallery/interior.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture2_0.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture2_1.jpg"
+          },
+          {
+            "slide_index": "3",
+            "bullet_index": "3",
+            "path": "img/gallery/picture2_2.jpg"
+          },
+          {
+            "slide_index": "4",
+            "bullet_index": "4",
+            "path": "img/gallery/interior.jpg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492123",
@@ -182,9 +304,14 @@
         "preview1": "img/gallery/picture3_1_preview.jpg",
         "preview2": "img/gallery/picture3_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture3_1.jpg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture3_1.jpg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2022
       },
       {
         "lid": "1714474492130",
@@ -197,10 +324,23 @@
         "preview1": "img/gallery/picture10_1_preview.jpg",
         "preview2": "img/gallery/picture10_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture10_1.jpg" },
-          { "slide_index": "1", "bullet_index": "2", "path": "img/gallery/picture10_2.jpg" },
-          { "slide_index": "1", "bullet_index": "3", "path": "img/gallery/picture10_3.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture10_1.jpg"
+          },
+          {
+            "slide_index": "1",
+            "bullet_index": "2",
+            "path": "img/gallery/picture10_2.jpg"
+          },
+          {
+            "slide_index": "1",
+            "bullet_index": "3",
+            "path": "img/gallery/picture10_3.jpg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492124",
@@ -214,8 +354,13 @@
         "preview1": "img/gallery/picture17_1_preview.jpeg",
         "preview2": "img/gallery/picture17_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture17_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture17_1.jpeg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492125",
@@ -228,10 +373,19 @@
         "preview1": "img/gallery/picture18_1_preview.jpeg",
         "preview2": "img/gallery/picture18_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture18_1.jpeg" },
-          { "slide_index": "1", "bullet_index": "2", "path": "img/gallery/picture18_2.jpg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture18_1.jpeg"
+          },
+          {
+            "slide_index": "1",
+            "bullet_index": "2",
+            "path": "img/gallery/picture18_2.jpg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2024
       },
       {
         "lid": "1714474492126",
@@ -244,9 +398,18 @@
         "preview1": "img/gallery/picture19_1_preview.jpg",
         "preview2": "img/gallery/picture19_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture19_1.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/interior.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture19_1.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/interior.jpg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492127",
@@ -259,9 +422,18 @@
         "preview1": "img/gallery/picture20_1_preview.jpg",
         "preview2": "img/gallery/picture20_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture20_1.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/interior.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture20_1.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/interior.jpg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492128",
@@ -274,10 +446,19 @@
         "preview1": "img/gallery/picture21_1_preview.jpg",
         "preview2": "img/gallery/picture21_1_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture21_1.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/interior.jpg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture21_1.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/interior.jpg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2024
       },
       {
         "lid": "1714474492129",
@@ -291,9 +472,18 @@
         "preview1": "img/gallery/picture_22_1_preview.jpg",
         "preview2": "img/gallery/picture_22_2_preview.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture_22_1.jpg" },
-          { "slide_index": "1", "bullet_index": "2", "path": "img/gallery/picture_22_2.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture_22_1.jpg"
+          },
+          {
+            "slide_index": "1",
+            "bullet_index": "2",
+            "path": "img/gallery/picture_22_2.jpg"
+          }
+        ],
+        "year": 2023
       }
     ]
   },
@@ -311,9 +501,18 @@
         "preview1": "img/gallery/picture1_1.JPG",
         "preview2": "img/gallery/picture1_2.JPG",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture1_1.JPG" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture1_2.JPG" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture1_1.JPG"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture1_2.JPG"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492124",
@@ -326,8 +525,13 @@
         "preview1": "img/gallery/picture4_1.jpg",
         "preview2": "img/gallery/picture4_1.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture4_1.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture4_1.jpg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492125",
@@ -341,10 +545,19 @@
         "preview1": "img/gallery/picture5_1.jpg",
         "preview2": "img/gallery/picture5_2.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture5_1.jpg" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture5_2.jpg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture5_1.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture5_2.jpg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2023
       },
       {
         "lid": "1714474492126",
@@ -357,10 +570,23 @@
         "preview1": "img/gallery/picture6_1.png",
         "preview2": "img/gallery/picture6_3.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture6_1.png" },
-          { "slide_index": "2", "bullet_index": "2", "path": "img/gallery/picture6_2.jpg" },
-          { "slide_index": "2", "bullet_index": "3", "path": "img/gallery/picture6_3.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture6_1.png"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "2",
+            "path": "img/gallery/picture6_2.jpg"
+          },
+          {
+            "slide_index": "2",
+            "bullet_index": "3",
+            "path": "img/gallery/picture6_3.jpg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492129",
@@ -373,8 +599,13 @@
         "preview1": "img/gallery/picture9_1.jpg",
         "preview2": "img/gallery/picture9_1.jpg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture9_1.jpg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture9_1.jpg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492131",
@@ -388,9 +619,14 @@
         "preview1": "img/gallery/picture23_1_preview.jpeg",
         "preview2": "img/gallery/picture23_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture23_1.jpeg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture23_1.jpeg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2023
       },
       {
         "lid": "1714474492132",
@@ -404,8 +640,13 @@
         "preview1": "img/gallery/picture24_1_preview.jpeg",
         "preview2": "img/gallery/picture24_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture24_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture24_1.jpeg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492133",
@@ -419,8 +660,13 @@
         "preview1": "img/gallery/picture25_1_preview.jpeg",
         "preview2": "img/gallery/picture25_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture25_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture25_1.jpeg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492134",
@@ -434,9 +680,14 @@
         "preview1": "img/gallery/picture26_1_preview.jpeg",
         "preview2": "img/gallery/picture26_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture26_1.jpeg" }
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture26_1.jpeg"
+          }
         ],
-        "clear_after": true
+        "clear_after": true,
+        "year": 2024
       },
       {
         "lid": "1714474492135",
@@ -450,8 +701,13 @@
         "preview1": "img/gallery/picture27_1_preview.jpeg",
         "preview2": "img/gallery/picture27_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture27_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture27_1.jpeg"
+          }
+        ],
+        "year": 2023
       },
       {
         "lid": "1714474492136",
@@ -465,8 +721,13 @@
         "preview1": "img/gallery/picture28_1_preview.jpeg",
         "preview2": "img/gallery/picture28_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture28_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture28_1.jpeg"
+          }
+        ],
+        "year": 2024
       },
       {
         "lid": "1714474492137",
@@ -479,41 +740,117 @@
         "preview1": "img/gallery/picture29_1_preview.jpeg",
         "preview2": "img/gallery/picture29_1_preview.jpeg",
         "detail_images": [
-          { "slide_index": "1", "bullet_index": "1", "path": "img/gallery/picture29_1.jpeg" }
-        ]
+          {
+            "slide_index": "1",
+            "bullet_index": "1",
+            "path": "img/gallery/picture29_1.jpeg"
+          }
+        ],
+        "year": 2023
       }
     ]
   },
   "socialmedia_images": [
-    { "src": "img/gallery/picture30_1_preview.jpg" },
-    { "src": "img/gallery/picture31_1_preview.jpg" },
-    { "src": "img/gallery/picture11_1_preview.jpeg" },
-    { "src": "img/gallery/picture14_1_preview.jpeg" },
-    { "src": "img/gallery/picture13_1.jpeg" },
-    { "src": "img/gallery/picture15_1_preview.jpeg" },
-    { "src": "img/gallery/picture16_1_preview.jpeg" },
-    { "src": "img/gallery/picture12_1.jpeg" },
-    { "src": "img/gallery/picture2_1_preview.jpg" },
-    { "src": "img/gallery/picture3_1_preview.jpg" },
-    { "src": "img/gallery/picture10_1_preview.jpg" },
-    { "src": "img/gallery/picture17_1_preview.jpeg" },
-    { "src": "img/gallery/picture18_1_preview.jpeg" },
-    { "src": "img/gallery/picture19_1_preview.jpg" },
-    { "src": "img/gallery/picture20_1_preview.jpg" },
-    { "src": "img/gallery/picture21_1_preview.jpg" },
-    { "src": "img/gallery/picture_22_1_preview.jpg" },
-    { "src": "img/gallery/picture1_1.JPG" },
-    { "src": "img/gallery/picture4_1.jpg" },
-    { "src": "img/gallery/picture5_1.jpg" },
-    { "src": "img/gallery/picture6_1.png" },
-    { "src": "img/gallery/picture9_1.jpg" },
-    { "src": "img/gallery/picture23_1_preview.jpeg" },
-    { "src": "img/gallery/picture24_1_preview.jpeg" },
-    { "src": "img/gallery/picture25_1_preview.jpeg" },
-    { "src": "img/gallery/picture26_1_preview.jpeg" },
-    { "src": "img/gallery/picture27_1_preview.jpeg" },
-    { "src": "img/gallery/picture28_1_preview.jpeg" },
-    { "src": "img/gallery/picture29_1_preview.jpeg" },
-    { "src": "img/gallery/picture32_1.jpg" }
+    {
+      "src": "img/gallery/picture30_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture31_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture11_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture14_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture13_1.jpeg"
+    },
+    {
+      "src": "img/gallery/picture15_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture16_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture12_1.jpeg"
+    },
+    {
+      "src": "img/gallery/picture2_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture3_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture10_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture17_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture18_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture19_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture20_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture21_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture_22_1_preview.jpg"
+    },
+    {
+      "src": "img/gallery/picture1_1.JPG"
+    },
+    {
+      "src": "img/gallery/picture4_1.jpg"
+    },
+    {
+      "src": "img/gallery/picture5_1.jpg"
+    },
+    {
+      "src": "img/gallery/picture6_1.png"
+    },
+    {
+      "src": "img/gallery/picture9_1.jpg"
+    },
+    {
+      "src": "img/gallery/picture23_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture24_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture25_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture26_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture27_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture28_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture29_1_preview.jpeg"
+    },
+    {
+      "src": "img/gallery/picture32_1.jpg"
+    }
+  ],
+  "blog_posts": [
+    {
+      "slug": "cap-dantibes",
+      "title": "Painting Cap d'Antibes: How a 190cm Canvas Became a Journey",
+      "date": "2024-11-15",
+      "date_display": "15 November 2024",
+      "excerpt": "The panoramic oil painting 'Affectionate Farewell, Cap d'Antibes, France' started as a sketch on a postcard-size paper. Here's how it grew into a 190 × 45 cm canvas — and what I discovered along the way.",
+      "preview": "img/gallery/picture32_1.jpg",
+      "tags": "Oil painting, Process, Cap d'Antibes"
+    }
   ]
 }
