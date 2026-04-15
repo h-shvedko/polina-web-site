@@ -25,7 +25,9 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        # --legacy-peer-deps required: bootstrap 4 declares jquery/popper.js as
+        # peer deps which npm 7+ would reject without this flag.
+        run: npm ci --legacy-peer-deps
 
       - name: Build
         run: npm run build
