@@ -30,13 +30,16 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build
-        run: npm run build
+        # Skip gulp img — optimised images are already committed in app/img/.
+        # Running imagemin on CI wastes ~60s and produces identical output.
+        run: npx gulp css babel html fonts
+
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
 
       # ── SFTP deploy ────────────────────────────────────────────────────────
-      # Uses lftp which is pre-installed on ubuntu-latest.
       # mirror --reverse uploads local→remote, --delete removes files on the
       # remote that no longer exist locally (keeps hosting in sync with build).
-      # StrictHostKeyChecking=no avoids interactive host-key prompt in CI.
       - name: Deploy via SFTP
         env:
           SFTP_HOST:        ${{ secrets.SFTP_HOST }}
