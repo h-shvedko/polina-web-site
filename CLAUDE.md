@@ -17,8 +17,15 @@ npm run image                # Optimize images (src/img -> app/img)
 npm run validate-html        # W3C HTML validation on built files
 npm run sitemap              # Generate XML sitemap
 
+# Individual Gulp tasks (faster than full build for targeted changes)
+gulp html                    # Recompile Mustache templates only
+gulp css                     # Copy CSS files only
+gulp babel                   # Copy JS files only (no transpilation — just copies src/js → app/js)
+gulp fonts                   # Copy webfonts only
+
 # Docker alternative
 docker-compose up -d         # Starts node:22 container, installs deps, runs server on :7000
+docker exec -it <ID> bash    # Shell into container (get ID from: docker ps), then: npm run server-watch
 ```
 
 ## Architecture
@@ -49,6 +56,15 @@ Gallery page partials (`gallery_oil.html`, `gallery_pastel.html`, `gallery_aquar
 
 **Tilda CSS gotcha:** Do not wrap Tilda layout divs (`t680__tile`, `t680__bgimg_wrapper`, etc.) in `<a>` tags — it breaks CSS that relies on `position:absolute` + `padding-bottom` sizing. Use JS click handlers instead.
 
+**Tilda component IDs used in this project:**
+- `t754` — Gallery/catalog with popup functionality (gallery sections)
+- `t102` — Hero/cover section with background images
+- `t484` — Text content sections (about me)
+- `t490` — Image display components
+- `t578` — Contact section layout
+- `t680` — Grid tiles with background images (used in gallery cards)
+- `t029` — Decorative line separators
+
 ## Key Files
 
 | File | Purpose |
@@ -71,3 +87,5 @@ Gallery page partials (`gallery_oil.html`, `gallery_pastel.html`, `gallery_aquar
 - Sitemap URL: `https://polina-shvedko.art`
 - Images follow pattern `picture[N]_[view].[ext]` with `_preview` suffix for thumbnails
 - The dev server binds to `0.0.0.0:7000` (accessible from Docker and network)
+- `package.json` has a legacy `"name": "recipes"` — ignore it, it's an artifact from when the project was scaffolded
+- No tests exist; `npm test` just prints an error and exits

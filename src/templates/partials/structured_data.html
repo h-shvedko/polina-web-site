@@ -1,0 +1,89 @@
+{{! JSON-LD structured data — one VisualArtwork schema block per artwork.
+    Placed just before </body> so it doesn't block rendering.
+    Uses triple-mustache for paths (contain /) and double-mustache for text
+    (Mustache HTML-escapes & < > which are safe inside JSON strings). }}
+
+{{! ── Artist entity (once) ──────────────────────────────────────────────── }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Polina Shvedko",
+  "jobTitle": "Visual Artist",
+  "url": "https://polina-shvedko.art/",
+  "sameAs": [
+    "https://www.instagram.com/polina_shvedko/",
+    "https://www.facebook.com/polina.shvedko.artist"
+  ],
+  "address": { "@type": "PostalAddress", "addressCountry": "DE" }
+}
+</script>
+
+{{! ── Oil paintings ──────────────────────────────────────────────────────── }}
+{{#oil_gallery}}{{#artworks}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VisualArtwork",
+  "name": "{{{title}}}",
+  "creator": { "@type": "Person", "name": "Polina Shvedko" },
+  "artMedium": "{{{medium}}}",
+  "artworkSurface": "{{{dimensions}}}",
+  "image": "https://polina-shvedko.art/{{{preview1}}}",
+  "url": "https://polina-shvedko.art/",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{price}}",
+    "priceCurrency": "EUR",
+    "availability": "{{#sold}}https://schema.org/SoldOut{{/sold}}{{^sold}}https://schema.org/InStock{{/sold}}",
+    "seller": { "@type": "Person", "name": "Polina Shvedko" }
+  }
+}
+</script>
+{{/artworks}}{{/oil_gallery}}
+
+{{! ── Pastel drawings ────────────────────────────────────────────────────── }}
+{{#pastel_gallery}}{{#artworks}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VisualArtwork",
+  "name": "{{{title}}}",
+  "creator": { "@type": "Person", "name": "Polina Shvedko" },
+  "artMedium": "{{{medium}}}",
+  "artworkSurface": "{{{dimensions}}}",
+  "image": "https://polina-shvedko.art/{{{preview1}}}",
+  "url": "https://polina-shvedko.art/",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{price}}",
+    "priceCurrency": "EUR",
+    "availability": "{{#sold}}https://schema.org/SoldOut{{/sold}}{{^sold}}https://schema.org/InStock{{/sold}}",
+    "seller": { "@type": "Person", "name": "Polina Shvedko" }
+  }
+}
+</script>
+{{/artworks}}{{/pastel_gallery}}
+
+{{! ── Aquarelle / watercolours ───────────────────────────────────────────── }}
+{{#aquarell_gallery}}{{#artworks}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VisualArtwork",
+  "name": "{{{title}}}",
+  "creator": { "@type": "Person", "name": "Polina Shvedko" },
+  "artMedium": "{{{medium}}}",
+  "artworkSurface": "{{{dimensions}}}",
+  "image": "https://polina-shvedko.art/{{{preview1}}}",
+  "url": "https://polina-shvedko.art/",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{price}}",
+    "priceCurrency": "EUR",
+    "availability": "{{#sold}}https://schema.org/SoldOut{{/sold}}{{^sold}}https://schema.org/InStock{{/sold}}",
+    "seller": { "@type": "Person", "name": "Polina Shvedko" }
+  }
+}
+</script>
+{{/artworks}}{{/aquarell_gallery}}

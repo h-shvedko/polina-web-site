@@ -1,0 +1,53 @@
+name: Build & Deploy via SFTP
+
+on:
+  push:
+    branches:
+      - main
+
+# Prevent overlapping deploys — queue rather than cancel
+concurrency:
+  group: sftp-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # ── SFTP deploy ────────────────────────────────────────────────────────
+      # Uses lftp which is pre-installed on ubuntu-latest.
+      # mirror --reverse uploads local→remote, --delete removes files on the
+      # remote that no longer exist locally (keeps hosting in sync with build).
+      # StrictHostKeyChecking=no avoids interactive host-key prompt in CI.
+      - name: Deploy via SFTP
+        env:
+          SFTP_HOST:        ${{ secrets.SFTP_HOST }}
+          SFTP_PORT:        ${{ secrets.SFTP_PORT }}
+          SFTP_USERNAME:    ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD:    ${{ secrets.SFTP_PASSWORD }}
+          SFTP_REMOTE_PATH: ${{ secrets.SFTP_REMOTE_PATH }}
+        run: |
+          lftp -e "
+            set sftp:auto-confirm yes;
+            set net:max-retries 3;
+            set net:reconnect-interval-base 5;
+            open sftp://$SFTP_USERNAME:$SFTP_PASSWORD@$SFTP_HOST:${SFTP_PORT:-22};
+            mirror --reverse --delete --verbose --no-perms ./app $SFTP_REMOTE_PATH;
+            quit
+          "

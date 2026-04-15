@@ -1,10 +1,10 @@
 <!--HEADER START-->
 <div id="rec500073018" class="r t-rec" style=" " data-animationappear="off" data-record-type="14"><!-- cover -->
-    <div class="t-cover" id="recorddiv500073018" bgimgfield="img" style="height:100vh;background-image:url('img/IMG_0105%20(2).jpg');">
+    <div class="t-cover" id="recorddiv500073018" bgimgfield="img" style="height:100vh;background-image:url('img/IMG_3272%20(1).jpg');">
         <div class="t-cover__carrier" id="coverCarry500073018" data-content-cover-id="500073018"
-             data-content-cover-bg="img/IMG_0105%20(1).jpg" data-display-changed="true" data-content-cover-height="100vh" data-content-cover-parallax="dynamic"
+             data-content-cover-bg="img/IMG_3272%20(1).jpg" data-display-changed="true" data-content-cover-height="100vh" data-content-cover-parallax="dynamic"
              data-content-video-url-youtube="ZhErK72D2R4" style="height:100vh;background-attachment:scroll; background-position:center top;" itemscope itemtype="http://schema.org/ImageObject">
-            <meta itemprop="image" content="img/IMG_0105.jpg">
+            <meta itemprop="image" content="img/IMG_3272%20(1).jpg">
         </div>
         <div class="t-cover__filter"
              style="height:100vh;background-image: -moz-linear-gradient(top, rgba(0,0,0,0.50), rgba(0,0,0,0.50));background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.50), rgba(0,0,0,0.50));background-image: -o-linear-gradient(top, rgba(0,0,0,0.50), rgba(0,0,0,0.50));background-image: -ms-linear-gradient(top, rgba(0,0,0,0.50), rgba(0,0,0,0.50));background-image: linear-gradient(top, rgba(0,0,0,0.50), rgba(0,0,0,0.50));filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#7f000000', endColorstr='#7f000000');"></div>
@@ -70,6 +70,20 @@
     #rec500073018 .js-hero-cta:active {
         transform: translateY(0);
         box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Mobile: force static image fallback when YouTube video is suppressed.
+       iOS Safari ignores background-attachment:fixed on scroll containers,
+       and Tilda cover JS skips the YouTube embed on mobile UAs entirely.
+       This ensures the fallback image always fills the hero on small screens. */
+    @media screen and (max-width: 768px) {
+        #rec500073018 .t-cover,
+        #rec500073018 .t-cover__carrier {
+            background-image: url('img/IMG_3272%20(1).jpg') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-attachment: scroll !important;
+        }
     }</style>
 </div>
 <!--HEADER END-->

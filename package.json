@@ -16,11 +16,11 @@
   "author": "Polina Shvedko",
   "license": "ISC",
   "devDependencies": {
-    "browserslist": "^4.23.0",
+    "@babel/core": "^7.24.5",
     "browser-sync": "^2.26.3",
+    "browserslist": "^4.23.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^4.0.0",
-    "@babel/core": "^7.24.5",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^3.10.0",
     "gulp-concat": "^2.6.1",
@@ -38,8 +38,8 @@
     "gulp-webserver": "^0.9.1"
   },
   "dependencies": {
-    "gh-pages": "^2.1.1",
     "bootstrap": "^4.4.1",
+    "gh-pages": "^2.1.1",
     "idb": "^5.0.2"
   }
 }
