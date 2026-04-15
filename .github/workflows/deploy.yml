@@ -1,4 +1,4 @@
-name: Build & Deploy via FTP
+name: Build & Deploy via SFTP
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 # Prevent overlapping deploys — queue rather than cancel
 concurrency:
-  group: ftp-deploy
+  group: sftp-deploy
   cancel-in-progress: false
 
 jobs:
@@ -37,12 +37,10 @@ jobs:
       - name: Install lftp
         run: sudo apt-get install -y lftp
 
-      # ── FTP deploy ─────────────────────────────────────────────────────────
+      # ── SFTP deploy ────────────────────────────────────────────────────────
       # mirror --reverse uploads local→remote, --delete removes files on the
       # remote that no longer exist locally (keeps hosting in sync with build).
-      # ftp:ssl-allow yes tries FTPS first; falls back to plain FTP if the
-      # host doesn't support TLS — covers both shared-hosting configurations.
-      - name: Deploy via FTP
+      - name: Deploy via SFTP
         env:
           SFTP_HOST:        ${{ secrets.SFTP_HOST }}
           SFTP_PORT:        ${{ secrets.SFTP_PORT }}
@@ -51,11 +49,10 @@ jobs:
           SFTP_REMOTE_PATH: ${{ secrets.SFTP_REMOTE_PATH }}
         run: |
           lftp -e "
-            set ftp:ssl-allow yes;
-            set ftp:passive-mode yes;
+            set sftp:auto-confirm yes;
             set net:max-retries 3;
             set net:reconnect-interval-base 5;
-            open ftp://$SFTP_USERNAME:$SFTP_PASSWORD@$SFTP_HOST:${SFTP_PORT:-21};
+            open sftp://$SFTP_USERNAME:$SFTP_PASSWORD@$SFTP_HOST:${SFTP_PORT:-22};
             mirror --reverse --delete --verbose --no-perms ./app $SFTP_REMOTE_PATH;
             quit
           "
