@@ -1,35 +1,44 @@
-/* ── Sticky nav — show after hero leaves viewport ─────────────────────────── */
+/*
+ * nav.js: sticky site navigation (ADR-0003, SPEC section 9), as on the old site.
+ * Home: the nav starts with site-nav--hidden and switches to site-nav--visible once the hero (header.hero) has
+ * left the viewport completely; back over the hero it hides again. While a nav link has keyboard focus the
+ * nav stays visible, so focus is never on an off-screen link.
+ * Other pages (no hero), or no IntersectionObserver: always site-nav--visible.
+ * In-page links (Explore Artworks -> #gallery-oil) use native anchor scrolling; site.css sets the offset.
+ */
 (function () {
+  'use strict';
+
   var nav = document.getElementById('site-nav');
   if (!nav) return;
+  var hero = document.querySelector('header.hero');
 
-  var hero = document.querySelector('.t-cover');
-  if (!hero) {
-    nav.classList.add('site-nav--visible');
+  function set(visible) {
+    nav.classList.toggle('site-nav--visible', visible);
+    nav.classList.toggle('site-nav--hidden', !visible);
+  }
+
+  if (!hero || !('IntersectionObserver' in window)) {
+    set(true);
     return;
   }
 
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        nav.classList.remove('site-nav--visible');
-      } else {
-        nav.classList.add('site-nav--visible');
-      }
-    });
-  }, { threshold: 0.1 });
+  var overHero = true;
+  var focused = false;
+  function update() { set(focused || !overHero); }
 
-  observer.observe(hero);
+  new IntersectionObserver(function (entries) {
+    overHero = entries[entries.length - 1].isIntersecting;
+    update();
+  }).observe(hero);
 
-  /* Smooth scroll for anchor links */
-  nav.querySelectorAll('a[href^="#"]').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      var target = document.getElementById(link.getAttribute('href').slice(1));
-      if (!target) return;
-      e.preventDefault();
-      var offset = nav.offsetHeight + 8;
-      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-    });
+  nav.addEventListener('focusin', function () {
+    focused = true;
+    update();
+  });
+  nav.addEventListener('focusout', function (e) {
+    if (nav.contains(e.relatedTarget)) return;
+    focused = false;
+    update();
   });
 })();

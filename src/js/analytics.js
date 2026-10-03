@@ -1,77 +1,30 @@
-/**
- * Custom GA4 event tracking for polina-shvedko.art
- *
- * Tracks:
- *  - contact_click  : visitor clicks the mailto: email link
- *  - artwork_view   : visitor opens an artwork popup (card image or MORE button)
- *  - cart_order     : visitor submits the cart inquiry form
+/*
+ * analytics.js: GA4 events (ADR-0003, SPEC section 9). Sends nothing unless consent.js reports "granted" and
+ * has defined gtag. Events:
+ *   contact_click    any click on a [data-track="contact"] link (the mailto: links). Parameters: link_location =
+ *                    its data-location (hero | intro | artwork | contact | footer); artwork_slug = its
+ *                    data-artwork-slug (artwork CTA only, left out elsewhere).
+ *   hero_video_play  sent by hero.js through window.siteAnalytics.track(). Parameter: video_id.
+ * window.siteAnalytics = { track(name, params) }; it returns true when the event went to gtag.
  */
-
 (function () {
-    function trackEvent(eventName, params) {
-        if (typeof gtag === 'function') {
-            gtag('event', eventName, params || {});
-        }
-    }
+  'use strict';
 
-    document.addEventListener('DOMContentLoaded', function () {
+  function track(name, params) {
+    var consent = window.siteConsent;
+    if (!consent || consent.status() !== 'granted' || typeof window.gtag !== 'function') return false;
+    window.gtag('event', name, params || {});
+    return true;
+  }
 
-        // ── 1. Contact email click ────────────────────────────────────────────
-        document.querySelectorAll('a[href^="mailto:"]').forEach(function (el) {
-            el.addEventListener('click', function () {
-                trackEvent('contact_click', {
-                    event_category: 'engagement',
-                    event_label: el.getAttribute('href').replace('mailto:', '')
-                });
-            });
-        });
+  window.siteAnalytics = { track: track };
 
-        // ── 2. Artwork popup open ─────────────────────────────────────────────
-        // Tilda catalog opens popups when any [href="#prodpopup"] is clicked.
-        // Both the card image link and the MORE button use this href pattern.
-        // We delegate from document to catch dynamically initialised elements.
-        document.addEventListener('click', function (e) {
-            var link = e.target.closest('a[href="#prodpopup"]');
-            if (!link) return;
-
-            var product = link.closest('.js-product[data-product-lid]');
-            if (!product) return;
-
-            var lid   = product.getAttribute('data-product-lid') || '';
-            var title = (product.querySelector('.js-product-name') || {}).textContent || lid;
-            var price = (product.querySelector('.js-product-price') || {}).textContent || '';
-
-            trackEvent('artwork_view', {
-                event_category: 'gallery',
-                artwork_lid:    lid,
-                artwork_title:  title.trim(),
-                artwork_price:  price.trim()
-            });
-        });
-
-        // ── 3. Cart / inquiry form submit ─────────────────────────────────────
-        // The Tilda cart form fires its own AJAX submit; we listen on the
-        // submit button click so we capture the intent even if the form
-        // validation later fails. For a confirmed order track the Tilda
-        // success callback (t706_onSuccessCallback) if it exists.
-        var cartForm = document.getElementById('form500073028');
-        if (cartForm) {
-            cartForm.addEventListener('submit', function () {
-                // Collect the first product title from the cart DOM if available
-                var firstProduct = document.querySelector('.t706__cartwin-products .t706__product-title');
-                trackEvent('cart_order', {
-                    event_category: 'conversion',
-                    event_label: firstProduct ? firstProduct.textContent.trim() : 'unknown'
-                });
-            });
-        }
-
-        // Patch Tilda's order-success callback to fire a confirmed conversion
-        var _origSuccess = window.t706_onSuccessCallback;
-        window.t706_onSuccessCallback = function () {
-            trackEvent('purchase_inquiry', { event_category: 'conversion' });
-            if (typeof _origSuccess === 'function') _origSuccess.apply(this, arguments);
-        };
-
-    });
+  document.addEventListener('click', function (e) {
+    var link = e.target && e.target.closest ? e.target.closest('[data-track="contact"]') : null;
+    if (!link) return;
+    var params = { link_location: link.getAttribute('data-location') || 'other' };
+    var slug = link.getAttribute('data-artwork-slug');
+    if (slug) params.artwork_slug = slug;
+    track('contact_click', params);
+  });
 })();
