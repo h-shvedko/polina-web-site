@@ -1,0 +1,3791 @@
+{
+  "img/avatar.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "digest": "012b59ad22e1faae",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/avatar-600.webp",
+        "bytes": 20234
+      },
+      {
+        "w": 1024,
+        "h": 1024,
+        "src": "/img/avatar-1024.webp",
+        "bytes": 35786
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/avatar-600.jpg",
+        "bytes": 30203
+      },
+      {
+        "w": 1024,
+        "h": 1024,
+        "src": "/img/avatar-1024.jpg",
+        "bytes": 62971
+      }
+    ]
+  },
+  "img/gallery/interior.jpg": {
+    "width": 1140,
+    "height": 592,
+    "digest": "41db40ba6378714a",
+    "webp": [
+      {
+        "w": 600,
+        "h": 312,
+        "src": "/img/gallery/interior-600.webp",
+        "bytes": 21916
+      },
+      {
+        "w": 1140,
+        "h": 592,
+        "src": "/img/gallery/interior-1140.webp",
+        "bytes": 65822
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 312,
+        "src": "/img/gallery/interior-600.jpg",
+        "bytes": 24866
+      },
+      {
+        "w": 1140,
+        "h": 592,
+        "src": "/img/gallery/interior-1140.jpg",
+        "bytes": 77211
+      }
+    ]
+  },
+  "img/gallery/picture10_1.jpg": {
+    "width": 3688,
+    "height": 2960,
+    "digest": "aabd614ce6b82b75",
+    "webp": [
+      {
+        "w": 600,
+        "h": 482,
+        "src": "/img/gallery/picture10_1-600.webp",
+        "bytes": 20164
+      },
+      {
+        "w": 1200,
+        "h": 963,
+        "src": "/img/gallery/picture10_1-1200.webp",
+        "bytes": 66488
+      },
+      {
+        "w": 1920,
+        "h": 1541,
+        "src": "/img/gallery/picture10_1-1920.webp",
+        "bytes": 142446
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 482,
+        "src": "/img/gallery/picture10_1-600.jpg",
+        "bytes": 28826
+      },
+      {
+        "w": 1200,
+        "h": 963,
+        "src": "/img/gallery/picture10_1-1200.jpg",
+        "bytes": 95824
+      },
+      {
+        "w": 1920,
+        "h": 1541,
+        "src": "/img/gallery/picture10_1-1920.jpg",
+        "bytes": 215439
+      }
+    ]
+  },
+  "img/gallery/picture10_1_preview.jpg": {
+    "width": 1791,
+    "height": 1791,
+    "digest": "b39df1ce83348c48",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture10_1_preview-600.webp",
+        "bytes": 49482
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture10_1_preview-1200.webp",
+        "bytes": 173464
+      },
+      {
+        "w": 1791,
+        "h": 1791,
+        "src": "/img/gallery/picture10_1_preview-1791.webp",
+        "bytes": 395168
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture10_1_preview-600.jpg",
+        "bytes": 49214
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture10_1_preview-1200.jpg",
+        "bytes": 173111
+      },
+      {
+        "w": 1791,
+        "h": 1791,
+        "src": "/img/gallery/picture10_1_preview-1791.jpg",
+        "bytes": 363748
+      }
+    ]
+  },
+  "img/gallery/picture10_2.jpg": {
+    "width": 4608,
+    "height": 3072,
+    "digest": "878cc9afda7291c8",
+    "webp": [
+      {
+        "w": 600,
+        "h": 400,
+        "src": "/img/gallery/picture10_2-600.webp",
+        "bytes": 20326
+      },
+      {
+        "w": 1200,
+        "h": 800,
+        "src": "/img/gallery/picture10_2-1200.webp",
+        "bytes": 70098
+      },
+      {
+        "w": 1920,
+        "h": 1280,
+        "src": "/img/gallery/picture10_2-1920.webp",
+        "bytes": 163650
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 400,
+        "src": "/img/gallery/picture10_2-600.jpg",
+        "bytes": 26167
+      },
+      {
+        "w": 1200,
+        "h": 800,
+        "src": "/img/gallery/picture10_2-1200.jpg",
+        "bytes": 88333
+      },
+      {
+        "w": 1920,
+        "h": 1280,
+        "src": "/img/gallery/picture10_2-1920.jpg",
+        "bytes": 207465
+      }
+    ]
+  },
+  "img/gallery/picture10_3.jpg": {
+    "width": 3804,
+    "height": 2987,
+    "digest": "a4107ba8a3e477c9",
+    "webp": [
+      {
+        "w": 600,
+        "h": 471,
+        "src": "/img/gallery/picture10_3-600.webp",
+        "bytes": 27252
+      },
+      {
+        "w": 1200,
+        "h": 942,
+        "src": "/img/gallery/picture10_3-1200.webp",
+        "bytes": 73270
+      },
+      {
+        "w": 1920,
+        "h": 1508,
+        "src": "/img/gallery/picture10_3-1920.webp",
+        "bytes": 136742
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 471,
+        "src": "/img/gallery/picture10_3-600.jpg",
+        "bytes": 33565
+      },
+      {
+        "w": 1200,
+        "h": 942,
+        "src": "/img/gallery/picture10_3-1200.jpg",
+        "bytes": 101450
+      },
+      {
+        "w": 1920,
+        "h": 1508,
+        "src": "/img/gallery/picture10_3-1920.jpg",
+        "bytes": 212251
+      }
+    ]
+  },
+  "img/gallery/picture11_1.jpeg": {
+    "width": 1529,
+    "height": 2048,
+    "digest": "85e91a23f2dcf6a3",
+    "webp": [
+      {
+        "w": 600,
+        "h": 804,
+        "src": "/img/gallery/picture11_1-600.webp",
+        "bytes": 56276
+      },
+      {
+        "w": 1200,
+        "h": 1607,
+        "src": "/img/gallery/picture11_1-1200.webp",
+        "bytes": 142424
+      },
+      {
+        "w": 1529,
+        "h": 2048,
+        "src": "/img/gallery/picture11_1-1529.webp",
+        "bytes": 196482
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 804,
+        "src": "/img/gallery/picture11_1-600.jpg",
+        "bytes": 65549
+      },
+      {
+        "w": 1200,
+        "h": 1607,
+        "src": "/img/gallery/picture11_1-1200.jpg",
+        "bytes": 188402
+      },
+      {
+        "w": 1529,
+        "h": 2048,
+        "src": "/img/gallery/picture11_1-1529.jpg",
+        "bytes": 295839
+      }
+    ]
+  },
+  "img/gallery/picture11_1_preview.jpeg": {
+    "width": 1529,
+    "height": 1525,
+    "digest": "353ecbbf5e193280",
+    "webp": [
+      {
+        "w": 600,
+        "h": 598,
+        "src": "/img/gallery/picture11_1_preview-600.webp",
+        "bytes": 47308
+      },
+      {
+        "w": 1200,
+        "h": 1197,
+        "src": "/img/gallery/picture11_1_preview-1200.webp",
+        "bytes": 118662
+      },
+      {
+        "w": 1529,
+        "h": 1525,
+        "src": "/img/gallery/picture11_1_preview-1529.webp",
+        "bytes": 162118
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 598,
+        "src": "/img/gallery/picture11_1_preview-600.jpg",
+        "bytes": 53096
+      },
+      {
+        "w": 1200,
+        "h": 1197,
+        "src": "/img/gallery/picture11_1_preview-1200.jpg",
+        "bytes": 151554
+      },
+      {
+        "w": 1529,
+        "h": 1525,
+        "src": "/img/gallery/picture11_1_preview-1529.jpg",
+        "bytes": 232256
+      }
+    ]
+  },
+  "img/gallery/picture11_2.jpeg": {
+    "width": 2048,
+    "height": 1148,
+    "digest": "dc0fb9640a7180e4",
+    "webp": [
+      {
+        "w": 600,
+        "h": 336,
+        "src": "/img/gallery/picture11_2-600.webp",
+        "bytes": 9020
+      },
+      {
+        "w": 1200,
+        "h": 673,
+        "src": "/img/gallery/picture11_2-1200.webp",
+        "bytes": 21334
+      },
+      {
+        "w": 1920,
+        "h": 1076,
+        "src": "/img/gallery/picture11_2-1920.webp",
+        "bytes": 39270
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 336,
+        "src": "/img/gallery/picture11_2-600.jpg",
+        "bytes": 15144
+      },
+      {
+        "w": 1200,
+        "h": 673,
+        "src": "/img/gallery/picture11_2-1200.jpg",
+        "bytes": 41061
+      },
+      {
+        "w": 1920,
+        "h": 1076,
+        "src": "/img/gallery/picture11_2-1920.jpg",
+        "bytes": 80124
+      }
+    ]
+  },
+  "img/gallery/picture11_2_preview.jpeg": {
+    "width": 1549,
+    "height": 1127,
+    "digest": "ac9079aaf8d5272f",
+    "webp": [
+      {
+        "w": 600,
+        "h": 437,
+        "src": "/img/gallery/picture11_2_preview-600.webp",
+        "bytes": 10498
+      },
+      {
+        "w": 1200,
+        "h": 873,
+        "src": "/img/gallery/picture11_2_preview-1200.webp",
+        "bytes": 25260
+      },
+      {
+        "w": 1549,
+        "h": 1127,
+        "src": "/img/gallery/picture11_2_preview-1549.webp",
+        "bytes": 35512
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 437,
+        "src": "/img/gallery/picture11_2_preview-600.jpg",
+        "bytes": 18063
+      },
+      {
+        "w": 1200,
+        "h": 873,
+        "src": "/img/gallery/picture11_2_preview-1200.jpg",
+        "bytes": 48303
+      },
+      {
+        "w": 1549,
+        "h": 1127,
+        "src": "/img/gallery/picture11_2_preview-1549.jpg",
+        "bytes": 70057
+      }
+    ]
+  },
+  "img/gallery/picture12_1.jpeg": {
+    "width": 1295,
+    "height": 1276,
+    "digest": "7fcdd1da1f01d5aa",
+    "webp": [
+      {
+        "w": 600,
+        "h": 591,
+        "src": "/img/gallery/picture12_1-600.webp",
+        "bytes": 34010
+      },
+      {
+        "w": 1200,
+        "h": 1182,
+        "src": "/img/gallery/picture12_1-1200.webp",
+        "bytes": 101154
+      },
+      {
+        "w": 1295,
+        "h": 1276,
+        "src": "/img/gallery/picture12_1-1295.webp",
+        "bytes": 116856
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 591,
+        "src": "/img/gallery/picture12_1-600.jpg",
+        "bytes": 40074
+      },
+      {
+        "w": 1200,
+        "h": 1182,
+        "src": "/img/gallery/picture12_1-1200.jpg",
+        "bytes": 134296
+      },
+      {
+        "w": 1295,
+        "h": 1276,
+        "src": "/img/gallery/picture12_1-1295.jpg",
+        "bytes": 165178
+      }
+    ]
+  },
+  "img/gallery/picture13_1.jpeg": {
+    "width": 2048,
+    "height": 1644,
+    "digest": "0b038ba510cea9db",
+    "webp": [
+      {
+        "w": 600,
+        "h": 482,
+        "src": "/img/gallery/picture13_1-600.webp",
+        "bytes": 42990
+      },
+      {
+        "w": 1200,
+        "h": 963,
+        "src": "/img/gallery/picture13_1-1200.webp",
+        "bytes": 123744
+      },
+      {
+        "w": 1920,
+        "h": 1541,
+        "src": "/img/gallery/picture13_1-1920.webp",
+        "bytes": 234900
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 482,
+        "src": "/img/gallery/picture13_1-600.jpg",
+        "bytes": 45316
+      },
+      {
+        "w": 1200,
+        "h": 963,
+        "src": "/img/gallery/picture13_1-1200.jpg",
+        "bytes": 148492
+      },
+      {
+        "w": 1920,
+        "h": 1541,
+        "src": "/img/gallery/picture13_1-1920.jpg",
+        "bytes": 297707
+      }
+    ]
+  },
+  "img/gallery/picture13_2.jpeg": {
+    "width": 2048,
+    "height": 921,
+    "digest": "92820866cffbc9fe",
+    "webp": [
+      {
+        "w": 600,
+        "h": 270,
+        "src": "/img/gallery/picture13_2-600.webp",
+        "bytes": 8704
+      },
+      {
+        "w": 1200,
+        "h": 540,
+        "src": "/img/gallery/picture13_2-1200.webp",
+        "bytes": 20500
+      },
+      {
+        "w": 1920,
+        "h": 863,
+        "src": "/img/gallery/picture13_2-1920.webp",
+        "bytes": 36618
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 270,
+        "src": "/img/gallery/picture13_2-600.jpg",
+        "bytes": 13744
+      },
+      {
+        "w": 1200,
+        "h": 540,
+        "src": "/img/gallery/picture13_2-1200.jpg",
+        "bytes": 36790
+      },
+      {
+        "w": 1920,
+        "h": 863,
+        "src": "/img/gallery/picture13_2-1920.jpg",
+        "bytes": 71507
+      }
+    ]
+  },
+  "img/gallery/picture14_1.jpeg": {
+    "width": 1480,
+    "height": 2048,
+    "digest": "e059d952b54de4f6",
+    "webp": [
+      {
+        "w": 600,
+        "h": 830,
+        "src": "/img/gallery/picture14_1-600.webp",
+        "bytes": 70212
+      },
+      {
+        "w": 1200,
+        "h": 1661,
+        "src": "/img/gallery/picture14_1-1200.webp",
+        "bytes": 170604
+      },
+      {
+        "w": 1480,
+        "h": 2048,
+        "src": "/img/gallery/picture14_1-1480.webp",
+        "bytes": 218094
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 830,
+        "src": "/img/gallery/picture14_1-600.jpg",
+        "bytes": 73789
+      },
+      {
+        "w": 1200,
+        "h": 1661,
+        "src": "/img/gallery/picture14_1-1200.jpg",
+        "bytes": 214551
+      },
+      {
+        "w": 1480,
+        "h": 2048,
+        "src": "/img/gallery/picture14_1-1480.jpg",
+        "bytes": 320228
+      }
+    ]
+  },
+  "img/gallery/picture14_1_preview.jpeg": {
+    "width": 1480,
+    "height": 1480,
+    "digest": "7de3c77582b4ae49",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture14_1_preview-600.webp",
+        "bytes": 53678
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture14_1_preview-1200.webp",
+        "bytes": 133230
+      },
+      {
+        "w": 1480,
+        "h": 1480,
+        "src": "/img/gallery/picture14_1_preview-1480.webp",
+        "bytes": 172806
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture14_1_preview-600.jpg",
+        "bytes": 55107
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture14_1_preview-1200.jpg",
+        "bytes": 160925
+      },
+      {
+        "w": 1480,
+        "h": 1480,
+        "src": "/img/gallery/picture14_1_preview-1480.jpg",
+        "bytes": 221491
+      }
+    ]
+  },
+  "img/gallery/picture14_2.jpeg": {
+    "width": 2048,
+    "height": 1148,
+    "digest": "dc0fb9640a7180e4",
+    "webp": [
+      {
+        "w": 600,
+        "h": 336,
+        "src": "/img/gallery/picture14_2-600.webp",
+        "bytes": 9020
+      },
+      {
+        "w": 1200,
+        "h": 673,
+        "src": "/img/gallery/picture14_2-1200.webp",
+        "bytes": 21334
+      },
+      {
+        "w": 1920,
+        "h": 1076,
+        "src": "/img/gallery/picture14_2-1920.webp",
+        "bytes": 39270
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 336,
+        "src": "/img/gallery/picture14_2-600.jpg",
+        "bytes": 15144
+      },
+      {
+        "w": 1200,
+        "h": 673,
+        "src": "/img/gallery/picture14_2-1200.jpg",
+        "bytes": 41061
+      },
+      {
+        "w": 1920,
+        "h": 1076,
+        "src": "/img/gallery/picture14_2-1920.jpg",
+        "bytes": 80124
+      }
+    ]
+  },
+  "img/gallery/picture14_2_preview.jpeg": {
+    "width": 1549,
+    "height": 1127,
+    "digest": "ac9079aaf8d5272f",
+    "webp": [
+      {
+        "w": 600,
+        "h": 437,
+        "src": "/img/gallery/picture14_2_preview-600.webp",
+        "bytes": 10498
+      },
+      {
+        "w": 1200,
+        "h": 873,
+        "src": "/img/gallery/picture14_2_preview-1200.webp",
+        "bytes": 25260
+      },
+      {
+        "w": 1549,
+        "h": 1127,
+        "src": "/img/gallery/picture14_2_preview-1549.webp",
+        "bytes": 35512
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 437,
+        "src": "/img/gallery/picture14_2_preview-600.jpg",
+        "bytes": 18063
+      },
+      {
+        "w": 1200,
+        "h": 873,
+        "src": "/img/gallery/picture14_2_preview-1200.jpg",
+        "bytes": 48303
+      },
+      {
+        "w": 1549,
+        "h": 1127,
+        "src": "/img/gallery/picture14_2_preview-1549.jpg",
+        "bytes": 70057
+      }
+    ]
+  },
+  "img/gallery/picture15_1.jpeg": {
+    "width": 2048,
+    "height": 1610,
+    "digest": "716e0c8079442fcc",
+    "webp": [
+      {
+        "w": 600,
+        "h": 472,
+        "src": "/img/gallery/picture15_1-600.webp",
+        "bytes": 30616
+      },
+      {
+        "w": 1200,
+        "h": 943,
+        "src": "/img/gallery/picture15_1-1200.webp",
+        "bytes": 90238
+      },
+      {
+        "w": 1920,
+        "h": 1509,
+        "src": "/img/gallery/picture15_1-1920.webp",
+        "bytes": 171010
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 472,
+        "src": "/img/gallery/picture15_1-600.jpg",
+        "bytes": 37409
+      },
+      {
+        "w": 1200,
+        "h": 943,
+        "src": "/img/gallery/picture15_1-1200.jpg",
+        "bytes": 120721
+      },
+      {
+        "w": 1920,
+        "h": 1509,
+        "src": "/img/gallery/picture15_1-1920.jpg",
+        "bytes": 242128
+      }
+    ]
+  },
+  "img/gallery/picture15_1_preview.jpeg": {
+    "width": 1388,
+    "height": 1416,
+    "digest": "d98b86c54ead0b9c",
+    "webp": [
+      {
+        "w": 600,
+        "h": 612,
+        "src": "/img/gallery/picture15_1_preview-600.webp",
+        "bytes": 41084
+      },
+      {
+        "w": 1200,
+        "h": 1224,
+        "src": "/img/gallery/picture15_1_preview-1200.webp",
+        "bytes": 104792
+      },
+      {
+        "w": 1388,
+        "h": 1416,
+        "src": "/img/gallery/picture15_1_preview-1388.webp",
+        "bytes": 130558
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 612,
+        "src": "/img/gallery/picture15_1_preview-600.jpg",
+        "bytes": 48618
+      },
+      {
+        "w": 1200,
+        "h": 1224,
+        "src": "/img/gallery/picture15_1_preview-1200.jpg",
+        "bytes": 143516
+      },
+      {
+        "w": 1388,
+        "h": 1416,
+        "src": "/img/gallery/picture15_1_preview-1388.jpg",
+        "bytes": 177811
+      }
+    ]
+  },
+  "img/gallery/picture15_2.jpeg": {
+    "width": 2048,
+    "height": 921,
+    "digest": "92820866cffbc9fe",
+    "webp": [
+      {
+        "w": 600,
+        "h": 270,
+        "src": "/img/gallery/picture15_2-600.webp",
+        "bytes": 8704
+      },
+      {
+        "w": 1200,
+        "h": 540,
+        "src": "/img/gallery/picture15_2-1200.webp",
+        "bytes": 20500
+      },
+      {
+        "w": 1920,
+        "h": 863,
+        "src": "/img/gallery/picture15_2-1920.webp",
+        "bytes": 36618
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 270,
+        "src": "/img/gallery/picture15_2-600.jpg",
+        "bytes": 13744
+      },
+      {
+        "w": 1200,
+        "h": 540,
+        "src": "/img/gallery/picture15_2-1200.jpg",
+        "bytes": 36790
+      },
+      {
+        "w": 1920,
+        "h": 863,
+        "src": "/img/gallery/picture15_2-1920.jpg",
+        "bytes": 71507
+      }
+    ]
+  },
+  "img/gallery/picture15_2_preview.jpeg": {
+    "width": 1482,
+    "height": 832,
+    "digest": "d989458c80e74917",
+    "webp": [
+      {
+        "w": 600,
+        "h": 337,
+        "src": "/img/gallery/picture15_2_preview-600.webp",
+        "bytes": 10320
+      },
+      {
+        "w": 1200,
+        "h": 674,
+        "src": "/img/gallery/picture15_2_preview-1200.webp",
+        "bytes": 23712
+      },
+      {
+        "w": 1482,
+        "h": 832,
+        "src": "/img/gallery/picture15_2_preview-1482.webp",
+        "bytes": 30534
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 337,
+        "src": "/img/gallery/picture15_2_preview-600.jpg",
+        "bytes": 16530
+      },
+      {
+        "w": 1200,
+        "h": 674,
+        "src": "/img/gallery/picture15_2_preview-1200.jpg",
+        "bytes": 43517
+      },
+      {
+        "w": 1482,
+        "h": 832,
+        "src": "/img/gallery/picture15_2_preview-1482.jpg",
+        "bytes": 58683
+      }
+    ]
+  },
+  "img/gallery/picture16_1.jpeg": {
+    "width": 1686,
+    "height": 1142,
+    "digest": "c8fdbcb0caa4d3f3",
+    "webp": [
+      {
+        "w": 600,
+        "h": 406,
+        "src": "/img/gallery/picture16_1-600.webp",
+        "bytes": 11154
+      },
+      {
+        "w": 1200,
+        "h": 813,
+        "src": "/img/gallery/picture16_1-1200.webp",
+        "bytes": 27352
+      },
+      {
+        "w": 1686,
+        "h": 1142,
+        "src": "/img/gallery/picture16_1-1686.webp",
+        "bytes": 44520
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 406,
+        "src": "/img/gallery/picture16_1-600.jpg",
+        "bytes": 18228
+      },
+      {
+        "w": 1200,
+        "h": 813,
+        "src": "/img/gallery/picture16_1-1200.jpg",
+        "bytes": 49557
+      },
+      {
+        "w": 1686,
+        "h": 1142,
+        "src": "/img/gallery/picture16_1-1686.jpg",
+        "bytes": 94224
+      }
+    ]
+  },
+  "img/gallery/picture16_1_preview.jpeg": {
+    "width": 1431,
+    "height": 1142,
+    "digest": "6d0b4d25970c289f",
+    "webp": [
+      {
+        "w": 600,
+        "h": 479,
+        "src": "/img/gallery/picture16_1_preview-600.webp",
+        "bytes": 11610
+      },
+      {
+        "w": 1200,
+        "h": 958,
+        "src": "/img/gallery/picture16_1_preview-1200.webp",
+        "bytes": 28184
+      },
+      {
+        "w": 1431,
+        "h": 1142,
+        "src": "/img/gallery/picture16_1_preview-1431.webp",
+        "bytes": 37826
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 479,
+        "src": "/img/gallery/picture16_1_preview-600.jpg",
+        "bytes": 19203
+      },
+      {
+        "w": 1200,
+        "h": 958,
+        "src": "/img/gallery/picture16_1_preview-1200.jpg",
+        "bytes": 52407
+      },
+      {
+        "w": 1431,
+        "h": 1142,
+        "src": "/img/gallery/picture16_1_preview-1431.jpg",
+        "bytes": 76741
+      }
+    ]
+  },
+  "img/gallery/picture16_2_preview.jpeg": {
+    "width": 1282,
+    "height": 1142,
+    "digest": "553c75e3ec8d2d18",
+    "webp": [
+      {
+        "w": 600,
+        "h": 534,
+        "src": "/img/gallery/picture16_2_preview-600.webp",
+        "bytes": 12164
+      },
+      {
+        "w": 1200,
+        "h": 1069,
+        "src": "/img/gallery/picture16_2_preview-1200.webp",
+        "bytes": 29630
+      },
+      {
+        "w": 1282,
+        "h": 1142,
+        "src": "/img/gallery/picture16_2_preview-1282.webp",
+        "bytes": 33510
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 534,
+        "src": "/img/gallery/picture16_2_preview-600.jpg",
+        "bytes": 20780
+      },
+      {
+        "w": 1200,
+        "h": 1069,
+        "src": "/img/gallery/picture16_2_preview-1200.jpg",
+        "bytes": 56226
+      },
+      {
+        "w": 1282,
+        "h": 1142,
+        "src": "/img/gallery/picture16_2_preview-1282.jpg",
+        "bytes": 62096
+      }
+    ]
+  },
+  "img/gallery/picture17_1.jpeg": {
+    "width": 2048,
+    "height": 921,
+    "digest": "81520ec3e0cce664",
+    "webp": [
+      {
+        "w": 600,
+        "h": 270,
+        "src": "/img/gallery/picture17_1-600.webp",
+        "bytes": 11132
+      },
+      {
+        "w": 1200,
+        "h": 540,
+        "src": "/img/gallery/picture17_1-1200.webp",
+        "bytes": 28064
+      },
+      {
+        "w": 1920,
+        "h": 863,
+        "src": "/img/gallery/picture17_1-1920.webp",
+        "bytes": 53194
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 270,
+        "src": "/img/gallery/picture17_1-600.jpg",
+        "bytes": 17456
+      },
+      {
+        "w": 1200,
+        "h": 540,
+        "src": "/img/gallery/picture17_1-1200.jpg",
+        "bytes": 49630
+      },
+      {
+        "w": 1920,
+        "h": 863,
+        "src": "/img/gallery/picture17_1-1920.jpg",
+        "bytes": 99812
+      }
+    ]
+  },
+  "img/gallery/picture17_1_preview.jpeg": {
+    "width": 990,
+    "height": 921,
+    "digest": "40bfa250d57b52c0",
+    "webp": [
+      {
+        "w": 600,
+        "h": 558,
+        "src": "/img/gallery/picture17_1_preview-600.webp",
+        "bytes": 22608
+      },
+      {
+        "w": 990,
+        "h": 921,
+        "src": "/img/gallery/picture17_1_preview-990.webp",
+        "bytes": 48608
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 558,
+        "src": "/img/gallery/picture17_1_preview-600.jpg",
+        "bytes": 34018
+      },
+      {
+        "w": 990,
+        "h": 921,
+        "src": "/img/gallery/picture17_1_preview-990.jpg",
+        "bytes": 76113
+      }
+    ]
+  },
+  "img/gallery/picture18_1.jpeg": {
+    "width": 2048,
+    "height": 1548,
+    "digest": "2d9aea066e8b9fd6",
+    "webp": [
+      {
+        "w": 600,
+        "h": 454,
+        "src": "/img/gallery/picture18_1-600.webp",
+        "bytes": 39012
+      },
+      {
+        "w": 1200,
+        "h": 907,
+        "src": "/img/gallery/picture18_1-1200.webp",
+        "bytes": 113876
+      },
+      {
+        "w": 1920,
+        "h": 1451,
+        "src": "/img/gallery/picture18_1-1920.webp",
+        "bytes": 217162
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 454,
+        "src": "/img/gallery/picture18_1-600.jpg",
+        "bytes": 39199
+      },
+      {
+        "w": 1200,
+        "h": 907,
+        "src": "/img/gallery/picture18_1-1200.jpg",
+        "bytes": 130816
+      },
+      {
+        "w": 1920,
+        "h": 1451,
+        "src": "/img/gallery/picture18_1-1920.jpg",
+        "bytes": 268226
+      }
+    ]
+  },
+  "img/gallery/picture18_1_preview.jpeg": {
+    "width": 1324,
+    "height": 1352,
+    "digest": "8f3615ed192e6dde",
+    "webp": [
+      {
+        "w": 600,
+        "h": 613,
+        "src": "/img/gallery/picture18_1_preview-600.webp",
+        "bytes": 55226
+      },
+      {
+        "w": 1200,
+        "h": 1225,
+        "src": "/img/gallery/picture18_1_preview-1200.webp",
+        "bytes": 137576
+      },
+      {
+        "w": 1324,
+        "h": 1352,
+        "src": "/img/gallery/picture18_1_preview-1324.webp",
+        "bytes": 153974
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 613,
+        "src": "/img/gallery/picture18_1_preview-600.jpg",
+        "bytes": 56998
+      },
+      {
+        "w": 1200,
+        "h": 1225,
+        "src": "/img/gallery/picture18_1_preview-1200.jpg",
+        "bytes": 167420
+      },
+      {
+        "w": 1324,
+        "h": 1352,
+        "src": "/img/gallery/picture18_1_preview-1324.jpg",
+        "bytes": 208007
+      }
+    ]
+  },
+  "img/gallery/picture18_2.jpg": {
+    "width": 3411,
+    "height": 2737,
+    "digest": "da1c5a3fbe1a406f",
+    "webp": [
+      {
+        "w": 600,
+        "h": 481,
+        "src": "/img/gallery/picture18_2-600.webp",
+        "bytes": 27196
+      },
+      {
+        "w": 1200,
+        "h": 963,
+        "src": "/img/gallery/picture18_2-1200.webp",
+        "bytes": 98034
+      },
+      {
+        "w": 1920,
+        "h": 1541,
+        "src": "/img/gallery/picture18_2-1920.webp",
+        "bytes": 215630
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 481,
+        "src": "/img/gallery/picture18_2-600.jpg",
+        "bytes": 33112
+      },
+      {
+        "w": 1200,
+        "h": 963,
+        "src": "/img/gallery/picture18_2-1200.jpg",
+        "bytes": 121254
+      },
+      {
+        "w": 1920,
+        "h": 1541,
+        "src": "/img/gallery/picture18_2-1920.jpg",
+        "bytes": 285064
+      }
+    ]
+  },
+  "img/gallery/picture19_1.jpg": {
+    "width": 3387,
+    "height": 2713,
+    "digest": "c2fd900fec295f69",
+    "webp": [
+      {
+        "w": 600,
+        "h": 481,
+        "src": "/img/gallery/picture19_1-600.webp",
+        "bytes": 23508
+      },
+      {
+        "w": 1200,
+        "h": 961,
+        "src": "/img/gallery/picture19_1-1200.webp",
+        "bytes": 91278
+      },
+      {
+        "w": 1920,
+        "h": 1538,
+        "src": "/img/gallery/picture19_1-1920.webp",
+        "bytes": 210720
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 481,
+        "src": "/img/gallery/picture19_1-600.jpg",
+        "bytes": 29219
+      },
+      {
+        "w": 1200,
+        "h": 961,
+        "src": "/img/gallery/picture19_1-1200.jpg",
+        "bytes": 111781
+      },
+      {
+        "w": 1920,
+        "h": 1538,
+        "src": "/img/gallery/picture19_1-1920.jpg",
+        "bytes": 276891
+      }
+    ]
+  },
+  "img/gallery/picture19_1_preview.jpg": {
+    "width": 1596,
+    "height": 1600,
+    "digest": "f1a3bb03e5c2d851",
+    "webp": [
+      {
+        "w": 600,
+        "h": 602,
+        "src": "/img/gallery/picture19_1_preview-600.webp",
+        "bytes": 55552
+      },
+      {
+        "w": 1200,
+        "h": 1203,
+        "src": "/img/gallery/picture19_1_preview-1200.webp",
+        "bytes": 165610
+      },
+      {
+        "w": 1596,
+        "h": 1600,
+        "src": "/img/gallery/picture19_1_preview-1596.webp",
+        "bytes": 247710
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 602,
+        "src": "/img/gallery/picture19_1_preview-600.jpg",
+        "bytes": 52175
+      },
+      {
+        "w": 1200,
+        "h": 1203,
+        "src": "/img/gallery/picture19_1_preview-1200.jpg",
+        "bytes": 184046
+      },
+      {
+        "w": 1596,
+        "h": 1600,
+        "src": "/img/gallery/picture19_1_preview-1596.jpg",
+        "bytes": 289623
+      }
+    ]
+  },
+  "img/gallery/picture1_1.JPG": {
+    "width": 3469,
+    "height": 2434,
+    "digest": "73ea7e9986c09dcd",
+    "webp": [
+      {
+        "w": 600,
+        "h": 421,
+        "src": "/img/gallery/picture1_1-600.webp",
+        "bytes": 56804
+      },
+      {
+        "w": 1200,
+        "h": 842,
+        "src": "/img/gallery/picture1_1-1200.webp",
+        "bytes": 222324
+      },
+      {
+        "w": 1920,
+        "h": 1347,
+        "src": "/img/gallery/picture1_1-1920.webp",
+        "bytes": 517252
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 421,
+        "src": "/img/gallery/picture1_1-600.jpg",
+        "bytes": 47599
+      },
+      {
+        "w": 1200,
+        "h": 842,
+        "src": "/img/gallery/picture1_1-1200.jpg",
+        "bytes": 187209
+      },
+      {
+        "w": 1920,
+        "h": 1347,
+        "src": "/img/gallery/picture1_1-1920.jpg",
+        "bytes": 445760
+      }
+    ]
+  },
+  "img/gallery/picture1_2.JPG": {
+    "width": 3681,
+    "height": 2979,
+    "digest": "ec2ae1984f6ffc33",
+    "webp": [
+      {
+        "w": 600,
+        "h": 486,
+        "src": "/img/gallery/picture1_2-600.webp",
+        "bytes": 37530
+      },
+      {
+        "w": 1200,
+        "h": 971,
+        "src": "/img/gallery/picture1_2-1200.webp",
+        "bytes": 169514
+      },
+      {
+        "w": 1920,
+        "h": 1554,
+        "src": "/img/gallery/picture1_2-1920.webp",
+        "bytes": 387852
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 486,
+        "src": "/img/gallery/picture1_2-600.jpg",
+        "bytes": 35538
+      },
+      {
+        "w": 1200,
+        "h": 971,
+        "src": "/img/gallery/picture1_2-1200.jpg",
+        "bytes": 155448
+      },
+      {
+        "w": 1920,
+        "h": 1554,
+        "src": "/img/gallery/picture1_2-1920.jpg",
+        "bytes": 394239
+      }
+    ]
+  },
+  "img/gallery/picture20_1.jpg": {
+    "width": 3403,
+    "height": 2737,
+    "digest": "1ac011db3e6b9454",
+    "webp": [
+      {
+        "w": 600,
+        "h": 483,
+        "src": "/img/gallery/picture20_1-600.webp",
+        "bytes": 23928
+      },
+      {
+        "w": 1200,
+        "h": 965,
+        "src": "/img/gallery/picture20_1-1200.webp",
+        "bytes": 89934
+      },
+      {
+        "w": 1920,
+        "h": 1544,
+        "src": "/img/gallery/picture20_1-1920.webp",
+        "bytes": 197964
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 483,
+        "src": "/img/gallery/picture20_1-600.jpg",
+        "bytes": 29788
+      },
+      {
+        "w": 1200,
+        "h": 965,
+        "src": "/img/gallery/picture20_1-1200.jpg",
+        "bytes": 113450
+      },
+      {
+        "w": 1920,
+        "h": 1544,
+        "src": "/img/gallery/picture20_1-1920.jpg",
+        "bytes": 270216
+      }
+    ]
+  },
+  "img/gallery/picture20_1_preview.jpg": {
+    "width": 1808,
+    "height": 1578,
+    "digest": "87675fa78b178805",
+    "webp": [
+      {
+        "w": 600,
+        "h": 524,
+        "src": "/img/gallery/picture20_1_preview-600.webp",
+        "bytes": 49006
+      },
+      {
+        "w": 1200,
+        "h": 1047,
+        "src": "/img/gallery/picture20_1_preview-1200.webp",
+        "bytes": 139908
+      },
+      {
+        "w": 1808,
+        "h": 1578,
+        "src": "/img/gallery/picture20_1_preview-1808.webp",
+        "bytes": 254712
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 524,
+        "src": "/img/gallery/picture20_1_preview-600.jpg",
+        "bytes": 45907
+      },
+      {
+        "w": 1200,
+        "h": 1047,
+        "src": "/img/gallery/picture20_1_preview-1200.jpg",
+        "bytes": 157628
+      },
+      {
+        "w": 1808,
+        "h": 1578,
+        "src": "/img/gallery/picture20_1_preview-1808.jpg",
+        "bytes": 300975
+      }
+    ]
+  },
+  "img/gallery/picture21_1.jpg": {
+    "width": 3416,
+    "height": 2744,
+    "digest": "018e547da2e0bafe",
+    "webp": [
+      {
+        "w": 600,
+        "h": 482,
+        "src": "/img/gallery/picture21_1-600.webp",
+        "bytes": 28182
+      },
+      {
+        "w": 1200,
+        "h": 964,
+        "src": "/img/gallery/picture21_1-1200.webp",
+        "bytes": 103996
+      },
+      {
+        "w": 1920,
+        "h": 1542,
+        "src": "/img/gallery/picture21_1-1920.webp",
+        "bytes": 227554
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 482,
+        "src": "/img/gallery/picture21_1-600.jpg",
+        "bytes": 34102
+      },
+      {
+        "w": 1200,
+        "h": 964,
+        "src": "/img/gallery/picture21_1-1200.jpg",
+        "bytes": 126281
+      },
+      {
+        "w": 1920,
+        "h": 1542,
+        "src": "/img/gallery/picture21_1-1920.jpg",
+        "bytes": 297100
+      }
+    ]
+  },
+  "img/gallery/picture21_1_preview.jpg": {
+    "width": 1609,
+    "height": 1499,
+    "digest": "823ca1628f9be9d4",
+    "webp": [
+      {
+        "w": 600,
+        "h": 559,
+        "src": "/img/gallery/picture21_1_preview-600.webp",
+        "bytes": 59594
+      },
+      {
+        "w": 1200,
+        "h": 1118,
+        "src": "/img/gallery/picture21_1_preview-1200.webp",
+        "bytes": 162924
+      },
+      {
+        "w": 1609,
+        "h": 1499,
+        "src": "/img/gallery/picture21_1_preview-1609.webp",
+        "bytes": 239388
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 559,
+        "src": "/img/gallery/picture21_1_preview-600.jpg",
+        "bytes": 55843
+      },
+      {
+        "w": 1200,
+        "h": 1118,
+        "src": "/img/gallery/picture21_1_preview-1200.jpg",
+        "bytes": 178958
+      },
+      {
+        "w": 1609,
+        "h": 1499,
+        "src": "/img/gallery/picture21_1_preview-1609.jpg",
+        "bytes": 279963
+      }
+    ]
+  },
+  "img/gallery/picture23_1.jpeg": {
+    "width": 1445,
+    "height": 2048,
+    "digest": "0e58ca95a81469e6",
+    "webp": [
+      {
+        "w": 600,
+        "h": 850,
+        "src": "/img/gallery/picture23_1-600.webp",
+        "bytes": 34828
+      },
+      {
+        "w": 1200,
+        "h": 1701,
+        "src": "/img/gallery/picture23_1-1200.webp",
+        "bytes": 79208
+      },
+      {
+        "w": 1445,
+        "h": 2048,
+        "src": "/img/gallery/picture23_1-1445.webp",
+        "bytes": 101678
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 850,
+        "src": "/img/gallery/picture23_1-600.jpg",
+        "bytes": 50157
+      },
+      {
+        "w": 1200,
+        "h": 1701,
+        "src": "/img/gallery/picture23_1-1200.jpg",
+        "bytes": 135559
+      },
+      {
+        "w": 1445,
+        "h": 2048,
+        "src": "/img/gallery/picture23_1-1445.jpg",
+        "bytes": 192108
+      }
+    ]
+  },
+  "img/gallery/picture23_1_preview.jpeg": {
+    "width": 1445,
+    "height": 1432,
+    "digest": "58be8e42c10a496c",
+    "webp": [
+      {
+        "w": 600,
+        "h": 595,
+        "src": "/img/gallery/picture23_1_preview-600.webp",
+        "bytes": 34356
+      },
+      {
+        "w": 1200,
+        "h": 1189,
+        "src": "/img/gallery/picture23_1_preview-1200.webp",
+        "bytes": 81138
+      },
+      {
+        "w": 1445,
+        "h": 1432,
+        "src": "/img/gallery/picture23_1_preview-1445.webp",
+        "bytes": 100204
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 595,
+        "src": "/img/gallery/picture23_1_preview-600.jpg",
+        "bytes": 44860
+      },
+      {
+        "w": 1200,
+        "h": 1189,
+        "src": "/img/gallery/picture23_1_preview-1200.jpg",
+        "bytes": 121655
+      },
+      {
+        "w": 1445,
+        "h": 1432,
+        "src": "/img/gallery/picture23_1_preview-1445.jpg",
+        "bytes": 159410
+      }
+    ]
+  },
+  "img/gallery/picture24_1.jpeg": {
+    "width": 921,
+    "height": 2048,
+    "digest": "362daae79ac4cae0",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture24_1-600.webp",
+        "bytes": 45504
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture24_1-921.webp",
+        "bytes": 84374
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture24_1-600.jpg",
+        "bytes": 66696
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture24_1-921.jpg",
+        "bytes": 145500
+      }
+    ]
+  },
+  "img/gallery/picture24_1_preview.jpeg": {
+    "width": 792,
+    "height": 1087,
+    "digest": "2458c398b8bebec5",
+    "webp": [
+      {
+        "w": 600,
+        "h": 823,
+        "src": "/img/gallery/picture24_1_preview-600.webp",
+        "bytes": 47106
+      },
+      {
+        "w": 792,
+        "h": 1087,
+        "src": "/img/gallery/picture24_1_preview-792.webp",
+        "bytes": 70350
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 823,
+        "src": "/img/gallery/picture24_1_preview-600.jpg",
+        "bytes": 60146
+      },
+      {
+        "w": 792,
+        "h": 1087,
+        "src": "/img/gallery/picture24_1_preview-792.jpg",
+        "bytes": 93630
+      }
+    ]
+  },
+  "img/gallery/picture25_1.jpeg": {
+    "width": 921,
+    "height": 2048,
+    "digest": "adc39bfe69aed226",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture25_1-600.webp",
+        "bytes": 45484
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture25_1-921.webp",
+        "bytes": 83436
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture25_1-600.jpg",
+        "bytes": 67017
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture25_1-921.jpg",
+        "bytes": 146204
+      }
+    ]
+  },
+  "img/gallery/picture25_1_preview.jpeg": {
+    "width": 921,
+    "height": 1161,
+    "digest": "fd440de74e31f09b",
+    "webp": [
+      {
+        "w": 600,
+        "h": 756,
+        "src": "/img/gallery/picture25_1_preview-600.webp",
+        "bytes": 33900
+      },
+      {
+        "w": 921,
+        "h": 1161,
+        "src": "/img/gallery/picture25_1_preview-921.webp",
+        "bytes": 62536
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 756,
+        "src": "/img/gallery/picture25_1_preview-600.jpg",
+        "bytes": 47289
+      },
+      {
+        "w": 921,
+        "h": 1161,
+        "src": "/img/gallery/picture25_1_preview-921.jpg",
+        "bytes": 94007
+      }
+    ]
+  },
+  "img/gallery/picture26_1.jpeg": {
+    "width": 921,
+    "height": 2048,
+    "digest": "c78eef892f4bc305",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture26_1-600.webp",
+        "bytes": 52130
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture26_1-921.webp",
+        "bytes": 91358
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture26_1-600.jpg",
+        "bytes": 72955
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture26_1-921.jpg",
+        "bytes": 156137
+      }
+    ]
+  },
+  "img/gallery/picture26_1_preview.jpeg": {
+    "width": 835,
+    "height": 1182,
+    "digest": "ee5d9fc2e551d155",
+    "webp": [
+      {
+        "w": 600,
+        "h": 849,
+        "src": "/img/gallery/picture26_1_preview-600.webp",
+        "bytes": 43944
+      },
+      {
+        "w": 835,
+        "h": 1182,
+        "src": "/img/gallery/picture26_1_preview-835.webp",
+        "bytes": 68878
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 849,
+        "src": "/img/gallery/picture26_1_preview-600.jpg",
+        "bytes": 57234
+      },
+      {
+        "w": 835,
+        "h": 1182,
+        "src": "/img/gallery/picture26_1_preview-835.jpg",
+        "bytes": 95114
+      }
+    ]
+  },
+  "img/gallery/picture27_1.jpeg": {
+    "width": 921,
+    "height": 2048,
+    "digest": "0975aa2930c04e7f",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture27_1-600.webp",
+        "bytes": 33800
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture27_1-921.webp",
+        "bytes": 60902
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1334,
+        "src": "/img/gallery/picture27_1-600.jpg",
+        "bytes": 53012
+      },
+      {
+        "w": 921,
+        "h": 2048,
+        "src": "/img/gallery/picture27_1-921.jpg",
+        "bytes": 111355
+      }
+    ]
+  },
+  "img/gallery/picture27_1_preview.jpeg": {
+    "width": 746,
+    "height": 802,
+    "digest": "e588b13f9623e59c",
+    "webp": [
+      {
+        "w": 600,
+        "h": 645,
+        "src": "/img/gallery/picture27_1_preview-600.webp",
+        "bytes": 22626
+      },
+      {
+        "w": 746,
+        "h": 802,
+        "src": "/img/gallery/picture27_1_preview-746.webp",
+        "bytes": 31130
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 645,
+        "src": "/img/gallery/picture27_1_preview-600.jpg",
+        "bytes": 31814
+      },
+      {
+        "w": 746,
+        "h": 802,
+        "src": "/img/gallery/picture27_1_preview-746.jpg",
+        "bytes": 44721
+      }
+    ]
+  },
+  "img/gallery/picture28_1.jpeg": {
+    "width": 1080,
+    "height": 1920,
+    "digest": "18aa705c63515418",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1067,
+        "src": "/img/gallery/picture28_1-600.webp",
+        "bytes": 26810
+      },
+      {
+        "w": 1080,
+        "h": 1920,
+        "src": "/img/gallery/picture28_1-1080.webp",
+        "bytes": 62146
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1067,
+        "src": "/img/gallery/picture28_1-600.jpg",
+        "bytes": 46347
+      },
+      {
+        "w": 1080,
+        "h": 1920,
+        "src": "/img/gallery/picture28_1-1080.jpg",
+        "bytes": 127890
+      }
+    ]
+  },
+  "img/gallery/picture28_1_preview.jpeg": {
+    "width": 763,
+    "height": 678,
+    "digest": "237f6e6e4ae12127",
+    "webp": [
+      {
+        "w": 600,
+        "h": 533,
+        "src": "/img/gallery/picture28_1_preview-600.webp",
+        "bytes": 24208
+      },
+      {
+        "w": 763,
+        "h": 678,
+        "src": "/img/gallery/picture28_1_preview-763.webp",
+        "bytes": 33674
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 533,
+        "src": "/img/gallery/picture28_1_preview-600.jpg",
+        "bytes": 33236
+      },
+      {
+        "w": 763,
+        "h": 678,
+        "src": "/img/gallery/picture28_1_preview-763.jpg",
+        "bytes": 47606
+      }
+    ]
+  },
+  "img/gallery/picture29_1.jpeg": {
+    "width": 1080,
+    "height": 1920,
+    "digest": "0a31ccd4e3ef23bd",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1067,
+        "src": "/img/gallery/picture29_1-600.webp",
+        "bytes": 25812
+      },
+      {
+        "w": 1080,
+        "h": 1920,
+        "src": "/img/gallery/picture29_1-1080.webp",
+        "bytes": 64340
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1067,
+        "src": "/img/gallery/picture29_1-600.jpg",
+        "bytes": 44593
+      },
+      {
+        "w": 1080,
+        "h": 1920,
+        "src": "/img/gallery/picture29_1-1080.jpg",
+        "bytes": 130741
+      }
+    ]
+  },
+  "img/gallery/picture29_1_preview.jpeg": {
+    "width": 1080,
+    "height": 1037,
+    "digest": "844842bf1f5845bf",
+    "webp": [
+      {
+        "w": 600,
+        "h": 576,
+        "src": "/img/gallery/picture29_1_preview-600.webp",
+        "bytes": 17538
+      },
+      {
+        "w": 1080,
+        "h": 1037,
+        "src": "/img/gallery/picture29_1_preview-1080.webp",
+        "bytes": 42664
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 576,
+        "src": "/img/gallery/picture29_1_preview-600.jpg",
+        "bytes": 28070
+      },
+      {
+        "w": 1080,
+        "h": 1037,
+        "src": "/img/gallery/picture29_1_preview-1080.jpg",
+        "bytes": 73131
+      }
+    ]
+  },
+  "img/gallery/picture2_0.jpg": {
+    "width": 1997,
+    "height": 1488,
+    "digest": "0a7e2ba3cdfa1d24",
+    "webp": [
+      {
+        "w": 600,
+        "h": 447,
+        "src": "/img/gallery/picture2_0-600.webp",
+        "bytes": 46316
+      },
+      {
+        "w": 1200,
+        "h": 894,
+        "src": "/img/gallery/picture2_0-1200.webp",
+        "bytes": 135856
+      },
+      {
+        "w": 1920,
+        "h": 1431,
+        "src": "/img/gallery/picture2_0-1920.webp",
+        "bytes": 257352
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 447,
+        "src": "/img/gallery/picture2_0-600.jpg",
+        "bytes": 42861
+      },
+      {
+        "w": 1200,
+        "h": 894,
+        "src": "/img/gallery/picture2_0-1200.jpg",
+        "bytes": 146204
+      },
+      {
+        "w": 1920,
+        "h": 1431,
+        "src": "/img/gallery/picture2_0-1920.jpg",
+        "bytes": 305909
+      }
+    ]
+  },
+  "img/gallery/picture2_1.jpg": {
+    "width": 3139,
+    "height": 2513,
+    "digest": "d9c177c26a519993",
+    "webp": [
+      {
+        "w": 600,
+        "h": 480,
+        "src": "/img/gallery/picture2_1-600.webp",
+        "bytes": 32602
+      },
+      {
+        "w": 1200,
+        "h": 961,
+        "src": "/img/gallery/picture2_1-1200.webp",
+        "bytes": 120166
+      },
+      {
+        "w": 1920,
+        "h": 1537,
+        "src": "/img/gallery/picture2_1-1920.webp",
+        "bytes": 259746
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 480,
+        "src": "/img/gallery/picture2_1-600.jpg",
+        "bytes": 36796
+      },
+      {
+        "w": 1200,
+        "h": 961,
+        "src": "/img/gallery/picture2_1-1200.jpg",
+        "bytes": 138519
+      },
+      {
+        "w": 1920,
+        "h": 1537,
+        "src": "/img/gallery/picture2_1-1920.jpg",
+        "bytes": 323694
+      }
+    ]
+  },
+  "img/gallery/picture2_1_preview.jpg": {
+    "width": 1343,
+    "height": 1343,
+    "digest": "52acaf06ce4d611d",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture2_1_preview-600.webp",
+        "bytes": 70572
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture2_1_preview-1200.webp",
+        "bytes": 175636
+      },
+      {
+        "w": 1343,
+        "h": 1343,
+        "src": "/img/gallery/picture2_1_preview-1343.webp",
+        "bytes": 203572
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture2_1_preview-600.jpg",
+        "bytes": 63965
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture2_1_preview-1200.jpg",
+        "bytes": 192915
+      },
+      {
+        "w": 1343,
+        "h": 1343,
+        "src": "/img/gallery/picture2_1_preview-1343.jpg",
+        "bytes": 229357
+      }
+    ]
+  },
+  "img/gallery/picture2_2.jpg": {
+    "width": 4608,
+    "height": 3072,
+    "digest": "54954f1c4cd20ea0",
+    "webp": [
+      {
+        "w": 600,
+        "h": 400,
+        "src": "/img/gallery/picture2_2-600.webp",
+        "bytes": 44110
+      },
+      {
+        "w": 1200,
+        "h": 800,
+        "src": "/img/gallery/picture2_2-1200.webp",
+        "bytes": 142540
+      },
+      {
+        "w": 1920,
+        "h": 1280,
+        "src": "/img/gallery/picture2_2-1920.webp",
+        "bytes": 275362
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 400,
+        "src": "/img/gallery/picture2_2-600.jpg",
+        "bytes": 43693
+      },
+      {
+        "w": 1200,
+        "h": 800,
+        "src": "/img/gallery/picture2_2-1200.jpg",
+        "bytes": 145990
+      },
+      {
+        "w": 1920,
+        "h": 1280,
+        "src": "/img/gallery/picture2_2-1920.jpg",
+        "bytes": 319791
+      }
+    ]
+  },
+  "img/gallery/picture30_1.png": {
+    "width": 1080,
+    "height": 1128,
+    "digest": "d60a5b59b3a92ef4",
+    "webp": [
+      {
+        "w": 600,
+        "h": 627,
+        "src": "/img/gallery/picture30_1-600.webp",
+        "bytes": 33610
+      },
+      {
+        "w": 1080,
+        "h": 1128,
+        "src": "/img/gallery/picture30_1-1080.webp",
+        "bytes": 89664
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 627,
+        "src": "/img/gallery/picture30_1-600.jpg",
+        "bytes": 42412
+      },
+      {
+        "w": 1080,
+        "h": 1128,
+        "src": "/img/gallery/picture30_1-1080.jpg",
+        "bytes": 117478
+      }
+    ]
+  },
+  "img/gallery/picture30_1_preview.jpg": {
+    "width": 2412,
+    "height": 2412,
+    "digest": "c5a1f11b4dc605d2",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture30_1_preview-600.webp",
+        "bytes": 31012
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture30_1_preview-1200.webp",
+        "bytes": 106350
+      },
+      {
+        "w": 1920,
+        "h": 1920,
+        "src": "/img/gallery/picture30_1_preview-1920.webp",
+        "bytes": 276966
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture30_1_preview-600.jpg",
+        "bytes": 40051
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture30_1_preview-1200.jpg",
+        "bytes": 136229
+      },
+      {
+        "w": 1920,
+        "h": 1920,
+        "src": "/img/gallery/picture30_1_preview-1920.jpg",
+        "bytes": 338754
+      }
+    ]
+  },
+  "img/gallery/picture30_2.jpg": {
+    "width": 2592,
+    "height": 5760,
+    "digest": "c522b43690842642",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1333,
+        "src": "/img/gallery/picture30_2-600.webp",
+        "bytes": 124764
+      },
+      {
+        "w": 1200,
+        "h": 2667,
+        "src": "/img/gallery/picture30_2-1200.webp",
+        "bytes": 379908
+      },
+      {
+        "w": 1920,
+        "h": 4267,
+        "src": "/img/gallery/picture30_2-1920.webp",
+        "bytes": 785134
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1333,
+        "src": "/img/gallery/picture30_2-600.jpg",
+        "bytes": 117092
+      },
+      {
+        "w": 1200,
+        "h": 2667,
+        "src": "/img/gallery/picture30_2-1200.jpg",
+        "bytes": 391785
+      },
+      {
+        "w": 1920,
+        "h": 4267,
+        "src": "/img/gallery/picture30_2-1920.jpg",
+        "bytes": 876743
+      }
+    ]
+  },
+  "img/gallery/picture30_2_preview.jpg": {
+    "width": 2592,
+    "height": 4802,
+    "digest": "5db963f57b681546",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1112,
+        "src": "/img/gallery/picture30_2_preview-600.webp",
+        "bytes": 101900
+      },
+      {
+        "w": 1200,
+        "h": 2223,
+        "src": "/img/gallery/picture30_2_preview-1200.webp",
+        "bytes": 308996
+      },
+      {
+        "w": 1920,
+        "h": 3557,
+        "src": "/img/gallery/picture30_2_preview-1920.webp",
+        "bytes": 636372
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1112,
+        "src": "/img/gallery/picture30_2_preview-600.jpg",
+        "bytes": 95269
+      },
+      {
+        "w": 1200,
+        "h": 2223,
+        "src": "/img/gallery/picture30_2_preview-1200.jpg",
+        "bytes": 320974
+      },
+      {
+        "w": 1920,
+        "h": 3557,
+        "src": "/img/gallery/picture30_2_preview-1920.jpg",
+        "bytes": 722108
+      }
+    ]
+  },
+  "img/gallery/picture30_3.jpg": {
+    "width": 2592,
+    "height": 5760,
+    "digest": "6263eb279e23ef09",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1333,
+        "src": "/img/gallery/picture30_3-600.webp",
+        "bytes": 83120
+      },
+      {
+        "w": 1200,
+        "h": 2667,
+        "src": "/img/gallery/picture30_3-1200.webp",
+        "bytes": 271974
+      },
+      {
+        "w": 1920,
+        "h": 4267,
+        "src": "/img/gallery/picture30_3-1920.webp",
+        "bytes": 568646
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1333,
+        "src": "/img/gallery/picture30_3-600.jpg",
+        "bytes": 87910
+      },
+      {
+        "w": 1200,
+        "h": 2667,
+        "src": "/img/gallery/picture30_3-1200.jpg",
+        "bytes": 318648
+      },
+      {
+        "w": 1920,
+        "h": 4267,
+        "src": "/img/gallery/picture30_3-1920.jpg",
+        "bytes": 713980
+      }
+    ]
+  },
+  "img/gallery/picture30_4.jpg": {
+    "width": 2592,
+    "height": 5760,
+    "digest": "3a8a5cbac7a3de10",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1333,
+        "src": "/img/gallery/picture30_4-600.webp",
+        "bytes": 82734
+      },
+      {
+        "w": 1200,
+        "h": 2667,
+        "src": "/img/gallery/picture30_4-1200.webp",
+        "bytes": 244632
+      },
+      {
+        "w": 1920,
+        "h": 4267,
+        "src": "/img/gallery/picture30_4-1920.webp",
+        "bytes": 541814
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1333,
+        "src": "/img/gallery/picture30_4-600.jpg",
+        "bytes": 90646
+      },
+      {
+        "w": 1200,
+        "h": 2667,
+        "src": "/img/gallery/picture30_4-1200.jpg",
+        "bytes": 294193
+      },
+      {
+        "w": 1920,
+        "h": 4267,
+        "src": "/img/gallery/picture30_4-1920.jpg",
+        "bytes": 676432
+      }
+    ]
+  },
+  "img/gallery/picture30_5.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "c204fd669671c616",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture30_5-600.webp",
+        "bytes": 22858
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture30_5-1200.webp",
+        "bytes": 73656
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture30_5-1920.webp",
+        "bytes": 164792
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture30_5-600.jpg",
+        "bytes": 26849
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture30_5-1200.jpg",
+        "bytes": 89783
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture30_5-1920.jpg",
+        "bytes": 205933
+      }
+    ]
+  },
+  "img/gallery/picture31_1.png": {
+    "width": 1060,
+    "height": 1056,
+    "digest": "6acdf9b9b5ee3466",
+    "webp": [
+      {
+        "w": 600,
+        "h": 598,
+        "src": "/img/gallery/picture31_1-600.webp",
+        "bytes": 25214
+      },
+      {
+        "w": 1060,
+        "h": 1056,
+        "src": "/img/gallery/picture31_1-1060.webp",
+        "bytes": 63940
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 598,
+        "src": "/img/gallery/picture31_1-600.jpg",
+        "bytes": 34346
+      },
+      {
+        "w": 1060,
+        "h": 1056,
+        "src": "/img/gallery/picture31_1-1060.jpg",
+        "bytes": 89161
+      }
+    ]
+  },
+  "img/gallery/picture31_1_preview.jpg": {
+    "width": 2031,
+    "height": 2009,
+    "digest": "ab79a28cd242f713",
+    "webp": [
+      {
+        "w": 600,
+        "h": 594,
+        "src": "/img/gallery/picture31_1_preview-600.webp",
+        "bytes": 25734
+      },
+      {
+        "w": 1200,
+        "h": 1187,
+        "src": "/img/gallery/picture31_1_preview-1200.webp",
+        "bytes": 81320
+      },
+      {
+        "w": 1920,
+        "h": 1899,
+        "src": "/img/gallery/picture31_1_preview-1920.webp",
+        "bytes": 182948
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 594,
+        "src": "/img/gallery/picture31_1_preview-600.jpg",
+        "bytes": 34729
+      },
+      {
+        "w": 1200,
+        "h": 1187,
+        "src": "/img/gallery/picture31_1_preview-1200.jpg",
+        "bytes": 112863
+      },
+      {
+        "w": 1920,
+        "h": 1899,
+        "src": "/img/gallery/picture31_1_preview-1920.jpg",
+        "bytes": 264756
+      }
+    ]
+  },
+  "img/gallery/picture31_3.jpg": {
+    "width": 2592,
+    "height": 4968,
+    "digest": "992c533121c8cd26",
+    "webp": [
+      {
+        "w": 600,
+        "h": 1150,
+        "src": "/img/gallery/picture31_3-600.webp",
+        "bytes": 58514
+      },
+      {
+        "w": 1200,
+        "h": 2300,
+        "src": "/img/gallery/picture31_3-1200.webp",
+        "bytes": 192642
+      },
+      {
+        "w": 1920,
+        "h": 3680,
+        "src": "/img/gallery/picture31_3-1920.webp",
+        "bytes": 391742
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 1150,
+        "src": "/img/gallery/picture31_3-600.jpg",
+        "bytes": 66533
+      },
+      {
+        "w": 1200,
+        "h": 2300,
+        "src": "/img/gallery/picture31_3-1200.jpg",
+        "bytes": 252994
+      },
+      {
+        "w": 1920,
+        "h": 3680,
+        "src": "/img/gallery/picture31_3-1920.jpg",
+        "bytes": 555546
+      }
+    ]
+  },
+  "img/gallery/picture31_3_preview.jpg": {
+    "width": 2592,
+    "height": 3636,
+    "digest": "05c7b8dab1ddf44f",
+    "webp": [
+      {
+        "w": 600,
+        "h": 842,
+        "src": "/img/gallery/picture31_3_preview-600.webp",
+        "bytes": 56372
+      },
+      {
+        "w": 1200,
+        "h": 1683,
+        "src": "/img/gallery/picture31_3_preview-1200.webp",
+        "bytes": 164500
+      },
+      {
+        "w": 1920,
+        "h": 2693,
+        "src": "/img/gallery/picture31_3_preview-1920.webp",
+        "bytes": 334278
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 842,
+        "src": "/img/gallery/picture31_3_preview-600.jpg",
+        "bytes": 59947
+      },
+      {
+        "w": 1200,
+        "h": 1683,
+        "src": "/img/gallery/picture31_3_preview-1200.jpg",
+        "bytes": 210152
+      },
+      {
+        "w": 1920,
+        "h": 2693,
+        "src": "/img/gallery/picture31_3_preview-1920.jpg",
+        "bytes": 452644
+      }
+    ]
+  },
+  "img/gallery/picture31_4.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "528919155f8e89a3",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture31_4-600.webp",
+        "bytes": 22688
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture31_4-1200.webp",
+        "bytes": 76180
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture31_4-1920.webp",
+        "bytes": 166970
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture31_4-600.jpg",
+        "bytes": 26846
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture31_4-1200.jpg",
+        "bytes": 92344
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture31_4-1920.jpg",
+        "bytes": 211821
+      }
+    ]
+  },
+  "img/gallery/picture32_1.jpg": {
+    "width": 3773,
+    "height": 876,
+    "digest": "ea9fbc78cec1758e",
+    "webp": [
+      {
+        "w": 600,
+        "h": 139,
+        "src": "/img/gallery/picture32_1-600.webp",
+        "bytes": 4314
+      },
+      {
+        "w": 1200,
+        "h": 279,
+        "src": "/img/gallery/picture32_1-1200.webp",
+        "bytes": 10754
+      },
+      {
+        "w": 1920,
+        "h": 446,
+        "src": "/img/gallery/picture32_1-1920.webp",
+        "bytes": 20522
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 139,
+        "src": "/img/gallery/picture32_1-600.jpg",
+        "bytes": 6567
+      },
+      {
+        "w": 1200,
+        "h": 279,
+        "src": "/img/gallery/picture32_1-1200.jpg",
+        "bytes": 18010
+      },
+      {
+        "w": 1920,
+        "h": 446,
+        "src": "/img/gallery/picture32_1-1920.jpg",
+        "bytes": 35999
+      }
+    ]
+  },
+  "img/gallery/picture32_2.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "a4de55b7c9ae6cd4",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_2-600.webp",
+        "bytes": 9506
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_2-1200.webp",
+        "bytes": 55550
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_2-1920.webp",
+        "bytes": 156588
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_2-600.jpg",
+        "bytes": 13943
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_2-1200.jpg",
+        "bytes": 62162
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_2-1920.jpg",
+        "bytes": 177902
+      }
+    ]
+  },
+  "img/gallery/picture32_3.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "6072bdad867f6c11",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_3-600.webp",
+        "bytes": 10598
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_3-1200.webp",
+        "bytes": 41398
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_3-1920.webp",
+        "bytes": 94382
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_3-600.jpg",
+        "bytes": 14198
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_3-1200.jpg",
+        "bytes": 55554
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_3-1920.jpg",
+        "bytes": 134407
+      }
+    ]
+  },
+  "img/gallery/picture32_4.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "55b874284d46ee56",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_4-600.webp",
+        "bytes": 10918
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_4-1200.webp",
+        "bytes": 110448
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_4-1920.webp",
+        "bytes": 274560
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_4-600.jpg",
+        "bytes": 15201
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_4-1200.jpg",
+        "bytes": 90588
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_4-1920.jpg",
+        "bytes": 254539
+      }
+    ]
+  },
+  "img/gallery/picture32_5.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "e833f086e3d1095d",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_5-600.webp",
+        "bytes": 8792
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_5-1200.webp",
+        "bytes": 29448
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_5-1920.webp",
+        "bytes": 82512
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_5-600.jpg",
+        "bytes": 14199
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_5-1200.jpg",
+        "bytes": 44718
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_5-1920.jpg",
+        "bytes": 117308
+      }
+    ]
+  },
+  "img/gallery/picture32_6.jpg": {
+    "width": 4000,
+    "height": 2256,
+    "digest": "613f48ea1a6d2c09",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_6-600.webp",
+        "bytes": 8428
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_6-1200.webp",
+        "bytes": 31002
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_6-1920.webp",
+        "bytes": 82774
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/gallery/picture32_6-600.jpg",
+        "bytes": 13699
+      },
+      {
+        "w": 1200,
+        "h": 677,
+        "src": "/img/gallery/picture32_6-1200.jpg",
+        "bytes": 45146
+      },
+      {
+        "w": 1920,
+        "h": 1083,
+        "src": "/img/gallery/picture32_6-1920.jpg",
+        "bytes": 121663
+      }
+    ]
+  },
+  "img/gallery/picture3_1.jpg": {
+    "width": 2166,
+    "height": 2808,
+    "digest": "5dfb560d0ab99b52",
+    "webp": [
+      {
+        "w": 600,
+        "h": 778,
+        "src": "/img/gallery/picture3_1-600.webp",
+        "bytes": 52432
+      },
+      {
+        "w": 1200,
+        "h": 1556,
+        "src": "/img/gallery/picture3_1-1200.webp",
+        "bytes": 243816
+      },
+      {
+        "w": 1920,
+        "h": 2489,
+        "src": "/img/gallery/picture3_1-1920.webp",
+        "bytes": 619946
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 778,
+        "src": "/img/gallery/picture3_1-600.jpg",
+        "bytes": 52432
+      },
+      {
+        "w": 1200,
+        "h": 1556,
+        "src": "/img/gallery/picture3_1-1200.jpg",
+        "bytes": 224301
+      },
+      {
+        "w": 1920,
+        "h": 2489,
+        "src": "/img/gallery/picture3_1-1920.jpg",
+        "bytes": 588513
+      }
+    ]
+  },
+  "img/gallery/picture3_1_preview.jpg": {
+    "width": 1807,
+    "height": 1807,
+    "digest": "5f456bfa87fb06e8",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture3_1_preview-600.webp",
+        "bytes": 57790
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture3_1_preview-1200.webp",
+        "bytes": 234718
+      },
+      {
+        "w": 1807,
+        "h": 1807,
+        "src": "/img/gallery/picture3_1_preview-1807.webp",
+        "bytes": 470780
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/gallery/picture3_1_preview-600.jpg",
+        "bytes": 49567
+      },
+      {
+        "w": 1200,
+        "h": 1200,
+        "src": "/img/gallery/picture3_1_preview-1200.jpg",
+        "bytes": 198675
+      },
+      {
+        "w": 1807,
+        "h": 1807,
+        "src": "/img/gallery/picture3_1_preview-1807.jpg",
+        "bytes": 434331
+      }
+    ]
+  },
+  "img/gallery/picture4_1.jpg": {
+    "width": 3322,
+    "height": 2389,
+    "digest": "799e620777709d1a",
+    "webp": [
+      {
+        "w": 600,
+        "h": 431,
+        "src": "/img/gallery/picture4_1-600.webp",
+        "bytes": 28908
+      },
+      {
+        "w": 1200,
+        "h": 863,
+        "src": "/img/gallery/picture4_1-1200.webp",
+        "bytes": 93266
+      },
+      {
+        "w": 1920,
+        "h": 1381,
+        "src": "/img/gallery/picture4_1-1920.webp",
+        "bytes": 182952
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 431,
+        "src": "/img/gallery/picture4_1-600.jpg",
+        "bytes": 33940
+      },
+      {
+        "w": 1200,
+        "h": 863,
+        "src": "/img/gallery/picture4_1-1200.jpg",
+        "bytes": 121183
+      },
+      {
+        "w": 1920,
+        "h": 1381,
+        "src": "/img/gallery/picture4_1-1920.jpg",
+        "bytes": 263147
+      }
+    ]
+  },
+  "img/gallery/picture5_1.jpg": {
+    "width": 3096,
+    "height": 4128,
+    "digest": "95126bb5fe5e044c",
+    "webp": [
+      {
+        "w": 600,
+        "h": 800,
+        "src": "/img/gallery/picture5_1-600.webp",
+        "bytes": 33368
+      },
+      {
+        "w": 1200,
+        "h": 1600,
+        "src": "/img/gallery/picture5_1-1200.webp",
+        "bytes": 88052
+      },
+      {
+        "w": 1920,
+        "h": 2560,
+        "src": "/img/gallery/picture5_1-1920.webp",
+        "bytes": 165834
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 800,
+        "src": "/img/gallery/picture5_1-600.jpg",
+        "bytes": 45625
+      },
+      {
+        "w": 1200,
+        "h": 1600,
+        "src": "/img/gallery/picture5_1-1200.jpg",
+        "bytes": 135713
+      },
+      {
+        "w": 1920,
+        "h": 2560,
+        "src": "/img/gallery/picture5_1-1920.jpg",
+        "bytes": 279607
+      }
+    ]
+  },
+  "img/gallery/picture5_2.jpg": {
+    "width": 4128,
+    "height": 3096,
+    "digest": "665760710b163c48",
+    "webp": [
+      {
+        "w": 600,
+        "h": 450,
+        "src": "/img/gallery/picture5_2-600.webp",
+        "bytes": 13568
+      },
+      {
+        "w": 1200,
+        "h": 900,
+        "src": "/img/gallery/picture5_2-1200.webp",
+        "bytes": 38296
+      },
+      {
+        "w": 1920,
+        "h": 1440,
+        "src": "/img/gallery/picture5_2-1920.webp",
+        "bytes": 73324
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 450,
+        "src": "/img/gallery/picture5_2-600.jpg",
+        "bytes": 19622
+      },
+      {
+        "w": 1200,
+        "h": 900,
+        "src": "/img/gallery/picture5_2-1200.jpg",
+        "bytes": 59513
+      },
+      {
+        "w": 1920,
+        "h": 1440,
+        "src": "/img/gallery/picture5_2-1920.jpg",
+        "bytes": 124627
+      }
+    ]
+  },
+  "img/gallery/picture6_1.png": {
+    "width": 2570,
+    "height": 3250,
+    "digest": "fd847aefa30bc94e",
+    "webp": [
+      {
+        "w": 600,
+        "h": 759,
+        "src": "/img/gallery/picture6_1-600.webp",
+        "bytes": 42288
+      },
+      {
+        "w": 1200,
+        "h": 1518,
+        "src": "/img/gallery/picture6_1-1200.webp",
+        "bytes": 147586
+      },
+      {
+        "w": 1920,
+        "h": 2428,
+        "src": "/img/gallery/picture6_1-1920.webp",
+        "bytes": 337716
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 759,
+        "src": "/img/gallery/picture6_1-600.jpg",
+        "bytes": 48913
+      },
+      {
+        "w": 1200,
+        "h": 1518,
+        "src": "/img/gallery/picture6_1-1200.jpg",
+        "bytes": 180438
+      },
+      {
+        "w": 1920,
+        "h": 2428,
+        "src": "/img/gallery/picture6_1-1920.jpg",
+        "bytes": 441744
+      }
+    ]
+  },
+  "img/gallery/picture6_2.jpg": {
+    "width": 2989,
+    "height": 3849,
+    "digest": "194f67f9f3b89287",
+    "webp": [
+      {
+        "w": 600,
+        "h": 773,
+        "src": "/img/gallery/picture6_2-600.webp",
+        "bytes": 68340
+      },
+      {
+        "w": 1200,
+        "h": 1545,
+        "src": "/img/gallery/picture6_2-1200.webp",
+        "bytes": 206158
+      },
+      {
+        "w": 1920,
+        "h": 2472,
+        "src": "/img/gallery/picture6_2-1920.webp",
+        "bytes": 416018
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 773,
+        "src": "/img/gallery/picture6_2-600.jpg",
+        "bytes": 70445
+      },
+      {
+        "w": 1200,
+        "h": 1545,
+        "src": "/img/gallery/picture6_2-1200.jpg",
+        "bytes": 238294
+      },
+      {
+        "w": 1920,
+        "h": 2472,
+        "src": "/img/gallery/picture6_2-1920.jpg",
+        "bytes": 523679
+      }
+    ]
+  },
+  "img/gallery/picture6_3.jpg": {
+    "width": 2697,
+    "height": 3559,
+    "digest": "4783de936f8fcd9a",
+    "webp": [
+      {
+        "w": 600,
+        "h": 792,
+        "src": "/img/gallery/picture6_3-600.webp",
+        "bytes": 81942
+      },
+      {
+        "w": 1200,
+        "h": 1584,
+        "src": "/img/gallery/picture6_3-1200.webp",
+        "bytes": 267224
+      },
+      {
+        "w": 1920,
+        "h": 2534,
+        "src": "/img/gallery/picture6_3-1920.webp",
+        "bytes": 553648
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 792,
+        "src": "/img/gallery/picture6_3-600.jpg",
+        "bytes": 78802
+      },
+      {
+        "w": 1200,
+        "h": 1584,
+        "src": "/img/gallery/picture6_3-1200.jpg",
+        "bytes": 279707
+      },
+      {
+        "w": 1920,
+        "h": 2534,
+        "src": "/img/gallery/picture6_3-1920.jpg",
+        "bytes": 634041
+      }
+    ]
+  },
+  "img/gallery/picture9_1.jpg": {
+    "width": 3425,
+    "height": 2456,
+    "digest": "e10241e05508c944",
+    "webp": [
+      {
+        "w": 600,
+        "h": 430,
+        "src": "/img/gallery/picture9_1-600.webp",
+        "bytes": 27510
+      },
+      {
+        "w": 1200,
+        "h": 860,
+        "src": "/img/gallery/picture9_1-1200.webp",
+        "bytes": 96774
+      },
+      {
+        "w": 1920,
+        "h": 1377,
+        "src": "/img/gallery/picture9_1-1920.webp",
+        "bytes": 227624
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 430,
+        "src": "/img/gallery/picture9_1-600.jpg",
+        "bytes": 31806
+      },
+      {
+        "w": 1200,
+        "h": 860,
+        "src": "/img/gallery/picture9_1-1200.jpg",
+        "bytes": 116580
+      },
+      {
+        "w": 1920,
+        "h": 1377,
+        "src": "/img/gallery/picture9_1-1920.jpg",
+        "bytes": 276103
+      }
+    ]
+  },
+  "img/gallery/picture_22_1.jpg": {
+    "width": 2349,
+    "height": 3315,
+    "digest": "38e8d97b6a2f4c48",
+    "webp": [
+      {
+        "w": 600,
+        "h": 847,
+        "src": "/img/gallery/picture_22_1-600.webp",
+        "bytes": 98196
+      },
+      {
+        "w": 1200,
+        "h": 1693,
+        "src": "/img/gallery/picture_22_1-1200.webp",
+        "bytes": 285386
+      },
+      {
+        "w": 1920,
+        "h": 2710,
+        "src": "/img/gallery/picture_22_1-1920.webp",
+        "bytes": 522824
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 847,
+        "src": "/img/gallery/picture_22_1-600.jpg",
+        "bytes": 93999
+      },
+      {
+        "w": 1200,
+        "h": 1693,
+        "src": "/img/gallery/picture_22_1-1200.jpg",
+        "bytes": 313979
+      },
+      {
+        "w": 1920,
+        "h": 2710,
+        "src": "/img/gallery/picture_22_1-1920.jpg",
+        "bytes": 646499
+      }
+    ]
+  },
+  "img/gallery/picture_22_1_preview.jpg": {
+    "width": 1952,
+    "height": 2080,
+    "digest": "0758fca8059c5e21",
+    "webp": [
+      {
+        "w": 600,
+        "h": 639,
+        "src": "/img/gallery/picture_22_1_preview-600.webp",
+        "bytes": 104578
+      },
+      {
+        "w": 1200,
+        "h": 1279,
+        "src": "/img/gallery/picture_22_1_preview-1200.webp",
+        "bytes": 287928
+      },
+      {
+        "w": 1920,
+        "h": 2046,
+        "src": "/img/gallery/picture_22_1_preview-1920.webp",
+        "bytes": 497404
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 639,
+        "src": "/img/gallery/picture_22_1_preview-600.jpg",
+        "bytes": 93359
+      },
+      {
+        "w": 1200,
+        "h": 1279,
+        "src": "/img/gallery/picture_22_1_preview-1200.jpg",
+        "bytes": 294147
+      },
+      {
+        "w": 1920,
+        "h": 2046,
+        "src": "/img/gallery/picture_22_1_preview-1920.jpg",
+        "bytes": 584645
+      }
+    ]
+  },
+  "img/gallery/picture_22_2.jpg": {
+    "width": 2255,
+    "height": 3185,
+    "digest": "892a6768c03da585",
+    "webp": [
+      {
+        "w": 600,
+        "h": 847,
+        "src": "/img/gallery/picture_22_2-600.webp",
+        "bytes": 100268
+      },
+      {
+        "w": 1200,
+        "h": 1695,
+        "src": "/img/gallery/picture_22_2-1200.webp",
+        "bytes": 304546
+      },
+      {
+        "w": 1920,
+        "h": 2712,
+        "src": "/img/gallery/picture_22_2-1920.webp",
+        "bytes": 581340
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 847,
+        "src": "/img/gallery/picture_22_2-600.jpg",
+        "bytes": 89339
+      },
+      {
+        "w": 1200,
+        "h": 1695,
+        "src": "/img/gallery/picture_22_2-1200.jpg",
+        "bytes": 311002
+      },
+      {
+        "w": 1920,
+        "h": 2712,
+        "src": "/img/gallery/picture_22_2-1920.jpg",
+        "bytes": 667419
+      }
+    ]
+  },
+  "img/gallery/picture_22_2_preview.jpg": {
+    "width": 2255,
+    "height": 2329,
+    "digest": "a6e7592ff56681cf",
+    "webp": [
+      {
+        "w": 600,
+        "h": 620,
+        "src": "/img/gallery/picture_22_2_preview-600.webp",
+        "bytes": 81722
+      },
+      {
+        "w": 1200,
+        "h": 1239,
+        "src": "/img/gallery/picture_22_2_preview-1200.webp",
+        "bytes": 253352
+      },
+      {
+        "w": 1920,
+        "h": 1983,
+        "src": "/img/gallery/picture_22_2_preview-1920.webp",
+        "bytes": 479298
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 620,
+        "src": "/img/gallery/picture_22_2_preview-600.jpg",
+        "bytes": 70137
+      },
+      {
+        "w": 1200,
+        "h": 1239,
+        "src": "/img/gallery/picture_22_2_preview-1200.jpg",
+        "bytes": 245548
+      },
+      {
+        "w": 1920,
+        "h": 1983,
+        "src": "/img/gallery/picture_22_2_preview-1920.jpg",
+        "bytes": 528833
+      }
+    ]
+  },
+  "img/hero-poster.jpg": {
+    "width": 1280,
+    "height": 720,
+    "digest": "abca2f702765b566",
+    "webp": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/hero-poster-600.webp",
+        "bytes": 10330
+      },
+      {
+        "w": 1200,
+        "h": 675,
+        "src": "/img/hero-poster-1200.webp",
+        "bytes": 27632
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "src": "/img/hero-poster-1280.webp",
+        "bytes": 30726
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 338,
+        "src": "/img/hero-poster-600.jpg",
+        "bytes": 15451
+      },
+      {
+        "w": 1200,
+        "h": 675,
+        "src": "/img/hero-poster-1200.jpg",
+        "bytes": 45695
+      },
+      {
+        "w": 1280,
+        "h": 720,
+        "src": "/img/hero-poster-1280.jpg",
+        "bytes": 51611
+      }
+    ]
+  },
+  "img/photo.jpg": {
+    "width": 1532,
+    "height": 2048,
+    "digest": "4edced944a942913",
+    "webp": [
+      {
+        "w": 600,
+        "h": 802,
+        "src": "/img/photo-600.webp",
+        "bytes": 94452
+      },
+      {
+        "w": 1200,
+        "h": 1604,
+        "src": "/img/photo-1200.webp",
+        "bytes": 238080
+      },
+      {
+        "w": 1532,
+        "h": 2048,
+        "src": "/img/photo-1532.webp",
+        "bytes": 325136
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 802,
+        "src": "/img/photo-600.jpg",
+        "bytes": 93623
+      },
+      {
+        "w": 1200,
+        "h": 1604,
+        "src": "/img/photo-1200.jpg",
+        "bytes": 285622
+      },
+      {
+        "w": 1532,
+        "h": 2048,
+        "src": "/img/photo-1532.jpg",
+        "bytes": 446586
+      }
+    ]
+  },
+  "img/portrait.jpg": {
+    "width": 930,
+    "height": 930,
+    "digest": "e1550613c7f20e7a",
+    "webp": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/portrait-600.webp",
+        "bytes": 20570
+      },
+      {
+        "w": 930,
+        "h": 930,
+        "src": "/img/portrait-930.webp",
+        "bytes": 39318
+      }
+    ],
+    "jpg": [
+      {
+        "w": 600,
+        "h": 600,
+        "src": "/img/portrait-600.jpg",
+        "bytes": 32549
+      },
+      {
+        "w": 930,
+        "h": 930,
+        "src": "/img/portrait-930.jpg",
+        "bytes": 67120
+      }
+    ]
+  }
+}
