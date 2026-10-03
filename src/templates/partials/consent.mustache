@@ -1,0 +1,13 @@
+{{!
+  Consent banner (SPEC sections 8 and 9). Hidden in the HTML; consent.js shows it on the first visit and when
+  #cookie-settings is clicked. The privacy link appears only when the privacy page is generated.
+}}
+<div id="cookie-consent" class="cookie-consent" role="region" aria-label="Cookie consent" hidden>
+<div class="cookie-consent__inner">
+<p class="cookie-consent__text">{{consent.text}}{{#consent.privacy_href}} <a class="cookie-consent__link" href="{{consent.privacy_href}}">Privacy policy</a>{{/consent.privacy_href}}</p>
+<div class="cookie-consent__actions">
+<button type="button" class="cookie-consent__button cookie-consent__button--decline" id="cookie-decline">Decline</button>
+<button type="button" class="cookie-consent__button cookie-consent__button--accept" id="cookie-accept">Accept</button>
+</div>
+</div>
+</div>

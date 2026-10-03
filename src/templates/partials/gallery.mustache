@@ -1,0 +1,13 @@
+{{!
+  Home gallery section of one hub (SPEC section 8): separator line, heading, all cards, link to the hub page.
+}}
+<section class="gallery gallery--{{key}}" id="gallery-{{key}}" aria-labelledby="gallery-{{key}}-heading">
+<div class="divider" aria-hidden="true"></div>
+<h2 class="gallery__heading" id="gallery-{{key}}-heading">{{heading}}</h2>
+<div class="gallery__grid">
+{{#cards}}
+{{> card}}
+{{/cards}}
+</div>
+<div class="gallery__footer"><a class="gallery__all pill" href="{{href}}">{{all_link}}</a></div>
+</section>

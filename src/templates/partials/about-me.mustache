@@ -1,0 +1,20 @@
+{{!
+  "About me" section (home and about page): text exactly as on the current site, photo. The heading is shown
+  on home only (the about page has its own h1). The heading is upper case through CSS (it read "ABOUT ME").
+}}
+<section class="about-me" id="about-me"{{#about_me.heading}} aria-labelledby="about-me-heading"{{/about_me.heading}}>
+<div class="divider" aria-hidden="true"></div>
+{{#about_me.heading}}
+<h2 class="about-me__heading" id="about-me-heading">About me</h2>
+{{/about_me.heading}}
+<div class="about-me__row">
+<div class="about-me__text">
+<p class="about-me__name">Hi! My name is Polina Shvedko.</p>
+<p class="about-me__name">I'm a freelance artist. Welcome to my art website!</p>
+<p class="about-me__descr">I love the sea! Water is my inspiration. Every day I am in search of new ideas, forms, new materials and techniques! When my paintings find a new home it makes me happy! Thank you for your support it give me more strength and motivation to do more !</p>
+</div>
+<div class="about-me__media">
+{{#about_me.photo}}{{> picture}}{{/about_me.photo}}
+</div>
+</div>
+</section>

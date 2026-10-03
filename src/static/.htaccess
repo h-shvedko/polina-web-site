@@ -1,0 +1,26 @@
+# Source: src/static/.htaccess (copied to app/ by `gulp static`). Do not edit app/.htaccess.
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Retired URLs: absolute targets so every redirect is one hop
+RewriteRule ^blog/cap-dantibes/?$ https://polina-shvedko.art/oil-paintings/affectionate-farewell-cap-dantibes/ [R=301,L]
+RewriteRule ^blog(/.*)?$ https://polina-shvedko.art/ [R=301,L]
+RewriteRule ^partials(/.*)?$ - [G,L]
+
+# /index.html and /dir/index.html → directory URL
+RewriteCond %{THE_REQUEST} \s/+([^?\s]*/)?index\.html[\s?]
+RewriteRule ^(.*/)?index\.html$ https://polina-shvedko.art/$1 [R=301,L]
+
+# www → apex
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
+
+# http → https (Plesk: nginx in front of Apache may pass the scheme in X-Forwarded-Proto)
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
+</IfModule>

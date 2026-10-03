@@ -1,0 +1,15 @@
+{{!
+  Custom error page app/404.html (Apache ErrorDocument; noindex, no canonical, not in the sitemap).
+  All URLs are root-relative because it is served at any path.
+}}
+{{> head}}
+<main id="main" class="page page--not-found">
+<h1 class="page__title">Page not found</h1>
+<p class="page__text">Sorry, this page does not exist. These pages may help:</p>
+<ul class="page__links">
+{{#links}}
+<li class="page__links-item"><a class="page__link" href="{{href}}">{{label}}</a></li>
+{{/links}}
+</ul>
+</main>
+{{> foot}}

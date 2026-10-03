@@ -1,0 +1,21 @@
+{{!
+  "Contact me" section (home and contact page): portrait, name, e-mail line and the social icons, as on the
+  current site. The heading is shown on home only (the contact page has the h1 "Contact").
+}}
+<section class="contact" id="contact"{{#contact.heading}} aria-labelledby="contact-heading"{{/contact.heading}}>
+<div class="contact__inner">
+{{#contact.heading}}
+<h2 class="contact__heading" id="contact-heading">Contact me</h2>
+{{/contact.heading}}
+<div class="contact__person">
+{{#contact.portrait}}{{> picture}}{{/contact.portrait}}
+<p class="contact__name">{{site.name}}</p>
+</div>
+<p class="contact__email"><strong>E-mail:</strong> <a class="contact__email-link" href="{{site.mailto}}" data-track="contact" data-location="contact">{{site.email}}</a></p>
+<ul class="social">
+{{#contact.social}}
+<li class="social__item"><a class="social__link social__link--{{key}}" href="{{url}}" target="_blank" rel="noopener" aria-label="{{label}}">{{{icon}}}</a></li>
+{{/contact.social}}
+</ul>
+</div>
+</section>

@@ -1,0 +1,53 @@
+{{!
+  Document start: <head> and the opening of <body> with the site navigation. Every page template starts
+  with the "head" partial and ends with the "foot" partial. View: see scripts/build-site.js layout().
+  Never write Mustache tags inside a comment: the first closing braces end the comment.
+}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{page.title}}</title>
+{{#page.description}}
+<meta name="description" content="{{page.description}}">
+{{/page.description}}
+{{#page.noindex}}
+<meta name="robots" content="noindex">
+{{/page.noindex}}
+{{#page.canonical}}
+<link rel="canonical" href="{{page.canonical}}">
+{{/page.canonical}}
+{{#page.og}}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{site.name}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{url}}">
+<meta property="og:image" content="{{image}}">
+<meta property="og:image:width" content="{{image_width}}">
+<meta property="og:image:height" content="{{image_height}}">
+<meta property="og:image:alt" content="{{image_alt}}">
+<meta name="twitter:card" content="summary_large_image">
+{{/page.og}}
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="/img/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/img/avatar_152x147.png">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="/img/avatar_270x262.png">
+{{#assets.fonts}}
+<link rel="preload" href="{{href}}" as="font" type="font/woff2" crossorigin>
+{{/assets.fonts}}
+<link rel="stylesheet" href="{{assets.css}}">
+{{#page.noscript_css}}
+<noscript><style>{{{page.noscript_css}}}</style></noscript>
+{{/page.noscript_css}}
+{{#assets.scripts}}
+<script src="{{src}}" defer{{#ga_id}} data-ga-id="{{ga_id}}"{{/ga_id}}></script>
+{{/assets.scripts}}
+{{#jsonld}}
+<script type="application/ld+json">{{{json}}}</script>
+{{/jsonld}}
+</head>
+<body class="site site--{{page.type}}">
+{{> nav}}

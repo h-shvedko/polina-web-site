@@ -25,14 +25,19 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        # --legacy-peer-deps required: bootstrap 4 declares jquery/popper.js as
-        # peer deps which npm 7+ would reject without this flag.
+        # package-lock.json is resolved by a plain `npm install` (what the dev
+        # container in docker-compose.yaml runs), so `npm ci` and
+        # `npm ci --legacy-peer-deps` both accept it. The flag is kept from the
+        # earlier setup and is harmless.
         run: npm ci --legacy-peer-deps
 
       - name: Build
-        # Skip gulp img — optimised images are already committed in app/img/.
-        # Running imagemin on CI wastes ~60s and produces identical output.
-        run: npx gulp css babel html fonts
+        # gulp build:site = clean app/ (keeps app/img/) -> copy css, fonts, js and
+        # src/static/ (.htaccess, robots.txt) -> render every page + sitemap.xml
+        # from data.json (scripts/build-site.js).
+        # No image processing on CI: the WebP/JPEG variants in app/img/ and
+        # src/img/manifest.json are committed (npm run image regenerates them).
+        run: npx gulp build:site
 
       - name: Install lftp
         run: sudo apt-get install -y lftp

@@ -1,0 +1,17 @@
+{{!
+  Footer: the current copyright line plus one small link row (hubs, About, Contact, Imprint/Privacy only when
+  generated) and the Cookie settings button that reopens the consent banner (consent.js).
+}}
+<footer class="site-footer">
+<div class="site-footer__inner">
+<p class="site-footer__copy">© {{footer.year}} {{footer.owner}}</p>
+<nav class="site-footer__nav" aria-label="Footer">
+<ul class="site-footer__links">
+{{#footer.items}}
+<li class="site-footer__item"><a class="site-footer__link" href="{{href}}"{{#current}} aria-current="page"{{/current}}>{{label}}</a></li>
+{{/footer.items}}
+<li class="site-footer__item"><button type="button" class="site-footer__button" id="cookie-settings">Cookie settings</button></li>
+</ul>
+</nav>
+</div>
+</footer>

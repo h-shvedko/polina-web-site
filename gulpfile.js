@@ -1,106 +1,133 @@
-let gulp = require('gulp'),
-    rename = require('gulp-rename'),
-    autoprefixer = require('gulp-autoprefixer'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    purge = require('gulp-css-purge'),
-    server = require('gulp-webserver'),
-    //liveReload extension for browser
-    livereload = require('gulp-livereload'),
-    cleanCSS = require('gulp-clean-css'),
-    mustache = require("gulp-mustache"),
-    htmlValidator = require('gulp-w3c-html-validator'),
-    imagemin = require('gulp-imagemin'),
-    sitemap = require('gulp-sitemap'),
-    save = require('gulp-save');
-    babel = require('gulp-babel');
+'use strict';
+/*
+ * Gulp 4 tasks for polina-shvedko.art (ADR-0003; implementation spec section 6). Every task returns its
+ * stream or promise.
+ *
+ *   gulp build:site   clean -> css, fonts, js, static (parallel) -> pages   (what CI runs; no sharp needed)
+ *   gulp build        img -> build:site                                      (npm run build)
+ *   gulp img          scripts/images.js: WebP/JPEG variants + src/img/manifest.json (npm run image; needs sharp)
+ *   gulp pages        scripts/build-site.js: every HTML page + sitemap.xml (aliases: html, sitemap)
+ *   gulp clean        delete everything in the output directory except img/
+ *   gulp css | fonts | js (alias babel) | static     copy src/ files into the output directory
+ *   gulp watch        build:site, then rebuild on changes + livereload       (npm run server-watch)
+ *   gulp server       dev web server for the output directory
+ *   gulp              watch, then server                                     (npm run server-start)
+ *
+ * Environment:
+ *   APP_DIR          output directory (default app; relative to this folder or absolute). clean keeps
+ *                    <APP_DIR>/img, also when it is a symlink, and never follows it.
+ *   GULP_PORT        dev server port (default 7000), GULP_HOST its address (default 0.0.0.0)
+ *   GULP_OPEN        0 = do not open a browser when the dev server starts (default 1)
+ *   LIVERELOAD_PORT  livereload server of `gulp watch` (default 35729, the port docker-compose maps)
+ */
 
-//server start
-gulp.task('server', () => {
-    gulp.src('app')
-        .pipe(server({
-            open: true,
-            port: 7000,
-            host: '0.0.0.0'
-        }));
-});
+const fs = require('fs');
+const path = require('path');
+const gulp = require('gulp');
 
-//images processing
-gulp.task('img', () => {
-    return gulp.src('src/img/**/*.*')
-        .pipe(imagemin({
-            interlaced: true,
-            progressive: true,
-            optimizationLevel: 5,
-            svgoPlugins: [
-                {
-                    removeViewBox: true
-                }
-            ]
-        }))
-        .pipe(gulp.dest('app/img'));
-});
+const ROOT = __dirname;
+const APP_DIR = path.resolve(ROOT, process.env.APP_DIR || 'app');
+const SERVER_PORT = Number(process.env.GULP_PORT || 7000);
+const SERVER_HOST = process.env.GULP_HOST || '0.0.0.0';
+const SERVER_OPEN = process.env.GULP_OPEN !== '0';
+const LIVERELOAD_PORT = Number(process.env.LIVERELOAD_PORT || 35729);
 
-gulp.task('validateHtml', () => {
-    return gulp.src('app/*.html')
-        .pipe(htmlValidator())
-        .pipe(htmlValidator.reporter());
-});
+const CSS_GLOBS = ['src/css/**/*.css', '!src/css/webfonts/**'];
+const FONT_GLOBS = ['src/css/webfonts/**'];
+const JS_GLOBS = ['src/js/**/*.js'];
+const STATIC_GLOBS = ['src/static/**', 'src/static/**/.*'];
+const PAGE_INPUTS = ['src/templates/**/*.mustache', 'data.json', 'src/img/manifest.json'];
 
-//css generation
-gulp.task('css', () => {
-    return gulp.src('src/css/**/*.css')
-        .pipe(gulp.dest('app/css'))
-        .pipe(livereload());
-});
+/** Refuse output directories whose cleaning would delete sources (the repository, src/, a parent, ...). */
+function assertSafeAppDir(dir) {
+  const inside = (child, parent) => {
+    const rel = path.relative(parent, child);
+    return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
+  };
+  const protectedDirs = ['src', 'scripts', 'tests', 'node_modules', '.git', '.github', 'ADR', '.claude'].map((d) => path.join(ROOT, d));
+  if (inside(ROOT, dir)) throw new Error(`APP_DIR ${dir} is the repository or one of its parents; refusing to clean it`);
+  if (dir === path.parse(dir).root) throw new Error('APP_DIR must not be the file system root');
+  for (const p of protectedDirs) if (inside(dir, p)) throw new Error(`APP_DIR ${dir} is inside ${p}; refusing to clean it`);
+}
 
-gulp.task('babel', () =>
-    gulp.src(
-        [
-            'src/js/**/*.js'
-        ])
-        .pipe(gulp.dest('app/js'))
-        .pipe(livereload())
-);
+/* ---------------------------------------------------------------------------------------------- */
 
-//html generation from mustache
-gulp.task('html', () => {
-    return gulp.src(["src/templates/**/*.html", "src/templates/**/*.mustache"])
-        .pipe(mustache('data.json', {}, {}))
-        .pipe(gulp.dest("app"))
-        .pipe(livereload());
-});
+function clean() {
+  assertSafeAppDir(APP_DIR);
+  fs.mkdirSync(APP_DIR, { recursive: true });
+  for (const entry of fs.readdirSync(APP_DIR, { withFileTypes: true })) {
+    if (entry.name === 'img') continue; // generated by `gulp img`; a directory or a symlink, never followed
+    fs.rmSync(path.join(APP_DIR, entry.name), { recursive: true, force: true });
+  }
+  return Promise.resolve();
+}
 
-//generates sitemap
-gulp.task('sitemap', () => {
-    gulp.src('app/*.html', {
-        read: false
-    })
-        .pipe(sitemap({
-            siteUrl: 'https://polina-shvedko.art'
-        }))
-        .pipe(gulp.dest('./app'));
-});
+function css() {
+  return gulp.src(CSS_GLOBS, { cwd: ROOT, base: path.join(ROOT, 'src', 'css') }).pipe(gulp.dest(path.join(APP_DIR, 'css')));
+}
 
-//copy fonts
-gulp.task('fonts', () => {
-    return gulp.src('src/css/webfonts/**/*.*')
-        .pipe(gulp.dest('app/css/webfonts'));
-});
+function fonts() {
+  return gulp.src(FONT_GLOBS, { cwd: ROOT, base: path.join(ROOT, 'src', 'css', 'webfonts') }).pipe(gulp.dest(path.join(APP_DIR, 'css', 'webfonts')));
+}
 
-//watch task
-gulp.task('watch', gulp.series(gulp.parallel('css', 'babel', 'html'), (done) => {
-    gulp.watch('src/css/*.css', {interval: 1000, usePolling: true}, gulp.parallel('css'));
-    gulp.watch('src/js/*.js', {interval: 1000, usePolling: true}, gulp.parallel('babel'));
-    gulp.watch('src/templates/**/*.*', {interval: 1000, usePolling: true}, gulp.parallel('html'));
-    done();
-}));
+function js() {
+  return gulp.src(JS_GLOBS, { cwd: ROOT, base: path.join(ROOT, 'src', 'js') }).pipe(gulp.dest(path.join(APP_DIR, 'js')));
+}
 
-//validation of html
-gulp.task('validate-html', gulp.series('validateHtml'));
+/* src/static/** incl. dotfiles (.htaccess, robots.txt) -> the output root */
+function statics() {
+  return gulp.src(STATIC_GLOBS, { cwd: ROOT, base: path.join(ROOT, 'src', 'static'), dot: true }).pipe(gulp.dest(APP_DIR));
+}
+statics.displayName = 'static';
 
-//validation of html
-gulp.task('build', gulp.series('css', 'babel', 'html', 'img', 'fonts'));
+function pages() {
+  return require('./scripts/build-site.js').build({ root: ROOT, outDir: APP_DIR, log: console.log });
+}
 
-//default task which is running simply from command line with gulp
+function img() {
+  return require('./scripts/images.js').run({ root: ROOT, appDir: APP_DIR });
+}
+
+gulp.task('clean', clean);
+gulp.task('css', css);
+gulp.task('fonts', fonts);
+gulp.task('js', js);
+gulp.task('babel', js); // old name, kept for muscle memory: nothing is transpiled
+gulp.task('static', statics);
+gulp.task('pages', pages);
+gulp.task('html', pages);
+gulp.task('sitemap', pages);
+gulp.task('img', img);
+gulp.task('build:site', gulp.series(clean, gulp.parallel(css, fonts, js, statics), pages));
+gulp.task('build', gulp.series(img, 'build:site'));
+
+/* ---------------------------------------------------------------------------------------------- */
+
+function watchFiles() {
+  const livereload = require('gulp-livereload');
+  livereload.listen({ port: LIVERELOAD_PORT, quiet: true });
+  const reload = () => {
+    livereload.reload();
+    return Promise.resolve();
+  };
+  // Polling, as before: file events do not reach the Docker container through the bind mount.
+  const opts = { cwd: ROOT, interval: 1000, usePolling: true };
+  // CSS and JS URLs carry a content hash (?v=), so the pages are rebuilt after every CSS or JS change.
+  gulp.watch(CSS_GLOBS, opts, gulp.series(css, pages, reload));
+  gulp.watch(FONT_GLOBS, opts, gulp.series(fonts, pages, reload));
+  gulp.watch(JS_GLOBS, opts, gulp.series(js, pages, reload));
+  gulp.watch(STATIC_GLOBS, opts, gulp.series(statics, reload));
+  gulp.watch(PAGE_INPUTS, opts, gulp.series(pages, reload));
+  console.log(`watching src/ and data.json; livereload on port ${LIVERELOAD_PORT}; output ${APP_DIR}`);
+  return Promise.resolve();
+}
+
+function server() {
+  const webserver = require('gulp-webserver');
+  if (!fs.existsSync(APP_DIR)) throw new Error(`${APP_DIR} does not exist; run "npm run build:site" first`);
+  return gulp.src(APP_DIR, { read: false }).pipe(webserver({ host: SERVER_HOST, port: SERVER_PORT, open: SERVER_OPEN }));
+}
+
+gulp.task('watch', gulp.series('build:site', watchFiles));
+gulp.task('server', server);
 gulp.task('default', gulp.series('watch', 'server'));

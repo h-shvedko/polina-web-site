@@ -1,0 +1,16 @@
+{{!
+  Home page "/" (SPEC section 7): hero, intro, one gallery section per hub with all its cards, about me,
+  Instagram mosaic, contact. View: scripts/build-site.js (home).
+}}
+{{> head}}
+{{> hero}}
+<main id="main" class="home">
+{{> intro}}
+{{#galleries}}
+{{> gallery}}
+{{/galleries}}
+{{> about-me}}
+{{> instagram}}
+{{> contact}}
+</main>
+{{> foot}}

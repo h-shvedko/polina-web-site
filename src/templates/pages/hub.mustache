@@ -1,0 +1,24 @@
+{{!
+  Hub page "/<hub path>/" (SPEC section 7): breadcrumb, h1, intro paragraphs, all cards of the hub
+  (card titles are h2 here, below the h1).
+}}
+{{> head}}
+<main id="main" class="hub hub--{{hub.key}}">
+{{> breadcrumb}}
+<header class="hub__header">
+<h1 class="hub__title">{{hub.h1}}</h1>
+<div class="hub__intro">
+{{#hub.intro}}
+<p>{{.}}</p>
+{{/hub.intro}}
+</div>
+</header>
+<div class="gallery gallery--hub gallery--{{hub.key}}">
+<div class="gallery__grid">
+{{#hub.cards}}
+{{> card}}
+{{/hub.cards}}
+</div>
+</div>
+</main>
+{{> foot}}

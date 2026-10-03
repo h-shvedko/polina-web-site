@@ -1,0 +1,14 @@
+{{!
+  "Artist from Germany" intro (home and about page): avatar, heading, text exactly as on the current site.
+  Home adds the "More about me" link to /about/.
+}}
+<section class="intro" id="intro" aria-labelledby="intro-heading">
+<div class="intro__inner">
+{{#intro.avatar}}{{> picture}}{{/intro.avatar}}
+<h2 class="intro__heading" id="intro-heading">Artist from Germany</h2>
+<p class="intro__text">I'm a German artist specializing in pastels, oils, and inks. With a formal art education and a lifelong passion for drawing, I continue to explore new ways of expressing emotion and storytelling through color and texture.</p>
+{{#intro.more_link}}
+<div class="intro__actions"><a class="intro__more pill" href="/about/">More about me</a></div>
+{{/intro.more_link}}
+</div>
+</section>

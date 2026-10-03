@@ -1,0 +1,22 @@
+{{!
+  Artwork card on home and hub pages (SPEC section 8): one link per card, two pictures (the hover image fades
+  in over the first one), badge only for works in a private collection, h3 title (h2 on hub pages).
+}}
+<article class="card{{#wide}} card--wide{{/wide}}">
+<a class="card__link" href="{{href}}">
+<div class="card__media">
+{{#image}}{{> picture}}{{/image}}
+{{#hover}}{{> picture}}{{/hover}}
+{{#badge}}
+<span class="card__badge">{{badge}}</span>
+{{/badge}}
+</div>
+{{#h2}}
+<h2 class="card__title">{{title}}</h2>
+{{/h2}}
+{{^h2}}
+<h3 class="card__title">{{title}}</h3>
+{{/h2}}
+<span class="card__more pill">MORE</span>
+</a>
+</article>

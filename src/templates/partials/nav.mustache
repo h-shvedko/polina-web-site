@@ -1,0 +1,14 @@
+{{!
+  Sticky site navigation (SPEC section 8). Home starts with site-nav--hidden (nav.js shows it after the hero),
+  every other page with site-nav--visible. The link of the current page has aria-current="page".
+}}
+<nav id="site-nav" class="site-nav {{nav.state_class}}" aria-label="Site navigation">
+<div class="site-nav__inner">
+<a class="site-nav__logo" href="/">{{site.name}}</a>
+<ul class="site-nav__links">
+{{#nav.items}}
+<li class="site-nav__item"><a class="site-nav__link" href="{{href}}"{{#current}} aria-current="page"{{/current}}>{{label}}</a></li>
+{{/nav.items}}
+</ul>
+</div>
+</nav>

@@ -1,0 +1,64 @@
+{{!
+  Artwork page "/<hub path>/<slug>/" (SPEC sections 7 and 8), laid out like the old popup: image gallery
+  beside the text on desktop, stacked on phones. Order in the info column as in the popup: title,
+  description, status line, facts (medium, size, frame, year), contact button.
+  artwork.js switches the images; without JavaScript all images are shown one below the other.
+}}
+{{> head}}
+<main id="main" class="artwork artwork--{{hub.key}}">
+{{> breadcrumb}}
+<div class="artwork__layout">
+<div class="artwork__gallery{{#artwork.multiple}} artwork__gallery--multiple{{/artwork.multiple}}">
+<div class="artwork__stage">
+<div class="artwork__main" id="artwork-images">
+{{#artwork.slides}}{{> picture}}
+{{/artwork.slides}}
+</div>
+{{#artwork.multiple}}
+<button type="button" class="artwork__prev" aria-controls="artwork-images" aria-label="Previous image" hidden>{{> icon-chevron-left}}</button>
+<button type="button" class="artwork__next" aria-controls="artwork-images" aria-label="Next image">{{> icon-chevron-right}}</button>
+{{/artwork.multiple}}
+</div>
+{{#artwork.multiple}}
+<div class="artwork__thumbs">
+{{#artwork.thumbs}}
+<button type="button" class="artwork__thumb" data-index="{{index}}" aria-current="{{current}}" aria-controls="artwork-images" aria-label="Show image {{number}} of {{count}}">{{#image}}{{> picture}}{{/image}}</button>
+{{/artwork.thumbs}}
+</div>
+{{/artwork.multiple}}
+</div>
+<div class="artwork__info">
+<h1 class="artwork__title">{{artwork.title}}</h1>
+<div class="artwork__description">
+{{#artwork.description}}
+<p>{{.}}</p>
+{{/artwork.description}}
+</div>
+<p class="artwork__status artwork__status--{{artwork.status}}">{{artwork.status_text}}</p>
+<dl class="artwork__facts">
+{{#artwork.facts}}
+<div class="artwork__fact artwork__fact--{{key}}"><dt>{{label}}</dt><dd>{{value}}</dd></div>
+{{/artwork.facts}}
+</dl>
+<div class="artwork__actions"><a class="artwork__cta pill" href="{{artwork.cta_href}}" data-track="contact" data-location="artwork" data-artwork-slug="{{artwork.slug}}">{{artwork.cta_label}}</a></div>
+</div>
+</div>
+{{#artwork.story}}
+<section class="artwork__story" aria-labelledby="story-heading">
+<h2 class="artwork__story-heading" id="story-heading">Story</h2>
+<div class="artwork__story-body">
+{{{html}}}
+</div>
+</section>
+{{/artwork.story}}
+<nav class="artwork__pager" aria-label="{{hub.pager_label}}">
+{{#artwork.prev}}
+<a class="artwork__pager-link artwork__pager-link--prev" rel="prev" href="{{href}}"><span class="artwork__pager-label">Previous</span> <span class="artwork__pager-title">{{title}}</span></a>
+{{/artwork.prev}}
+{{#artwork.next}}
+<a class="artwork__pager-link artwork__pager-link--next" rel="next" href="{{href}}"><span class="artwork__pager-label">Next</span> <span class="artwork__pager-title">{{title}}</span></a>
+{{/artwork.next}}
+</nav>
+<div class="artwork__back-wrap"><a class="artwork__back" href="/{{hub.path}}/">{{hub.all_link}}</a></div>
+</main>
+{{> foot}}

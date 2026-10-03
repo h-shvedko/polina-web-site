@@ -1,0 +1,16 @@
+{{!
+  Home hero (SPEC sections 1 and 8): poster picture + play button (facade; hero.js replaces the poster with the
+  youtube-nocookie.com video on click), h1 with the tagline, e-mail link, Explore Artworks pill, arrow.
+}}
+<header class="hero" id="top">
+<div class="hero__media">
+{{#hero.poster}}{{> picture}}{{/hero.poster}}
+<button type="button" class="hero__play" data-youtube-id="{{site.youtube_id}}" aria-label="Play the video">{{> icon-play}}</button>
+</div>
+<div class="hero__content">
+<h1 class="hero__title">Polina Shvedko Art <span class="hero__tagline">Oil paintings, pastels &amp; watercolours</span></h1>
+<p class="hero__descr"><a class="hero__email" href="{{site.mailto}}" data-track="contact" data-location="hero">{{site.email}}</a></p>
+<div class="hero__buttons"><a class="hero__cta" href="{{hero.cta_href}}">Explore Artworks</a></div>
+</div>
+<span class="hero__arrow" aria-hidden="true">{{> icon-arrow-down}}</span>
+</header>

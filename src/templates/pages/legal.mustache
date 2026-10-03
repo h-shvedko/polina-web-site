@@ -1,0 +1,13 @@
+{{!
+  Imprint and privacy pages: generated only when data.json legal.imprint_html / legal.privacy_html is set.
+  The HTML comes from data.json as it is.
+}}
+{{> head}}
+<main id="main" class="page page--legal">
+{{> breadcrumb}}
+<h1 class="page__title">{{legal.title}}</h1>
+<div class="page__legal">
+{{{legal.html}}}
+</div>
+</main>
+{{> foot}}
