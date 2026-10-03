@@ -27,6 +27,7 @@ Each ADR documents a significant decision, analysis, or implementation plan.
 |---|---|---|---|---|
 | [ADR-0001](ADR0001-ga4-analysis-and-recommendations.md) | GA4 Analytics Analysis & Growth Recommendations | Partially Implemented | 2026-04-15 | 90-day GA4 analysis; conversion tracking, JSON-LD, SEO, CI/CD deploy, bot guidance |
 | [ADR-0002](ADR0002-ux-feature-backlog.md) | UX & Feature Backlog | Partially Implemented | 2026-04-15 | Sticky nav, popup inquiry, gallery filtering, artwork year, blog system |
+| [ADR-0003](ADR0003-seo-rebuild-artwork-pages.md) | SEO Rebuild — One Page per Artwork, No Tilda, No Shop | Proposed | 2026-10-03 | Artwork pages under medium hubs, remove Tilda, cart, prices and blog; image, redirect, sitemap and consent fixes |
 
 ---
 
