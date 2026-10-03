@@ -1,0 +1,9 @@
+{
+  "$schema": "https://html-validate.org/schemas/config.json",
+  "root": true,
+  "extends": ["html-validate:recommended", "html-validate:document"],
+  "rules": {
+    "prefer-native-element": ["error", { "exclude": ["region"] }],
+    "require-sri": ["error", { "target": "crossorigin" }]
+  }
+}
