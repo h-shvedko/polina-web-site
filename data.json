@@ -1,856 +1,1200 @@
 {
-  "oil_gallery": {
-    "carousel_id": "500073021",
-    "artworks": [
+  "site": {
+    "url": "https://polina-shvedko.art",
+    "name": "Polina Shvedko",
+    "lastmod": "2026-10-03",
+    "email": "polina.shvedko.artist@gmail.com",
+    "ga_measurement_id": "G-G10K54YDPQ",
+    "youtube_id": "ZhErK72D2R4",
+    "seo_title": "Polina Shvedko — Oil Paintings, Pastels and Watercolours",
+    "seo_description": "Explore original oil paintings, pastels and watercolours by Polina Shvedko, an artist from Germany: the sea and the coast, flowers and quiet city corners.",
+    "social": [
       {
-        "lid": "1714474492218",
-        "title": "Affectionate Farewell, Cap d'Antibes, France",
-        "description": "The weary sun was tenderly bidding farewell to the sea.<br>The blue of day still rippled, yet gently and relentlessly the twilight was absorbing it.<br>A soundless advance, a sweet captivity.<br>Dinner was being prepared aboard the yachts, and white wine in translucent glasses held the already pale sun resting at the bottom.<br>Antibes would soon become alluring in the shimmer of its lights, yet they could not rival the stars.",
-        "medium": "Oil, Canvas",
-        "dimensions": "190 х 45cm",
-        "price": "8000",
-        "col_class": "t-col_12",
-        "img_padding": "32.407407407407%",
-        "preview1": "img/gallery/picture32_1.jpg",
-        "preview2": "img/gallery/picture32_2.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture32_1.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture32_2.jpg"
-          },
-          {
-            "slide_index": "3",
-            "bullet_index": "3",
-            "path": "img/gallery/picture32_3.jpg"
-          },
-          {
-            "slide_index": "4",
-            "bullet_index": "4",
-            "path": "img/gallery/picture32_4.jpg"
-          },
-          {
-            "slide_index": "5",
-            "bullet_index": "5",
-            "path": "img/gallery/picture32_5.jpg"
-          },
-          {
-            "slide_index": "6",
-            "bullet_index": "6",
-            "path": "img/gallery/picture32_6.jpg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2024
+        "name": "Instagram",
+        "url": "https://www.instagram.com/polina_shvedko/"
       },
       {
-        "lid": "1714474492215",
-        "title": "Turquoise Silence of the Verdon Gorge",
-        "description": "\"Turquoise Silence of the Verdon Gorge\" immerses you in the tranquil embrace of a hidden canyon lake, where steep, textured cliffs rise dramatically above the water. Paddlers drift in solitude across the luminous blue, dwarfed by nature's monumental architecture. The painting evokes a meditative calm, blending stillness with the awe of raw, unspoiled beauty.",
-        "medium": "Oil, Canvas",
-        "dimensions": "80 х 80cm",
-        "price": "8000",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture30_1_preview.jpg",
-        "preview2": "img/gallery/picture30_2_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture30_1.png"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture30_2.jpg"
-          },
-          {
-            "slide_index": "3",
-            "bullet_index": "3",
-            "path": "img/gallery/picture30_3.jpg"
-          },
-          {
-            "slide_index": "4",
-            "bullet_index": "4",
-            "path": "img/gallery/picture30_4.jpg"
-          },
-          {
-            "slide_index": "5",
-            "bullet_index": "5",
-            "path": "img/gallery/picture30_5.jpg"
-          }
-        ],
-        "year": 2023
+        "name": "Facebook",
+        "url": "https://www.facebook.com/polina.shvedko.artist"
       },
       {
-        "lid": "1714474492216",
-        "title": "Whispers of the Coastal Wind",
-        "description": "\"Whispers of the Coastal Wind\" captures a serene cove where gentle waves kiss the sand and weathered boats rest in quiet anticipation. A rugged rock formation crowned with wind-swept trees stands watch over the bay, echoing nature's enduring presence. The soft interplay of sunlight and shadow invites a sense of nostalgia, as if time itself slows along this peaceful shoreline.",
-        "medium": "Oil, Canvas",
-        "dimensions": "80 х 80cm",
-        "price": "8000",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture31_1_preview.jpg",
-        "preview2": "img/gallery/picture31_3_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture31_1.png"
-          },
-          {
-            "slide_index": "3",
-            "bullet_index": "2",
-            "path": "img/gallery/picture31_3.jpg"
-          },
-          {
-            "slide_index": "4",
-            "bullet_index": "3",
-            "path": "img/gallery/picture31_4.jpg"
-          }
-        ],
-        "year": 2023
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/company/polina-shvedko/"
       },
       {
-        "lid": "1714474492131",
-        "title": "Vibrant Cliffs of the Brava Coast",
-        "description": "Vibrant Cliffs of the Brava Coast (Inspired by P. Molina) captures warm twilight on a rugged Mediterranean coast. Painted in oil on an 18 × 24 cm canvas, golden hues merge with deep blues, evoking serenity at day's end. Layered brushstrokes enhance the coastline's charm, inviting the viewer to savor nature's fleeting beauty.",
-        "medium": "Oil, Canvas",
-        "dimensions": "18 х 24cm",
-        "price": "300",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture11_1_preview.jpeg",
-        "preview2": "img/gallery/picture11_2_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture11_1.jpeg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture11_2.jpeg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2022
-      },
-      {
-        "lid": "1714474492114",
-        "title": "Cala Secreta: A Costa Brava Hideaway",
-        "description": "\"Cala Secreta: A Costa Brava Hideaway\" (Inspired by P. Molina) reveals a secluded cove embraced by sun-kissed cliffs. Vibrant oranges and reds enliven the rocky landscape, while turquoise waters shimmer in gentle contrast. Soft brushstrokes capture the dreamlike allure of this hidden gem. The painting invites you to escape into the tranquil harmony of nature's vibrant palette.",
-        "medium": "Oil, Canvas",
-        "dimensions": "18 х 24cm",
-        "price": "300",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture14_1_preview.jpeg",
-        "preview2": "img/gallery/picture14_2_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture14_1.jpeg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture14_2.jpeg"
-          }
-        ],
-        "year": 2022
-      },
-      {
-        "lid": "1714474492133",
-        "title": "Boats in the Bay of Roses",
-        "description": "Boats in the Bay of Roses (Inspired by P. Molina) depicts a tranquil moment of repose. Painted in oil on a 30 × 24 cm canvas, gentle brushstrokes and soft sunlight create an atmosphere of warmth and serenity. Muted hues and subtle details invite viewers to pause and embrace the painting's calming aura.",
-        "medium": "Oil, Canvas",
-        "dimensions": "30 х 24cm",
-        "price": "500",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture13_1.jpeg",
-        "preview2": "img/gallery/picture13_2.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture13_1.jpeg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture13_2.jpeg"
-          }
-        ],
-        "year": 2022
-      },
-      {
-        "lid": "1714474492115",
-        "title": "Evening Glow on the Brava Shore",
-        "description": "\"Evening Glow on the Brava Shore (Inspired by P. Molina)\" casts a tender pink hue across a tranquil harbor. A warm, dusky sky envelops the moored boats in gentle reflections, while a cozy villa onshore glimmers in the fading light. Vibrant blooms add to the dreamy twilight ambiance, merging nature's palette with architectural charm. The soft brushstrokes evoke quiet contemplation, inviting you to linger in the moment between day and night.",
-        "medium": "Oil, Canvas",
-        "dimensions": "30 х 24cm",
-        "price": "500",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture15_1_preview.jpeg",
-        "preview2": "img/gallery/picture15_2_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture15_1.jpeg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture15_2.jpeg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2021
-      },
-      {
-        "lid": "1714474492116",
-        "title": "Sunset in a honey dream",
-        "description": "\"Sunset Harbor Dreams\" captures the gentle glow of late evening as a sailboat glides across calm, sun-kissed waters. Soft reflections dance along the surface, while hints of coral and honey paint the sky with serene beauty. This fleeting moment of dusk invites you to pause and embrace the tranquility of day's end. Background: Synthetic paper (polymer-based) on a wooden frame, 90 cm × 60 cm.",
-        "medium": "Oil, Canvas",
-        "dimensions": "90 х 60cm",
-        "price": "1500",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture16_1_preview.jpeg",
-        "preview2": "img/gallery/picture16_2_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture16_1.jpeg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2021
+        "name": "Etsy",
+        "url": "https://www.etsy.com/shop/PolinaShvedko"
       }
-    ]
+    ],
+    "images": {
+      "hero_poster": "img/hero-poster.jpg",
+      "avatar": "img/avatar.jpg",
+      "photo": "img/photo.jpg",
+      "portrait": "img/portrait.jpg",
+      "og_default": "img/gallery/picture32_1.jpg"
+    }
   },
-  "pastel_gallery": {
-    "carousel_id": "500073021",
-    "artworks": [
-      {
-        "lid": "1714474492132",
-        "title": "Fishing village",
-        "description": "This pastel painting captures the charm of a quaint waterfront village. Vibrant colors bring life to the houses, blooming trees, and moored boats, while their soft reflections dance across the water's surface. The expressive strokes and dreamlike atmosphere evoke the beauty of a serene harbor scene. This piece celebrates the timeless allure of small-town coastal life with a touch of artistic whimsy.",
-        "medium": "Pastel, Pastelpapier",
-        "dimensions": "32 х 32cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture12_1.jpeg",
-        "preview2": "img/gallery/picture12_1.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture12_1.jpeg"
-          }
-        ],
-        "year": 2023
-      },
-      {
-        "lid": "1714474492122",
-        "title": "Hortensien",
-        "description": "This pastel painting showcases a vibrant arrangement of hydrangeas in full bloom, set in a simple yet elegant pot. The rich purples and blues of the flowers contrast beautifully with the lush green leaves, while the soft gray tones of the background enhance their vividness. The delicate play of light and shadow on the tiled surface adds depth and realism to the composition. This piece captures the quiet beauty of a garden moment, evoking a sense of serenity and grace.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "29.7 х 42cm<br>Frame (wood and glass)",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture2_1_preview.jpg",
-        "preview2": "img/gallery/picture2_2.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture2_0.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture2_1.jpg"
-          },
-          {
-            "slide_index": "3",
-            "bullet_index": "3",
-            "path": "img/gallery/picture2_2.jpg"
-          },
-          {
-            "slide_index": "4",
-            "bullet_index": "4",
-            "path": "img/gallery/interior.jpg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492123",
-        "title": "Bouquet of wild flowers",
-        "description": "This pastel painting captures the delicate beauty of a wildflower bouquet arranged in a soft, rounded vase. The vibrant yellows, pinks, and whites of the flowers stand out against a warm, muted background, creating a sense of natural elegance. The subtle highlights on the vase add a touch of light, completing this serene and timeless composition.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "Size 32 х 41cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture3_1_preview.jpg",
-        "preview2": "img/gallery/picture3_1_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture3_1.jpg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2022
-      },
-      {
-        "lid": "1714474492130",
-        "title": "Hamburg, Main railway station",
-        "description": "This pastel painting showcases the iconic Hamburg Main Railway Station, a masterpiece of historic architecture set against a dramatic sky. The intricate details of the clock tower and arched glass roofs are brought to life with rich textures and vibrant pastel tones. The soft hues of the evening sky add a sense of tranquility, balancing the grandeur of this bustling urban landmark. It's a tribute to Hamburg's vibrant history and timeless charm.",
-        "medium": "Pastel, Pastelpapier",
-        "dimensions": "32 х 41cm<br>Frame (plastic and glass)",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture10_1_preview.jpg",
-        "preview2": "img/gallery/picture10_1_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture10_1.jpg"
-          },
-          {
-            "slide_index": "1",
-            "bullet_index": "2",
-            "path": "img/gallery/picture10_2.jpg"
-          },
-          {
-            "slide_index": "1",
-            "bullet_index": "3",
-            "path": "img/gallery/picture10_3.jpg"
-          }
-        ],
-        "year": 2023
-      },
-      {
-        "lid": "1714474492124",
-        "title": "Afternoon Ride in the Countryside",
-        "description": "This pastel painting features two cyclists on a leisurely journey along a tree-lined path, framed by rolling green hills. Subtle shifts in color and soft pastel strokes evoke the gentle warmth of a late afternoon glow. The scene exudes calm and simple joy, inviting you to share in the peaceful rhythm of the countryside.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "Size 41 х 32cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture17_1_preview.jpeg",
-        "preview2": "img/gallery/picture17_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture17_1.jpeg"
-          }
-        ],
-        "year": 2023
-      },
-      {
-        "lid": "1714474492125",
-        "title": "Blossoms in a Blue Pot",
-        "description": "This pastel painting captures the vibrant beauty of pink hydrangeas in full bloom, arranged in a simple blue pot. The soft blending of textures and colors highlights the lush greenery and delicate petals. With a muted, warm background, the composition exudes a timeless charm, inviting you to savor the serenity and natural elegance of the scene.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture18_1_preview.jpeg",
-        "preview2": "img/gallery/picture18_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture18_1.jpeg"
-          },
-          {
-            "slide_index": "1",
-            "bullet_index": "2",
-            "path": "img/gallery/picture18_2.jpg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2024
-      },
-      {
-        "lid": "1714474492126",
-        "title": "Forget-Me-Nots in Glass",
-        "description": "This pastel painting delicately portrays a bouquet of vibrant blue forget-me-nots arranged in a simple glass jar. The soft strokes bring life to the delicate flowers, while the warm, textured background adds depth and contrast. Gentle highlights on the jar and leaves evoke a sense of light and airiness, enhancing the painting's natural elegance. This piece captures the timeless beauty of a humble yet heartfelt floral arrangement.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture19_1_preview.jpg",
-        "preview2": "img/gallery/picture19_1_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture19_1.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/interior.jpg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492127",
-        "title": "Lilacs in Bloom",
-        "description": "This pastel painting captures the timeless beauty of lilacs in a delicate glass vase. The soft purples and whites of the blossoms are contrasted with rich green leaves, creating a harmonious and vibrant composition. Subtle highlights and shadows bring depth and texture to the floral arrangement, while the muted background enhances its elegance. This piece evokes a sense of freshness and the fleeting charm of springtime.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture20_1_preview.jpg",
-        "preview2": "img/gallery/picture20_1_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture20_1.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/interior.jpg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492128",
-        "title": "Elegance in Roses",
-        "description": "This pastel painting exudes the delicate beauty of soft pink and blush roses arranged in a graceful bouquet. Subtle highlights and gentle textures bring the petals to life, while vibrant green leaves provide a fresh contrast. The dreamy, muted background in shades of lilac and gray enhances the composition's ethereal charm. This piece captures the timeless elegance and romantic allure of blooming roses.",
-        "medium": "Pastel, pastel paper",
-        "dimensions": "32 х 23.5cm<br>Frame (wood and glass — 50 х 40cm)",
-        "price": "300",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture21_1_preview.jpg",
-        "preview2": "img/gallery/picture21_1_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture21_1.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/interior.jpg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2024
-      },
-      {
-        "lid": "1714474492129",
-        "title": "Winter Magic: A Göttingen Holiday Tribute",
-        "description": "These pastel paintings, created for Copernicus GmbH, beautifully capture the festive spirit of the holiday season. The first artwork portrays a charming view of a historic building adorned with wintery decorations, with a sparkling emblem and evergreen branches enhancing its festive atmosphere. The second painting leads viewers down a snowy street lit by glowing lanterns, with a whimsical Santa figure adding warmth to the serene night scene. Together, these pieces evoke the magic and charm of winter traditions and holiday cheer.",
-        "medium": "Pastel and ink, pastel paper",
-        "dimensions": "Size 26,5 х 37cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture_22_1_preview.jpg",
-        "preview2": "img/gallery/picture_22_2_preview.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture_22_1.jpg"
-          },
-          {
-            "slide_index": "1",
-            "bullet_index": "2",
-            "path": "img/gallery/picture_22_2.jpg"
-          }
-        ],
-        "year": 2023
-      }
-    ]
+  "pages": {
+    "about": {
+      "seo_title": "About Polina Shvedko — Artist from Germany",
+      "seo_description": "Meet Polina Shvedko, a freelance artist from Germany with a formal art education who works in oil, pastel and ink. Water is her inspiration."
+    },
+    "contact": {
+      "seo_title": "Contact Polina Shvedko — Artist from Germany",
+      "seo_description": "Questions about a painting? Write to Polina Shvedko, an artist from Germany, by email, or follow her work on Instagram, Facebook and LinkedIn."
+    }
   },
-  "aquarell_gallery": {
-    "carousel_id": "500073021",
-    "artworks": [
-      {
-        "lid": "1714474492121",
-        "title": "Blossoms at the Biergarten",
-        "description": "This ink and watercolor painting captures the serene beauty of a quiet Biergarten in full bloom. Vibrant splashes of pink blossoms contrast with the crisp black ink lines of the empty chairs and tables, creating a delicate balance between nature and structure. The soft, scattered petals add a touch of whimsy, evoking the peaceful charm of a spring day under the flowering trees. The scene invites viewers to imagine a tranquil moment in this picturesque setting.",
-        "medium": "Aquarell, Ink",
-        "dimensions": "Size 29,7 x 42 cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture1_1.JPG",
-        "preview2": "img/gallery/picture1_2.JPG",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture1_1.JPG"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture1_2.JPG"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492124",
-        "title": "Springtime Along the Canal",
-        "description": "This watercolor and ink painting captures the quiet charm of a canal-side street adorned with blooming pink and purple trees. The soft splashes of color contrast beautifully with the crisp lines of the brick walls and lampposts, creating a harmonious balance between nature and architecture. The tranquil water reflects the vibrant blossoms, adding to the serene and dreamlike atmosphere of a peaceful spring day.",
-        "medium": "Aquarell, Ink",
-        "dimensions": "Size 29,7 x 42 cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture4_1.jpg",
-        "preview2": "img/gallery/picture4_1.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture4_1.jpg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492125",
-        "title": "Golden Hour on the Corner",
-        "description": "This vibrant watercolor painting depicts a sunlit corner building, its elegant balconies and warm facade glowing under the soft light of the golden hour. Dynamic brushstrokes and splashes of color bring energy and depth to the scene, while the interplay of shadow and light highlights the building's intricate architectural details. The composition invites viewers to experience the charm and vibrancy of urban life at its most picturesque moment.",
-        "medium": "Aquarell, Ink",
-        "dimensions": "Size 29,7 x 42 cm",
-        "price": "100",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture5_1.jpg",
-        "preview2": "img/gallery/picture5_2.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture5_1.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture5_2.jpg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2023
-      },
-      {
-        "lid": "1714474492126",
-        "title": "St. Albani in the Afternoon",
-        "description": "This watercolor and ink painting portrays the historic charm of St. Albani Church bathed in soft daylight. The detailed brushwork highlights the building's timeless architecture, while the vibrant sky adds a sense of calm and openness. A scooter parked in the foreground adds a contemporary touch, blending past and present in this serene urban scene. The composition invites viewers to appreciate the quiet beauty of a peaceful moment in front of a storied landmark.",
-        "medium": "Aquarell, Ink",
-        "dimensions": "26 x 38 cm<br>Frame (plastic and glass)",
-        "price": "350",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture6_1.png",
-        "preview2": "img/gallery/picture6_3.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture6_1.png"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "2",
-            "path": "img/gallery/picture6_2.jpg"
-          },
-          {
-            "slide_index": "2",
-            "bullet_index": "3",
-            "path": "img/gallery/picture6_3.jpg"
-          }
-        ],
-        "year": 2023
-      },
-      {
-        "lid": "1714474492129",
-        "title": "By the Old Watermill",
-        "description": "This watercolor and ink painting captures the tranquil charm of a historic watermill scene. The soft hues of purple and blue reflect off the calm water, while the intricate architectural details of the mill and bridge are brought to life through delicate linework. A lone cyclist crossing the bridge adds a touch of modern life to the peaceful, timeless setting. This piece evokes a sense of quiet nostalgia and connection to the past.",
-        "medium": "Aquarell, Ink",
-        "dimensions": "29,7 x 42 cm<br>Frame (plastic and glass)",
-        "price": "350",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture9_1.jpg",
-        "preview2": "img/gallery/picture9_1.jpg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture9_1.jpg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492131",
-        "title": "Café on a Sunny Corner",
-        "description": "This watercolor painting captures the lively charm of a bustling café with its vibrant red awnings and the gentle shade of nearby trees. The soft, flowing brushstrokes bring the warmth of a sunny day to life, while the subtle interplay of light and shadow enhances the building's character. The scene invites viewers to pause and soak in the relaxed ambiance of a perfect moment in a quaint urban setting.",
-        "medium": "Aquarell, ink",
-        "dimensions": "Size 30 х 42cm",
-        "price": "100",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture23_1_preview.jpeg",
-        "preview2": "img/gallery/picture23_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture23_1.jpeg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2023
-      },
-      {
-        "lid": "1714474492132",
-        "title": "The Street of Timeless Charm",
-        "description": "This watercolor and ink painting captures the elegance of a quiet urban street corner. The building's warm tones contrast beautifully with the cool blues of the surrounding scene, evoking a peaceful yet vibrant atmosphere. The delicate lines and soft washes of color highlight the timeless character of the architecture, inviting viewers to wander through this charming street.",
-        "medium": "Aquarell, ink",
-        "dimensions": "Size 21 х 30cm",
-        "price": "100",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture24_1_preview.jpeg",
-        "preview2": "img/gallery/picture24_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture24_1.jpeg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492133",
-        "title": "Under the Red Awning",
-        "description": "This watercolor and ink painting depicts the cozy charm of a café on a quiet street corner, framed by a vibrant red awning. Silhouetted figures pass by, adding life and movement to the scene. The soft washes of color and subtle reflections on the ground evoke the tranquil beauty of a rainy urban afternoon. The composition invites viewers to pause and enjoy the warmth of a fleeting moment.",
-        "medium": "Aquarell, ink",
-        "dimensions": "Size 30 х 42cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture25_1_preview.jpeg",
-        "preview2": "img/gallery/picture25_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture25_1.jpeg"
-          }
-        ],
-        "year": 2023
-      },
-      {
-        "lid": "1714474492134",
-        "title": "The Corner Café in Perspective",
-        "description": "This watercolor and ink painting captures a dynamic urban scene from a bird's-eye perspective, showcasing a café with striking red awnings nestled at a street corner. Bold lines and soft washes of blue and gray create depth, while the vibrant red provides a focal point amidst the bustling streets. The interplay of light and shadow evokes a lively city atmosphere, inviting viewers to explore the energy of this architectural composition.",
-        "medium": "Aquarell, ink",
-        "dimensions": "Size 30 х 42cm",
-        "price": "250",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture26_1_preview.jpeg",
-        "preview2": "img/gallery/picture26_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture26_1.jpeg"
-          }
-        ],
-        "clear_after": true,
-        "year": 2024
-      },
-      {
-        "lid": "1714474492135",
-        "title": "The Lone Windmill",
-        "description": "This ink and watercolor painting captures the rustic charm of a solitary windmill standing against a minimalist backdrop. The bold, expressive lines emphasize the windmill's structure, while soft washes of gray and muted tones evoke a quiet, nostalgic atmosphere. The piece invites viewers to reflect on the enduring beauty of simple, rural landscapes.",
-        "medium": "Aquarell, ink",
-        "dimensions": "Size 21 х 29.5cm",
-        "price": "100",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture27_1_preview.jpeg",
-        "preview2": "img/gallery/picture27_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture27_1.jpeg"
-          }
-        ],
-        "year": 2023
-      },
-      {
-        "lid": "1714474492136",
-        "title": "A Quiet Stroll in the Park",
-        "description": "This ink and watercolor painting captures the serene charm of a peaceful park scene. The gentle curves of the pathway lead the viewer's eye through the composition, past bare trees and simple benches. Soft washes of gray and subtle hints of color evoke a calm, contemplative atmosphere, inviting viewers to reflect on the quiet beauty of a leisurely walk in nature.",
-        "medium": "Aquarell, ink",
-        "dimensions": "Size 30 х 21cm",
-        "price": "100",
-        "col_class": "t-col_4",
-        "sold": true,
-        "preview1": "img/gallery/picture28_1_preview.jpeg",
-        "preview2": "img/gallery/picture28_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture28_1.jpeg"
-          }
-        ],
-        "year": 2024
-      },
-      {
-        "lid": "1714474492137",
-        "title": "Sunny Village Square",
-        "description": "This watercolor and ink painting captures the warmth and charm of a quiet village square bathed in sunlight. The rustic stone buildings, adorned with red-tiled roofs, create a cozy and inviting atmosphere. Soft washes of color and fine architectural details bring life to the scene, while figures casually strolling add a sense of everyday simplicity. The artwork evokes the timeless beauty of rural life.",
-        "medium": "Aquarell",
-        "dimensions": "Size 40 х 29.5cm",
-        "price": "100",
-        "col_class": "t-col_4",
-        "preview1": "img/gallery/picture29_1_preview.jpeg",
-        "preview2": "img/gallery/picture29_1_preview.jpeg",
-        "detail_images": [
-          {
-            "slide_index": "1",
-            "bullet_index": "1",
-            "path": "img/gallery/picture29_1.jpeg"
-          }
-        ],
-        "year": 2023
-      }
-    ]
-  },
-  "socialmedia_images": [
+  "hubs": [
     {
-      "src": "img/gallery/picture30_1_preview.jpg"
+      "key": "oil",
+      "path": "oil-paintings",
+      "label": "Oil paintings",
+      "section_heading": "Oil paintings",
+      "h1": "Oil paintings by Polina Shvedko",
+      "all_link": "All oil paintings",
+      "medium_label": "Oil painting",
+      "artform": "Painting",
+      "seo_title": "Oil Paintings of the Sea and Coast | Polina Shvedko",
+      "seo_description": "Original oil paintings of water and light by Polina Shvedko: a panoramic sunset at Antibes, the Verdon Gorge and the coves of the Costa Brava.",
+      "intro": [
+        "Water runs through every oil painting in this collection: the sea at Cap d'Antibes, a canyon lake in the Verdon Gorge, quiet coves and harbours on the Costa Brava. In Polina Shvedko's own words: \"I love the sea! Water is my inspiration.\"",
+        "The largest work, Affectionate Farewell, Cap d'Antibes, France (2024), is a panoramic canvas of 190 × 45 cm: the evening sun takes leave of the sea and the yachts before the lights of Antibes come on. Two square canvases of 80 × 80 cm from 2023 show paddlers on the turquoise lake of the Verdon Gorge and weathered boats in a cove below wind-swept trees.",
+        "Four small canvases from 2021 and 2022, from 18 × 24 to 30 × 24 cm, were inspired by P. Molina: the cliffs, coves and harbours of the Costa Brava and the Bay of Roses. Sunset in a honey dream (2021, 90 × 60 cm) shows a sailboat in the glow of late evening. Open a painting to see all its photos, its size and its year."
+      ],
+      "intro_status": "draft",
+      "artworks": [
+        {
+          "slug": "affectionate-farewell-cap-dantibes",
+          "title": "Affectionate Farewell, Cap d'Antibes, France",
+          "year": 2024,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 190,
+          "height_cm": 45,
+          "frame": null,
+          "description": [
+            "The weary sun was tenderly bidding farewell to the sea.",
+            "The blue of day still rippled, yet gently and relentlessly the twilight was absorbing it.",
+            "A soundless advance, a sweet captivity.",
+            "Dinner was being prepared aboard the yachts, and white wine in translucent glasses held the already pale sun resting at the bottom.",
+            "Antibes would soon become alluring in the shimmer of its lights, yet they could not rival the stars."
+          ],
+          "status": "available",
+          "card": "wide",
+          "preview": "img/gallery/picture32_1.jpg",
+          "preview_hover": "img/gallery/picture32_2.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture32_1.jpg",
+              "alt": "Affectionate Farewell, Cap d'Antibes, France — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture32_2.jpg",
+              "alt": "Affectionate Farewell, Cap d'Antibes, France — on a bedroom wall"
+            },
+            {
+              "src": "img/gallery/picture32_3.jpg",
+              "alt": "Affectionate Farewell, Cap d'Antibes, France — on a bedroom wall, side view"
+            },
+            {
+              "src": "img/gallery/picture32_4.jpg",
+              "alt": "Affectionate Farewell, Cap d'Antibes, France — detail 1"
+            },
+            {
+              "src": "img/gallery/picture32_5.jpg",
+              "alt": "Affectionate Farewell, Cap d'Antibes, France — detail 2"
+            },
+            {
+              "src": "img/gallery/picture32_6.jpg",
+              "alt": "Affectionate Farewell, Cap d'Antibes, France — detail 3"
+            }
+          ],
+          "story_html": "<p>Every painting starts somewhere small. For <em>Affectionate Farewell, Cap d'Antibes, France</em>, it started with a postcard-size sketch I made while sitting on a rock at the tip of the Cap d'Antibes peninsula, watching the morning light move across the sea.</p>\n<p>I didn't plan to make it large. But something about that particular quality of light — the way the Mediterranean wraps around the headland, the pine silhouettes against the haze — felt like it needed space to breathe. A postcard wasn't enough.</p>\n<h2>Why a panoramic format?</h2>\n<p>The Cape is experienced horizontally. You stand at the point and your eyes sweep left to right — Antibes to the east, the Esterel massif to the west, the deep blue in between. A square or vertical canvas would have cropped exactly the thing I was trying to keep.</p>\n<p>The final dimensions are 190 × 45 cm — more than 4:1 ratio. This is an unusual format for oil on canvas, and it created practical challenges: stretching a canvas that wide without warping requires extra bracing, and the horizontal brushwork has to carry the eye across almost two metres of surface without losing momentum.</p>\n<figure><img src=\"img/gallery/picture32_5.jpg\" alt=\"Detail of Cap d'Antibes oil painting — sea and headland\"><figcaption>Detail view — the layered blues of the sea</figcaption></figure>\n<h2>The palette</h2>\n<p>Southern French light has a particular quality in autumn. It's warm but not harsh — the sun is lower, and the shadows have colour in them. I worked with a limited palette: titanium white, cerulean blue, ultramarine, yellow ochre, burnt sienna, and a small amount of viridian for the pine needles.</p>\n<p>The water went through four sessions. The first three felt wrong — too green, then too purple, then too grey. The final version was painted mostly in one sitting, wet-on-wet, which gave it the softness I was looking for.</p>\n<h2>What \"affectionate farewell\" means</h2>\n<p>I was leaving France the next day when I made the original sketch. There's always something bittersweet about the last morning somewhere beautiful — you look harder than you looked all week. The painting is an attempt to hold that look.</p>\n<blockquote>A painter's job is not to copy what's there, but to remember how it felt to be there.</blockquote>",
+          "story_confirmed": false,
+          "story_images": [
+            {
+              "src": "img/gallery/picture32_5.jpg",
+              "alt": "Detail of Cap d'Antibes oil painting — sea and headland"
+            }
+          ],
+          "seo_title": "Affectionate Farewell, Cap d'Antibes | Polina Shvedko",
+          "seo_description": null
+        },
+        {
+          "slug": "turquoise-silence-of-the-verdon-gorge",
+          "title": "Turquoise Silence of the Verdon Gorge",
+          "year": 2023,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 80,
+          "height_cm": 80,
+          "frame": null,
+          "description": [
+            "\"Turquoise Silence of the Verdon Gorge\" immerses you in the tranquil embrace of a hidden canyon lake, where steep, textured cliffs rise dramatically above the water. Paddlers drift in solitude across the luminous blue, dwarfed by nature's monumental architecture. The painting evokes a meditative calm, blending stillness with the awe of raw, unspoiled beauty."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture30_1_preview.jpg",
+          "preview_hover": "img/gallery/picture30_2_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture30_1.png",
+              "alt": "Turquoise Silence of the Verdon Gorge — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture30_2.jpg",
+              "alt": "Turquoise Silence of the Verdon Gorge — detail 1"
+            },
+            {
+              "src": "img/gallery/picture30_3.jpg",
+              "alt": "Turquoise Silence of the Verdon Gorge — detail 2"
+            },
+            {
+              "src": "img/gallery/picture30_4.jpg",
+              "alt": "Turquoise Silence of the Verdon Gorge — detail 3"
+            },
+            {
+              "src": "img/gallery/picture30_5.jpg",
+              "alt": "Turquoise Silence of the Verdon Gorge — on a living room wall with Whispers of the Coastal Wind"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "whispers-of-the-coastal-wind",
+          "title": "Whispers of the Coastal Wind",
+          "year": 2023,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 80,
+          "height_cm": 80,
+          "frame": null,
+          "description": [
+            "\"Whispers of the Coastal Wind\" captures a serene cove where gentle waves kiss the sand and weathered boats rest in quiet anticipation. A rugged rock formation crowned with wind-swept trees stands watch over the bay, echoing nature's enduring presence. The soft interplay of sunlight and shadow invites a sense of nostalgia, as if time itself slows along this peaceful shoreline."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture31_1_preview.jpg",
+          "preview_hover": "img/gallery/picture31_3_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture31_1.png",
+              "alt": "Whispers of the Coastal Wind — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture31_3.jpg",
+              "alt": "Whispers of the Coastal Wind — detail 1"
+            },
+            {
+              "src": "img/gallery/picture31_4.jpg",
+              "alt": "Whispers of the Coastal Wind — on a living room wall with Turquoise Silence of the Verdon Gorge"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "vibrant-cliffs-of-the-brava-coast",
+          "title": "Vibrant Cliffs of the Brava Coast",
+          "year": 2022,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 18,
+          "height_cm": 24,
+          "frame": null,
+          "description": [
+            "Vibrant Cliffs of the Brava Coast (Inspired by P. Molina) captures warm twilight on a rugged Mediterranean coast. Painted in oil on an 18 × 24 cm canvas, golden hues merge with deep blues, evoking serenity at day's end. Layered brushstrokes enhance the coastline's charm, inviting the viewer to savor nature's fleeting beauty."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture11_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture11_2_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture11_1.jpeg",
+              "alt": "Vibrant Cliffs of the Brava Coast — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture11_2.jpeg",
+              "alt": "Vibrant Cliffs of the Brava Coast — next to Cala Secreta: A Costa Brava Hideaway"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "cala-secreta-a-costa-brava-hideaway",
+          "title": "Cala Secreta: A Costa Brava Hideaway",
+          "year": 2022,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 18,
+          "height_cm": 24,
+          "frame": null,
+          "description": [
+            "\"Cala Secreta: A Costa Brava Hideaway\" (Inspired by P. Molina) reveals a secluded cove embraced by sun-kissed cliffs. Vibrant oranges and reds enliven the rocky landscape, while turquoise waters shimmer in gentle contrast. Soft brushstrokes capture the dreamlike allure of this hidden gem. The painting invites you to escape into the tranquil harmony of nature's vibrant palette."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture14_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture14_2_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture14_1.jpeg",
+              "alt": "Cala Secreta: A Costa Brava Hideaway — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture14_2.jpeg",
+              "alt": "Cala Secreta: A Costa Brava Hideaway — next to Vibrant Cliffs of the Brava Coast"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "boats-in-the-bay-of-roses",
+          "title": "Boats in the Bay of Roses",
+          "year": 2022,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 30,
+          "height_cm": 24,
+          "frame": null,
+          "description": [
+            "Boats in the Bay of Roses (Inspired by P. Molina) depicts a tranquil moment of repose. Painted in oil on a 30 × 24 cm canvas, gentle brushstrokes and soft sunlight create an atmosphere of warmth and serenity. Muted hues and subtle details invite viewers to pause and embrace the painting's calming aura."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture13_1.jpeg",
+          "preview_hover": "img/gallery/picture13_2.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture13_1.jpeg",
+              "alt": "Boats in the Bay of Roses — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture13_2.jpeg",
+              "alt": "Boats in the Bay of Roses — next to Evening Glow on the Brava Shore"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "evening-glow-on-the-brava-shore",
+          "title": "Evening Glow on the Brava Shore",
+          "year": 2021,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 30,
+          "height_cm": 24,
+          "frame": null,
+          "description": [
+            "\"Evening Glow on the Brava Shore (Inspired by P. Molina)\" casts a tender pink hue across a tranquil harbor. A warm, dusky sky envelops the moored boats in gentle reflections, while a cozy villa onshore glimmers in the fading light. Vibrant blooms add to the dreamy twilight ambiance, merging nature's palette with architectural charm. The soft brushstrokes evoke quiet contemplation, inviting you to linger in the moment between day and night."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture15_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture15_2_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture15_1.jpeg",
+              "alt": "Evening Glow on the Brava Shore — Oil on canvas by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture15_2.jpeg",
+              "alt": "Evening Glow on the Brava Shore — next to Boats in the Bay of Roses"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "sunset-in-a-honey-dream",
+          "title": "Sunset in a honey dream",
+          "year": 2021,
+          "medium": "Oil on canvas",
+          "surface": "Canvas",
+          "width_cm": 90,
+          "height_cm": 60,
+          "frame": null,
+          "description": [
+            "\"Sunset Harbor Dreams\" captures the gentle glow of late evening as a sailboat glides across calm, sun-kissed waters. Soft reflections dance along the surface, while hints of coral and honey paint the sky with serene beauty. This fleeting moment of dusk invites you to pause and embrace the tranquility of day's end. Background: Synthetic paper (polymer-based) on a wooden frame, 90 cm × 60 cm."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture16_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture16_2_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture16_1.jpeg",
+              "alt": "Sunset in a honey dream — Oil on canvas by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        }
+      ]
     },
     {
-      "src": "img/gallery/picture31_1_preview.jpg"
+      "key": "pastel",
+      "path": "pastels",
+      "label": "Pastels",
+      "section_heading": "Pastels",
+      "h1": "Pastel paintings by Polina Shvedko",
+      "all_link": "All pastels",
+      "medium_label": "Pastel",
+      "artform": "Drawing",
+      "seo_title": "Pastel Paintings of Flowers and Places | Polina Shvedko",
+      "seo_description": "Pastel paintings by Polina Shvedko: hydrangeas, lilacs, roses and wild flowers, a fishing village, Hamburg main station and winter scenes of Göttingen.",
+      "intro": [
+        "\"I'm a German artist specializing in pastels, oils, and inks,\" Polina Shvedko writes, and she speaks of \"a lifelong passion for drawing\". Her pastels are drawn on pastel paper; nine of the ten works here date from 2023 and 2024.",
+        "Flowers are the main subject: hydrangeas in Hortensien and Blossoms in a Blue Pot, a bouquet of wild flowers, forget-me-nots in a glass jar, lilacs and roses. Four of the 2024 flower pieces measure 32 × 23.5 cm and are framed in wood and glass at 50 × 40 cm.",
+        "Other pastels show places: a fishing village and its reflections in the water, Hamburg's main railway station under an evening sky, two cyclists on a tree-lined country path, and Winter Magic, a pair of pastel and ink paintings of Göttingen in the holiday season, created for Copernicus GmbH. Open a work to see all its photos, its size and its year."
+      ],
+      "intro_status": "draft",
+      "artworks": [
+        {
+          "slug": "fishing-village",
+          "title": "Fishing village",
+          "year": 2023,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 32,
+          "height_cm": 32,
+          "frame": null,
+          "description": [
+            "This pastel painting captures the charm of a quaint waterfront village. Vibrant colors bring life to the houses, blooming trees, and moored boats, while their soft reflections dance across the water's surface. The expressive strokes and dreamlike atmosphere evoke the beauty of a serene harbor scene. This piece celebrates the timeless allure of small-town coastal life with a touch of artistic whimsy."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture12_1.jpeg",
+          "preview_hover": "img/gallery/picture12_1.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture12_1.jpeg",
+              "alt": "Fishing village — Pastel on paper by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "hortensien",
+          "title": "Hortensien",
+          "year": 2024,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 42,
+          "height_cm": 29.7,
+          "frame": "Framed (wood and glass)",
+          "description": [
+            "This pastel painting showcases a vibrant arrangement of hydrangeas in full bloom, set in a simple yet elegant pot. The rich purples and blues of the flowers contrast beautifully with the lush green leaves, while the soft gray tones of the background enhance their vividness. The delicate play of light and shadow on the tiled surface adds depth and realism to the composition. This piece captures the quiet beauty of a garden moment, evoking a sense of serenity and grace."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture2_1_preview.jpg",
+          "preview_hover": "img/gallery/picture2_2.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture2_0.jpg",
+              "alt": "Hortensien — Pastel on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture2_1.jpg",
+              "alt": "Hortensien — framed"
+            },
+            {
+              "src": "img/gallery/picture2_2.jpg",
+              "alt": "Hortensien — framed, outdoors beside a hydrangea"
+            },
+            {
+              "src": "img/gallery/interior.jpg",
+              "alt": "Hortensien — framed works on a dining room wall"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "bouquet-of-wild-flowers",
+          "title": "Bouquet of wild flowers",
+          "year": 2022,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 32,
+          "height_cm": 41,
+          "frame": null,
+          "description": [
+            "This pastel painting captures the delicate beauty of a wildflower bouquet arranged in a soft, rounded vase. The vibrant yellows, pinks, and whites of the flowers stand out against a warm, muted background, creating a sense of natural elegance. The subtle highlights on the vase add a touch of light, completing this serene and timeless composition."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture3_1_preview.jpg",
+          "preview_hover": "img/gallery/picture3_1_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture3_1.jpg",
+              "alt": "Bouquet of wild flowers — Pastel on paper by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "hamburg-main-railway-station",
+          "title": "Hamburg, Main railway station",
+          "year": 2023,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 41,
+          "height_cm": 32,
+          "frame": "Framed (plastic and glass)",
+          "description": [
+            "This pastel painting showcases the iconic Hamburg Main Railway Station, a masterpiece of historic architecture set against a dramatic sky. The intricate details of the clock tower and arched glass roofs are brought to life with rich textures and vibrant pastel tones. The soft hues of the evening sky add a sense of tranquility, balancing the grandeur of this bustling urban landmark. It's a tribute to Hamburg's vibrant history and timeless charm."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture10_1_preview.jpg",
+          "preview_hover": "img/gallery/picture10_1_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture10_1.jpg",
+              "alt": "Hamburg, Main railway station — Pastel on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture10_2.jpg",
+              "alt": "Hamburg, Main railway station — unframed, with pastels and a pencil"
+            },
+            {
+              "src": "img/gallery/picture10_3.jpg",
+              "alt": "Hamburg, Main railway station — sketchbook drawing in front of the station"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "afternoon-ride-in-the-countryside",
+          "title": "Afternoon Ride in the Countryside",
+          "year": 2023,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 41,
+          "height_cm": 32,
+          "frame": null,
+          "description": [
+            "This pastel painting features two cyclists on a leisurely journey along a tree-lined path, framed by rolling green hills. Subtle shifts in color and soft pastel strokes evoke the gentle warmth of a late afternoon glow. The scene exudes calm and simple joy, inviting you to share in the peaceful rhythm of the countryside."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture17_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture17_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture17_1.jpeg",
+              "alt": "Afternoon Ride in the Countryside — Pastel on paper by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "blossoms-in-a-blue-pot",
+          "title": "Blossoms in a Blue Pot",
+          "year": 2024,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 32,
+          "height_cm": 23.5,
+          "frame": "Framed (wood and glass), 50 × 40 cm",
+          "description": [
+            "This pastel painting captures the vibrant beauty of pink hydrangeas in full bloom, arranged in a simple blue pot. The soft blending of textures and colors highlights the lush greenery and delicate petals. With a muted, warm background, the composition exudes a timeless charm, inviting you to savor the serenity and natural elegance of the scene."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture18_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture18_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture18_1.jpeg",
+              "alt": "Blossoms in a Blue Pot — Pastel on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture18_2.jpg",
+              "alt": "Blossoms in a Blue Pot — framed"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "forget-me-nots-in-glass",
+          "title": "Forget-Me-Nots in Glass",
+          "year": 2024,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 32,
+          "height_cm": 23.5,
+          "frame": "Framed (wood and glass), 50 × 40 cm",
+          "description": [
+            "This pastel painting delicately portrays a bouquet of vibrant blue forget-me-nots arranged in a simple glass jar. The soft strokes bring life to the delicate flowers, while the warm, textured background adds depth and contrast. Gentle highlights on the jar and leaves evoke a sense of light and airiness, enhancing the painting's natural elegance. This piece captures the timeless beauty of a humble yet heartfelt floral arrangement."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture19_1_preview.jpg",
+          "preview_hover": "img/gallery/picture19_1_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture19_1.jpg",
+              "alt": "Forget-Me-Nots in Glass — Pastel on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/interior.jpg",
+              "alt": "Forget-Me-Nots in Glass — framed works on a dining room wall"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "lilacs-in-bloom",
+          "title": "Lilacs in Bloom",
+          "year": 2024,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 32,
+          "height_cm": 23.5,
+          "frame": "Framed (wood and glass), 50 × 40 cm",
+          "description": [
+            "This pastel painting captures the timeless beauty of lilacs in a delicate glass vase. The soft purples and whites of the blossoms are contrasted with rich green leaves, creating a harmonious and vibrant composition. Subtle highlights and shadows bring depth and texture to the floral arrangement, while the muted background enhances its elegance. This piece evokes a sense of freshness and the fleeting charm of springtime."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture20_1_preview.jpg",
+          "preview_hover": "img/gallery/picture20_1_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture20_1.jpg",
+              "alt": "Lilacs in Bloom — Pastel on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/interior.jpg",
+              "alt": "Lilacs in Bloom — framed works on a dining room wall"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "elegance-in-roses",
+          "title": "Elegance in Roses",
+          "year": 2024,
+          "medium": "Pastel on paper",
+          "surface": "Pastel paper",
+          "width_cm": 32,
+          "height_cm": 23.5,
+          "frame": "Framed (wood and glass), 50 × 40 cm",
+          "description": [
+            "This pastel painting exudes the delicate beauty of soft pink and blush roses arranged in a graceful bouquet. Subtle highlights and gentle textures bring the petals to life, while vibrant green leaves provide a fresh contrast. The dreamy, muted background in shades of lilac and gray enhances the composition's ethereal charm. This piece captures the timeless elegance and romantic allure of blooming roses."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture21_1_preview.jpg",
+          "preview_hover": "img/gallery/picture21_1_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture21_1.jpg",
+              "alt": "Elegance in Roses — Pastel on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/interior.jpg",
+              "alt": "Elegance in Roses — framed works on a dining room wall"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "winter-magic-a-goettingen-holiday-tribute",
+          "title": "Winter Magic: A Göttingen Holiday Tribute",
+          "year": 2023,
+          "medium": "Pastel and ink on paper",
+          "surface": "Pastel paper",
+          "width_cm": 26.5,
+          "height_cm": 37,
+          "frame": null,
+          "description": [
+            "These pastel paintings, created for Copernicus GmbH, beautifully capture the festive spirit of the holiday season. The first artwork portrays a charming view of a historic building adorned with wintery decorations, with a sparkling emblem and evergreen branches enhancing its festive atmosphere. The second painting leads viewers down a snowy street lit by glowing lanterns, with a whimsical Santa figure adding warmth to the serene night scene. Together, these pieces evoke the magic and charm of winter traditions and holiday cheer."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture_22_1_preview.jpg",
+          "preview_hover": "img/gallery/picture_22_2_preview.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture_22_1.jpg",
+              "alt": "Winter Magic: A Göttingen Holiday Tribute — Pastel and ink on paper by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture_22_2.jpg",
+              "alt": "Winter Magic: A Göttingen Holiday Tribute — the other painting of the pair"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        }
+      ]
     },
     {
-      "src": "img/gallery/picture11_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture14_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture13_1.jpeg"
-    },
-    {
-      "src": "img/gallery/picture15_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture16_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture12_1.jpeg"
-    },
-    {
-      "src": "img/gallery/picture2_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture3_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture10_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture17_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture18_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture19_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture20_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture21_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture_22_1_preview.jpg"
-    },
-    {
-      "src": "img/gallery/picture1_1.JPG"
-    },
-    {
-      "src": "img/gallery/picture4_1.jpg"
-    },
-    {
-      "src": "img/gallery/picture5_1.jpg"
-    },
-    {
-      "src": "img/gallery/picture6_1.png"
-    },
-    {
-      "src": "img/gallery/picture9_1.jpg"
-    },
-    {
-      "src": "img/gallery/picture23_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture24_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture25_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture26_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture27_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture28_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture29_1_preview.jpeg"
-    },
-    {
-      "src": "img/gallery/picture32_1.jpg"
+      "key": "watercolour",
+      "path": "watercolours",
+      "label": "Watercolours",
+      "section_heading": "Watercolour and ink",
+      "h1": "Watercolour and ink paintings by Polina Shvedko",
+      "all_link": "All watercolours",
+      "medium_label": "Watercolour",
+      "artform": "Painting",
+      "seo_title": "Watercolour and Ink Paintings | Polina Shvedko",
+      "seo_description": "Watercolour and ink paintings by Polina Shvedko: cafés with red awnings, a Biergarten in bloom, St. Albani Church, an old watermill and quiet streets.",
+      "intro": [
+        "Most of these works combine watercolour washes with fine ink lines. \"Every day I am in search of new ideas, forms, new materials and techniques!\" Polina Shvedko writes. All twelve sheets date from 2023 and 2024.",
+        "The subjects are streets, cafés and corners: a Biergarten in bloom, a canal-side street in spring, St. Albani Church in the afternoon, an old watermill with a cyclist on the bridge, and three cafés with red awnings, one of them seen from above.",
+        "Quieter scenes show a lone windmill, a park path with bare trees and benches, and a sunny village square with red-tiled roofs. Seven of the twelve are on sheets of about 30 × 42 cm. Open a work to see all its photos, its size and its year."
+      ],
+      "intro_status": "draft",
+      "artworks": [
+        {
+          "slug": "blossoms-at-the-biergarten",
+          "title": "Blossoms at the Biergarten",
+          "year": 2024,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 42,
+          "height_cm": 29.7,
+          "frame": null,
+          "description": [
+            "This ink and watercolor painting captures the serene beauty of a quiet Biergarten in full bloom. Vibrant splashes of pink blossoms contrast with the crisp black ink lines of the empty chairs and tables, creating a delicate balance between nature and structure. The soft, scattered petals add a touch of whimsy, evoking the peaceful charm of a spring day under the flowering trees. The scene invites viewers to imagine a tranquil moment in this picturesque setting."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture1_1.JPG",
+          "preview_hover": "img/gallery/picture1_2.JPG",
+          "images": [
+            {
+              "src": "img/gallery/picture1_1.JPG",
+              "alt": "Blossoms at the Biergarten — Watercolour and ink by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture1_2.JPG",
+              "alt": "Blossoms at the Biergarten — in a mat"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "springtime-along-the-canal",
+          "title": "Springtime Along the Canal",
+          "year": 2024,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 42,
+          "height_cm": 29.7,
+          "frame": null,
+          "description": [
+            "This watercolor and ink painting captures the quiet charm of a canal-side street adorned with blooming pink and purple trees. The soft splashes of color contrast beautifully with the crisp lines of the brick walls and lampposts, creating a harmonious balance between nature and architecture. The tranquil water reflects the vibrant blossoms, adding to the serene and dreamlike atmosphere of a peaceful spring day."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture4_1.jpg",
+          "preview_hover": "img/gallery/picture4_1.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture4_1.jpg",
+              "alt": "Springtime Along the Canal — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "golden-hour-on-the-corner",
+          "title": "Golden Hour on the Corner",
+          "year": 2023,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 29.7,
+          "height_cm": 42,
+          "frame": null,
+          "description": [
+            "This vibrant watercolor painting depicts a sunlit corner building, its elegant balconies and warm facade glowing under the soft light of the golden hour. Dynamic brushstrokes and splashes of color bring energy and depth to the scene, while the interplay of shadow and light highlights the building's intricate architectural details. The composition invites viewers to experience the charm and vibrancy of urban life at its most picturesque moment."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture5_1.jpg",
+          "preview_hover": "img/gallery/picture5_2.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture5_1.jpg",
+              "alt": "Golden Hour on the Corner — Watercolour and ink by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture5_2.jpg",
+              "alt": "Golden Hour on the Corner — work in progress"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "st-albani-in-the-afternoon",
+          "title": "St. Albani in the Afternoon",
+          "year": 2023,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 26,
+          "height_cm": 38,
+          "frame": "Framed (plastic and glass)",
+          "description": [
+            "This watercolor and ink painting portrays the historic charm of St. Albani Church bathed in soft daylight. The detailed brushwork highlights the building's timeless architecture, while the vibrant sky adds a sense of calm and openness. A scooter parked in the foreground adds a contemporary touch, blending past and present in this serene urban scene. The composition invites viewers to appreciate the quiet beauty of a peaceful moment in front of a storied landmark."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture6_1.png",
+          "preview_hover": "img/gallery/picture6_3.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture6_1.png",
+              "alt": "St. Albani in the Afternoon — Watercolour and ink by Polina Shvedko"
+            },
+            {
+              "src": "img/gallery/picture6_2.jpg",
+              "alt": "St. Albani in the Afternoon — work in progress"
+            },
+            {
+              "src": "img/gallery/picture6_3.jpg",
+              "alt": "St. Albani in the Afternoon — without the mat"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "by-the-old-watermill",
+          "title": "By the Old Watermill",
+          "year": 2024,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 42,
+          "height_cm": 29.7,
+          "frame": "Framed (plastic and glass)",
+          "description": [
+            "This watercolor and ink painting captures the tranquil charm of a historic watermill scene. The soft hues of purple and blue reflect off the calm water, while the intricate architectural details of the mill and bridge are brought to life through delicate linework. A lone cyclist crossing the bridge adds a touch of modern life to the peaceful, timeless setting. This piece evokes a sense of quiet nostalgia and connection to the past."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture9_1.jpg",
+          "preview_hover": "img/gallery/picture9_1.jpg",
+          "images": [
+            {
+              "src": "img/gallery/picture9_1.jpg",
+              "alt": "By the Old Watermill — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "cafe-on-a-sunny-corner",
+          "title": "Café on a Sunny Corner",
+          "year": 2023,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 30,
+          "height_cm": 42,
+          "frame": null,
+          "description": [
+            "This watercolor painting captures the lively charm of a bustling café with its vibrant red awnings and the gentle shade of nearby trees. The soft, flowing brushstrokes bring the warmth of a sunny day to life, while the subtle interplay of light and shadow enhances the building's character. The scene invites viewers to pause and soak in the relaxed ambiance of a perfect moment in a quaint urban setting."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture23_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture23_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture23_1.jpeg",
+              "alt": "Café on a Sunny Corner — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "the-street-of-timeless-charm",
+          "title": "The Street of Timeless Charm",
+          "year": 2024,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 21,
+          "height_cm": 30,
+          "frame": null,
+          "description": [
+            "This watercolor and ink painting captures the elegance of a quiet urban street corner. The building's warm tones contrast beautifully with the cool blues of the surrounding scene, evoking a peaceful yet vibrant atmosphere. The delicate lines and soft washes of color highlight the timeless character of the architecture, inviting viewers to wander through this charming street."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture24_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture24_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture24_1.jpeg",
+              "alt": "The Street of Timeless Charm — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "under-the-red-awning",
+          "title": "Under the Red Awning",
+          "year": 2023,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 30,
+          "height_cm": 42,
+          "frame": null,
+          "description": [
+            "This watercolor and ink painting depicts the cozy charm of a café on a quiet street corner, framed by a vibrant red awning. Silhouetted figures pass by, adding life and movement to the scene. The soft washes of color and subtle reflections on the ground evoke the tranquil beauty of a rainy urban afternoon. The composition invites viewers to pause and enjoy the warmth of a fleeting moment."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture25_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture25_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture25_1.jpeg",
+              "alt": "Under the Red Awning — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "the-corner-cafe-in-perspective",
+          "title": "The Corner Café in Perspective",
+          "year": 2024,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 30,
+          "height_cm": 42,
+          "frame": null,
+          "description": [
+            "This watercolor and ink painting captures a dynamic urban scene from a bird's-eye perspective, showcasing a café with striking red awnings nestled at a street corner. Bold lines and soft washes of blue and gray create depth, while the vibrant red provides a focal point amidst the bustling streets. The interplay of light and shadow evokes a lively city atmosphere, inviting viewers to explore the energy of this architectural composition."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture26_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture26_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture26_1.jpeg",
+              "alt": "The Corner Café in Perspective — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "the-lone-windmill",
+          "title": "The Lone Windmill",
+          "year": 2023,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 21,
+          "height_cm": 29.5,
+          "frame": null,
+          "description": [
+            "This ink and watercolor painting captures the rustic charm of a solitary windmill standing against a minimalist backdrop. The bold, expressive lines emphasize the windmill's structure, while soft washes of gray and muted tones evoke a quiet, nostalgic atmosphere. The piece invites viewers to reflect on the enduring beauty of simple, rural landscapes."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture27_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture27_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture27_1.jpeg",
+              "alt": "The Lone Windmill — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "a-quiet-stroll-in-the-park",
+          "title": "A Quiet Stroll in the Park",
+          "year": 2024,
+          "medium": "Watercolour and ink",
+          "surface": "Paper",
+          "width_cm": 30,
+          "height_cm": 21,
+          "frame": null,
+          "description": [
+            "This ink and watercolor painting captures the serene charm of a peaceful park scene. The gentle curves of the pathway lead the viewer's eye through the composition, past bare trees and simple benches. Soft washes of gray and subtle hints of color evoke a calm, contemplative atmosphere, inviting viewers to reflect on the quiet beauty of a leisurely walk in nature."
+          ],
+          "status": "private-collection",
+          "card": "standard",
+          "preview": "img/gallery/picture28_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture28_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture28_1.jpeg",
+              "alt": "A Quiet Stroll in the Park — Watercolour and ink by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        },
+        {
+          "slug": "sunny-village-square",
+          "title": "Sunny Village Square",
+          "year": 2023,
+          "medium": "Watercolour",
+          "surface": "Paper",
+          "width_cm": 40,
+          "height_cm": 29.5,
+          "frame": null,
+          "description": [
+            "This watercolor and ink painting captures the warmth and charm of a quiet village square bathed in sunlight. The rustic stone buildings, adorned with red-tiled roofs, create a cozy and inviting atmosphere. Soft washes of color and fine architectural details bring life to the scene, while figures casually strolling add a sense of everyday simplicity. The artwork evokes the timeless beauty of rural life."
+          ],
+          "status": "available",
+          "card": "standard",
+          "preview": "img/gallery/picture29_1_preview.jpeg",
+          "preview_hover": "img/gallery/picture29_1_preview.jpeg",
+          "images": [
+            {
+              "src": "img/gallery/picture29_1.jpeg",
+              "alt": "Sunny Village Square — Watercolour by Polina Shvedko"
+            }
+          ],
+          "story_html": null,
+          "story_confirmed": false,
+          "story_images": [],
+          "seo_title": null,
+          "seo_description": null
+        }
+      ]
     }
   ],
-  "blog_posts": [
+  "socialmedia_images": [
     {
-      "slug": "cap-dantibes",
-      "title": "Painting Cap d'Antibes: How a 190cm Canvas Became a Journey",
-      "date": "2024-11-15",
-      "date_display": "15 November 2024",
-      "excerpt": "The panoramic oil painting 'Affectionate Farewell, Cap d'Antibes, France' started as a sketch on a postcard-size paper. Here's how it grew into a 190 × 45 cm canvas — and what I discovered along the way.",
-      "preview": "img/gallery/picture32_1.jpg",
-      "tags": "Oil painting, Process, Cap d'Antibes"
+      "src": "img/gallery/picture30_1_preview.jpg",
+      "alt": "Turquoise Silence of the Verdon Gorge"
+    },
+    {
+      "src": "img/gallery/picture31_1_preview.jpg",
+      "alt": "Whispers of the Coastal Wind"
+    },
+    {
+      "src": "img/gallery/picture11_1_preview.jpeg",
+      "alt": "Vibrant Cliffs of the Brava Coast"
+    },
+    {
+      "src": "img/gallery/picture14_1_preview.jpeg",
+      "alt": "Cala Secreta: A Costa Brava Hideaway"
+    },
+    {
+      "src": "img/gallery/picture13_1.jpeg",
+      "alt": "Boats in the Bay of Roses"
+    },
+    {
+      "src": "img/gallery/picture15_1_preview.jpeg",
+      "alt": "Evening Glow on the Brava Shore"
+    },
+    {
+      "src": "img/gallery/picture16_1_preview.jpeg",
+      "alt": "Sunset in a honey dream"
+    },
+    {
+      "src": "img/gallery/picture12_1.jpeg",
+      "alt": "Fishing village"
+    },
+    {
+      "src": "img/gallery/picture2_1_preview.jpg",
+      "alt": "Hortensien"
+    },
+    {
+      "src": "img/gallery/picture3_1_preview.jpg",
+      "alt": "Bouquet of wild flowers"
+    },
+    {
+      "src": "img/gallery/picture10_1_preview.jpg",
+      "alt": "Hamburg, Main railway station"
+    },
+    {
+      "src": "img/gallery/picture17_1_preview.jpeg",
+      "alt": "Afternoon Ride in the Countryside"
+    },
+    {
+      "src": "img/gallery/picture18_1_preview.jpeg",
+      "alt": "Blossoms in a Blue Pot"
+    },
+    {
+      "src": "img/gallery/picture19_1_preview.jpg",
+      "alt": "Forget-Me-Nots in Glass"
+    },
+    {
+      "src": "img/gallery/picture20_1_preview.jpg",
+      "alt": "Lilacs in Bloom"
+    },
+    {
+      "src": "img/gallery/picture21_1_preview.jpg",
+      "alt": "Elegance in Roses"
+    },
+    {
+      "src": "img/gallery/picture_22_1_preview.jpg",
+      "alt": "Winter Magic: A Göttingen Holiday Tribute"
+    },
+    {
+      "src": "img/gallery/picture1_1.JPG",
+      "alt": "Blossoms at the Biergarten"
+    },
+    {
+      "src": "img/gallery/picture4_1.jpg",
+      "alt": "Springtime Along the Canal"
+    },
+    {
+      "src": "img/gallery/picture5_1.jpg",
+      "alt": "Golden Hour on the Corner"
+    },
+    {
+      "src": "img/gallery/picture6_1.png",
+      "alt": "St. Albani in the Afternoon"
+    },
+    {
+      "src": "img/gallery/picture9_1.jpg",
+      "alt": "By the Old Watermill"
+    },
+    {
+      "src": "img/gallery/picture23_1_preview.jpeg",
+      "alt": "Café on a Sunny Corner"
+    },
+    {
+      "src": "img/gallery/picture24_1_preview.jpeg",
+      "alt": "The Street of Timeless Charm"
+    },
+    {
+      "src": "img/gallery/picture25_1_preview.jpeg",
+      "alt": "Under the Red Awning"
+    },
+    {
+      "src": "img/gallery/picture26_1_preview.jpeg",
+      "alt": "The Corner Café in Perspective"
+    },
+    {
+      "src": "img/gallery/picture27_1_preview.jpeg",
+      "alt": "The Lone Windmill"
+    },
+    {
+      "src": "img/gallery/picture28_1_preview.jpeg",
+      "alt": "A Quiet Stroll in the Park"
+    },
+    {
+      "src": "img/gallery/picture29_1_preview.jpeg",
+      "alt": "Sunny Village Square"
+    },
+    {
+      "src": "img/gallery/picture32_1.jpg",
+      "alt": "Affectionate Farewell, Cap d'Antibes, France"
     }
-  ]
+  ],
+  "legal": {
+    "imprint_html": null,
+    "privacy_html": null
+  }
 }
