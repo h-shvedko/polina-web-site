@@ -12,28 +12,36 @@ report needs a number, a URL or a file path behind it.
 Arguments: `$ARGUMENTS`. The first number is the short period in days (default 28). Any other
 text is a focus for this run (for example "only indexing" or "compare with last run").
 
-## Known facts (verified 2026-10-03; re-check each one quickly, update this file when one changes)
+## Known facts (updated 2026-10-04 for the ADR-0003 rebuild; re-check each one quickly, update this file when one changes)
 
-- **Stack:** static site. Gulp 4 renders Mustache templates from `src/templates/` with
-  `data.json` into `app/` (`gulpfile.js`, task `html`). Tilda CSS/JS components. See `CLAUDE.md`.
+- **Stack:** static site, rebuilt by ADR-0003 (one page per artwork, no framework, no shop, no blog).
+  `scripts/build-site.js` renders the Mustache templates in `src/templates/pages/` and `src/templates/partials/`
+  with `data.json` into `app/` (`npx gulp build:site`); `scripts/images.js` writes the WebP/JPEG variants and
+  `src/img/manifest.json`. See `CLAUDE.md`.
 - **Deploy:** push to `main` runs `.github/workflows/deploy.yml`. It builds and mirrors `app/`
-  to the host over SFTP. A push to `main` is a production deploy.
-- **Domain:** `https://polina-shvedko.art` (canonical in `src/templates/partials/head.html`,
-  `app/sitemap.xml`, `app/robots.txt`). The host answers 403 to the Python-urllib user agent.
-- **Pages:** `/`, `/blog/`, `/blog/<slug>/` (`src/templates/blog/`). The `html` task also
-  publishes every partial as `app/partials/**.html` (116 files on 2026-10-03).
-- **Language and market:** English only, prices in EUR, artist based in Germany (`addressCountry: DE`).
-  Target market in the script: Germany, Austria, Switzerland.
+  to the host over SFTP (files missing from `app/` are deleted on the host). A push to `main` is a production deploy.
+- **Domain:** `https://polina-shvedko.art` (`site.url` in `data.json`; canonical and Open Graph tags on every page,
+  `app/sitemap.xml`, `app/robots.txt` from `src/static/robots.txt`). The host answers 403 to the Python-urllib user agent.
+- **Pages (36 URLs, all in the sitemap):** `/`; three hubs `/oil-paintings/`, `/pastels/`, `/watercolours/`;
+  30 artwork pages `/<hub>/<slug>/` (hub `path` and artwork `slug` in `data.json`); `/about/`; `/contact/`.
+  `/imprint/` and `/privacy/` exist only when their text is in `data.json` (`legal`). Retired URLs:
+  `/blog/` and `/blog/<slug>/` (301; `/blog/cap-dantibes/` → `/oil-paintings/affectionate-farewell-cap-dantibes/`),
+  `/partials/**` (410), `/index.html` and `/<dir>/index.html` (301 to the folder). `scripts/seo-report.py` reads
+  `KNOWN_PAGES` from `data.json` and checks the retired URLs.
+- **Language and market:** English only, no prices (removed by ADR-0003), artist based in Germany
+  (`addressCountry: DE`). Target market in the script: Germany, Austria, Switzerland.
 - **Search Console:** `sc-domain:polina-shvedko.art`. **GA4:** `properties/487246310`,
   stream `G-G10K54YDPQ`.
-- **Conversions** (`src/js/analytics.js`): `purchase_inquiry` = Tilda cart order sent (the real lead);
-  `cart_order` = submit click, also when validation fails; `contact_click` = mailto click;
-  `artwork_view` = popup opened. No key events are set in GA4 (2026-10-03).
+- **Conversions** (`src/js/analytics.js`): `contact_click` = click on any `mailto:` link (parameters
+  `link_location` = hero / contact / artwork, `artwork_slug` on artwork pages) is the only lead event;
+  `hero_video_play` = the hero video was started. Retired with ADR-0003 (only in data from before the release):
+  `purchase_inquiry`, `cart_order`, `artwork_view`, `gallery_filter`. No key events are set in GA4 (2026-10-03).
 - **Bot traffic:** 99 of 138 German GA4 sessions in the 90 days to 2026-10-03 came on
   2026-08-20, 2026-08-21 and 2026-09-03, mostly between 00:00 and 04:00, all new and Direct.
   Exclude such bursts from the real-traffic numbers.
-- **Consent:** on 2026-10-03 GA loads before consent on every page. If a release changes this,
-  GA numbers before and after it are not comparable. Record the release date here.
+- **Consent:** until the ADR-0003 release GA loads before consent on every page. After the release
+  (`src/js/consent.js`) GA loads only after "Accept" (Consent Mode v2, defaults denied), so GA numbers before and
+  after it are not comparable. Record the release date in the log below.
 
 ## Access
 
@@ -54,10 +62,12 @@ text is a focus for this run (for example "only indexing" or "compare with last 
    python3 scripts/seo-report.py <days> --no-index
    ```
    The script prints Search Console totals, weeks, queries, pages, countries, devices and the
-   latest day with data; URL inspection of the sitemap plus `KNOWN_PAGES`; GA4 by country,
-   channel, landing page and device, for all countries and the target market; site events.
+   latest day with data; URL inspection and HTTP status of the sitemap plus `KNOWN_PAGES` (read from
+   `data.json`); first-hop status, `Location` and coverage of the retired URLs (`RETIRED_PAGES`); GA4 by
+   country, channel, landing page and device, for all countries and the target market; site events.
    It saves `~/.local/state/polina-shvedko.art-seo/<date>-<days>d.json` and prints the change
-   against the previous run with the same period. Add new pages to `KNOWN_PAGES` in the script.
+   against the previous run with the same period. New pages in `data.json` are picked up automatically;
+   add retired URLs to `RETIRED_PAGES` in the script.
 2. For questions the script does not answer, call the same APIs with its `token()`/`call()`.
    URL inspection allows 2,000 calls a day.
 3. Separate real traffic from bots: zero engagement, 0-3 s sessions, night bursts of new Direct
@@ -69,8 +79,8 @@ text is a focus for this run (for example "only indexing" or "compare with last 
 Check and report with file paths and URLs: titles and descriptions (title ≤ 60, description
 120-155, one h1 per page); canonicals and one URL per document (www/apex, http → https,
 `index.html`, query parameters, no redirect chains); `<html lang>`; sitemap completeness and the
-`Sitemap:` line in robots.txt; 404/410 behaviour and noindex on non-pages (`/partials/`);
-structured data (Person, VisualArtwork, Article, Breadcrumb); Open Graph on all pages; internal
+`Sitemap:` line in robots.txt; 404/410 behaviour (custom `404.html`, 410 for `/partials/`, 301 for `/blog/`);
+structured data (WebSite, Person, CollectionPage, VisualArtwork, BreadcrumbList); Open Graph on all pages; internal
 links and orphan pages; performance (image bytes, render-blocking scripts, LCP, CLS); mobile at
 390 px (horizontal scroll, text size, tap targets); alt texts and heading order; consent before
 analytics (German law applies).
@@ -82,8 +92,9 @@ Chromium build is in `~/.cache/ms-playwright`). Measure desktop and 390 px.
 
 Map pages to search intents. Find thin pages, duplicates and cannibalisation. Find content gaps
 from Search Console queries first; mark web research as such. Flag pages at positions 1-10 with
-low CTR. Check facts and consistency across pages (prices, sizes, years, claims in meta tags that
-the page does not support). Check language quality (no Cyrillic characters in English text).
+low CTR. Check facts and consistency across pages (sizes, media, years, status, claims in meta tags that
+the page does not support; the site shows no prices since ADR-0003). Check language quality (no Cyrillic
+characters in English text).
 
 ## Phase 4: Report
 
@@ -118,7 +129,8 @@ Stop after the report. Change nothing until the user approves items.
 
 - Make each change on a branch with a test that fails before and passes after, where possible
   (rendered `app/` output, sitemap contents, Playwright checks at desktop and 390 px).
-- Edit `src/` and `data.json`, never `app/` by hand; rebuild with `npx gulp css babel html fonts`.
+- Edit `src/` and `data.json`, never `app/` by hand; rebuild with `npm run build:site` (`npm run build` when
+  images change) and run `npm test` (static, browser and Apache checks).
 - Run all checks and a browser check before you ask to deploy. After the deploy, re-run the
   browser checks against the live site and report in Russian under the same rules.
 - New content: a closed list of topics the user approves. No doorway pages, no third-party
@@ -134,3 +146,5 @@ after it. Keep the log below short: release date, what changed, what was measure
 
 - 2026-10-03: baseline. 90 days: 5 clicks, 144 impressions, position 6.5 (Search Console to 2026-09-29);
   184 GA4 sessions, of which about 21 real target-market sessions; 0 `purchase_inquiry`.
+- 2026-10-04: ADR-0003 rebuild implemented on the branch `adr-0003-seo-rebuild` (not deployed). Record the release
+  date here when it is merged to `main`.

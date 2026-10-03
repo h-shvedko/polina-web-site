@@ -29,12 +29,31 @@ SITE = 'sc-domain:polina-shvedko.art'
 BASE = 'https://polina-shvedko.art'
 GA_PROPERTY = '487246310'
 SITEMAPS = ['sitemap.xml']
-# Pages that exist in the site; the report flags the ones missing from the sitemap.
-KNOWN_PAGES = ['/', '/blog/', '/blog/cap-dantibes/']
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def site_pages():
+    """The indexable pages, read from data.json the way scripts/build-site.js builds them."""
+    with open(os.path.join(ROOT, 'data.json'), encoding='utf-8') as handle:
+        data = json.load(handle)
+    pages = ['/']
+    for hub in data['hubs']:
+        pages.append('/%s/' % hub['path'])
+        pages.extend('/%s/%s/' % (hub['path'], artwork['slug']) for artwork in hub['artworks'])
+    pages += ['/about/', '/contact/']
+    legal = data.get('legal') or {}
+    pages += ['/%s/' % key for key in ('imprint', 'privacy') if legal.get(key + '_html')]
+    return pages
+
+
+# Pages that exist in the site (from data.json); the report flags the ones missing from the sitemap.
+KNOWN_PAGES = site_pages()
+# Retired URLs (ADR-0003): each must answer one 301 (blog, index.html) or 410 (partials), never 200.
+RETIRED_PAGES = ['/blog/', '/blog/cap-dantibes/', '/index.html', '/oil-paintings/index.html', '/partials/head.html']
 TARGET_MARKET = ['Germany', 'Austria', 'Switzerland']
-# Site events from src/js/analytics.js. purchase_inquiry fires on Tilda's order-success
-# callback (a sent inquiry); cart_order fires on submit, also when validation fails.
-LEAD_EVENTS = ['purchase_inquiry', 'cart_order', 'contact_click']
+# Lead events. contact_click (src/js/analytics.js, a mailto: click) is the only lead event since ADR-0003.
+# purchase_inquiry and cart_order belonged to the removed shop; they appear only in data from before the release.
+LEAD_EVENTS = ['contact_click', 'purchase_inquiry', 'cart_order']
 
 ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
 DAYS = int(ARGS[0]) if ARGS else 28
@@ -115,12 +134,27 @@ def fetch(url):
     return urllib.request.urlopen(urllib.request.Request(url, headers=SITE_HEADERS)).read().decode()
 
 
-def status_code(url):
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Report a redirect as it is (status and Location) instead of following it."""
+
+    def redirect_request(self, *args, **kwargs):
+        return None
+
+
+NO_REDIRECT = urllib.request.build_opener(NoRedirect)
+
+
+def first_hop(url):
+    """Status code and Location header of the first response; redirects are not followed."""
     request = urllib.request.Request(url, headers=SITE_HEADERS, method='HEAD')
     try:
-        return urllib.request.urlopen(request).status
+        return NO_REDIRECT.open(request).status, ''
     except urllib.error.HTTPError as err:
-        return err.code
+        return err.code, err.headers.get('Location', '')
+
+
+def status_code(url):
+    return first_hop(url)[0]
 
 
 print('== Search Console, last %d days ==' % DAYS)
@@ -161,6 +195,14 @@ def index_coverage():
     summary['indexed'] = sum(1 for _, state, _ in states if state == 'Submitted and indexed')
     summary['known_urls'] = len(states)
     summary['sitemap_urls'] = len(sitemap_urls)
+    print('-- retired URLs (expected: one 301 to the new URL, or 410)')
+    retired = [BASE + path for path in RETIRED_PAGES]
+    with concurrent.futures.ThreadPoolExecutor(6) as pool:
+        hops = list(pool.map(first_hop, retired))
+        retired_states = list(pool.map(inspect, retired))
+    for url, (code, location), (_, state, _) in zip(retired, hops, retired_states):
+        print('  %-3s %-40s %-26s -> %s' % (code, state, url.replace(BASE, ''), location or '-'))
+    summary['retired_ok'] = sum(1 for code, _ in hops if code in (301, 410))
 
 
 if INDEX:

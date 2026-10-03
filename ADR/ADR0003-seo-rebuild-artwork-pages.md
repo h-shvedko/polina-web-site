@@ -1,7 +1,7 @@
 # ADR-0003: SEO Rebuild — One Page per Artwork, No Tilda, No Shop
 
 **Date:** 2026-10-03
-**Status:** Proposed
+**Status:** Implemented on branch adr-0003-seo-rebuild (not deployed) — see [Implementation](#implementation-branch-adr-0003-seo-rebuild)
 **Supersedes:** ADR-0001 item 4.3 (blog system), ADR-0002 items about the popup inquiry and the cart
 **Evidence:** `/seo-report` baseline of 2026-10-03 (snapshots in `~/.local/state/polina-shvedko.art-seo/`)
 
@@ -294,3 +294,108 @@ Phase 1 and 2 ship value on the current site and can deploy before the rewrite.
 3. In GA4 Admin → Events, mark `contact_click` as a key event; remove `purchase_inquiry` / `cart_order` from key events if marked.
 4. In GA4, add an annotation on the release date and on the consent change date.
 5. Add a GA4 data filter or exploration segment to exclude the night-burst bot pattern.
+
+---
+
+## Implementation (branch adr-0003-seo-rebuild)
+
+Built on the branch `adr-0003-seo-rebuild`, not merged to `main` and **not deployed**. The detailed contract was an
+implementation spec derived from this ADR; this section records what was built, the defaults chosen for the open
+questions, and what is left for the owner.
+
+### Defaults chosen for the open questions
+
+Each default lives in `data.json` or in one constant of `scripts/build-site.js`, so it can change without template work.
+
+| # | Question | Default on the branch | Where to change it |
+|---|---|---|---|
+| 1 | Status without price | Artwork page: status line "Available — ask about this work" or "In a private collection". Cards keep the old red badge (same place, same style) with the text "Private collection"; available works have no badge. Old `sold: true` became `status: "private-collection"` (10 works) | `status` per artwork; texts in `STATUS` in `scripts/build-site.js` |
+| 2 | Delivery and commissions | Not confirmed, so both claims are removed everywhere | `site.seo_description` / page texts |
+| 3 | Cap d'Antibes story | Stored as `story_html` with `story_confirmed: false`; the "Story" section is rendered only when `story_confirmed` is `true`. Not shown today | `data.json` |
+| 4 | Hub texts | Draft intros (about 125–175 words per hub) written only from facts already on the site (titles, years, sizes, media, the artist's own sentences), marked `intro_status: "draft"` | `hubs[].intro` |
+| 5 | Imprint / privacy | No legal text was invented. `legal.imprint_html` and `legal.privacy_html` are `null`; the pages, their footer and banner links and their sitemap entries appear only when a text is set | `legal` |
+| 6 | Etsy | The Etsy link stays in the contact section and in `Person.sameAs` (an external profile, not a shop on this site) | `site.social` |
+| 7 | Slugs | Generated once by the slug rule and stored in `data.json`; listed below for approval | `slug` per artwork |
+
+Other decisions: hub labels "Oil paintings", "Pastels", "Watercolours" (watercolour section heading "Watercolour
+and ink", h1 "Watercolour and ink paintings by Polina Shvedko"); home keeps **all** artworks per hub section in
+the old grid plus an "All …" link to the hub; home `h1` "Polina Shvedko Art" with the tagline "Oil paintings,
+pastels & watercolours"; hero poster = the YouTube thumbnail of the video, the video (youtube-nocookie.com) loads on
+click; footer link row with "Cookie settings"; custom 404 page; the old font is replaced by **Jost** (SIL OFL), the
+closest of 20 open-licence candidates, with mapped weights and metrics; the old floating back-to-top button was not
+rebuilt (not part of this ADR).
+
+### Implementation tracker
+
+| Item | Status |
+|---|---|
+| R1 — one page per artwork | **Done** — 30 pages `/<hub>/<slug>/` (`src/templates/pages/artwork.mustache`) |
+| R2 — remove the old framework | **Done** — its CSS, JS, fonts, classes and attributes are gone; a test fails on any leftover |
+| R3 — no e-shop | **Done** — no prices, cart, `Offer` or sales wording (tested); the e-mail CTA is the lead path |
+| R4 — remove the blog | **Done** — `/blog/cap-dantibes/` → 301 to the Cap d'Antibes page, `/blog/**` → 301 `/` |
+| §1 URL structure | **Done** — home, 3 hubs, 30 artworks, `/about/`, `/contact/`, `404.html`; `/imprint/` and `/privacy/` wait for legal text (**owner**) |
+| §2 Artwork page | **Done** — title/description rules, canonical, OG, one `h1`, facts list, full description, all photos as `<picture>` (WebP + JPEG, `alt`, `width`, `height`, lazy after the first), status line, `mailto:` CTA tracked as `contact_click` with `artwork_slug`, prev/next, breadcrumb, `VisualArtwork` + `BreadcrumbList`. Story: **owner** confirms the facts |
+| §3 Hubs | **Done** — `h1`, intro, all cards, `CollectionPage` + `ItemList` + `BreadcrumbList`; intro texts are drafts (**owner** approves) |
+| §3 Home | **Done** — `h1` with name and media, intro + "More about me", three hub sections, about me, Instagram, contact; video facade |
+| §3 Gallery filter | **Done** — removed |
+| §4 Stylesheet, scripts, font | **Done** — `src/css/site.css` (34 KB, 8 KB gzipped; larger than the 10–15 KB estimate because it reproduces the old design at five breakpoints), five vanilla scripts (15 KB), Jost WOFF2 (27 KB) |
+| §5 Shop removal | **Done** |
+| §6 Blog removal | **Done** |
+| 7.1 Page build | **Done** — `scripts/build-site.js` (`gulp pages`), deterministic, fails on bad data |
+| 7.2 No partials on the host | **Done** — no `app/partials/`; `/partials/**` → 410; `lftp mirror --delete` removes the old files |
+| 7.3 Sitemap | **Done** — 36 URLs with `lastmod`; `robots.txt` keeps the `Sitemap:` line |
+| 7.4 `.htaccess` | **Done** — `src/static/.htaccess`, tested on Apache 2.4 (15 cases, one hop each). Plesk switches for requests nginx answers itself: **owner** |
+| 7.5 Images and budgets | **Done** — 89 images → 498 variants; `app/img/` 90 MB → 67 MB, originals no longer deployed. Transfer on load: home 0.73 MB (desktop) / 1.07 MB (390 px), hubs 0.62–1.30 MB, the 30 artwork pages 0.09–0.57 MB; LCP 0.46–0.94 s at 390 px over four runs (DevTools "Fast 4G" profile); CLS 0 on every page |
+| 7.6 Consent | **Done** — banner with Accept / Decline on every page, Consent Mode v2 defaults denied, GA only after Accept, withdrawal deletes `_ga*`. Banner text: **owner** approves; GA4 annotation of the release date: **owner** |
+| 7.7 `lang` and `h1` | **Done** — `lang="en"`, exactly one `h1` and no skipped heading levels on every page |
+| 7.8 Sizes | **Done** — numeric `width_cm` / `height_cm`; 5 swaps made from the photos need the artist's confirmation (**owner**) |
+| 7.9 `Person` JSON-LD | **Done** — home and about, `sameAs` Instagram, Facebook, LinkedIn, Etsy |
+| §8 Data model | **Done** — refined: `images[]` keep their file extensions and carry `alt`; `story` became `story_html` + `story_confirmed` |
+| Verification | **Done** — `npm test`: 118 static, 104 browser, 15 Apache checks pass; html-validate passes; the build is byte-identical from a clean `npm ci` |
+| Phase 7 — Rich Results Test | **After the release** — the build validates every JSON-LD block and the tests check the types; Google's Rich Results Test needs the live URLs |
+| Phase 8 — release | **Owner** — merge to `main` (= deploy) after approval, then re-run the browser checks against the live site |
+| Phase 9 — measure | **Owner** — `/seo-report` three weeks after the release |
+
+### Owner actions before the release
+
+1. Approve the slugs (they are URLs and must not change later):
+   `oil-paintings/`: affectionate-farewell-cap-dantibes, turquoise-silence-of-the-verdon-gorge,
+   whispers-of-the-coastal-wind, vibrant-cliffs-of-the-brava-coast, cala-secreta-a-costa-brava-hideaway,
+   boats-in-the-bay-of-roses, evening-glow-on-the-brava-shore, sunset-in-a-honey-dream.
+   `pastels/`: fishing-village, hortensien, bouquet-of-wild-flowers, hamburg-main-railway-station,
+   afternoon-ride-in-the-countryside, blossoms-in-a-blue-pot, forget-me-nots-in-glass, lilacs-in-bloom,
+   elegance-in-roses, winter-magic-a-goettingen-holiday-tribute.
+   `watercolours/`: blossoms-at-the-biergarten, springtime-along-the-canal, golden-hour-on-the-corner,
+   st-albani-in-the-afternoon, by-the-old-watermill, cafe-on-a-sunny-corner, the-street-of-timeless-charm,
+   under-the-red-awning, the-corner-cafe-in-perspective, the-lone-windmill, a-quiet-stroll-in-the-park,
+   sunny-village-square.
+2. Confirm the sizes that were swapped to match the photos (old "W x H" → new width × height): Hortensien
+   42 × 29.7, Hamburg Main Railway Station 41 × 32, Blossoms at the Biergarten 42 × 29.7, Springtime Along the
+   Canal 42 × 29.7, By the Old Watermill 42 × 29.7; and the two kept as they were although the photo is portrait
+   (A Quiet Stroll in the Park 30 × 21, Sunny Village Square 40 × 29.5). Winter Magic is a pair; 26.5 × 37 cm is
+   taken as the size of each sheet.
+3. Check two media: "Sunset in a honey dream" is listed as oil on canvas, but its description says synthetic
+   paper on a wooden frame and starts with another title ("Sunset Harbor Dreams"); "Sunny Village Square" is
+   listed as watercolour, its description says watercolour and ink.
+4. Approve or rewrite the three hub intros (`intro_status: "draft"`).
+5. Confirm the Cap d'Antibes story facts, or leave it hidden. The text says "morning light" and "the last
+   morning" while the painting shows the evening, and "Antibes to the east" is doubtful.
+6. Approve the consent banner text (`CONSENT_TEXT` in `scripts/build-site.js`).
+7. Provide the Impressum and the privacy policy (it must name Google Analytics and the YouTube video, which loads
+   from youtube-nocookie.com after a click).
+8. Decide about 13 unreferenced files in `src/img/` (12.3 MB, not deployed): `IMG_2993 (1).jpg`,
+   `IMG_3272 (1).jpg`, `avata.webp`, `avatar_400x400.png`, `photo_2022-12-02_18- (5).png`,
+   `gallery/picture13_1_preview.jpeg`, `gallery/picture13_2_preview.jpeg`, `gallery/picture30_3_preview.jpg`,
+   `gallery/picture30_4_preview.jpg`, `gallery/picture7_1.jpg`, `gallery/picture7_2.jpg`, `gallery/picture8_1.jpg`,
+   `gallery/picture8_2.jpg` (the last two have the same sizes as `picture_22_1.jpg` / `picture_22_2.jpg`).
+
+### Owner actions at and after the release
+
+1. In Plesk (Hosting Settings): enable "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and set "Preferred
+   domain" to `polina-shvedko.art`. The `.htaccess` rules do the same for requests that reach Apache; these
+   switches also cover files that nginx serves directly.
+2. The steps in "Owner actions outside the repository" above (sitemap, indexing requests, `contact_click` as key
+   event, annotations, bot filter); also register `link_location` and `artwork_slug` as event-scoped custom
+   dimensions in GA4.
+3. After the deploy, check the live site: `http://`, `www.`, `/index.html`, `/blog/`, `/blog/cap-dantibes/` answer
+   one 301 each, `/partials/head.html` answers 410.

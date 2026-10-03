@@ -1,59 +1,60 @@
 # TODO — Polina Shvedko Artist Website
 
-## Highest Priority — Content Updates (from Etsy)
+The site was rebuilt by ADR-0003 (`ADR/ADR0003-seo-rebuild-artwork-pages.md`) on the branch
+`adr-0003-seo-rebuild`: one page per artwork under three medium hubs, no framework code, no shop (no prices, no
+cart), no blog. Items below that mention the old popup, cart or prices are history.
 
-### 1. Add new artwork: "Affectionate Farewell, Cap d'Antibes, France" (Oil)
-- [x] Add to oil gallery as top item, full width (`t-col_12`, 3 columns)
-- [x] Description, dimensions (190x45cm), price (€8000), medium (Oil, Canvas) added
-- [x] Images already in `src/img/gallery/picture32_*.jpg` (6 images)
-- [x] Added to socialmedia_images pool
-- **Status: DONE**
+## Open — owner decisions before the release (ADR-0003)
 
-### 2. Update existing artworks
+- [ ] **Slugs** — approve the 30 artwork URLs (`slug` in `data.json`; they must not change after the release).
+- [ ] **Sizes** — confirm the 5 width/height swaps made from the photos (Hortensien, Hamburg Main Railway Station,
+  Blossoms at the Biergarten, Springtime Along the Canal, By the Old Watermill) and the 2 kept as they were
+  (A Quiet Stroll in the Park, Sunny Village Square).
+- [ ] **Media** — "Sunset in a honey dream": canvas or synthetic paper on a wooden frame? Its description starts with
+  another title ("Sunset Harbor Dreams"). "Sunny Village Square": watercolour, or watercolour and ink?
+- [ ] **Hub texts** — approve or rewrite the three draft intros (`intro_status: "draft"`).
+- [ ] **Cap d'Antibes story** — confirm the facts; then set `story_confirmed: true` (the text has a morning/evening
+  contradiction and doubtful geography).
+- [ ] **Consent banner text** — approve (`CONSENT_TEXT` in `scripts/build-site.js`).
+- [ ] **Impressum and privacy policy** — provide the legal texts (`legal.imprint_html`, `legal.privacy_html`); the
+  privacy text must name Google Analytics and the YouTube video (youtube-nocookie.com, loaded on click).
+- [ ] **Unused source images** — 13 files in `src/img/` are not referenced (listed in the ADR-0003 tracker); delete
+  them or keep them.
+- [ ] **Back-to-top button** — the old floating button is not in the rebuild; re-add it only if wanted.
 
-#### 2.1 Pastel "Elegance in Roses" & Oil "Sunset in a honey dream"
-- [x] Update dimensions: 32 cm × 23.5 cm on a frame (wood and glass — 50 cm × 40 cm)
-- [ ] Add photos from Etsy: interior shots and without frame (3 photos total) — **BLOCKED: needs manual download**
-- [x] Change price to 300€
+## Open — after the release (owner)
 
-#### 2.2 Oil "Sunset in a honey dream"
-- [x] Add to description: "... background Synthetic paper (polymer-based) on a wooden frame, 90 cm × 60 cm"
+- [ ] Plesk: enable "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and set "Preferred domain" to
+  `polina-shvedko.art`.
+- [ ] Search Console: submit `https://polina-shvedko.art/sitemap.xml`; request indexing for `/` and the three hubs.
+- [ ] GA4: mark `contact_click` as a key event; unmark `purchase_inquiry` / `cart_order`; register the event
+  parameters `link_location` and `artwork_slug` as custom dimensions; annotate the release date (GA4 numbers drop
+  because Analytics now waits for consent).
+- [ ] GA4: add a filter or segment for the night-burst bot sessions.
+- [ ] Re-run `/seo-report` three weeks after the release.
 
-#### 2.3 Pastel flower artworks: Lilacs in Bloom, Forget-Me-Nots in Glass, Hortensien, Blossoms in a Blue Pot
-- [x] Update dimensions and frame info (Lilacs, Forget-Me-Nots, Blossoms: 32×23.5cm, frame 50×40cm; Hortensien: 29.7×42cm, formatted consistently)
-- [ ] Add interior/Etsy photos — **BLOCKED: needs manual download**
+## Open — content
 
-#### 2.4 Oil "Boats in the Bay of Roses"
-- [x] Change price to 500€
+- [ ] Add photos from Etsy (interior shots, without frame) for "Elegance in Roses", "Sunset in a honey dream",
+  Lilacs in Bloom, Forget-Me-Nots in Glass, Hortensien, Blossoms in a Blue Pot — **BLOCKED: needs manual download**.
+- [ ] Exhibition / CV section (ADR-0002 M1: not planned).
 
----
+## Done (history)
 
-## High Impact (Visitor Experience)
-
-- [ ] **Navigation Menu** — Add sticky top nav with anchor links (Oil / Pastel / Aquarelle / About / Contact). No navigation exists currently; visitors must scroll the entire page.
-- [x] **Hero Section CTA** — Add "View Gallery" or "Explore Artworks" button to the hero. Currently only a title, email link, and a tiny scroll arrow.
-- [ ] **"Add to Cart" / "Inquire" button in artwork popup** — The detail popup shows artwork info but has no buy/inquire action. Visitors must close the popup and find the floating cart icon.
-- [ ] **Gallery Filtering** — Add filter by availability (available / sold / all). 10+ items are sold; visitors scroll past artwork they can't buy.
-- [x] **Back to Top Button** — Floating button for the long single-page layout, especially important on mobile.
-
-## Medium Impact (Trust & Professionalism)
-
-- [ ] **Exhibition / CV Section** — Add credentials, exhibition history, or press mentions. Builds trust for higher-priced pieces (up to €8000).
-- [ ] **Commission Request Section** — Add a "Commission a Painting" section with a form or CTA paragraph for custom work inquiries.
-- [ ] **Artwork Year/Date** — Add creation year to each artwork in `data.json` and display it in the card/popup. Shows the artist is actively producing.
-
-## Quick Fixes (Bugs & SEO)
-
-- [x] **Fix empty `og:image`** — Set to `https://polina-shvedko.art/img/gallery/picture32_1.jpg` (Affectionate Farewell panoramic).
-- [x] **Fix currency mismatch** — Cart widget changed from $ (USD) to € (EUR) to match displayed prices.
-- [x] **Update copyright year** — Updated from "2024" to "2025" in `footer.html`.
-- [x] **Fix grammar in About Me** — Changed "I'm free artist" to "I'm a freelance artist" in `aboutme.html`.
-- [x] **Fix mixed languages** — Removed all Russian text from cart (heading, labels, button, success message, aria-labels). Now English only.
-- [x] **Fix sitemap URL typo** — Changed `polins-shvedko.artist` to `polina-shvedko.art` in `gulpfile.js`.
-
-## Nice to Have (Future)
-
-- [x] **Cookie Consent Banner** — Required for EU visitors under GDPR if analytics are added.
-- [x] **Google Analytics** — Added gtag.js snippet to `head.html`. Replace `G-XXXXXXXXXX` with your actual Measurement ID.
-- [x] **Lightbox on Instagram Mosaic** — All 5 mosaic tiles now link to the Instagram profile (`instagram.com/polina_shvedko`).
-- [x] **Smooth Scroll Animations** — Enabled `data-animationappear="on"` on all 3 gallery sections and the Instagram mosaic. Cards fade in on scroll.
+- [x] New artwork "Affectionate Farewell, Cap d'Antibes, France" (oil, 190 × 45 cm, 6 photos), full-width card.
+- [x] Sizes and frame data of the pastel flower works and "Sunset in a honey dream" updated.
+- [x] Sticky navigation (still in the rebuild).
+- [x] Hero "Explore Artworks" button (still in the rebuild; the video now loads on click).
+- [x] Inquire button in the artwork popup — replaced by the "Ask about this work" button on each artwork page.
+- [x] Gallery filter (available / sold) — removed by ADR-0003; the hub pages replace it.
+- [x] Artwork year in `data.json`, shown on the artwork page.
+- [x] `og:image` — every page has its own (absolute 1200 px JPEG).
+- [x] Prices and the cart currency — obsolete: ADR-0003 removed prices and the cart.
+- [x] Footer copyright year — now taken from `site.lastmod` in `data.json`.
+- [x] "I'm a freelance artist" grammar fix in About me.
+- [x] Mixed languages — English only; a test fails on any Cyrillic character.
+- [x] Sitemap — generated from `data.json` with every page (36 URLs).
+- [x] Cookie consent — rebuilt: Accept / Decline; Google Analytics loads only after Accept.
+- [x] Google Analytics `G-G10K54YDPQ` — loaded by `src/js/consent.js`.
+- [x] Instagram mosaic links to the Instagram profile.
+- [x] Scroll fade-in animations of the old framework — removed with it.

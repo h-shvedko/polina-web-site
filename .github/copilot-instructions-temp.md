@@ -2,150 +2,61 @@
 
 ## Project Overview
 
-This is a static artist portfolio website for Polina Shvedko, showcasing artwork across three mediums: oil paintings, pastel drawings, and aquarelle (watercolor). The site is built with Mustache.js templates, processed by Gulp.js, and uses Tilda framework components for styling.
+Static portfolio website of Polina Shvedko, an artist from Germany: oil paintings, pastels and watercolours.
+Plain HTML is generated from `data.json` by Node scripts run from Gulp 4 (Mustache templates). Every artwork has
+its own page under a medium hub (`/oil-paintings/`, `/pastels/`, `/watercolours/`); there are also home, about,
+contact and 404 pages. There is no CSS/JS framework, no shop (no prices, no cart) and no blog
+(`ADR/ADR0003-seo-rebuild-artwork-pages.md`). `CLAUDE.md` is the full reference.
 
 ## Build & Development Commands
 
-### Development
 ```bash
-# Start development server (http://localhost:7000)
-npm run server-start
+npm ci --legacy-peer-deps   # install
+npm run build:site          # site into app/ (clean, copy css/fonts/js/static, render pages + sitemap)
+npm run build               # image variants + site
+npm run image               # image variants + src/img/manifest.json (needs sharp)
+npm run server-start        # build, watch + livereload, dev server on http://localhost:7000
+npm run server-watch        # build, then rebuild on changes (no server)
+npm run serve               # static server for app/ on http://127.0.0.1:7001
+npm test                    # static checks, Playwright browser checks, Apache redirect checks (Docker)
+npm run validate-html       # html-validate over app/**/*.html
 
-# Start server with file watching and live reload
-npm run server-watch
-
-# Using Docker (recommended for consistent environment)
+# Docker (node:22; ports 7000 and 35729)
 docker-compose up -d
-docker ps  # Get container ID
-docker exec -it <CONTAINER_ID> bash
-npm run server-watch
-```
-
-### Build & Validation
-```bash
-# Full production build (processes all assets to /app directory)
-npm run build
-
-# Validate HTML output
-npm run validate-html
-
-# Optimize images
-npm run image
-
-# Generate sitemap
-npm run sitemap
-```
-
-### Individual Gulp Tasks
-```bash
-gulp css      # Process CSS files
-gulp babel    # Process JavaScript files
-gulp html     # Compile Mustache templates
-gulp img      # Optimize images
-gulp fonts    # Copy webfonts
-gulp watch    # Watch files with live reload
 ```
 
 ## Architecture
 
-### Source vs Build Directories
-- **`src/`** - Source files for development (edit these)
-- **`app/`** - Generated files for production (don't edit directly)
+- **`src/`** and **`data.json`** are the sources; **`app/`** is generated (and committed, because CI does not
+  process images). Never edit `app/` by hand.
+- `scripts/build-site.js` renders `src/templates/pages/*.mustache` (home, hub, artwork, about, contact, 404, legal)
+  with the partials in `src/templates/partials/*.mustache` and writes `app/**/index.html` and `app/sitemap.xml`.
+  It stops with an error on a missing image variant, a duplicate slug, a title over 60 characters, a meta
+  description outside 120-155 characters or invalid JSON-LD.
+- `scripts/images.js` writes WebP and JPEG variants (600/1200/1920 px) of every image that `data.json` references
+  into `app/img/` and records them in `src/img/manifest.json`. Templates use only manifest images, in `<picture>`.
+- `src/css/site.css` is the only stylesheet (BEM class names; self-hosted Jost font in `src/css/webfonts/jost/`).
+- `src/js/`: `consent.js` (cookie banner; Google Analytics loads only after Accept), `analytics.js`
+  (`contact_click`, `hero_video_play`), `nav.js` (sticky nav), `hero.js` (video on click), `artwork.js`
+  (image switcher). Vanilla ES5, deferred, no libraries.
+- `src/static/.htaccess` and `robots.txt` are copied to `app/` (redirects: http -> https, www -> apex,
+  `/index.html` -> folder, retired `/blog/` URLs -> 301, `/partials/` -> 410).
 
-All development work should be done in `src/`, and the Gulp build process generates output in `app/`.
+### Adding an artwork
 
-### Template System (Mustache.js)
-
-**Main Template**: `src/templates/index.html`  
-**Partial Includes**: `src/templates/partials/`  
-**Data Source**: `data.json` (root level, currently empty object)
-
-Templates use Mustache syntax for includes:
-```html
-{{> partials/header.html}}
-{{> partials/gallery_oil.html}}
-```
-
-When the `html` Gulp task runs, it:
-1. Reads `data.json` for template data
-2. Compiles all `.html` and `.mustache` files from `src/templates/`
-3. Resolves partial includes
-4. Outputs to `app/` directory
-
-### Gallery Structure
-
-Three separate galleries by medium:
-- **Oil Paintings**: `src/templates/partials/gallery_oil.html`
-- **Pastel Drawings**: `src/templates/partials/gallery_pastel.html`
-- **Aquarelle**: `src/templates/partials/gallery_aquarell.html`
-
-Individual artwork templates are in `src/templates/partials/gallery/[medium]/`:
-- Main item templates: `picture[N].html`
-- Detail/popup templates: `picture[N]_details.html`
-
-### Image Naming Convention
-
-Images follow a consistent pattern in `src/img/gallery/`:
-```
-picture[N]_1.jpg          # Main artwork image
-picture[N]_1_preview.jpg  # Thumbnail/preview
-picture[N]_2.jpg          # Additional views/details
-picture[N]_3.jpg          # More detail shots
-```
-
-Where `[N]` is a sequential number for each artwork.
-
-### Tilda Framework Components
-
-The site uses pre-built Tilda components (CSS/JS classes):
-- `t754` - Gallery/catalog with popup functionality
-- `t102` - Hero/cover section with background images
-- `t484` - Text content sections
-- `t490` - Image display components
-- `t578` - Contact section layout
-- `t029` - Decorative line separators
-
-These components have specific HTML structures and class names. When modifying templates, maintain the Tilda component structure to preserve functionality.
+1. Put the photos into `src/img/gallery/`.
+2. Add the artwork object to its hub in `data.json` (`slug`, `title`, `year`, `medium`, `surface`, `width_cm`,
+   `height_cm`, `frame`, `description[]`, `status`, `card`, `preview`, `preview_hover`, `images[]` with `alt`).
+3. `npm run image`, then `npm run build:site` and `npm test`.
 
 ## Code Conventions
 
-### ESLint Rules
-The project uses these specific rules (see `.eslintrc.js`):
-- 4-space indentation (enforced as error)
-- Semicolons recommended (warning)
-- `console.log` allowed (`no-console: 0`)
-- CamelCase recommended (warning)
-- Unused variables/escapes are warnings, not errors
+- 2-space indentation, single quotes (`.prettierrc`). `.eslintrc.js` is not used (ESLint is not installed).
+- English only in visible text; no Cyrillic characters; no prices or sales wording.
+- Slugs are stable URLs: never change one after release.
+- Do not invent facts about artworks or the artist.
 
-### Babel Configuration
-JavaScript is transpiled with `@babel/preset-env` to support older browsers. All JS in `src/js/` is processed through Babel before output to `app/js/`.
+## Deployment
 
-### File Watching
-The `watch` task monitors changes with these settings:
-- Polling interval: 1000ms
-- Uses polling mode (important for Docker/VM environments)
-- Triggers live reload on changes
-
-## Docker Environment
-
-The Docker setup uses Node.js 22 and mounts the project directory with a separate volume for `node_modules`. Ports:
-- **7000** - Web server
-- **35729** - LiveReload
-
-The container automatically runs `npm install` and starts the server when launched with `docker-compose up`.
-
-## Static Site Deployment
-
-Production files are in `/app` directory after running `npm run build`. The site is fully static with no server-side requirements:
-- Can be deployed to GitHub Pages, Netlify, Vercel, S3, etc.
-- `gh-pages` package is included for GitHub Pages deployment
-- Sitemap generator is configured for domain: `http://www.polins-shvedko.artist`
-
-## Important Notes
-
-- **Never edit files in `app/` directly** - they will be overwritten by the build process
-- **Image optimization is separate** - run `npm run image` when adding new images
-- **LiveReload port 35729** must be accessible for auto-refresh to work
-- **Mustache templates** are logic-less - complex logic should be in `data.json`
-- **Template data** is currently empty (`data.json` = `{}`), so no dynamic data is being injected
-- The project name in `package.json` is "recipes" (legacy), but this is an artist portfolio site
+A push to `main` runs `.github/workflows/deploy.yml`: `npm ci --legacy-peer-deps`, `npx gulp build:site`, then an
+SFTP mirror of `app/` to the Plesk host (files missing from `app/` are deleted on the server).
