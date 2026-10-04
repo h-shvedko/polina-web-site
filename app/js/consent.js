@@ -9,6 +9,9 @@
  *   deletes the Google Analytics cookies (_ga, _ga_<id>, _gid, _gat*, _gac_*).
  * - The footer button #cookie-settings and window.siteConsent.open() reopen the banner; Escape closes a
  *   reopened banner without changing the choice.
+ * - While the banner is open, <html> has the class consent-open and --consent-h = the banner height (kept up
+ *   to date by a ResizeObserver): site.css keeps that room at the end of the page and above the hero play
+ *   button, so the banner never hides content or keyboard focus.
  * - window.siteConsent = { status(): "granted" | "denied" | null (no choice yet), open() }.
  */
 (function () {
@@ -25,6 +28,7 @@
   var loaded = false; // gtag.js injected on this page
   var active = false; // loaded and allowed to measure
   var returnFocus = null; // where focus goes back when a reopened banner closes
+  var watching = false; // ResizeObserver / resize listener installed
 
   function status() {
     try {
@@ -83,9 +87,27 @@
     deleteGaCookies();
   }
 
+  /* Room for the open banner: html.consent-open + --consent-h (see site.css), removed when it closes. */
+  function reserve() {
+    var root = document.documentElement;
+    if (!banner || banner.hidden) {
+      root.classList.remove('consent-open');
+      root.style.removeProperty('--consent-h');
+      return;
+    }
+    root.style.setProperty('--consent-h', banner.offsetHeight + 'px');
+    root.classList.add('consent-open');
+  }
+
   function show(focus) {
     if (!banner) return;
     banner.hidden = false;
+    reserve();
+    if (!watching) {
+      watching = true;
+      if (window.ResizeObserver) new window.ResizeObserver(reserve).observe(banner);
+      else window.addEventListener('resize', reserve);
+    }
     var first = focus && banner.querySelector('button');
     if (first) first.focus();
   }
@@ -94,6 +116,7 @@
     if (!banner || banner.hidden) return;
     var hadFocus = banner.contains(document.activeElement);
     banner.hidden = true;
+    reserve();
     if (hadFocus && returnFocus && document.body.contains(returnFocus)) returnFocus.focus();
     returnFocus = null;
   }

@@ -7,13 +7,22 @@ ErrorDocument 404 /404.html
 RewriteEngine On
 
 # Retired URLs: absolute targets so every redirect is one hop
-RewriteRule ^blog/cap-dantibes/?$ https://polina-shvedko.art/oil-paintings/affectionate-farewell-cap-dantibes/ [R=301,L]
+RewriteRule ^blog/cap-dantibes(/(index\.html)?)?$ https://polina-shvedko.art/oil-paintings/affectionate-farewell-cap-dantibes/ [R=301,L]
 RewriteRule ^blog(/.*)?$ https://polina-shvedko.art/ [R=301,L]
 RewriteRule ^partials(/.*)?$ - [G,L]
 
 # /index.html and /dir/index.html → directory URL
 RewriteCond %{THE_REQUEST} \s/+([^?\s]*/)?index\.html[\s?]
 RewriteRule ^(.*/)?index\.html$ https://polina-shvedko.art/$1 [R=301,L]
+
+# Directory without the trailing slash → canonical URL with the slash, in one hop (mod_dir would add a second
+# hop after the www/https rules, and behind a proxy that ends TLS it would redirect to http://)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*[^/])$ https://polina-shvedko.art/$1/ [R=301,L]
+
+# Repeated slashes (//oil-paintings//...) → one slash, so no page answers 200 at a second URL
+RewriteCond %{THE_REQUEST} \s[^?\s]*//
+RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
 
 # www → apex
 RewriteCond %{HTTP_HOST} ^www\. [NC]
@@ -23,4 +32,23 @@ RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !=https
 RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
+</IfModule>
+
+# Browser caching for the responses Apache sends (files that nginx serves directly follow the Plesk setting
+# "Apache & nginx Settings > Expires"). CSS and JS URLs carry a content hash (?v=), so they can be kept for a
+# year; the font keeps its name, so give a changed font a new file name. Images keep their names when they are
+# regenerated: 30 days. Pages, the sitemap and robots.txt are revalidated on every visit.
+<IfModule mod_headers.c>
+<FilesMatch "\.(css|js)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+<FilesMatch "\.woff2$">
+Header set Cache-Control "public, max-age=31536000"
+</FilesMatch>
+<FilesMatch "\.(webp|jpe?g|png|gif|avif|ico)$">
+Header set Cache-Control "public, max-age=2592000"
+</FilesMatch>
+<FilesMatch "\.(html|xml|txt)$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
 </IfModule>
