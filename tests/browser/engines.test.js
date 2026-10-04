@@ -81,7 +81,7 @@ describe(`engines: Firefox and WebKit (${E.IMAGE})`, { skip: reason || false }, 
             await page.waitForTimeout(600);
             const r = await page.evaluate(() => {
               const row = document.querySelector('.site-nav__links');
-              const links = row ? row.querySelectorAll('.site-nav__link') : [];
+              const links = row ? [...row.querySelectorAll('.site-nav__link')].filter((l) => l.getClientRects().length) : [];
               const last = links[links.length - 1];
               const pad = last ? parseFloat(getComputedStyle(last).paddingRight) || 0 : 0;
               const banner = document.getElementById('cookie-consent');
@@ -111,7 +111,7 @@ describe(`engines: Firefox and WebKit (${E.IMAGE})`, { skip: reason || false }, 
     });
   }
 
-  test(`${E.ENGINES.join(' and ')}: after Play, the 16:9 video area covers the hero (also when the hero is taller than the window), and the player's title bar and logo strips lie outside it`, { timeout: 120000 }, async () => {
+  test(`${E.ENGINES.join(' and ')}: the video starts on load (no click), and its 16:9 area covers the hero (also when the hero is taller than the window), and the player's title bar and logo strips lie outside it`, { timeout: 120000 }, async () => {
     const problems = [];
     for (const engine of E.ENGINES) {
       for (const [w, h] of [[1920, 1080], [1366, 900], [1024, 600], [667, 375], [390, 844]]) {
@@ -123,7 +123,6 @@ describe(`engines: Firefox and WebKit (${E.IMAGE})`, { skip: reason || false }, 
           await ctx.addInitScript(() => { try { localStorage.setItem('cookie_consent_v2', 'denied'); } catch (e) { /* */ } });
           const page = await ctx.newPage();
           await page.goto(`${server.url}/`, { waitUntil: 'load', timeout: 60000 });
-          await page.click('.hero__play');
           await page.locator('iframe.hero__video').waitFor({ state: 'attached', timeout: 5000 });
           problems.push(...B.heroVideoProblems(await page.evaluate(B.heroVideoGeometry), `${engine} ${w}x${h}`));
         } finally {
@@ -134,25 +133,24 @@ describe(`engines: Firefox and WebKit (${E.IMAGE})`, { skip: reason || false }, 
     expectNone(problems, 'hero video geometry');
   });
 
-  test(`${E.ENGINES.join(' and ')}: a player that a content blocker stops (no load event) is removed after about 20 s; the button reads "Play the video" again over the poster, and Play starts it again`, { timeout: 120000 }, async () => {
+  test(`${E.ENGINES.join(' and ')}: a player that starts on load but that a content blocker stops (no load event) is removed after about 20 s; the button reads "Play the video" again over the poster, and Play starts it again`, { timeout: 120000 }, async () => {
     const problems = [];
     await Promise.all(E.ENGINES.map(async (engine) => {
       const ctx = await context(engine, 'desktop', 'denied');
       try {
         const page = await ctx.newPage();
+        const clicked = Date.now(); // the player starts with the page
         await page.goto(`${server.url}/`, { waitUntil: 'load', timeout: 60000 });
-        await page.click('.hero__play');
-        const clicked = Date.now();
         await page.locator('iframe.hero__video').waitFor({ state: 'attached', timeout: 5000 });
         const label = () => page.evaluate(() => document.querySelector('.hero__play').getAttribute('aria-label'));
-        if ((await label()) !== 'Pause the video') problems.push(`${engine}: after the click the button reads ${JSON.stringify(await label())}`);
+        if ((await label()) !== 'Pause the video') problems.push(`${engine}: while the video starts the button reads ${JSON.stringify(await label())}`);
         const gone = await page.waitForFunction(() => !document.querySelector('iframe.hero__video'), null, { timeout: 35000, polling: 250 }).then(() => true, () => false);
         const waited = Date.now() - clicked;
         const s = await page.evaluate(() => {
           const poster = document.querySelector('.hero__poster img');
           return { label: document.querySelector('.hero__play').getAttribute('aria-label'), poster: Boolean(poster && poster.getClientRects().length) };
         });
-        if (!gone) problems.push(`${engine}: the blocked player is still there 35 s after the click; the button reads ${JSON.stringify(s.label)}`);
+        if (!gone) problems.push(`${engine}: the blocked player is still there 35 s after the page load; the button reads ${JSON.stringify(s.label)}`);
         else {
           if (waited < 8000) problems.push(`${engine}: the player was removed after ${waited} ms (it must get time to load)`);
           if (s.label !== 'Play the video') problems.push(`${engine}: after the player was removed the button reads ${JSON.stringify(s.label)}`);

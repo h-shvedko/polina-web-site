@@ -39,6 +39,8 @@
 
   --radius-pill: 30px;
   --container: 1200px;
+  /* width of the page content: the gallery grid (3 x 360 + 2 x 40 px); the nav row aligns to it (see the bands) */
+  --content-w: 1160px;
   --nav-h: 52px;
   --focus-ring: #000;
   --row-gap: 80px;        /* gallery rows, 60px from 960 px down */
@@ -174,14 +176,18 @@ html.consent-open body { padding-bottom: var(--consent-h, 0px); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1248px; /* 1200 px plus the 24 px side padding, as before */
+  /* the logo starts and the language flags end at the edges of the page content (the gallery grid) in every
+     band; below 641 px the content has 20 px side padding */
+  width: calc(100% - 40px);
+  max-width: var(--content-w);
   height: var(--nav-h);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0;
 }
 
 .site-nav__logo {
   flex-shrink: 0;
+  margin-right: 12px; /* the row of links never touches the logo, also when it scrolls */
   display: block;
   font-size: 14px;
   font-weight: var(--fw-medium);
@@ -194,7 +200,7 @@ html.consent-open body { padding-bottom: var(--consent-h, 0px); }
 .site-nav__links {
   display: flex;
   min-width: 0;
-  margin: 0;
+  margin: 0 0 0 auto; /* the links sit on the right, before the language flags */
   padding: 0 0 0 20px;
   list-style: none;
   overflow-x: auto;
@@ -222,8 +228,36 @@ html.consent-open body { padding-bottom: var(--consent-h, 0px); }
   text-decoration-thickness: 1px;
   text-underline-offset: 5px;
 }
+/* the last link sits beside the language flags: its text keeps the usual gap to them */
 .site-nav__link:focus-visible,
 .site-nav__logo:focus-visible { outline-offset: -2px; }
+
+/* language switch: one flag per language (inline SVG), the current one underlined like the current link */
+.site-nav__langs {
+  flex-shrink: 0;
+  display: flex;
+  gap: 4px;
+  margin: 0 0 0 6px;
+  padding: 0;
+  list-style: none;
+}
+.site-nav__lang {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: var(--nav-h);
+  opacity: .55;
+  transition: opacity .15s;
+}
+.site-nav__lang-item:last-child .site-nav__lang { justify-content: flex-end; min-width: 28px; }
+.site-nav__item--lang { display: none; } /* the phone copy of the switch (see the narrow-screen rules) */
+.site-nav__lang:hover,
+.site-nav__lang:focus-visible,
+.site-nav__lang[aria-current="true"] { opacity: 1; }
+.site-nav__lang[aria-current="true"] .flag { box-shadow: 0 3px 0 -1px var(--c-link); }
+.site-nav__lang:focus-visible { outline-offset: -2px; }
+.flag { display: block; height: 14px; width: auto; box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
 /* The row scrolls on narrow screens (see the narrow-screen rules). nav.js marks an edge that cuts a label:
    --more-start (labels before the left edge) and --more-end (after the right edge); a cut edge fades out, so no
    label ends in a hard cut (the old row ended mid-word). The wider right fade is the cue that the row goes on;
@@ -1131,6 +1165,7 @@ html.zoom-open { overflow: hidden; }
 
 /* ================================================================ 961-1200 px (container 960) */
 @media (max-width: 1200px) {
+  :root { --content-w: 940px; }
   .hero__content { max-width: 960px; }
   .hero__title { font-size: 130px; }
 
@@ -1168,6 +1203,7 @@ html.zoom-open { overflow: hidden; }
 
 /* ================================================================ 641-960 px (container 640) */
 @media (max-width: 960px) {
+  :root { --content-w: 600px; }
   :root { --row-gap: 60px; }
 
   .hero__content { max-width: 640px; }
@@ -1336,15 +1372,19 @@ html.zoom-open { overflow: hidden; }
    readers). */
 @media (max-width: 680px) {
   .site-nav__links {
-    margin-left: 12px;
+    margin-left: 0;
     padding-left: 0;
     scroll-snap-type: x mandatory;
     scroll-padding-left: var(--fade-start);
   }
   .site-nav__item { scroll-snap-align: start; }
-  .site-nav__link { padding: 0 8px; letter-spacing: .06em; }
+  .site-nav__link { padding: 0 8px; letter-spacing: .06em; }  /* phones: the flag of the other language is the last item of the scrolling row (the hub links need the room) */
+  .site-nav__langs { display: none; }
+  .site-nav__item--lang { display: block; }
+  .site-nav__item--lang .site-nav__lang { display: flex; height: var(--nav-h); min-width: 0; }
 }
 @media (max-width: 640px) {
+  :root { --content-w: none; }
   .site-nav__more {
     position: absolute;
     width: 1px;
@@ -1360,6 +1400,27 @@ html.zoom-open { overflow: hidden; }
    link activation, so scripted scrolling (window.scrollTo, find in page) stays instant */
 @media (prefers-reduced-motion: no-preference) {
   html:focus-within { scroll-behavior: smooth; }
+
+  /* page changes cross-fade (cross-document view transitions; browsers without them load pages as before). The
+     nav stays in place; the card image that was clicked grows into the artwork's main image (nav.js names the
+     card image "artwork-image" on the way out, and on the way back the card of the artwork just seen) */
+  @view-transition { navigation: auto; }
+  .site-nav { view-transition-name: site-nav; }
+  .artwork__main > picture:not([hidden]) { view-transition-name: artwork-image; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: .25s; }
+  ::view-transition-group(artwork-image) { animation-duration: .35s; animation-timing-function: cubic-bezier(.2, 0, .2, 1); }
+  ::view-transition-old(artwork-image),
+  ::view-transition-new(artwork-image) { height: 100%; object-fit: cover; }
+
+  /* lazy images fade in once loaded: nav.js (Web Animations, opacity only, so nothing moves) */
+
+  /* the full-screen view fades in; artwork.js fades the image in when it switches (Web Animations) */
+  .zoom[open],
+  .zoom[open]::backdrop { animation: fade-in .2s ease; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   *,

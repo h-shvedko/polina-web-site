@@ -27,7 +27,12 @@ describe('browser 1: every page type loads without errors and without third-part
           // the browser logs the page's own 404 as a console error; it is reported once above
           problems.push(...rec.consoleErrors.filter((e) => !(resp && resp.status() >= 400 && e.startsWith('Failed to load resource') && e.endsWith(`(${p.path})`))).map((e) => `console error: ${e}`));
           problems.push(...rec.failedLocal.map((e) => `failed local request: ${e}`));
+          // home: the hero video starts on load, so its youtube-nocookie.com player is the one allowed request
+          // (privacy policy); on any other page it is a problem as well
+          const player = rec.heroPlayer();
+          if (p.type === 'home' && player.length !== 1) problems.push(`home: ${player.length} requests for the hero player, expected 1`);
           for (const r of rec.external()) {
+            if (p.type === 'home' && B.HERO_PLAYER_RE.test(r.url)) continue;
             if (B.TILDA_HOST_RE.test(r.host)) problems.push(`request to a Tilda host: ${r.url}`);
             else if (B.GOOGLE_HOST_RE.test(r.host)) problems.push(`request to Google before consent: ${r.url}`);
             else problems.push(`third-party request before consent: ${r.url}`);

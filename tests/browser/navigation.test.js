@@ -327,7 +327,7 @@ window.addEventListener('message', function (e) {
 });
 </script></html>`;
 
-describe('browser 6: hero video facade', () => {
+describe('browser 6: hero background video', () => {
   let env;
   before(async () => { env = await B.startEnv(); });
   after(async () => { if (env) await env.close(); });
@@ -345,10 +345,54 @@ describe('browser 6: hero video facade', () => {
   });
 
   for (const vp of B.VIEWPORT_NAMES) {
-    test(`${vp}: no YouTube request on load; the play button inserts the youtube-nocookie.com player (autoplay, muted, loop, no controls); while the player does not play (here: blocked) the poster stays, and the button stops it again`, { timeout: 60000 }, async () => {
-      const { ctx, page, rec } = await open(env, vp, '/', { consent: 'granted' });
+    test(`${vp}: the video starts on page load without a click (muted, looped, no controls): the player is inserted at once, the button reads "Pause the video", the poster stays until the player reports that it plays, and an automatic start sends no hero_video_play`, { timeout: 60000 }, async () => {
+      const ctx = await B.newContext(env, vp, { consent: 'granted' });
       try {
-        expectNone(rec.youtube().map((r) => r.url), 'YouTube requests before the click');
+        await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\/embed\//, async (r) => {
+          await new Promise((res) => setTimeout(res, 1500)); // the player page takes a moment
+          await r.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: PLAYER_STUB });
+        });
+        const page = await ctx.newPage();
+        const rec = B.trackPage(page, env);
+        await page.goto(env.url('/'), { waitUntil: 'load' });
+        const problems = [];
+        let s = await heroState(page);
+        if (!s.frame) problems.push('no player right after the page load');
+        if (s.frame && s.frameOpacity !== 0) problems.push(`the player is visible before it plays (opacity ${s.frameOpacity})`);
+        if (!s.posterShown) problems.push('the poster is not shown while the player loads');
+        if (s.label !== 'Pause the video') problems.push(`while the video starts the button reads ${JSON.stringify(s.label)}, expected "Pause the video"`);
+        const src = await page.locator('iframe.hero__video').first().getAttribute('src').catch(() => '');
+        const u = new URL(src || 'https://x/', 'https://x');
+        for (const [k, v] of Object.entries({ autoplay: '1', mute: '1', loop: '1', controls: '0', playsinline: '1' })) if (u.searchParams.get(k) !== v) problems.push(`iframe ${k}=${u.searchParams.get(k)}, expected ${v}`);
+        const playing = await page.waitForFunction(() => document.querySelector('.hero__media').classList.contains('hero__media--playing'), null, { timeout: 10000 }).then(() => true, () => false);
+        if (!playing) problems.push('the player reported that it plays, but the hero did not switch to the video');
+        await page.waitForTimeout(800); // the fade-in
+        s = await heroState(page);
+        if (playing && s.frameOpacity !== 1) problems.push(`the playing video has opacity ${s.frameOpacity}`);
+        if (rec.heroPlayer().length !== 1) problems.push(`${rec.heroPlayer().length} player requests`);
+        if (B.findEvents(await B.readDataLayer(page), 'hero_video_play').length) problems.push('the automatic start sent hero_video_play (only a click on Play counts)');
+        await B.clickOn(page, 'button.hero__play', 'hero pause button');
+        if ((await heroState(page)).label !== 'Play the video') problems.push('the button does not pause the autoplaying video (WCAG 2.2.2)');
+        expectNone(problems, 'hero autoplay');
+      } finally { await ctx.close(); }
+    });
+
+    test(`${vp}, German home /de/: the button labels and the player title are German`, { timeout: 60000 }, async () => {
+      const { ctx, page } = await open(env, vp, '/de/', { consent: 'denied' });
+      try {
+        const s = await heroState(page);
+        const title = await page.locator('iframe.hero__video').first().getAttribute('title').catch(() => null);
+        expectNone([
+          ...(s.label !== 'Video anhalten' ? [`button reads ${JSON.stringify(s.label)}, expected "Video anhalten"`] : []),
+          ...(title !== 'Video von Polina Shvedko Art' ? [`iframe title ${JSON.stringify(title)}`] : []),
+        ], 'German hero');
+      } finally { await ctx.close(); }
+    });
+
+    test(`${vp}, prefers-reduced-motion: no YouTube request on load; the play button inserts the youtube-nocookie.com player (autoplay, muted, loop, no controls); while the player does not play (here: blocked) the poster stays, and the button stops it again`, { timeout: 60000 }, async () => {
+      const { ctx, page, rec } = await open(env, vp, '/', { consent: 'granted', motion: 'reduce' });
+      try {
+        expectNone(rec.youtube().map((r) => r.url), 'YouTube requests before the click (reduced motion: no autoplay)');
         assert.equal(await page.locator('iframe').count(), 0, 'an iframe exists before the click');
         await B.clickOn(page, 'button.hero__play', 'hero play button');
         const frame = page.locator('iframe[src*="youtube-nocookie.com/embed/"]');
@@ -380,7 +424,7 @@ describe('browser 6: hero video facade', () => {
   }
 
   test('desktop: a player that never answers (blocked) is removed after about 10 s: the button reads "Play the video" again over the poster, nothing is sent to it any more, and Play starts it again', { timeout: 60000 }, async () => {
-    const { ctx, page } = await open(env, 'desktop', '/');
+    const { ctx, page } = await open(env, 'desktop', '/', { consent: 'denied', motion: 'reduce' });
     try {
       const messages = []; // Chromium warns for every message posted to the blocked frame (its error page)
       page.on('console', (m) => { if (/postMessage/.test(m.text())) messages.push(m.text()); });
@@ -406,7 +450,7 @@ describe('browser 6: hero video facade', () => {
   });
 
   test('desktop: a player page that never loads (a firewall that drops the packets: no load event, no answer) is removed after about 20 s; the button reads "Play the video" again over the poster', { timeout: 90000 }, async () => {
-    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied', motion: 'reduce' });
     const hung = [];
     try {
       await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\//, (r) => { hung.push(r); }); // never answered
@@ -434,7 +478,7 @@ describe('browser 6: hero video facade', () => {
   });
 
   test('desktop: on a connection the browser reports as 2G (Chromium reports "Slow 3G" so) a player page that is still loading gets 60 s, not 20 s, before it is removed', { timeout: 60000 }, async () => {
-    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied', motion: 'reduce' });
     const hung = [];
     try {
       await ctx.addInitScript(() => {
@@ -464,7 +508,7 @@ describe('browser 6: hero video facade', () => {
   });
 
   test('desktop: a player that reports an error is removed at once and the button reads "Play the video"', { timeout: 60000 }, async () => {
-    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied', motion: 'reduce' });
     try {
       await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\/embed\//, (r) => r.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: PLAYER_ERROR_STUB }));
       const page = await ctx.newPage();
@@ -481,7 +525,7 @@ describe('browser 6: hero video facade', () => {
   });
 
   test('desktop: once the player reports that it plays, the video shows over the poster; the button pauses and resumes it (pauseVideo / playVideo)', { timeout: 60000 }, async () => {
-    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied', motion: 'reduce' });
     try {
       await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\/embed\//, (r) => r.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: PLAYER_STUB }));
       await ctx.addInitScript(() => {

@@ -14,6 +14,9 @@
  * the cross, Escape or a click beside the image close it; the page then shows the image viewed last and focus
  * returns to the image.
  *
+ * Switching fades the new image in (here and in the full-screen view; Web Animations, opacity only, so nothing
+ * moves), except with prefers-reduced-motion: reduce.
+ *
  * Without JS this does nothing: a <noscript> style shows every image, and the zoom button stays hidden.
  */
 (function () {
@@ -34,6 +37,13 @@
   var current = 0;
   for (var k = 0; k < count; k++) {
     if (!slides[k].hidden) { current = k; break; }
+  }
+
+  var reduced = Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  /* fade an image in that has just been shown */
+  function fadeIn(el) {
+    if (reduced || !el || typeof el.animate !== 'function') return;
+    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, easing: 'ease-out' });
   }
 
   function indexOf(el) { return Number(el.getAttribute('data-index')); }
@@ -60,6 +70,7 @@
     if (!multiple || i < 0 || i >= count || i === current) return;
     current = i;
     render(focusThumb);
+    fadeIn(slides[i]);
     preloadAround(i);
   }
 
@@ -116,7 +127,10 @@
 
   function step(delta) {
     var to = shown + delta;
-    if (multiple && to >= 0 && to < count) show(to);
+    if (multiple && to >= 0 && to < count) {
+      show(to);
+      fadeIn(dialog.querySelector('.zoom__picture'));
+    }
   }
 
   if (zoomable) {

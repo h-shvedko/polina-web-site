@@ -28,6 +28,9 @@ const CONSENT_KEY = 'cookie_consent_v2';
 const GOOGLE_HOST_RE = /(^|\.)(google(?:tagmanager|-analytics|adservices|syndication|usercontent|apis)?\.[a-z.]+|gstatic\.com|doubleclick\.net|youtube(?:-nocookie)?\.com|ytimg\.com|googlevideo\.com|ggpht\.com)$/i;
 const GTM_HOST_RE = /(^|\.)googletagmanager\.com$/i;
 const YOUTUBE_HOST_RE = /(^|\.)(youtube(?:-nocookie)?\.com|ytimg\.com|googlevideo\.com)$/i;
+/* The home hero player (youtube-nocookie.com, privacy-enhanced mode), which starts on page load: the one request to
+   a Google host before consent, named in the privacy policy. rec.google() leaves it out, rec.heroPlayer() lists it. */
+const HERO_PLAYER_RE = /^https:\/\/www\.youtube-nocookie\.com\/embed\//;
 const TILDA_HOST_RE = /tilda/i;
 const GTAG_STUB = '/* gtag.js test stub */ window.__gtagStubLoads = (window.__gtagStubLoads || 0) + 1;';
 
@@ -50,7 +53,7 @@ function pathOf(url) {
   try { const u = new URL(url); return u.pathname + u.search; } catch { return url; }
 }
 
-/** One page per type (SPEC 12 browser list): home, first hub, first artwork of each hub, about, contact. */
+/** One page per type (SPEC 12 browser list): home, first hub, first artwork of each hub, about, contact, German home and artwork. */
 function samplePages(data = S.loadData()) {
   const hubs = data.hubs || [];
   if (process.env.BROWSER_PAGES === 'all') {
@@ -64,6 +67,9 @@ function samplePages(data = S.loadData()) {
   }
   list.push({ key: 'about', label: 'about', type: 'about', path: '/about/' });
   list.push({ key: 'contact', label: 'contact', type: 'contact', path: '/contact/' });
+  // German: home and the first artwork below /de/
+  list.push({ key: 'de-home', label: 'German home', type: 'home', path: '/de/' });
+  if (hubs[0] && hubs[0].artworks[0]) list.push({ key: 'de-artwork', label: 'German artwork', type: 'artwork', path: S.artworkPath(hubs[0], hubs[0].artworks[0], 'de'), hub: hubs[0], artwork: hubs[0].artworks[0] });
   return list;
 }
 
@@ -102,10 +108,13 @@ async function startEnv() {
  * ({ viewport, deviceScaleFactor, isMobile, hasTouch }). Options:
  *   consent: null (first visit) | 'granted' | 'denied' — stored in localStorage before every page load
  *   route: true — stub googletagmanager.com and abort other third-party requests (false: only the DNS block)
+ *   motion: 'no-preference' (default; the home hero video starts on load) | 'reduce' (prefers-reduced-motion:
+ *     no autoplay, no smooth scrolling, no view transitions, no fades; the hero video waits for Play)
  */
-async function newContext(env, vpName, { consent = null, route = true } = {}) {
+async function newContext(env, vpName, { consent = null, route = true, motion = 'no-preference' } = {}) {
   const ctx = await env.browser.newContext({
     ...(typeof vpName === 'string' ? VIEWPORTS[vpName] : vpName),
+    reducedMotion: motion,
     locale: 'en-US',
     timezoneId: 'Europe/Berlin',
     colorScheme: 'light',
@@ -160,7 +169,8 @@ function trackPage(page, env) {
   page.on('pageerror', (e) => rec.pageErrors.push(String(e && e.message ? e.message : e).slice(0, 300)));
   rec.mark = () => rec.requests.length;
   rec.external = (from = 0) => rec.requests.slice(from).filter((r) => !r.local);
-  rec.google = (from = 0) => rec.external(from).filter((r) => GOOGLE_HOST_RE.test(r.host));
+  rec.google = (from = 0) => rec.external(from).filter((r) => GOOGLE_HOST_RE.test(r.host) && !HERO_PLAYER_RE.test(r.url));
+  rec.heroPlayer = (from = 0) => rec.external(from).filter((r) => HERO_PLAYER_RE.test(r.url));
   rec.gtag = (from = 0) => rec.external(from).filter((r) => GTM_HOST_RE.test(r.host) && /\/gtag\/js/.test(r.url));
   rec.youtube = (from = 0) => rec.external(from).filter((r) => YOUTUBE_HOST_RE.test(r.host));
   rec.tilda = (from = 0) => rec.external(from).filter((r) => TILDA_HOST_RE.test(r.host));
@@ -345,6 +355,7 @@ module.exports = {
   CONSENT_KEY,
   GOOGLE_HOST_RE,
   YOUTUBE_HOST_RE,
+  HERO_PLAYER_RE,
   TILDA_HOST_RE,
   SCREEN_DIR,
   RUN_ID,

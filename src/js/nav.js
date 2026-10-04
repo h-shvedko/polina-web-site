@@ -12,9 +12,80 @@
  * row goes on. A link that gets keyboard focus while it is cut off or under a fade moves to the start of the row,
  * just after the left fade (a snap position: site.css scroll-padding-left = --fade-start).
  * Nothing reads layout before the stylesheet is in use (whenStyled()).
+ *
+ * Motion (every page; nothing of it with prefers-reduced-motion: reduce):
+ *  - in-page links (#...) scroll smoothly (also in Safari, where a clicked link gets no focus and the CSS rule
+ *    html:focus-within does not apply), update the address and move the focus to the target;
+ *  - lazy images that are still loading fade in when they load (Web Animations, opacity only);
+ *  - cross-document view transitions (site.css @view-transition): on the way to an artwork page the clicked card
+ *    image is named "artwork-image", so it grows into the artwork's main image; on the way back the card of the
+ *    artwork just seen gets the name (where pagereveal reaches this script in time).
  */
 (function () {
   'use strict';
+
+  var reduced = Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  /* ---------------------------------------------------------------- smooth in-page links */
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var link = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!link || link.classList.contains('skip-link')) return; // the skip link keeps the native jump
+    var id = link.getAttribute('href').slice(1);
+    var target = id && document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    if (window.history && history.pushState) history.pushState(null, '', '#' + id);
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    try { target.focus({ preventScroll: true }); } catch (err) { /* old browsers */ }
+  });
+
+  /* ---------------------------------------------------------------- lazy images fade in */
+  /* Web Animations, not a CSS transition: nothing waits for the stylesheet, and a page that loads with a late
+     stylesheet runs no transition (WebKit) */
+  if (!reduced) {
+    [].forEach.call(document.querySelectorAll('img[loading="lazy"]'), function (img) {
+      if (img.complete || typeof img.animate !== 'function') return;
+      img.addEventListener('load', function () {
+        img.classList.add('img-faded'); // marks the images that faded in (tests)
+        img.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, easing: 'ease-out' });
+      }, { once: true });
+    });
+  }
+
+  /* ---------------------------------------------------------------- view transitions: card -> artwork image */
+  function samePage(a, b) {
+    try {
+      var x = new URL(a, window.location.href);
+      var y = new URL(b, window.location.href);
+      return x.origin === y.origin && x.pathname === y.pathname;
+    } catch (err) { return false; }
+  }
+  function cardImage(url) {
+    var links = document.querySelectorAll('a.card__link');
+    for (var i = 0; i < links.length; i++) {
+      if (samePage(links[i].href, url)) return links[i].querySelector('.card__img');
+    }
+    return null;
+  }
+  function clearNames() {
+    [].forEach.call(document.querySelectorAll('.card__img[style]'), function (el) { el.style.viewTransitionName = ''; });
+  }
+  window.addEventListener('pageswap', function (e) {
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    var img = cardImage(e.activation.entry.url);
+    if (img) img.style.viewTransitionName = 'artwork-image';
+  });
+  window.addEventListener('pagereveal', function (e) {
+    var from = window.navigation && window.navigation.activation && window.navigation.activation.from;
+    if (!e.viewTransition || !from) return;
+    var img = cardImage(from.url);
+    if (!img) return;
+    img.style.viewTransitionName = 'artwork-image';
+    e.viewTransition.finished.then(clearNames, clearNames);
+  });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) clearNames(); }); // back from the cache
 
   var nav = document.getElementById('site-nav');
   if (!nav) return;
@@ -58,7 +129,8 @@
       return { left: r.left + px(link, 'paddingLeft'), right: r.right - px(link, 'paddingRight'), boxLeft: r.left };
     };
     var edges = function () {
-      var links = row.querySelectorAll('.site-nav__link');
+      // the shown links only (the phone copy of the language switch is display: none on wider screens)
+      var links = [].filter.call(row.querySelectorAll('.site-nav__link'), function (l) { return l.getClientRects().length > 0; });
       if (!links.length) return;
       var box = row.getBoundingClientRect();
       row.classList.toggle('site-nav__links--more-start', textEdges(links[0]).left < box.left - 0.5);

@@ -1,8 +1,11 @@
 /*
- * hero.js: video facade of the home hero (ADR-0003, SPEC section 9). Nothing is requested from YouTube before
- * the click. Activating button.hero__play (mouse, touch, Enter or Space) inserts the youtube-nocookie.com player
- * (autoplay, muted, loop, no controls) as iframe.hero__video in div.hero__player over the poster and sends
- * hero_video_play (analytics.js, only with consent). site.css sizes the player from div.hero__player (a size
+ * hero.js: background video of the home hero (ADR-0003, SPEC section 9). The video starts on page load: the
+ * script inserts the youtube-nocookie.com player (autoplay, muted, loop, no controls) as iframe.hero__video in
+ * div.hero__player over the poster at once, unless the visitor asks for reduced motion (prefers-reduced-motion:
+ * reduce), when it waits for Play. The privacy policy says that the player loads on page load.
+ * button.hero__play stops and restarts the motion (WCAG 2.2.2); a start by the button (not the automatic one)
+ * sends hero_video_play (analytics.js, only with consent). Its labels come from data-label-play /
+ * data-label-pause (the page language), the iframe title from data-video-title. site.css sizes the player from div.hero__player (a size
  * container as large as the hero), so the video covers the hero and the player's own title bar and logo lie
  * outside it.
  * The poster stays below the player, which is transparent until it reports that it plays (YouTube IFrame API
@@ -24,6 +27,8 @@
   var media = document.querySelector('.hero__media');
   var id = button && button.getAttribute('data-youtube-id');
   if (!button || !media || !id) return;
+  var LABEL_PLAY = button.getAttribute('data-label-play') || 'Play the video';
+  var LABEL_PAUSE = button.getAttribute('data-label-pause') || 'Pause the video';
 
   var player = null; // div.hero__player around the iframe
   var frame = null;
@@ -35,7 +40,7 @@
     state = next;
     var moving = next === 'loading' || next === 'playing';
     button.classList.toggle('hero__play--active', moving);
-    button.setAttribute('aria-label', moving ? 'Pause the video' : 'Play the video');
+    button.setAttribute('aria-label', moving ? LABEL_PAUSE : LABEL_PLAY);
     media.classList.toggle('hero__media--playing', next === 'playing' || next === 'paused');
   }
 
@@ -91,13 +96,13 @@
     if (playerState === 1 && state === 'loading') set('playing');
   });
 
-  function start() {
+  function start(auto) {
     var vid = encodeURIComponent(id);
     player = document.createElement('div');
     player.className = 'hero__player';
     frame = document.createElement('iframe');
     frame.className = 'hero__video';
-    frame.title = 'Polina Shvedko Art video';
+    frame.title = button.getAttribute('data-video-title') || 'Polina Shvedko Art video';
     frame.tabIndex = -1; // no controls inside (controls=0, no pointer events): not a Tab stop
     frame.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
     frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
@@ -109,7 +114,7 @@
     media.insertBefore(player, poster ? poster.nextSibling : media.firstChild);
     set('loading');
     waiting = setTimeout(remove, loadTimeout()); // the page never loaded: no load event, no answer
-    if (window.siteAnalytics) window.siteAnalytics.track('hero_video_play', { video_id: id });
+    if (!auto && window.siteAnalytics) window.siteAnalytics.track('hero_video_play', { video_id: id });
   }
 
   function remove() {
@@ -122,7 +127,7 @@
   }
 
   button.addEventListener('click', function () {
-    if (state === 'idle') start();
+    if (state === 'idle') start(false);
     else if (state === 'loading') remove();
     else if (state === 'playing') {
       send({ event: 'command', func: 'pauseVideo', args: [], id: 1, channel: 'widget' });
@@ -132,4 +137,8 @@
       set('playing');
     }
   });
+
+  /* autoplay on load, as the old background video; not for visitors who ask for reduced motion */
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) start(true);
 })();

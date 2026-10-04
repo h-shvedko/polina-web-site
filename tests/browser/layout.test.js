@@ -53,7 +53,8 @@ describe('layout: the open consent banner hides neither content nor keyboard foc
           await page.locator('#cookie-consent').waitFor({ state: 'visible', timeout: 5000 });
           const covered = [];
           let stops = 0;
-          for (let k = 0; k < 90; k++) {
+          let accepts = 0;
+          for (let k = 0; k < 120; k++) {
             await page.keyboard.press('Tab');
             const r = await page.evaluate(() => {
               const el = document.activeElement;
@@ -75,7 +76,7 @@ describe('layout: the open consent banner hides neither content nor keyboard foc
             if (r.done) break;
             stops++;
             if (r.under === 5) covered.push(r.name);
-            if (r.inBanner && r.id === 'cookie-accept' && k > 3) break; // walked around once
+            if (r.inBanner && r.id === 'cookie-accept' && ++accepts === 2) break; // walked around once
           }
           assert.ok(stops > 5, `only ${stops} Tab stops`);
           await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
@@ -94,8 +95,10 @@ describe('layout: the open consent banner hides neither content nor keyboard foc
   }
 
   for (const vp of B.VIEWPORT_NAMES) {
+    // reduced motion: the video waits for Play, so the real click starts it (without, the video starts on load and
+    // the click pauses it)
     test(`${vp}: on a first visit the hero play button is not under the banner (a real ${vp === 'mobile' ? 'tap' : 'click'} on it starts the video)`, { timeout: 60000 }, async () => {
-      const ctx = await B.newContext(env, vp);
+      const ctx = await B.newContext(env, vp, { motion: 'reduce' });
       try {
         const page = await ctx.newPage();
         await B.gotoPage(page, env.url('/'), { idle: false });
@@ -222,9 +225,10 @@ function navEdgeProblems(focused) {
   const text = (a) => {
     const b = a.getBoundingClientRect();
     const cs = getComputedStyle(a);
-    return { name: a.firstChild.nodeValue.trim(), left: b.left + parseFloat(cs.paddingLeft), right: b.right - parseFloat(cs.paddingRight) };
+    return { name: (a.firstChild.nodeValue || a.getAttribute('aria-label') || '').trim(), left: b.left + parseFloat(cs.paddingLeft), right: b.right - parseFloat(cs.paddingRight) };
   };
-  const labels = [...row.querySelectorAll('.site-nav__link')].map(text);
+  // the shown links (phones: the language flag is the last one)
+  const labels = [...row.querySelectorAll('.site-nav__link')].filter((a) => a.getClientRects().length).map(text);
   const where = `scrollLeft ${Math.round(row.scrollLeft)} of ${row.scrollWidth - row.clientWidth}`;
   const out = [];
   const hiddenBefore = labels[0].left < box.left - 0.5;
@@ -303,7 +307,7 @@ describe('layout: navigation row on phones', () => {
           const row = document.querySelector('.site-nav__links');
           const rb = row.getBoundingClientRect();
           const logo = document.querySelector('.site-nav__logo').getBoundingClientRect();
-          const links = [...row.querySelectorAll('a')].map((a) => {
+          const links = [...row.querySelectorAll('a')].filter((a) => a.getClientRects().length).map((a) => {
             const b = a.getBoundingClientRect();
             return { text: a.textContent.trim(), visible: b.left >= rb.left - 0.5 && b.right <= rb.right + 0.5 };
           });
@@ -514,4 +518,43 @@ describe('layout: breadcrumb, pager, headings and 404 links', () => {
     }
     expectNone(problems, 'unbalanced 404 link rows');
   });
+});
+
+describe('layout: the nav row is aligned with the page content', () => {
+  let env;
+  before(async () => { env = await B.startEnv(); });
+  after(async () => { if (env) await env.close(); });
+
+  /* Runs in the page: the gallery grid's outer card edges (the content container) against the nav logo's left
+     edge and the right edge of the last visible item of the nav row (the language flag). */
+  const measure = () => {
+    const cards = [...document.querySelectorAll('main .gallery__grid article.card')].map((c) => c.getBoundingClientRect());
+    const flags = [...document.querySelectorAll('#site-nav .site-nav__langs .flag')].map((f) => f.getBoundingClientRect()).filter((r) => r.width > 0);
+    const logo = document.querySelector('#site-nav .site-nav__logo').getBoundingClientRect();
+    // up to 680 px the flag scrolls with the links: the row itself ends at the content edge
+    const row = document.querySelector('#site-nav .site-nav__links').getBoundingClientRect();
+    return {
+      contentLeft: Math.min(...cards.map((r) => r.left)),
+      contentRight: Math.max(...cards.map((r) => r.right)),
+      logoLeft: logo.left,
+      lastRight: flags.length ? flags[flags.length - 1].right : row.right,
+    };
+  };
+
+  for (const width of [1920, 1366, 1295, 1024, 768, 600, 390]) {
+    test(`${width} px: the nav logo starts and the last nav item ends at the edges of the content container (±2 px), in English and German`, { timeout: 60000 }, async () => {
+      const ctx = await sizedContext(env, width, 900, { consent: 'denied' });
+      try {
+        const problems = [];
+        for (const p of [`/${data.hubs[1].path}/`, `/de/${data.hubs[1].path}/`]) {
+          const page = await openPage(ctx, env, p);
+          const m = await page.evaluate(measure);
+          if (Math.abs(m.logoLeft - m.contentLeft) > 2) problems.push(`${p}: logo left ${m.logoLeft.toFixed(1)}, content left ${m.contentLeft.toFixed(1)}`);
+          if (m.lastRight === null || Math.abs(m.lastRight - m.contentRight) > 2) problems.push(`${p}: last nav item right ${m.lastRight === null ? 'none' : m.lastRight.toFixed(1)}, content right ${m.contentRight.toFixed(1)}`);
+          await page.close();
+        }
+        expectNone(problems, `nav alignment at ${width} px`);
+      } finally { await ctx.close(); }
+    });
+  }
 });
