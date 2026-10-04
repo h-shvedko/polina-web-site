@@ -18,7 +18,7 @@ function textFilesOrFail() {
 }
 
 /** The pages generated from data.json legal.imprint_html / legal.privacy_html. */
-const LEGAL_PAGE_RE = /^(imprint|privacy)\//;
+const LEGAL_PAGE_RE = /^(de\/)?(imprint|privacy)\//;
 
 function scan(labels, { skipLicenses = false } = {}) {
   const patterns = FORBIDDEN_PATTERNS.filter((p) => labels.includes(p.label));

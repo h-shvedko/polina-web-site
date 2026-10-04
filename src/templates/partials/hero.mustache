@@ -1,18 +1,18 @@
 {{!
   Home hero (SPEC sections 1 and 8): h1 with the tagline, e-mail link, Explore Artworks pill, then the media
-  (poster picture + play button; hero.js plays the youtube-nocookie.com video over the poster on click and the
-  same button then pauses and resumes it), arrow. The media comes after the text in the source, so the Tab
+  (poster picture + pause/play button; hero.js starts the muted youtube-nocookie.com video over the poster on
+  page load, except with prefers-reduced-motion, and the button pauses and resumes it), arrow. The media comes after the text in the source, so the Tab
   order is e-mail, Explore Artworks, play; CSS places it behind the text as before.
 }}
 <header class="hero" id="top">
 <div class="hero__content">
-<h1 class="hero__title">Polina Shvedko Art <span class="hero__tagline">Oil paintings, pastels &amp; watercolours</span></h1>
+<h1 class="hero__title">Polina Shvedko Art <span class="hero__tagline">{{t.hero_tagline}}</span></h1>
 <p class="hero__descr"><a class="hero__email" href="{{site.mailto}}" data-track="contact" data-location="hero">{{site.email}}</a></p>
-<div class="hero__buttons"><a class="hero__cta" href="{{hero.cta_href}}">Explore Artworks</a></div>
+<div class="hero__buttons"><a class="hero__cta" href="{{hero.cta_href}}">{{t.explore}}</a></div>
 </div>
 <div class="hero__media">
 {{#hero.poster}}{{> picture}}{{/hero.poster}}
-<button type="button" class="hero__play" data-youtube-id="{{site.youtube_id}}" aria-label="Play the video">{{> icon-play}}{{> icon-pause}}</button>
+<button type="button" class="hero__play" data-youtube-id="{{site.youtube_id}}" data-label-play="{{hero.play_label}}" data-label-pause="{{hero.pause_label}}" data-video-title="{{hero.video_title}}" aria-label="{{hero.play_label}}">{{> icon-play}}{{> icon-pause}}</button>
 </div>
 <span class="hero__arrow" aria-hidden="true">{{> icon-arrow-down}}</span>
 </header>

@@ -2,6 +2,10 @@
 Options -Indexes
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
+# German pages (/de/...) get the German 404 page
+<If "%{REQUEST_URI} =~ m#^/de(/|$)#">
+ErrorDocument 404 /de/404.html
+</If>
 
 <IfModule mod_rewrite.c>
 RewriteEngine On

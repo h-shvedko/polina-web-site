@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const { qsa, qs, attr, hasAttr, classes, text, rawText, normSpace, closest, describe: desc, breakingSpaceProblems } = require('../lib/html');
 const { expectNone } = require('../lib/checks');
 const S = require('../lib/site');
+const { I18N } = require('../../scripts/build-site.js');
 
 const data = S.loadData();
 const site = data.site || {};
@@ -14,11 +15,17 @@ const hubs = data.hubs || [];
 const hubPaths = hubs.map((h) => `/${h.path}/`);
 const NAV_TARGETS = [...hubPaths, '/about/', '/contact/'];
 const MAIL_LOCATIONS = ['hero', 'intro', 'artwork', 'contact', 'footer', 'imprint', 'privacy'];
-const STATUS_TEXT = { available: 'Available — ask about this work', 'private-collection': 'In a private collection' };
+/* the texts of the page's language (English pages at /, German below /de/) */
+const STATUS_TEXT = { available: 'Available: ask about this work', 'private-collection': 'In a private collection' };
+const statusText = (lang, status) => (lang === 'en' ? STATUS_TEXT[status] : I18N[lang].status[status].text);
 const CTA = {
   available: { subject: 'Inquiry: ', label: 'Ask about this work' },
   'private-collection': { subject: 'Question about: ', label: 'Contact the artist' },
 };
+const ctaOf = (lang, status) => (lang === 'en' ? CTA[status] : { subject: I18N[lang].status[status].ctaSubject, label: I18N[lang].status[status].ctaLabel });
+const T = (page) => I18N[page.lang].t;
+const pre = (page) => S.LANG_PREFIX[page.lang];
+const navTargets = (page) => NAV_TARGETS.map((x) => pre(page) + x);
 const year = String(site.lastmod || '').slice(0, 4);
 
 const t = (el) => normSpace(text(el));
@@ -44,14 +51,14 @@ function scriptSrcs(doc) {
 }
 
 /** Check one card element against its artwork. */
-function cardProblems(card, hub, artwork) {
+function cardProblems(card, hub, artwork, lang) {
   const out = [];
   const where = `card "${artwork.title}"`;
   const links = qsa(card, 'a');
   if (links.length !== 1) out.push(`${where}: ${links.length} links inside the card (exactly one a.card__link)`);
   const link = qs(card, 'a.card__link');
   if (!link) out.push(`${where}: no a.card__link`);
-  else if (linkPath(link, '/') !== S.artworkPath(hub, artwork)) out.push(`${where}: link goes to ${attr(link, 'href')}, expected ${S.artworkPath(hub, artwork)}`);
+  else if (linkPath(link, '/') !== S.artworkPath(hub, artwork, lang)) out.push(`${where}: link goes to ${attr(link, 'href')}, expected ${S.artworkPath(hub, artwork, lang)}`);
   const media = qs(card, '.card__media');
   if (!media) out.push(`${where}: no .card__media`);
   else {
@@ -65,34 +72,36 @@ function cardProblems(card, hub, artwork) {
   if (wide !== (artwork.card === 'wide')) out.push(`${where}: card--wide is ${wide ? 'set' : 'missing'} but data card is "${artwork.card}"`);
   const badge = qs(card, '.card__badge');
   if (artwork.status === 'private-collection') {
-    if (!badge || t(badge).toLowerCase() !== 'private collection') out.push(`${where}: needs .card__badge "Private collection" (found ${badge ? `"${t(badge)}"` : 'none'})`);
+    const want = I18N[lang].status['private-collection'].badge;
+    if (!badge || t(badge) !== want) out.push(`${where}: needs .card__badge "${want}" (found ${badge ? `"${t(badge)}"` : 'none'})`);
   } else if (badge) out.push(`${where}: available works have no badge (found "${t(badge)}")`);
   const title = qs(card, '.card__title');
   if (!title || !['h2', 'h3'].includes(title.tag)) out.push(`${where}: needs an h3.card__title (h2 on hub pages)`);
   else if (t(title) !== artwork.title) out.push(`${where}: .card__title is "${t(title)}"`);
   const more = qs(card, 'span.card__more');
-  if (!more || t(more).toUpperCase() !== 'MORE') out.push(`${where}: needs span.card__more with the text MORE`);
+  if (!more || t(more) !== I18N[lang].t.more) out.push(`${where}: needs span.card__more with the text ${I18N[lang].t.more}`);
   return out;
 }
 
 /** Cards in a container must be exactly the hub's artworks, in data.json order. */
-function gridProblems(container, hub) {
+function gridProblems(container, hub, lang) {
   const out = [];
   const cards = qsa(container, 'article.card');
   const got = cards.map((c) => linkPath(qs(c, 'a.card__link') || c, '/'));
-  const want = hub.artworks.map((a) => S.artworkPath(hub, a));
+  const want = hub.artworks.map((a) => S.artworkPath(hub, a, lang));
   if (got.join('|') !== want.join('|')) {
     out.push(`cards for ${hub.path} are [${got.slice(0, 4).join(', ')}${got.length > 4 ? ', ...' : ''}] (${got.length}), expected all ${want.length} artworks in data.json order`);
   }
-  cards.forEach((card, i) => { if (hub.artworks[i]) out.push(...cardProblems(card, hub, hub.artworks[i])); });
+  cards.forEach((card, i) => { if (hub.artworks[i]) out.push(...cardProblems(card, hub, hub.artworks[i], lang)); });
   return out;
 }
 
-function breadcrumbProblems(doc, trail) {
+function breadcrumbProblems(doc, trail, lang = 'en') {
   const nav = qs(doc, 'nav.breadcrumb');
   if (!nav) return ['no nav.breadcrumb'];
   const out = [];
-  if (attr(nav, 'aria-label') !== 'Breadcrumb') out.push('nav.breadcrumb needs aria-label="Breadcrumb"');
+  const label = I18N[lang].t.breadcrumb;
+  if (attr(nav, 'aria-label') !== label) out.push(`nav.breadcrumb needs aria-label="${label}"`);
   const links = qsa(nav, 'a').map((a) => linkPath(a, '/'));
   for (const [label, href] of trail) {
     if (href && !links.includes(href)) out.push(`breadcrumb has no link to ${href}`);
@@ -109,12 +118,12 @@ describe('markup contract: every page (SPEC 1, 7, 8)', () => {
       if (navs.length !== 1) return [`${navs.length} #site-nav elements`];
       const nav = navs[0];
       if (nav.tag !== 'nav' || !classes(nav).includes('site-nav')) out.push('#site-nav must be <nav class="site-nav">');
-      if (attr(nav, 'aria-label') !== 'Site navigation') out.push('#site-nav needs aria-label="Site navigation"');
+      if (attr(nav, 'aria-label') !== T(page).nav_label) out.push(`#site-nav needs aria-label="${T(page).nav_label}"`);
       const logo = qs(nav, '.site-nav__logo');
-      if (!logo || logo.tag !== 'a' || linkPath(logo, page.path) !== '/') out.push('.site-nav__logo must be a link to /');
+      if (!logo || logo.tag !== 'a' || linkPath(logo, page.path) !== `${pre(page)}/`) out.push(`.site-nav__logo must be a link to ${pre(page)}/`);
       const list = qs(nav, '.site-nav__links');
       const targets = list ? qsa(list, 'a').map((a) => linkPath(a, page.path)) : [];
-      for (const want of NAV_TARGETS) if (!targets.includes(want)) out.push(`.site-nav__links has no link to ${want}`);
+      for (const want of navTargets(page)) if (!targets.includes(want)) out.push(`.site-nav__links has no link to ${want}`);
       const cls = classes(nav);
       if (page.type === 'home') {
         if (!cls.includes('site-nav--hidden') || cls.includes('site-nav--visible')) out.push('home: nav must start with class site-nav--hidden (nav.js shows it after the hero)');
@@ -129,9 +138,9 @@ describe('markup contract: every page (SPEC 1, 7, 8)', () => {
       if (!nav) return ['no #site-nav'];
       const out = [];
       const current = qsa(nav, 'a[aria-current="page"]').map((a) => linkPath(a, page.path));
-      const own = NAV_TARGETS.includes(page.path) ? page.path : null;
+      const own = navTargets(page).includes(page.path) ? page.path : null;
       if (own && !current.includes(own)) out.push(`nav link to ${own} needs aria-current="page"`);
-      for (const c of current) if (c !== page.path && !(page.type === 'home' && c === '/')) out.push(`nav link to ${c} has aria-current="page" but this page is ${page.path}`);
+      for (const c of current) if (c !== page.path && !(page.type === 'home' && c === page.path)) out.push(`nav link to ${c} has aria-current="page" but this page is ${page.path}`);
       return out;
     }), 'aria-current problems');
   });
@@ -143,7 +152,7 @@ describe('markup contract: every page (SPEC 1, 7, 8)', () => {
       if (banners.length !== 1) return [`${banners.length} #cookie-consent elements`];
       const b = banners[0];
       if (attr(b, 'role') !== 'region' && b.tag !== 'section') out.push('#cookie-consent needs role="region"');
-      if (attr(b, 'aria-label') !== 'Cookie consent') out.push('#cookie-consent needs aria-label="Cookie consent"');
+      if (attr(b, 'aria-label') !== T(page).consent_label) out.push(`#cookie-consent needs aria-label="${T(page).consent_label}"`);
       if (!hasAttr(b, 'hidden')) out.push('#cookie-consent must be hidden in the HTML (consent.js shows it)');
       if (/continuing to browse/i.test(t(b))) out.push('banner text "By continuing to browse" is not valid consent');
       for (const id of ['cookie-accept', 'cookie-decline']) {
@@ -208,7 +217,7 @@ describe('markup contract: every page (SPEC 1, 7, 8)', () => {
     expectNone(problems, 'style/font/hash problems');
   });
 
-  test(`footer: "© ${year} POLINA SHVEDKO", links to hubs, /about/, /contact/; no imprint/privacy links while legal texts are null`, () => {
+  test(`footer: "© ${year} POLINA SHVEDKO", links to hubs, /about/, /contact/ (with /de on German pages); no imprint/privacy links while legal texts are null`, () => {
     const legal = data.legal || {};
     expectNone(forPages(pages, (page, doc) => {
       const out = [];
@@ -216,10 +225,16 @@ describe('markup contract: every page (SPEC 1, 7, 8)', () => {
       if (!footer) return ['no <footer>'];
       if (!new RegExp(`©\\s*${year}\\s+polina shvedko`, 'i').test(t(footer))) out.push(`footer text lacks "© ${year} POLINA SHVEDKO" (year from site.lastmod)`);
       const links = qsa(footer, 'a').map((a) => linkPath(a, page.path));
-      for (const want of NAV_TARGETS) if (!links.includes(want)) out.push(`footer has no link to ${want}`);
+      for (const want of navTargets(page)) if (!links.includes(want)) out.push(`footer has no link to ${want}`);
       const all = qsa(doc, 'a[href]').map((a) => linkPath(a, page.path));
-      if (!legal.imprint_html && all.includes('/imprint/')) out.push('links to /imprint/ although legal.imprint_html is null');
-      if (!legal.privacy_html && all.includes('/privacy/')) out.push('links to /privacy/ although legal.privacy_html is null');
+      for (const key of ['imprint', 'privacy']) {
+        const href = `${pre(page)}/${key}/`;
+        if (!legal[`${key}_html`] && all.includes(href)) out.push(`links to ${href} although legal.${key}_html is null`);
+        // with a legal text, the footer and the consent banner link to it
+        if (legal[`${key}_html`] && !links.includes(href)) out.push(`footer has no link to ${href}`);
+        const banner = qs(doc, '#cookie-consent');
+        if (legal[`${key}_html`] && !(banner && qsa(banner, 'a').some((a) => linkPath(a, page.path) === href))) out.push(`the consent banner has no link to ${href}`);
+      }
       return out;
     }), 'footer problems');
   });
@@ -257,13 +272,13 @@ describe('markup contract: home page', () => {
       else {
         if (!t(h1).startsWith('Polina Shvedko Art')) out.push(`h1 text is "${t(h1)}", expected "Polina Shvedko Art" + tagline`);
         const tag = qs(h1, 'span.hero__tagline');
-        if (!tag || t(tag) !== 'Oil paintings, pastels & watercolours') out.push(`span.hero__tagline inside the h1 must read "Oil paintings, pastels & watercolours" (found ${tag ? `"${t(tag)}"` : 'none'})`);
+        if (!tag || t(tag) !== T(page).hero_tagline) out.push(`span.hero__tagline inside the h1 must read "${T(page).hero_tagline}" (found ${tag ? `"${t(tag)}"` : 'none'})`);
       }
       const email = qs(hero, 'a.hero__email');
       if (!email || attr(email, 'data-location') !== 'hero' || !String(attr(email, 'href')).startsWith(`mailto:${site.email}`)) out.push('a.hero__email must be a mailto link with data-location="hero"');
       const cta = qs(hero, 'a.hero__cta');
       if (!cta || attr(cta, 'href') !== '#gallery-oil') out.push('a.hero__cta must link to #gallery-oil');
-      else if (t(cta).toLowerCase() !== 'explore artworks') out.push(`a.hero__cta text is "${t(cta)}", expected "Explore Artworks"`);
+      else if (t(cta) !== T(page).explore) out.push(`a.hero__cta text is "${t(cta)}", expected "${T(page).explore}"`);
       const media = qs(hero, '.hero__media');
       if (!media || !qs(media, 'picture')) out.push('.hero__media with the poster <picture> missing');
       const play = media && qs(media, 'button.hero__play');
@@ -271,9 +286,10 @@ describe('markup contract: home page', () => {
       else {
         if (attr(play, 'data-youtube-id') !== site.youtube_id) out.push(`button.hero__play needs data-youtube-id="${site.youtube_id}"`);
         if (attr(play, 'type') !== 'button') out.push('button.hero__play needs type="button"');
-        if (!(attr(play, 'aria-label') || '').trim() && !t(play)) out.push('button.hero__play needs an accessible name (aria-label)');
+        if (attr(play, 'aria-label') !== T(page).play) out.push(`button.hero__play needs aria-label="${T(page).play}"`);
+        if (attr(play, 'data-label-play') !== T(page).play || attr(play, 'data-label-pause') !== T(page).pause) out.push('button.hero__play needs data-label-play / data-label-pause in the page language (hero.js)');
       }
-      if (qsa(doc, 'iframe').length) out.push('the home page HTML must not contain an iframe (YouTube loads only after the click)');
+      if (qsa(doc, 'iframe').length) out.push('the home page HTML must not contain an iframe (hero.js inserts the player, so it can respect prefers-reduced-motion)');
       if (qs(doc, 'video')) out.push('no <video> background (the hero is a poster + YouTube facade)');
       return out;
     }), 'hero problems');
@@ -282,16 +298,17 @@ describe('markup contract: home page', () => {
   test('gallery sections section.gallery#gallery-<key> > h2.gallery__heading, .gallery__grid with all cards in data order, a.gallery__all -> hub', () => {
     expectNone(forPages(home, (page, doc) => {
       const out = [];
-      for (const hub of hubs) {
+      for (const hub of page.data.hubs) {
         const sec = qs(doc, `#gallery-${hub.key}`);
         if (!sec || sec.tag !== 'section' || !classes(sec).includes('gallery')) { out.push(`no <section class="gallery" id="gallery-${hub.key}">`); continue; }
         const h2 = qs(sec, 'h2.gallery__heading');
         if (!h2 || t(h2) !== hub.section_heading) out.push(`#gallery-${hub.key}: h2.gallery__heading should read "${hub.section_heading}" (found ${h2 ? `"${t(h2)}"` : 'none'})`);
         const grid = qs(sec, '.gallery__grid');
         if (!grid) out.push(`#gallery-${hub.key}: no .gallery__grid`);
-        else out.push(...gridProblems(grid, hub).map((p) => `#gallery-${hub.key}: ${p}`));
+        else out.push(...gridProblems(grid, hub, page.lang).map((p) => `#gallery-${hub.key}: ${p}`));
         const all = qs(sec, 'a.gallery__all');
-        if (!all || linkPath(all, '/') !== `/${hub.path}/` || t(all) !== hub.all_link) out.push(`#gallery-${hub.key}: needs a.gallery__all "${hub.all_link}" -> /${hub.path}/`);
+        const href = `${pre(page)}/${hub.path}/`;
+        if (!all || linkPath(all, '/') !== href || t(all) !== hub.all_link) out.push(`#gallery-${hub.key}: needs a.gallery__all "${hub.all_link}" -> ${href}`);
       }
       return out;
     }), 'home gallery problems');
@@ -300,8 +317,8 @@ describe('markup contract: home page', () => {
   test('home: intro has a "More about me" link to /about/; no gallery filter', () => {
     expectNone(forPages(home, (page, doc) => {
       const out = [];
-      const more = qsa(doc, 'a').filter((a) => linkPath(a, '/') === '/about/' && /more about me/i.test(t(a)) && !closest(a, '#site-nav') && !closest(a, 'footer'));
-      if (!more.length) out.push('no "More about me" link to /about/ in the page content');
+      const more = qsa(doc, 'a').filter((a) => linkPath(a, '/') === `${pre(page)}/about/` && t(a) === T(page).more_about && !closest(a, '#site-nav') && !closest(a, 'footer'));
+      if (!more.length) out.push(`no "${T(page).more_about}" link to ${pre(page)}/about/ in the page content`);
       const filter = qsa(doc, '*').filter((el) => classes(el).some((c) => c.startsWith('gallery-filter')) || attr(el, 'data-filter') !== null);
       if (filter.length) out.push(`gallery filter markup is still present: ${desc(filter[0])}`);
       return out;
@@ -312,7 +329,7 @@ describe('markup contract: home page', () => {
 describe('markup contract: hub pages', () => {
   test('hub: breadcrumb Home > label, h1 from data.json, intro paragraphs, all cards of the hub in data order', () => {
     expectNone(forPages(pages.filter((p) => p.type === 'hub'), (page, doc) => {
-      const out = [...breadcrumbProblems(doc, [['Home', '/'], [page.hub.label, null]])];
+      const out = [...breadcrumbProblems(doc, [[T(page).home, `${pre(page)}/`], [page.hub.label, null]], page.lang)];
       const h1 = qs(doc, 'h1');
       if (!h1 || t(h1) !== page.hub.h1) out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "${page.hub.h1}"`);
       const paragraphs = qsa(doc, 'p').map(t);
@@ -320,7 +337,7 @@ describe('markup contract: hub pages', () => {
         if (!paragraphs.includes(normSpace(para))) out.push(`intro paragraph ${i + 1} is not on the page as a <p>: "${para.slice(0, 50)}..."`);
       });
       const main = qs(doc, 'main') || doc;
-      out.push(...gridProblems(main, page.hub));
+      out.push(...gridProblems(main, page.hub, page.lang));
       return out;
     }), 'hub page problems');
   });
@@ -335,7 +352,7 @@ describe('markup contract: artwork pages', () => {
       const out = [];
       const main = qs(doc, 'main.artwork');
       if (!main) return ['no main.artwork'];
-      out.push(...breadcrumbProblems(main, [['Home', '/'], [page.hub.label, `/${page.hub.path}/`], [a.title, null]]));
+      out.push(...breadcrumbProblems(main, [[T(page).home, `${pre(page)}/`], [page.hub.label, `${pre(page)}/${page.hub.path}/`], [a.title, null]], page.lang));
       const gallery = qs(main, '.artwork__gallery');
       const mainBox = gallery && qs(gallery, '.artwork__main');
       if (!mainBox) return [...out, 'no .artwork__gallery > .artwork__main'];
@@ -378,13 +395,15 @@ describe('markup contract: artwork pages', () => {
           if (el.tag === 'dt') label = t(el).replace(/:$/, '').toLowerCase();
           else if (label) { facts.set(label, t(el)); label = null; }
         }
-        const want = [['medium', a.medium], ['size', S.sizeText(a)], ['year', String(a.year)]];
-        if (a.frame) want.push(['frame', a.frame]);
+        const L = T(page);
+        const want = [[L.medium.toLowerCase(), a.medium], [L.size.toLowerCase(), S.sizeText(a, page.lang)], [L.year.toLowerCase(), String(a.year)]];
+        if (a.frame) want.push([L.frame.toLowerCase(), a.frame]);
         for (const [k, v] of want) if (facts.get(k) !== v) out.push(`facts ${k}: ${facts.has(k) ? `"${facts.get(k)}"` : 'missing'}, expected "${v}"`);
-        if (!a.frame && facts.has('frame')) out.push('facts show a Frame although data frame is null');
+        if (!a.frame && facts.has(L.frame.toLowerCase())) out.push('facts show a Frame although data frame is null');
       }
       const status = qs(info, 'p.artwork__status');
-      if (!status || t(status) !== STATUS_TEXT[a.status]) out.push(`p.artwork__status is ${status ? `"${t(status)}"` : 'missing'}, expected "${STATUS_TEXT[a.status]}"`);
+      const st = statusText(page.lang, a.status);
+      if (!status || t(status) !== st) out.push(`p.artwork__status is ${status ? `"${t(status)}"` : 'missing'}, expected "${st}"`);
       const descBox = qs(info, '.artwork__description');
       if (!descBox) out.push('no .artwork__description');
       else {
@@ -398,7 +417,7 @@ describe('markup contract: artwork pages', () => {
   test('artwork CTA: a.artwork__cta mailto with subject "Inquiry: <title>" / "Question about: <title>", label, data-track, data-location=artwork, data-artwork-slug', () => {
     expectNone(forPages(artworkPages, (page, doc) => {
       const a = page.artwork;
-      const want = CTA[a.status];
+      const want = ctaOf(page.lang, a.status);
       const ctas = qsa(doc, 'a.artwork__cta');
       if (ctas.length !== 1) return [`${ctas.length} a.artwork__cta (expected 1)`];
       const cta = ctas[0];
@@ -430,8 +449,8 @@ describe('markup contract: artwork pages', () => {
         if (page.next && !qs(pager, 'a[rel~="next"]')) out.push('pager has no a[rel=next]');
       }
       const back = qs(doc, 'a.artwork__back');
-      if (!back || linkPath(back, page.path) !== `/${page.hub.path}/`) out.push(`a.artwork__back must link to /${page.hub.path}/`);
-      const storyHeading = qsa(doc, 'h2, h3').find((h) => /^story$/i.test(t(h)));
+      if (!back || linkPath(back, page.path) !== `${pre(page)}/${page.hub.path}/`) out.push(`a.artwork__back must link to ${pre(page)}/${page.hub.path}/`);
+      const storyHeading = qsa(doc, 'h2, h3').find((h) => t(h) === T(page).story);
       const storyText = a.story_html ? normSpace(a.story_html.replace(/<[^>]+>/g, ' ')).slice(0, 60) : null;
       const pageText = t(qs(doc, 'body') || doc);
       if (a.story_confirmed) {
@@ -449,11 +468,11 @@ describe('markup contract: artwork pages', () => {
 describe('markup contract: about, contact and 404', () => {
   test('about: breadcrumb, h1 "About Polina Shvedko", link to /contact/', () => {
     expectNone(forPages(pages.filter((p) => p.type === 'about'), (page, doc) => {
-      const out = [...breadcrumbProblems(doc, [['Home', '/']])];
+      const out = [...breadcrumbProblems(doc, [[T(page).home, `${pre(page)}/`]], page.lang)];
       const h1 = qs(doc, 'h1');
-      if (!h1 || t(h1) !== 'About Polina Shvedko') out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "About Polina Shvedko"`);
+      if (!h1 || t(h1) !== T(page).about_h1) out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "${T(page).about_h1}"`);
       const main = qs(doc, 'main');
-      if (!main || !qsa(main, 'a').some((a) => linkPath(a, page.path) === '/contact/')) out.push('no link to /contact/ in <main>');
+      if (!main || !qsa(main, 'a').some((a) => linkPath(a, page.path) === `${pre(page)}/contact/`)) out.push(`no link to ${pre(page)}/contact/ in <main>`);
       return out;
     }), 'about page problems');
   });
@@ -461,9 +480,9 @@ describe('markup contract: about, contact and 404', () => {
   test('contact: breadcrumb, h1 "Contact", mailto link (data-location=contact), links to Instagram, Facebook, LinkedIn and Etsy', () => {
     const social = (site.social || []).map((s) => s.url);
     expectNone(forPages(pages.filter((p) => p.type === 'contact'), (page, doc) => {
-      const out = [...breadcrumbProblems(doc, [['Home', '/']])];
+      const out = [...breadcrumbProblems(doc, [[T(page).home, `${pre(page)}/`]], page.lang)];
       const h1 = qs(doc, 'h1');
-      if (!h1 || t(h1) !== 'Contact') out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "Contact"`);
+      if (!h1 || t(h1) !== T(page).contact_h1) out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "${T(page).contact_h1}"`);
       if (!qsa(doc, 'a[href^="mailto:"]').some((a) => attr(a, 'data-location') === 'contact')) out.push('no mailto link with data-location="contact"');
       const hrefs = qsa(doc, 'a[href]').map((a) => attr(a, 'href'));
       for (const url of social) if (!hrefs.includes(url)) out.push(`no link to ${url}`);
@@ -475,10 +494,10 @@ describe('markup contract: about, contact and 404', () => {
     expectNone(forPages(pages.filter((p) => p.type === '404'), (page, doc) => {
       const out = [];
       const h1 = qs(doc, 'h1');
-      if (!h1 || t(h1) !== 'Page not found') out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "Page not found"`);
+      if (!h1 || t(h1) !== T(page).not_found) out.push(`h1 is ${h1 ? `"${t(h1)}"` : 'missing'}, expected "${T(page).not_found}"`);
       const main = qs(doc, 'main') || doc;
       const links = qsa(main, 'a').map((a) => linkPath(a, '/'));
-      for (const want of ['/', ...hubPaths]) if (!links.includes(want)) out.push(`no link to ${want} in the page content`);
+      for (const want of [`${pre(page)}/`, ...hubPaths.map((h) => pre(page) + h)]) if (!links.includes(want)) out.push(`no link to ${want} in the page content`);
       return out;
     }), '404 page problems');
   });
@@ -545,8 +564,8 @@ describe('markup contract: reading and focus order, link names, no-JS, full-scre
     assert.ok(withAlt.length > 0, 'no artwork sets preview_alt (Hortensien does)');
     expectNone(forPages(pages.filter((p) => p.type === 'home' || p.type === 'hub'), (page, doc) => {
       const out = [];
-      for (const { hub, artwork } of withAlt) {
-        const link = qsa(doc, 'a.card__link').find((a) => linkPath(a, '/') === S.artworkPath(hub, artwork));
+      for (const { hub, artwork } of S.allArtworks(page.data).filter(({ artwork: x }) => x.preview_alt || x.preview_hover_alt)) {
+        const link = qsa(doc, 'a.card__link').find((a) => linkPath(a, '/') === S.artworkPath(hub, artwork, page.lang));
         if (!link) continue;
         const main = qs(link, 'picture.card__img:not(.card__img--hover) img');
         const hover = qs(link, 'picture.card__img--hover img');

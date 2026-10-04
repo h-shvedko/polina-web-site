@@ -6,12 +6,12 @@
 <footer class="site-footer">
 <div class="site-footer__inner">
 <p class="site-footer__copy">© {{footer.year}} {{footer.owner}}</p>
-<nav class="site-footer__nav" aria-label="Footer">
+<nav class="site-footer__nav" aria-label="{{t.footer}}">
 <ul class="site-footer__links">
 {{#footer.items}}
 <li class="site-footer__item"><a class="site-footer__link" href="{{href}}"{{#current}} aria-current="page"{{/current}}>{{label}}</a></li>
 {{/footer.items}}
-<li class="site-footer__item site-footer__item--settings"><button type="button" class="site-footer__button" id="cookie-settings">Cookie settings</button></li>
+<li class="site-footer__item site-footer__item--settings"><button type="button" class="site-footer__button" id="cookie-settings">{{t.cookie_settings}}</button></li>
 </ul>
 </nav>
 </div>

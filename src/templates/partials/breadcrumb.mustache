@@ -3,7 +3,7 @@
   The separator is a text character, hidden from screen readers. The items flow as text: a long title wraps
   like a sentence, and the no-break space keeps each separator with the label after it.
 }}
-<nav class="breadcrumb" aria-label="Breadcrumb">
+<nav class="breadcrumb" aria-label="{{t.breadcrumb}}">
 <ol class="breadcrumb__list">
 {{#breadcrumb}}
 <li class="breadcrumb__item">{{^first}}<span class="breadcrumb__sep" aria-hidden="true">›</span>&nbsp;{{/first}}{{#href}}<a class="breadcrumb__link" href="{{href}}">{{label}}</a>{{/href}}{{^href}}<span class="breadcrumb__current" aria-current="page">{{label}}</span>{{/href}}</li>

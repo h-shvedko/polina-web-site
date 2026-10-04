@@ -27,6 +27,7 @@ const tmp = (name) => {
 function copyRoot() {
   const root = tmp('root');
   fs.copyFileSync(path.join(S.ROOT, 'data.json'), path.join(root, 'data.json'));
+  fs.copyFileSync(S.DATA_DE_FILE, path.join(root, 'data.de.json'));
   for (const dir of ['src/templates', 'src/css', 'src/js']) fs.cpSync(path.join(S.ROOT, dir), path.join(root, dir), { recursive: true });
   fs.mkdirSync(path.join(root, 'src', 'img'), { recursive: true });
   fs.copyFileSync(S.MANIFEST_FILE, path.join(root, 'src', 'img', 'manifest.json'));
@@ -66,6 +67,22 @@ describe('build scripts', () => {
     data.hubs[0].artworks[0].seo_titel = 'typo';
     fs.writeFileSync(path.join(root, 'data.json'), JSON.stringify(data, null, 2));
     await assert.rejects(build({ root, outDir: tmp('out') }), /unknown field\(s\) seo_titel/);
+  });
+
+  test('the German pages need their texts: an artwork without its data.de.json entry, or a legal text in one language only, stops the build', async () => {
+    const root = copyRoot();
+    const file = path.join(root, 'data.de.json');
+    const de = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const slug = Object.keys(de.artworks)[0];
+    delete de.artworks[slug];
+    fs.writeFileSync(file, JSON.stringify(de, null, 2));
+    await assert.rejects(build({ root, outDir: tmp('out') }), new RegExp(`data\\.de\\.json artworks\\.${slug} is missing`));
+    const root2 = copyRoot();
+    const file2 = path.join(root2, 'data.de.json');
+    const de2 = JSON.parse(fs.readFileSync(file2, 'utf8'));
+    de2.legal.imprint_html = null;
+    fs.writeFileSync(file2, JSON.stringify(de2, null, 2));
+    await assert.rejects(build({ root: root2, outDir: tmp('out2') }), /legal\.imprint_html must be set in data\.json and data\.de\.json, or in neither/);
   });
 
   test('text helpers: a repeated title becomes "It" and its credit stays ("Inspired by P. Molina, it ..."); sizes and initials keep a no-break space', () => {
@@ -249,7 +266,7 @@ describe('build scripts', () => {
   test('a private build can run again into the same APP_DIR after src/static gains or loses a top-level file; a foreign folder with a sitemap.xml of another site is still refused', () => {
     // A copy of the repository (gulpfile, scripts, sources; node_modules linked), so src/static can change.
     const root = tmp('repo');
-    for (const f of ['gulpfile.js', 'data.json', 'package.json']) fs.copyFileSync(path.join(S.ROOT, f), path.join(root, f));
+    for (const f of ['gulpfile.js', 'data.json', 'data.de.json', 'package.json']) fs.copyFileSync(path.join(S.ROOT, f), path.join(root, f));
     for (const dir of ['scripts', 'src/templates', 'src/css', 'src/js', 'src/static']) fs.cpSync(path.join(S.ROOT, dir), path.join(root, dir), { recursive: true });
     fs.mkdirSync(path.join(root, 'src', 'img'), { recursive: true });
     fs.copyFileSync(S.MANIFEST_FILE, path.join(root, 'src', 'img', 'manifest.json'));

@@ -29,6 +29,7 @@ describe('scripts/serve.js', () => {
     const write = (rel, content) => { const f = path.join(root, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, content); };
     write('index.html', '<h1>home</h1>');
     write('404.html', '<h1>Page not found</h1>');
+    write('de/404.html', '<h1>Seite nicht gefunden</h1>');
     write('pastels/index.html', '<h1>pastels</h1>');
     write('css/site.css', 'body{}');
     write('js/nav.js', '1;');
@@ -69,6 +70,16 @@ describe('scripts/serve.js', () => {
     assert.equal(res.body, '<h1>Page not found</h1>');
     const file = await request(`${server.url}/pastels/index.html/`);
     assert.equal(file.status, 404, 'a file path with a trailing slash is not a directory');
+  });
+
+  test('unknown path below /de/ -> status 404 with the body of de/404.html (the German page)', async () => {
+    for (const p of ['/de/no/such/page/', '/de/x']) {
+      const res = await request(`${server.url}${p}`);
+      assert.equal(res.status, 404, p);
+      assert.equal(res.body, '<h1>Seite nicht gefunden</h1>', p);
+    }
+    const other = await request(`${server.url}/dex/`);
+    assert.equal(other.body, '<h1>Page not found</h1>', '/dex/ is not German');
   });
 
   test('MIME types for css, js, webp, woff2, xml; ?v= query ignored; HEAD has no body', async () => {

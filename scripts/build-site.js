@@ -47,10 +47,10 @@ const SCRIPTS_ALL = ['consent.js', 'analytics.js', 'nav.js'];
 const SCRIPTS_BY_TYPE = { home: ['hero.js'], artwork: ['artwork.js'] };
 const STYLESHEET = 'site.css';
 
-/* Status texts (SPEC sections 1 and 6). */
+/* Status texts (SPEC sections 1 and 6), English; the German ones are in I18N.de.status. */
 const STATUS = {
   available: {
-    text: 'Available — ask about this work',
+    text: 'Available: ask about this work',
     badge: '',
     ctaLabel: 'Ask about this work',
     ctaSubject: 'Inquiry: ',
@@ -135,29 +135,191 @@ const NOSCRIPT_HOME_CSS = '#site-nav{transform:none}.hero__play{display:none}';
 /* Consent banner text (draft; the ADR asks the owner to approve it). */
 const CONSENT_TEXT = 'With your consent, this website uses Google Analytics cookies to see how visitors use it. You can change your choice at any time under Cookie settings.';
 
-/* Legal pages: generated only when data.json legal.<key>_html is set. Meta defaults when data.json pages.<key> is missing. */
+/* Legal pages: generated only when data.json legal.<key>_html (English) and data.de.json legal.<key>_html (German) are
+   set. Meta per language; data.json pages.<key> / data.de.json pages.<key> may override them. */
 const LEGAL = [
   {
     key: 'imprint',
     field: 'imprint_html',
-    label: 'Imprint',
-    title: 'Imprint | Polina Shvedko',
-    description: 'Imprint (Impressum) of polina-shvedko.art, the website of the artist Polina Shvedko from Germany, with the legal details of the site owner.',
+    meta: {
+      en: { title: 'Imprint | Polina Shvedko', description: 'Imprint (Impressum) of polina-shvedko.art, the website of the artist Polina Shvedko from Germany, with the legal details of the site owner.' },
+      de: { title: 'Impressum | Polina Shvedko', description: 'Impressum von polina-shvedko.art, der Website der Künstlerin Polina Shvedko aus Deutschland, mit den Angaben zur Anbieterin nach § 5 DDG.' },
+    },
   },
   {
     key: 'privacy',
     field: 'privacy_html',
-    label: 'Privacy policy',
-    title: 'Privacy policy | Polina Shvedko',
-    description: 'Privacy policy of polina-shvedko.art: what data this website processes, how Google Analytics is used only with your consent, and your rights.',
+    meta: {
+      en: { title: 'Privacy policy | Polina Shvedko', description: 'Privacy policy of polina-shvedko.art: what data this website processes, how Google Analytics is used only with your consent, and your rights.' },
+      de: { title: 'Datenschutzerklärung | Polina Shvedko', description: 'Datenschutzerklärung von polina-shvedko.art: welche Daten die Website verarbeitet, Google Analytics nur mit Einwilligung, YouTube und Ihre Rechte.' },
+    },
   },
 ];
+
+/*
+ * Languages. English is served at the root, German below /de/ with the same paths (/de/oil-paintings/<slug>/), so
+ * the language switch and hreflang map a page to its pair by adding or removing the /de prefix. German content
+ * comes from data.de.json (keys mirror data.json: hubs by key, artworks by slug, Instagram alts by src); the
+ * strings of the templates are `t` below. No long dashes (U+2013/U+2014) anywhere: a static test checks app/.
+ */
+const LANGS = ['en', 'de'];
+const DE_PREFIX = '/de';
+const I18N = {
+  en: {
+    locale: 'en_GB',
+    name: 'English',
+    status: STATUS,
+    site_image_alt: SITE_IMAGE_ALT,
+    consent_text: CONSENT_TEXT,
+    legal: { imprint: 'Imprint', privacy: 'Privacy policy' },
+    job_title: PERSON_JOB_TITLE,
+    about_name: 'About Polina Shvedko',
+    painting_by: (name) => `Painting by ${name}`,
+    social_label: (name, network) => `${name} on ${network}`,
+    pager_label: (label) => `More ${label.toLowerCase()}`,
+    medium_by: (medium, name) => `${medium.toLowerCase()} by ${name}`,
+    number: (n) => String(n),
+    thumb_label: (n, count) => `Show image ${n} of ${count}`,
+    zoom_dialog: (title) => `${title}: full-screen view`,
+    t: {
+      skip: 'Skip to content',
+      nav_label: 'Site navigation',
+      lang_label: 'Language',
+      home: 'Home',
+      about: 'About',
+      contact: 'Contact',
+      breadcrumb: 'Breadcrumb',
+      footer: 'Footer',
+      cookie_settings: 'Cookie settings',
+      consent_label: 'Cookie consent',
+      decline: 'Decline',
+      accept: 'Accept',
+      more: 'MORE',
+      hero_tagline: 'Oil paintings, pastels & watercolours',
+      explore: 'Explore Artworks',
+      play: 'Play the video',
+      pause: 'Pause the video',
+      video_title: 'Polina Shvedko Art video',
+      intro_heading: 'Artist from Germany',
+      intro_text: "I'm a German artist specializing in pastels, oils, and inks. With a formal art education and a lifelong passion for drawing, I continue to explore new ways of expressing emotion and storytelling through color and texture.",
+      more_about: 'More about me',
+      about_heading: 'About me',
+      about_name1: 'Hi! My name is Polina Shvedko.',
+      about_name2: "I'm a freelance artist. Welcome to my art website!",
+      about_descr: 'I love the sea! Water is my inspiration. Every day I am in search of new ideas, forms, new materials and techniques! When my paintings find a new home it makes me happy! Thank you for your support it give me more strength and motivation to do more !',
+      instagram_follow: 'Follow me on',
+      instagram_mosaic: 'More paintings by Polina Shvedko on Instagram',
+      contact_heading: 'Contact me',
+      email: 'E-mail:',
+      about_h1: 'About Polina Shvedko',
+      contact_me: 'Contact me',
+      contact_h1: 'Contact',
+      zoom: 'View the image full screen',
+      prev_image: 'Previous image',
+      next_image: 'Next image',
+      close_zoom: 'Close the full-screen view',
+      story: 'Story',
+      previous: 'Previous',
+      next: 'Next',
+      medium: 'Medium',
+      size: 'Size',
+      frame: 'Frame',
+      year: 'Year',
+      not_found: 'Page not found',
+      not_found_text: 'Sorry, this page does not exist. These pages may help:',
+    },
+  },
+  de: {
+    locale: 'de_DE',
+    name: 'Deutsch',
+    status: {
+      available: {
+        text: 'Verfügbar: Fragen Sie gern nach diesem Werk',
+        badge: '',
+        ctaLabel: 'Nach diesem Werk fragen',
+        ctaSubject: 'Anfrage: ',
+        descriptionSuffix: ' Fragen Sie die Künstlerin nach diesem Werk.',
+      },
+      'private-collection': {
+        text: 'In Privatbesitz',
+        badge: 'Privatbesitz',
+        ctaLabel: 'Die Künstlerin kontaktieren',
+        ctaSubject: 'Frage zu: ',
+        descriptionSuffix: ' Fragen Sie die Künstlerin nach ähnlichen Werken.',
+      },
+    },
+    site_image_alt: {
+      hero_poster: 'Standbild aus dem Video: Ein Pinsel malt eine Landschaft in Öl auf Leinwand',
+      avatar: 'Gezeichneter Avatar von Polina Shvedko',
+      photo: 'Polina Shvedko vor Hortensien',
+      portrait: 'Porträt von Polina Shvedko',
+    },
+    consent_text: 'Mit Ihrer Einwilligung verwendet diese Website Cookies von Google Analytics, um zu sehen, wie Besucher sie nutzen. Sie können Ihre Wahl jederzeit unter Cookie-Einstellungen ändern.',
+    legal: { imprint: 'Impressum', privacy: 'Datenschutzerklärung' },
+    job_title: 'Bildende Künstlerin',
+    about_name: 'Über Polina Shvedko',
+    painting_by: (name) => `Gemälde von ${name}`,
+    social_label: (name, network) => `${name} auf ${network}`,
+    pager_label: (label) => `Weitere ${label}`,
+    medium_by: (medium, name) => `${medium} von ${name}`,
+    number: (n) => String(n).replace('.', ','),
+    thumb_label: (n, count) => `Bild ${n} von ${count} zeigen`,
+    zoom_dialog: (title) => `${title}: Vollbildansicht`,
+    t: {
+      skip: 'Zum Inhalt springen',
+      nav_label: 'Hauptnavigation',
+      lang_label: 'Sprache',
+      home: 'Startseite',
+      about: 'Über mich',
+      contact: 'Kontakt',
+      breadcrumb: 'Brotkrümelnavigation',
+      footer: 'Fußzeile',
+      cookie_settings: 'Cookie-Einstellungen',
+      consent_label: 'Cookie-Einwilligung',
+      decline: 'Ablehnen',
+      accept: 'Akzeptieren',
+      more: 'MEHR',
+      hero_tagline: 'Ölgemälde, Pastelle & Aquarelle',
+      explore: 'Werke entdecken',
+      play: 'Video abspielen',
+      pause: 'Video anhalten',
+      video_title: 'Video von Polina Shvedko Art',
+      intro_heading: 'Künstlerin aus Deutschland',
+      intro_text: 'Ich bin eine deutsche Künstlerin und arbeite vor allem mit Pastell, Öl und Tusche. Mit einer künstlerischen Ausbildung und einer lebenslangen Leidenschaft für das Zeichnen suche ich immer neue Wege, Gefühle und Geschichten durch Farbe und Textur auszudrücken.',
+      more_about: 'Mehr über mich',
+      about_heading: 'Über mich',
+      about_name1: 'Hallo! Ich heiße Polina Shvedko.',
+      about_name2: 'Ich bin freischaffende Künstlerin. Willkommen auf meiner Kunst-Website!',
+      about_descr: 'Ich liebe das Meer! Wasser ist meine Inspiration. Jeden Tag suche ich nach neuen Ideen, Formen, Materialien und Techniken! Wenn meine Bilder ein neues Zuhause finden, macht mich das glücklich! Danke für Ihre Unterstützung, sie gibt mir Kraft und Motivation für noch mehr!',
+      instagram_follow: 'Folgen Sie mir auf',
+      instagram_mosaic: 'Weitere Bilder von Polina Shvedko auf Instagram',
+      contact_heading: 'Kontakt',
+      email: 'E-Mail:',
+      about_h1: 'Über Polina Shvedko',
+      contact_me: 'Kontakt aufnehmen',
+      contact_h1: 'Kontakt',
+      zoom: 'Bild im Vollbild ansehen',
+      prev_image: 'Vorheriges Bild',
+      next_image: 'Nächstes Bild',
+      close_zoom: 'Vollbildansicht schließen',
+      story: 'Geschichte',
+      previous: 'Zurück',
+      next: 'Weiter',
+      medium: 'Technik',
+      size: 'Größe',
+      frame: 'Rahmen',
+      year: 'Jahr',
+      not_found: 'Seite nicht gefunden',
+      not_found_text: 'Diese Seite gibt es leider nicht. Vielleicht helfen diese Seiten weiter:',
+    },
+  },
+};
 
 /* Partials that are used inside a line: their trailing line break is removed when they are loaded. */
 const INLINE_PARTIAL_RE = /^(picture|icon-.+)$/;
 
 /* Paths a hub must not take (pages, assets and retired URLs). */
-const RESERVED_PATHS = new Set(['about', 'contact', 'imprint', 'privacy', 'css', 'js', 'img', 'blog', 'partials', 'sitemap.xml', 'robots.txt', '404.html']);
+const RESERVED_PATHS = new Set(['de', 'about', 'contact', 'imprint', 'privacy', 'css', 'js', 'img', 'blog', 'partials', 'sitemap.xml', 'robots.txt', '404.html']);
 
 /* ------------------------------------------------------------------------------------------------ */
 /* small helpers                                                                                     */
@@ -190,7 +352,9 @@ function plainText(html) {
 
 /* Words a cut text must not end on ("…charm of a…"), and abbreviations whose dot the cut removes ("…of St…"). */
 const DANGLING_WORDS = new Set(('a an the of in on at to into onto over under and or but nor as by with without for from '
-  + 'than that this these those its their his her our your my is are was were be which who whose where when while').split(' '));
+  + 'than that this these those its their his her our your my is are was were be which who whose where when while'
+  // German (the /de/ pages): articles, prepositions, conjunctions
+  + ' der die das den dem des ein eine einen einem einer eines und oder aber mit von vom zu zum zur im ins am an auf aus bei für über unter vor nach durch um sein seine ihr ihre sich wie wo').split(' '));
 const ABBREVIATION_RE = /^(?:[A-Z]|St|Dr|Mr|Mrs|Ms|Mt|No)$/;
 const SENTENCE_END_RE = /[.!?]["”’)]?(?=\s|$)/g;
 
@@ -628,15 +792,86 @@ function validateJsonLd(obj, where, siteUrl) {
 }
 
 /* ------------------------------------------------------------------------------------------------ */
+/* German content (data.de.json)                                                                     */
+
+const DE_SITE_FIELDS = ['seo_title', 'seo_description'];
+const DE_HUB_FIELDS = ['label', 'section_heading', 'h1', 'all_link', 'medium_label', 'seo_title', 'seo_description'];
+
+/**
+ * data.json with the German texts of data.de.json in place of the English ones (a deep copy; data.json is not
+ * changed). Everything that is not text (slugs, paths, sizes, images, order, status) stays as in data.json. Throws
+ * when a text is missing, so a new artwork or hub cannot go online without its German page.
+ */
+function localizeData(data, de) {
+  const out = JSON.parse(JSON.stringify(data));
+  if (!de || typeof de !== 'object') fail('data.de.json is empty');
+  const need = (obj, key, where) => {
+    if (!obj || typeof obj[key] !== 'string' || !obj[key].trim()) fail(`data.de.json ${where}: "${key}" must be a non-empty string`);
+    return obj[key];
+  };
+  const paragraphs = (list, n, where) => {
+    if (!Array.isArray(list) || !list.length || list.some((t) => typeof t !== 'string' || !t.trim())) fail(`data.de.json ${where} must be a list of non-empty paragraphs`);
+    if (n !== undefined && list.length !== n) fail(`data.de.json ${where} has ${list.length} paragraph(s), data.json ${n}`);
+    return list;
+  };
+  for (const k of DE_SITE_FIELDS) out.site[k] = need(de.site, k, 'site');
+  for (const k of ['about', 'contact']) {
+    const pg = de.pages && de.pages[k];
+    out.pages[k] = { seo_title: need(pg, 'seo_title', `pages.${k}`), seo_description: need(pg, 'seo_description', `pages.${k}`) };
+  }
+  for (const k of ['imprint', 'privacy']) if (de.pages && de.pages[k]) out.pages[k] = de.pages[k];
+  for (const hub of out.hubs) {
+    const h = de.hubs && de.hubs[hub.key];
+    if (!h) fail(`data.de.json hubs.${hub.key} is missing`);
+    for (const k of DE_HUB_FIELDS) hub[k] = need(h, k, `hubs.${hub.key}`);
+    hub.intro = paragraphs(h.intro, undefined, `hubs.${hub.key}.intro`);
+    for (const a of hub.artworks) {
+      const g = de.artworks && de.artworks[a.slug];
+      const where = `artworks.${a.slug}`;
+      if (!g) fail(`data.de.json ${where} is missing`);
+      a.title = need(g, 'title', where);
+      a.medium = need(g, 'medium', where);
+      if (a.frame) a.frame = need(g, 'frame', where);
+      a.description = paragraphs(g.description, a.description.length, `${where}.description`);
+      if (!Array.isArray(g.images_alt) || g.images_alt.length !== a.images.length) fail(`data.de.json ${where}.images_alt needs ${a.images.length} alt text(s)`);
+      a.images = a.images.map((im, n) => ({ ...im, alt: need(g.images_alt, n, `${where}.images_alt`) }));
+      for (const k of ['preview_alt', 'preview_hover_alt']) if (a[k]) a[k] = need(g, k, where);
+      a.seo_title = a.seo_title ? need(g, 'seo_title', where) : (g.seo_title || null);
+      a.seo_description = g.seo_description || null;
+      if (a.story_confirmed === true) a.story_html = need(g, 'story_html', where);
+      else a.story_html = g.story_html || null;
+    }
+  }
+  out.socialmedia_images = out.socialmedia_images.map((im) => ({ ...im, alt: need(de.socialmedia_alt, im.src, 'socialmedia_alt') }));
+  out.legal = { imprint_html: (de.legal && de.legal.imprint_html) || null, privacy_html: (de.legal && de.legal.privacy_html) || null };
+  return out;
+}
+
+/** Legal pages that are built: a text in both languages (one language only stops the build, hreflang needs both). */
+function legalKeysOf(data, dataDe) {
+  const has = (d, l) => Boolean(d.legal && typeof d.legal[l.field] === 'string' && d.legal[l.field].trim());
+  return LEGAL.filter((l) => {
+    if (has(data, l) !== has(dataDe, l)) fail(`legal.${l.field} must be set in data.json and data.de.json, or in neither (the page needs both languages)`);
+    return has(data, l);
+  }).map((l) => l.key);
+}
+
+/* ------------------------------------------------------------------------------------------------ */
 /* the build                                                                                         */
 
-function createContext(root, data, manifest, assets, templates) {
+function createContext(root, data, manifest, assets, templates, lang = 'en', legalKeys = null) {
   const site = data.site;
+  const L = I18N[lang];
+  const T = L.t;
+  const P = lang === 'en' ? '' : DE_PREFIX; // URL prefix of this language
+  const STATUS = L.status; // eslint-disable-line no-shadow
+  const SITE_IMAGE_ALT = L.site_image_alt; // eslint-disable-line no-shadow
   const SITE = site.url;
   const PERSON_ID = `${SITE}/#person`;
   const WEBSITE_ID = `${SITE}/#website`;
   const year = site.lastmod.slice(0, 4);
-  const legalPages = LEGAL.filter((l) => data.legal && typeof data.legal[l.field] === 'string' && data.legal[l.field].trim());
+  const legalPages = LEGAL.filter((l) => (legalKeys ? legalKeys.includes(l.key) : data.legal && typeof data.legal[l.field] === 'string' && data.legal[l.field].trim()))
+    .map((l) => ({ ...l, label: L.legal[l.key], title: l.meta[lang].title, description: l.meta[lang].description }));
 
   const normRef = (src) => String(src).replace(/^\/+/, '');
   function entry(src, where) {
@@ -682,9 +917,9 @@ function createContext(root, data, manifest, assets, templates) {
     return coverSizes(box, m.width, m.height);
   };
 
-  const hubUrl = (hub) => `/${hub.path}/`;
-  const artworkUrl = (hub, a) => `/${hub.path}/${a.slug}/`;
-  const sizeText = (a) => `${a.width_cm} × ${a.height_cm} cm`;
+  const hubUrl = (hub) => `${P}/${hub.path}/`;
+  const artworkUrl = (hub, a) => `${P}/${hub.path}/${a.slug}/`;
+  const sizeText = (a) => `${L.number(a.width_cm)} × ${L.number(a.height_cm)} cm`;
   const mailto = (subject) => `mailto:${site.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
 
   /**
@@ -738,8 +973,8 @@ function createContext(root, data, manifest, assets, templates) {
   function artworkTitle(hub, a) {
     if (a.seo_title) return a.seo_title;
     const candidates = [
-      `${a.title} — ${hub.medium_label}, ${a.year}${suffix}`,
-      `${a.title} — ${hub.medium_label}${suffix}`,
+      `${a.title} - ${hub.medium_label}, ${a.year}${suffix}`,
+      `${a.title} - ${hub.medium_label}${suffix}`,
       `${a.title}${suffix}`,
     ];
     for (const c of candidates) if (cpLen(c) <= TITLE_MAX) return c;
@@ -753,8 +988,8 @@ function createContext(root, data, manifest, assets, templates) {
    */
   function artworkDescription(a) {
     if (a.seo_description) return a.seo_description;
-    const first = withoutTitleEcho(a.title, plainText(a.description[0]));
-    const text = plainText(`${a.title}, ${a.medium.toLowerCase()} by ${site.name} (${a.year}), ${sizeText(a)}. ${first}`);
+    const first = lang === 'en' ? withoutTitleEcho(a.title, plainText(a.description[0])) : plainText(a.description[0]);
+    const text = plainText(`${a.title}, ${L.medium_by(a.medium, site.name)} (${a.year}), ${sizeText(a)}. ${first}`);
     let d = fitText(text, DESCRIPTION_MIN, DESCRIPTION_MAX);
     if (cpLen(d) < DESCRIPTION_MIN) d = fitText(`${d}${STATUS[a.status].descriptionSuffix}`, DESCRIPTION_MIN, DESCRIPTION_MAX);
     return d;
@@ -765,8 +1000,8 @@ function createContext(root, data, manifest, assets, templates) {
     '@type': 'Person',
     '@id': PERSON_ID,
     name: site.name,
-    jobTitle: PERSON_JOB_TITLE,
-    url: `${SITE}/`,
+    jobTitle: L.job_title,
+    url: `${SITE}/`, // one person, one @id and url in both languages
     image: shareVariant(site.images.portrait, 'Person.image').url,
     address: { '@type': 'PostalAddress', addressCountry: 'DE' },
     sameAs: site.social.map((s) => s.url),
@@ -781,11 +1016,12 @@ function createContext(root, data, manifest, assets, templates) {
   // ---------------------------------------------------------------- shared view parts
   const navItems = [
     ...data.hubs.map((h) => ({ href: hubUrl(h), label: h.label })),
-    { href: '/about/', label: 'About' },
-    { href: '/contact/', label: 'Contact' },
+    { href: `${P}/about/`, label: T.about },
+    { href: `${P}/contact/`, label: T.contact },
   ];
-  const footerItems = [...navItems, ...legalPages.map((l) => ({ href: `/${l.key}/`, label: l.label }))];
+  const footerItems = [...navItems, ...legalPages.map((l) => ({ href: `${P}/${l.key}/`, label: l.label }))];
   const privacy = legalPages.find((l) => l.key === 'privacy');
+  const imprint = legalPages.find((l) => l.key === 'imprint');
   const instagram = site.social.find((s) => s.name.toLowerCase() === 'instagram');
 
   function socialLinks() {
@@ -800,7 +1036,7 @@ function createContext(root, data, manifest, assets, templates) {
         const key = s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         const icon = templates.partials[`icon-${key}`];
         if (!icon) fail(`no icon partial src/templates/partials/icon-${key}.mustache for the social link "${s.name}"`);
-        return { key, name: s.name, label: `${site.name} on ${s.name}`, url: s.url, icon: icon.trim() };
+        return { key, name: s.name, label: L.social_label(site.name, s.name), url: s.url, icon: icon.trim() };
       });
   }
 
@@ -825,6 +1061,11 @@ function createContext(root, data, manifest, assets, templates) {
   }
 
   /** The view every page template gets (head, nav, footer, consent). */
+  /** The page of the other language: same path with or without /de (404 pages: the home of each language). */
+  const pairOf = (href, code) => {
+    const base = P && href.startsWith(`${P}/`) ? href.slice(P.length) : href;
+    return code === 'en' ? base : `${DE_PREFIX}${base}`;
+  };
   function layout({ type, href, title, description, og, noindex = false, jsonld = [], breadcrumb = null }) {
     const scripts = [...SCRIPTS_ALL, ...(SCRIPTS_BY_TYPE[type] || [])].map((name) => ({
       src: assets.scripts[name],
@@ -832,9 +1073,16 @@ function createContext(root, data, manifest, assets, templates) {
     }));
     const current = (h) => !noindex && h === href;
     return {
+      lang,
+      t: T,
       page: {
         type,
+        lang,
         href,
+        locale: L.locale,
+        locale_alt: LANGS.filter((c) => c !== lang).map((c) => ({ locale: I18N[c].locale })),
+        // hreflang pairs and x-default (English) on every indexable page
+        alternates: noindex ? [] : [...LANGS.map((c) => ({ hreflang: c, href: `${SITE}${pairOf(href, c)}` })), { hreflang: 'x-default', href: `${SITE}${pairOf(href, 'en')}` }],
         title,
         description: description || '',
         noindex,
@@ -862,6 +1110,15 @@ function createContext(root, data, manifest, assets, templates) {
       jsonld: jsonld.map((obj) => ({ json: serializeJsonLd(obj) })),
       nav: {
         state_class: type === 'home' ? 'site-nav--hidden' : 'site-nav--visible',
+        home: `${P}/`,
+        // language switch: one flag per language, linking to the same page in that language
+        langs: LANGS.map((c) => ({
+          code: c,
+          label: I18N[c].name,
+          href: noindex ? (c === 'en' ? '/' : `${DE_PREFIX}/`) : pairOf(href, c),
+          current: c === lang,
+          flag: templates.partials[`icon-flag-${c}`].trim(),
+        })),
         // "Oil paintings": phones show the first word only (site.css .site-nav__more; screen readers get the full name)
         items: navItems.map((n) => {
           const [first, ...more] = n.label.split(' ');
@@ -873,7 +1130,13 @@ function createContext(root, data, manifest, assets, templates) {
         owner: site.name.toUpperCase(),
         items: footerItems.map((n) => ({ ...n, current: current(n.href) })),
       },
-      consent: { text: CONSENT_TEXT, privacy_href: privacy ? `/${privacy.key}/` : '' },
+      consent: {
+        text: L.consent_text,
+        privacy_href: privacy ? `${P}/${privacy.key}/` : '',
+        privacy_label: privacy ? privacy.label : '',
+        imprint_href: imprint ? `${P}/${imprint.key}/` : '',
+        imprint_label: imprint ? imprint.label : '',
+      },
       breadcrumb: breadcrumb ? breadcrumb.map((b, i) => ({ label: keepTogether(b.label), href: i === breadcrumb.length - 1 ? '' : b.href, first: i === 0 })) : [],
     };
   }
@@ -891,17 +1154,20 @@ function createContext(root, data, manifest, assets, templates) {
   {
     const view = layout({
       type: 'home',
-      href: '/',
+      href: `${P}/`,
       title: site.seo_title,
       description: site.seo_description,
-      og: ogFor(site.images.og_default, imageAlt(site.images.og_default, `Painting by ${site.name}`), 'site.images.og_default'),
+      og: ogFor(site.images.og_default, imageAlt(site.images.og_default, L.painting_by(site.name)), 'site.images.og_default'),
       jsonld: [
-        { '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID, url: `${SITE}/`, name: site.name, inLanguage: 'en', publisher: { '@id': PERSON_ID } },
+        { '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID, url: `${SITE}/`, name: site.name, inLanguage: LANGS, publisher: { '@id': PERSON_ID } },
         { '@context': 'https://schema.org', ...person() },
       ],
     });
     view.page.noscript_css += NOSCRIPT_HOME_CSS;
     view.hero = {
+      play_label: T.play,
+      pause_label: T.pause,
+      video_title: T.video_title,
       poster: picture(site.images.hero_poster, { alt: SITE_IMAGE_ALT.hero_poster, sizes: SIZES.hero, cls: 'hero__poster', lazy: false, high: true, where: 'site.images.hero_poster' }),
       cta_href: `#gallery-${data.hubs[0].key}`,
     };
@@ -923,13 +1189,13 @@ function createContext(root, data, manifest, assets, templates) {
       })),
     };
     view.contact = contact({ heading: true, lazy: true });
-    add({ type: 'home', file: 'index.html', href: '/', template: 'home', view, indexable: true });
+    add({ type: 'home', file: `${P.slice(1)}${P ? '/' : ''}index.html`, href: `${P}/`, template: 'home', view, indexable: true });
   }
 
   // ---------------------------------------------------------------- hubs and artworks
   for (const hub of data.hubs) {
     const url = `${SITE}${hubUrl(hub)}`;
-    const trail = [{ label: 'Home', href: '/' }, { label: hub.label, href: hubUrl(hub) }];
+    const trail = [{ label: T.home, href: `${P}/` }, { label: hub.label, href: hubUrl(hub) }];
     const view = layout({
       type: 'hub',
       href: hubUrl(hub),
@@ -945,7 +1211,7 @@ function createContext(root, data, manifest, assets, templates) {
           name: hub.h1,
           url,
           description: hub.seo_description,
-          inLanguage: 'en',
+          inLanguage: lang,
           isPartOf: websiteRef(),
           mainEntity: {
             '@type': 'ItemList',
@@ -968,7 +1234,7 @@ function createContext(root, data, manifest, assets, templates) {
       intro: hub.intro.map((t) => keepTogether(plainText(t))),
       cards: hub.artworks.map((a) => card(hub, a, { h2: true })),
     };
-    add({ type: 'hub', file: `${hub.path}/index.html`, href: hubUrl(hub), template: 'hub', view, indexable: true });
+    add({ type: 'hub', file: `${P.slice(1)}${P ? '/' : ''}${hub.path}/index.html`, href: hubUrl(hub), template: 'hub', view, indexable: true });
 
     hub.artworks.forEach((a, i) => {
       const href = artworkUrl(hub, a);
@@ -995,14 +1261,15 @@ function createContext(root, data, manifest, assets, templates) {
         count: a.images.length,
         current: n === 0 ? 'true' : 'false',
         // small, low-priority files: the 160/320 px variants (scripts/images.js ROLE_WIDTHS.thumb), not the main image's
+        label: L.thumb_label(n + 1, a.images.length),
         image: picture(im.src, { alt: im.alt, sizes: coverSizesOf('thumb', im.src, `${a.slug} thumbnail ${n + 1}`), cls: 'artwork__thumb-img', low: true, where: `${a.slug} thumbnail ${n + 1}` }),
       })) : [];
       // every value is visible running text: a size in any of them ("Framed (wood and glass), 50 × 40 cm") keeps together
       const facts = [
-        { key: 'medium', label: 'Medium', value: a.medium },
-        { key: 'size', label: 'Size', value: sizeText(a) },
-        ...(a.frame ? [{ key: 'frame', label: 'Frame', value: a.frame }] : []),
-        { key: 'year', label: 'Year', value: String(a.year) },
+        { key: 'medium', label: T.medium, value: a.medium },
+        { key: 'size', label: T.size, value: sizeText(a) },
+        ...(a.frame ? [{ key: 'frame', label: T.frame, value: a.frame }] : []),
+        { key: 'year', label: T.year, value: String(a.year) },
       ].map((f) => ({ ...f, value: keepTogether(f.value) }));
       let story = false;
       if (a.story_confirmed === true && typeof a.story_html === 'string' && a.story_html.trim()) {
@@ -1021,7 +1288,8 @@ function createContext(root, data, manifest, assets, templates) {
           {
             '@context': 'https://schema.org',
             '@type': 'VisualArtwork',
-            '@id': `${pageUrl}#artwork`,
+            '@id': `${SITE}${pairOf(href, 'en')}#artwork`, // one artwork, two pages: the same @id in both languages
+            inLanguage: lang,
             name: a.title,
             url: pageUrl,
             image: a.images.map((im, n) => shareVariant(im.src, `${a.slug} images[${n}]`).url),
@@ -1038,10 +1306,11 @@ function createContext(root, data, manifest, assets, templates) {
         ],
       });
       if (multiple) view2.page.noscript_css += NOSCRIPT_GALLERY_CSS;
-      view2.hub = { key: hub.key, path: hub.path, label: hub.label, all_link: hub.all_link, pager_label: `More ${hub.label.toLowerCase()}` };
+      view2.hub = { key: hub.key, path: hub.path, label: hub.label, all_link: hub.all_link, pager_label: L.pager_label(hub.label), back_href: hubUrl(hub) };
       view2.artwork = {
         slug: a.slug,
         title: keepTogether(a.title), // h1 and the dialog label ("St. Albani ...")
+        zoom_label: L.zoom_dialog(keepTogether(a.title)),
         status: a.status,
         status_text: st.text,
         description: a.description.map((t) => keepTogether(plainText(t))),
@@ -1055,7 +1324,7 @@ function createContext(root, data, manifest, assets, templates) {
         prev: prev ? { href: artworkUrl(hub, prev), title: keepTogether(prev.title) } : false,
         next: next ? { href: artworkUrl(hub, next), title: keepTogether(next.title) } : false,
       };
-      add({ type: 'artwork', file: `${hub.path}/${a.slug}/index.html`, href, template: 'artwork', view: view2, indexable: true, artwork: a });
+      add({ type: 'artwork', file: `${P.slice(1)}${P ? '/' : ''}${hub.path}/${a.slug}/index.html`, href, template: 'artwork', view: view2, indexable: true, artwork: a });
     });
   }
 
@@ -1081,10 +1350,10 @@ function createContext(root, data, manifest, assets, templates) {
 
   // ---------------------------------------------------------------- about, contact, legal, 404
   {
-    const trail = [{ label: 'Home', href: '/' }, { label: 'About', href: '/about/' }];
+    const trail = [{ label: T.home, href: `${P}/` }, { label: T.about, href: `${P}/about/` }];
     const view = layout({
       type: 'about',
-      href: '/about/',
+      href: `${P}/about/`,
       title: data.pages.about.seo_title,
       description: data.pages.about.seo_description,
       og: ogFor(site.images.photo, SITE_IMAGE_ALT.photo, 'site.images.photo'),
@@ -1093,10 +1362,10 @@ function createContext(root, data, manifest, assets, templates) {
         {
           '@context': 'https://schema.org',
           '@type': 'AboutPage',
-          url: `${SITE}/about/`,
-          name: 'About Polina Shvedko',
+          url: `${SITE}${P}/about/`,
+          name: L.about_name,
           description: data.pages.about.seo_description,
-          inLanguage: 'en',
+          inLanguage: lang,
           isPartOf: websiteRef(),
           mainEntity: person(),
         },
@@ -1105,13 +1374,13 @@ function createContext(root, data, manifest, assets, templates) {
     });
     view.intro = intro({ lazy: false, moreLink: false });
     view.about_me = aboutMe({ heading: false });
-    add({ type: 'about', file: 'about/index.html', href: '/about/', template: 'about', view, indexable: true });
+    add({ type: 'about', file: `${P.slice(1)}${P ? '/' : ''}about/index.html`, href: `${P}/about/`, template: 'about', view, indexable: true });
   }
   {
-    const trail = [{ label: 'Home', href: '/' }, { label: 'Contact', href: '/contact/' }];
+    const trail = [{ label: T.home, href: `${P}/` }, { label: T.contact, href: `${P}/contact/` }];
     const view = layout({
       type: 'contact',
-      href: '/contact/',
+      href: `${P}/contact/`,
       title: data.pages.contact.seo_title,
       description: data.pages.contact.seo_description,
       og: ogFor(site.images.portrait, SITE_IMAGE_ALT.portrait, 'site.images.portrait'),
@@ -1120,10 +1389,10 @@ function createContext(root, data, manifest, assets, templates) {
         {
           '@context': 'https://schema.org',
           '@type': 'ContactPage',
-          url: `${SITE}/contact/`,
-          name: 'Contact',
+          url: `${SITE}${P}/contact/`,
+          name: T.contact,
           description: data.pages.contact.seo_description,
-          inLanguage: 'en',
+          inLanguage: lang,
           isPartOf: websiteRef(),
           mainEntity: { '@id': PERSON_ID },
         },
@@ -1131,21 +1400,21 @@ function createContext(root, data, manifest, assets, templates) {
       ],
     });
     view.contact = contact({ heading: false, lazy: false });
-    add({ type: 'contact', file: 'contact/index.html', href: '/contact/', template: 'contact', view, indexable: true });
+    add({ type: 'contact', file: `${P.slice(1)}${P ? '/' : ''}contact/index.html`, href: `${P}/contact/`, template: 'contact', view, indexable: true });
   }
   for (const l of legalPages) {
     const meta = (data.pages && data.pages[l.key]) || {};
-    const href = `/${l.key}/`;
-    const trail = [{ label: 'Home', href: '/' }, { label: l.label, href }];
+    const href = `${P}/${l.key}/`;
+    const trail = [{ label: T.home, href: `${P}/` }, { label: l.label, href }];
     const view = layout({
       type: l.key,
       href,
       title: meta.seo_title || l.title,
       description: meta.seo_description || l.description,
-      og: ogFor(site.images.og_default, imageAlt(site.images.og_default, `Painting by ${site.name}`), 'site.images.og_default'),
+      og: ogFor(site.images.og_default, imageAlt(site.images.og_default, L.painting_by(site.name)), 'site.images.og_default'),
       breadcrumb: trail,
       jsonld: [
-        { '@context': 'https://schema.org', '@type': 'WebPage', url: `${SITE}${href}`, name: l.label, inLanguage: 'en', isPartOf: websiteRef() },
+        { '@context': 'https://schema.org', '@type': 'WebPage', url: `${SITE}${href}`, name: l.label, inLanguage: lang, isPartOf: websiteRef() },
         breadcrumbLd(trail),
       ],
     });
@@ -1153,12 +1422,12 @@ function createContext(root, data, manifest, assets, templates) {
     // and sizes and initials kept together
     const legalHtml = trackMailto(shiftHeadings(normalizeHtml(data.legal[l.field]), 2), site.email, { 'data-track': 'contact', 'data-location': l.key });
     view.legal = { title: l.label, html: keepTogetherHtml(legalHtml) };
-    add({ type: l.key, file: `${l.key}/index.html`, href, template: 'legal', view, indexable: true });
+    add({ type: l.key, file: `${P.slice(1)}${P ? '/' : ''}${l.key}/index.html`, href, template: 'legal', view, indexable: true });
   }
   {
-    const view = layout({ type: '404', href: '/404.html', title: `Page not found${suffix}`, noindex: true });
-    view.links = [{ href: '/', label: 'Home' }, ...navItems];
-    add({ type: '404', file: '404.html', href: '/404.html', template: '404', view, indexable: false });
+    const view = layout({ type: '404', href: `${P}/404.html`, title: `${T.not_found}${suffix}`, noindex: true });
+    view.links = [{ href: `${P}/`, label: T.home }, ...navItems];
+    add({ type: '404', file: `${P.slice(1)}${P ? '/' : ''}404.html`, href: `${P}/404.html`, template: '404', view, indexable: false });
   }
 
   return { pages, legalPages };
@@ -1186,11 +1455,13 @@ function validateMeta(pages) {
 
 function sitemapXml(pages, data) {
   const xmlEscape = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
+  // every URL with its language alternates (the same pairs as the hreflang links of the page)
   const urls = pages.filter((p) => p.indexable).map((p) => {
     const lastmod = (p.artwork && p.artwork.updated) || data.site.lastmod;
-    return `  <url>\n    <loc>${xmlEscape(`${data.site.url}${p.href}`)}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
+    const links = p.view.page.alternates.map((a) => `\n    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${xmlEscape(a.href)}"/>`).join('');
+    return `  <url>\n    <loc>${xmlEscape(`${data.site.url}${p.href}`)}</loc>${links}\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
   });
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
 }
 
 /** Write a file only when its content changes (keeps mtimes stable for watchers). Returns true when written. */
@@ -1228,7 +1499,13 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
   }
   checkPartialRefs(templates);
   const assets = loadAssets(rootDir);
-  const { pages } = createContext(rootDir, data, manifest, assets, templates);
+  const dataDe = localizeData(data, readJson(path.join(rootDir, 'data.de.json'), 'data.de.json'));
+  validateData(dataDe);
+  const legalKeys = legalKeysOf(data, dataDe);
+  const pages = [
+    ...createContext(rootDir, data, manifest, assets, templates, 'en', legalKeys).pages,
+    ...createContext(rootDir, dataDe, manifest, assets, templates, 'de', legalKeys).pages,
+  ];
   validateMeta(pages);
 
   const rendered = [];
@@ -1252,7 +1529,7 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
 }
 
 module.exports = {
-  build, cutAtWord, fitText, keepTogether, keepTogetherHtml, normalizeHtml, shiftHeadings, trackMailto, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
+  build, localizeData, I18N, LANGS, cutAtWord, fitText, keepTogether, keepTogetherHtml, normalizeHtml, shiftHeadings, trackMailto, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
   SIZES, COVER_BOXES, STATUS, ARTWORK_FIELDS, BuildError,
 };
 

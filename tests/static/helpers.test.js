@@ -211,12 +211,17 @@ describe('helpers: breaking spaces in visible text', () => {
 });
 
 describe('helpers: site model from data.json', () => {
-  test('page list: home, hubs, every artwork, about, contact (36 indexable while legal texts are null) and 404', () => {
+  test('page list: home, hubs, every artwork, about, contact, imprint and privacy (when set) and 404, in English and below /de/ in German', () => {
     const data = S.loadData();
     const pages = S.sitePages(data);
     const artworks = data.hubs.reduce((n, h) => n + h.artworks.length, 0);
     const legal = (data.legal.imprint_html ? 1 : 0) + (data.legal.privacy_html ? 1 : 0);
-    assert.equal(pages.filter((p) => p.indexable).length, 1 + data.hubs.length + artworks + 2 + legal);
+    assert.equal(pages.filter((p) => p.indexable).length, 2 * (1 + data.hubs.length + artworks + 2 + legal));
+    const de = pages.find((p) => p.key === 'de:artwork:affectionate-farewell-cap-dantibes');
+    assert.equal(de.file, 'de/oil-paintings/affectionate-farewell-cap-dantibes/index.html');
+    assert.equal(de.url, 'https://polina-shvedko.art/de/oil-paintings/affectionate-farewell-cap-dantibes/');
+    assert.equal(de.lang, 'de');
+    assert.equal(pages.find((p) => p.key === 'de:404').file, 'de/404.html');
     const cap = pages.find((p) => p.key === 'artwork:affectionate-farewell-cap-dantibes');
     assert.equal(cap.file, 'oil-paintings/affectionate-farewell-cap-dantibes/index.html');
     assert.equal(cap.url, 'https://polina-shvedko.art/oil-paintings/affectionate-farewell-cap-dantibes/');
@@ -241,7 +246,7 @@ describe('helpers: site model from data.json', () => {
 
   test('expected artwork <title> follows the SPEC section 6 rule and fits 60 characters', () => {
     const hub = { medium_label: 'Pastel' };
-    assert.equal(S.expectedArtworkTitle(hub, { title: 'Fishing Village', year: 2023 }), 'Fishing Village — Pastel, 2023 | Polina Shvedko');
+    assert.equal(S.expectedArtworkTitle(hub, { title: 'Fishing Village', year: 2023 }), 'Fishing Village - Pastel, 2023 | Polina Shvedko');
     assert.equal(S.expectedArtworkTitle({ medium_label: 'Oil painting' }, { title: 'Turquoise Silence of the Verdon Gorge', year: 2023 }), 'Turquoise Silence of the Verdon Gorge | Polina Shvedko');
     assert.equal(S.expectedArtworkTitle(hub, { title: 'X', year: 2020, seo_title: 'Custom | Polina Shvedko' }), 'Custom | Polina Shvedko');
     for (const { hub: h, artwork } of S.allArtworks()) {

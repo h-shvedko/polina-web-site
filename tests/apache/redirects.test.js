@@ -202,6 +202,15 @@ describe(`apache: .htaccess redirects and caching on ${IMAGE} (APP_DIR mounted r
     [`${A}/blog/anything/`, 301, `${A}/`],
     [`${A}/partials/head.html`, 410],
     [`${A}/nonexistent`, 404, null, { body: /Page not found/ }],
+    // German pages below /de/: their own 404 page; the German pages redirect like the English ones
+    [`${A}/de/nonexistent`, 404, null, { body: /Seite nicht gefunden/ }],
+    [`${A}/de/x/y/`, 404, null, { body: /<html lang="de">/ }],
+    [`${A}/dex`, 404, null, { body: /Page not found/ }],
+    [`${A}/de/`, 200],
+    [`${A}/de${ARTWORK}`, 200],
+    [`${A}/de`, 301, `${A}/de/`],
+    [`${A}/de/index.html`, 301, `${A}/de/`],
+    [`${HW}/de${NO_SLASH}`, 301, `${A}/de${ARTWORK}`],
     // a folder without the trailing slash: one hop to the canonical URL, also from http and www
     [`${A}/about`, 301, `${A}/about/`],
     [`${A}${HUB.slice(0, -1)}?utm_source=x`, 301, `${A}${HUB}?utm_source=x`],

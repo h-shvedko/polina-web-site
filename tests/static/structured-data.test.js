@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const { qsa, rawText } = require('../lib/html');
 const { expectNone } = require('../lib/checks');
 const S = require('../lib/site');
+const { I18N } = require('../../scripts/build-site.js');
 
 const data = S.loadData();
 const SITE = S.siteUrl(data);
@@ -95,7 +96,9 @@ function forPages(list, fn) {
   return problems;
 }
 
-function homeTrail() { return [['Home', HOME]]; }
+/* breadcrumb start of a page: "Home" -> / (German pages: "Startseite" -> /de/) */
+function homeTrail(page = { lang: 'en' }) { return [[I18N[page.lang].t.home, `${SITE}${S.LANG_PREFIX[page.lang]}/`]]; }
+const pre = (page) => S.LANG_PREFIX[page.lang];
 
 describe('9. JSON-LD structured data', () => {
   test('every JSON-LD block on every HTML page parses as JSON', () => {
@@ -119,7 +122,7 @@ describe('9. JSON-LD structured data', () => {
     expectNone(problems, 'shop structured data');
   });
 
-  test(`home: WebSite and Person (@id ${PERSON_ID}, jobTitle "Visual artist", country DE, sameAs Instagram, Facebook, LinkedIn, Etsy)`, () => {
+  test(`home: WebSite and Person (@id ${PERSON_ID}, jobTitle "Visual artist" / "Bildende Künstlerin", country DE, sameAs Instagram, Facebook, LinkedIn, Etsy)`, () => {
     const social = ((data.site && data.site.social) || []).map((s) => s.url);
     expectNone(forPages(pages.filter((p) => p.type === 'home'), (page, nodes) => {
       const out = [];
@@ -134,7 +137,10 @@ describe('9. JSON-LD structured data', () => {
       if (!person) return [...out, 'no Person node'];
       if (person['@id'] !== PERSON_ID) out.push(`Person @id is ${JSON.stringify(person['@id'])}, expected ${PERSON_ID}`);
       if (person.name !== 'Polina Shvedko') out.push(`Person.name is ${JSON.stringify(person.name)}`);
-      if (person.jobTitle !== 'Visual artist') out.push(`Person.jobTitle is ${JSON.stringify(person.jobTitle)}, expected "Visual artist"`);
+      const job = I18N[page.lang].job_title;
+      if (person.jobTitle !== job) out.push(`Person.jobTitle is ${JSON.stringify(person.jobTitle)}, expected "${job}"`);
+      const site = sites[0];
+      if (site && JSON.stringify(site.inLanguage) !== JSON.stringify(['en', 'de'])) out.push(`WebSite.inLanguage is ${JSON.stringify(site.inLanguage)}, expected ["en","de"]`);
       if (person.url !== HOME) out.push(`Person.url is ${JSON.stringify(person.url)}, expected ${HOME}`);
       const image = asArray(person.image)[0];
       const imageUrl = typeof image === 'string' ? image : image && image.url;
@@ -159,7 +165,7 @@ describe('9. JSON-LD structured data', () => {
         if (!cps[0].isPartOf) out.push('CollectionPage.isPartOf (WebSite) missing');
       }
       const lists = findType(nodes, 'ItemList');
-      if (lists.length !== 1) return [...out, `${lists.length} ItemList nodes (expected 1)`, ...checkBreadcrumb(nodes, [...homeTrail(), [page.hub.label, page.url]])];
+      if (lists.length !== 1) return [...out, `${lists.length} ItemList nodes (expected 1)`, ...checkBreadcrumb(nodes, [...homeTrail(page), [page.hub.label, page.url]])];
       const items = asArray(lists[0].itemListElement);
       const artworks = page.hub.artworks;
       if (items.length !== artworks.length) out.push(`ItemList has ${items.length} items, the hub has ${artworks.length} artworks`);
@@ -167,14 +173,14 @@ describe('9. JSON-LD structured data', () => {
         const a = artworks[i];
         if (it.position !== i + 1) out.push(`ListItem ${i + 1} position ${JSON.stringify(it.position)}`);
         const url = it.url || (it.item && (it.item.url || it.item['@id']));
-        if (a && url !== `${SITE}${S.artworkPath(page.hub, a)}`) out.push(`ListItem ${i + 1} url ${JSON.stringify(url)}, expected ${SITE}${S.artworkPath(page.hub, a)}`);
+        if (a && url !== `${SITE}${S.artworkPath(page.hub, a, page.lang)}`) out.push(`ListItem ${i + 1} url ${JSON.stringify(url)}, expected ${SITE}${S.artworkPath(page.hub, a, page.lang)}`);
         const name = it.name || (it.item && it.item.name);
         if (a && name !== a.title) out.push(`ListItem ${i + 1} name ${JSON.stringify(name)}, expected ${JSON.stringify(a.title)}`);
         const image = it.image || (it.item && it.item.image);
         const imageUrl = typeof asArray(image)[0] === 'string' ? asArray(image)[0] : asArray(image)[0] && asArray(image)[0].url;
         if (!imageUrl || !String(imageUrl).startsWith(`${SITE}/`)) out.push(`ListItem ${i + 1} image ${JSON.stringify(image)} is not an absolute URL on the site`);
       });
-      return [...out, ...checkBreadcrumb(nodes, [...homeTrail(), [page.hub.label, page.url]])];
+      return [...out, ...checkBreadcrumb(nodes, [...homeTrail(page), [page.hub.label, page.url]])];
     }), 'hub structured data');
   });
 
@@ -183,9 +189,12 @@ describe('9. JSON-LD structured data', () => {
       const a = page.artwork;
       const out = [];
       const arts = findType(nodes, 'VisualArtwork');
-      if (arts.length !== 1) return [`${arts.length} VisualArtwork nodes (expected 1)`, ...checkBreadcrumb(nodes, [...homeTrail(), [page.hub.label, `${SITE}/${page.hub.path}/`], [a.title, page.url]])];
+      if (arts.length !== 1) return [`${arts.length} VisualArtwork nodes (expected 1)`, ...checkBreadcrumb(nodes, [...homeTrail(page), [page.hub.label, `${SITE}${pre(page)}/${page.hub.path}/`], [a.title, page.url]])];
       const v = arts[0];
-      if (v['@id'] !== `${page.url}#artwork`) out.push(`@id is ${JSON.stringify(v['@id'])}, expected ${page.url}#artwork`);
+      // one artwork, two pages: the German page uses the @id of the English one
+      const id = `${SITE}${S.artworkPath(page.hub, a)}#artwork`;
+      if (v['@id'] !== id) out.push(`@id is ${JSON.stringify(v['@id'])}, expected ${id}`);
+      if (v.inLanguage !== page.lang) out.push(`inLanguage is ${JSON.stringify(v.inLanguage)}, expected "${page.lang}"`);
       if (v.url !== page.url) out.push(`url is ${JSON.stringify(v.url)}, expected ${page.url}`);
       if (v.name !== a.title) out.push(`name is ${JSON.stringify(v.name)}, expected ${JSON.stringify(a.title)}`);
       if (typeof v.description !== 'string' || !v.description.trim() || /<[a-z/]/i.test(v.description)) out.push('description must be non-empty plain text');
@@ -213,7 +222,7 @@ describe('9. JSON-LD structured data', () => {
         else if (d.value !== value || d.unitCode !== 'CMT' || d.unitText !== 'cm' || 'name' in d) out.push(`${key} is ${JSON.stringify(d)}, expected {"@type":"QuantitativeValue","value":${value},"unitCode":"CMT","unitText":"cm"}`);
       }
       if (hasKeyDeep(v, 'offers')) out.push('VisualArtwork has offers');
-      return [...out, ...checkBreadcrumb(nodes, [...homeTrail(), [page.hub.label, `${SITE}/${page.hub.path}/`], [a.title, page.url]])];
+      return [...out, ...checkBreadcrumb(nodes, [...homeTrail(page), [page.hub.label, `${SITE}${pre(page)}/${page.hub.path}/`], [a.title, page.url]])];
     }), 'artwork structured data');
   });
 
@@ -230,7 +239,8 @@ describe('9. JSON-LD structured data', () => {
           if (!main || main['@id'] !== PERSON_ID) out.push(`AboutPage.mainEntity is ${JSON.stringify(found[0].mainEntity)}, expected a reference to ${PERSON_ID}`);
         }
       }
-      return [...out, ...checkBreadcrumb(nodes, [...homeTrail(), [null, page.url]])];
+      if (found.length === 1 && found[0].inLanguage !== page.lang) out.push(`${type}.inLanguage is ${JSON.stringify(found[0].inLanguage)}, expected "${page.lang}"`);
+      return [...out, ...checkBreadcrumb(nodes, [...homeTrail(page), [null, page.url]])];
     }), 'about/contact structured data');
   });
 });

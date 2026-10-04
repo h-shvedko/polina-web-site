@@ -1,0 +1,468 @@
+{
+  "_comment": "German texts for /de/ pages (scripts/build-site.js). Keys mirror data.json: hubs by key, artworks by slug, Instagram alts by src.",
+  "site": {
+    "seo_title": "Polina Shvedko - Ölgemälde, Pastelle und Aquarelle",
+    "seo_description": "Originale Ölgemälde, Pastelle und Aquarelle von Polina Shvedko, Künstlerin aus Deutschland: Meer und Küste, Blumen und stille Ecken der Stadt."
+  },
+  "pages": {
+    "about": {
+      "seo_title": "Über Polina Shvedko - Künstlerin aus Deutschland",
+      "seo_description": "Lernen Sie Polina Shvedko kennen, freischaffende Künstlerin aus Deutschland mit Kunstausbildung, die mit Öl, Pastell und Tusche arbeitet."
+    },
+    "contact": {
+      "seo_title": "Kontakt zu Polina Shvedko - Künstlerin aus Deutschland",
+      "seo_description": "Fragen zu einem Bild? Schreiben Sie Polina Shvedko, Künstlerin aus Deutschland, per E-Mail oder folgen Sie ihr auf Instagram, Facebook und LinkedIn."
+    }
+  },
+  "hubs": {
+    "oil": {
+      "label": "Ölgemälde",
+      "section_heading": "Ölgemälde",
+      "h1": "Ölgemälde von Polina Shvedko",
+      "all_link": "Alle Ölgemälde",
+      "medium_label": "Ölgemälde",
+      "seo_title": "Ölgemälde von Meer und Küste | Polina Shvedko",
+      "seo_description": "Originale Ölgemälde von Wasser und Licht von Polina Shvedko: ein Sonnenuntergang bei Antibes, die Verdonschlucht und die Buchten der Costa Brava.",
+      "intro": [
+        "Wasser zieht sich durch jedes Ölgemälde dieser Sammlung: das Meer am Cap d'Antibes, ein Canyonsee in der Verdonschlucht, stille Buchten und Häfen an der Costa Brava. In Polina Shvedkos eigenen Worten: „Ich liebe das Meer! Wasser ist meine Inspiration.“",
+        "Das größte Werk, Zärtlicher Abschied, Cap d'Antibes, Frankreich (2024), ist eine Panoramaleinwand von 190 × 45 cm: Die Abendsonne verabschiedet sich vom Meer und den Jachten, bevor die Lichter von Antibes angehen. Zwei quadratische Leinwände von 80 × 80 cm aus dem Jahr 2023 zeigen Paddler auf dem türkisfarbenen See der Verdonschlucht und verwitterte Boote in einer Bucht unter windgebeugten Bäumen.",
+        "Vier kleine Leinwände aus den Jahren 2021 und 2022, von 18 × 24 bis 30 × 24 cm, sind von P. Molina inspiriert: die Klippen, Buchten und Häfen der Costa Brava und der Bucht von Roses. Sonnenuntergang im Honigtraum (2021, 90 × 60 cm) zeigt ein Segelboot im Glanz des späten Abends. Öffnen Sie ein Gemälde, um alle Fotos, das Format und das Entstehungsjahr zu sehen."
+      ]
+    },
+    "pastel": {
+      "label": "Pastelle",
+      "section_heading": "Pastelle",
+      "h1": "Pastellbilder von Polina Shvedko",
+      "all_link": "Alle Pastelle",
+      "medium_label": "Pastell",
+      "seo_title": "Pastellbilder von Blumen und Orten | Polina Shvedko",
+      "seo_description": "Pastellbilder von Polina Shvedko: Hortensien, Flieder, Rosen und Wildblumen, ein Fischerdorf, der Hamburger Hauptbahnhof und Göttingen im Winter.",
+      "intro": [
+        "„Ich bin eine deutsche Künstlerin, spezialisiert auf Pastell, Öl und Tusche“, schreibt Polina Shvedko, und sie spricht von „einer lebenslangen Leidenschaft für das Zeichnen“. Ihre Pastelle entstehen auf Pastellpapier; neun der zehn Werke hier stammen aus den Jahren 2023 und 2024.",
+        "Blumen sind das Hauptmotiv: Hortensien in Hortensien und Blüten im blauen Topf, ein Wildblumenstrauß, Vergissmeinnicht in einem Glas, Flieder und Rosen. Vier der Blumenbilder von 2024 messen 32 × 23,5 cm und sind in Holz und Glas auf 50 × 40 cm gerahmt.",
+        "Andere Pastelle zeigen Orte: ein Fischerdorf und seine Spiegelungen im Wasser, den Hamburger Hauptbahnhof unter einem Abendhimmel, zwei Radfahrer auf einem baumgesäumten Landweg und Winterzauber, ein Paar Bilder in Pastell und Tusche von Göttingen in der Weihnachtszeit, entstanden für die Copernicus GmbH. Öffnen Sie ein Werk, um alle Fotos, das Format und das Entstehungsjahr zu sehen."
+      ]
+    },
+    "watercolour": {
+      "label": "Aquarelle",
+      "section_heading": "Aquarell und Tusche",
+      "h1": "Aquarelle und Tuschebilder von Polina Shvedko",
+      "all_link": "Alle Aquarelle",
+      "medium_label": "Aquarell",
+      "seo_title": "Aquarelle und Tuschebilder | Polina Shvedko",
+      "seo_description": "Aquarell- und Tuschebilder von Polina Shvedko: Cafés mit roten Markisen, ein Biergarten in Blüte, St. Albani, eine Wassermühle, stille Straßen.",
+      "intro": [
+        "Die meisten dieser Werke verbinden Aquarelllasuren mit feinen Tuschelinien. „Jeden Tag bin ich auf der Suche nach neuen Ideen, Formen, neuen Materialien und Techniken!“, schreibt Polina Shvedko. Alle zwölf Blätter stammen aus den Jahren 2023 und 2024.",
+        "Die Motive sind Straßen, Cafés und Ecken: ein blühender Biergarten, eine Straße am Kanal im Frühling, die St.-Albani-Kirche am Nachmittag, eine alte Wassermühle mit einem Radfahrer auf der Brücke und drei Cafés mit roten Markisen, eines davon von oben gesehen.",
+        "Ruhigere Szenen zeigen eine einsame Windmühle, einen Parkweg mit kahlen Bäumen und Bänken und einen sonnigen Dorfplatz mit roten Ziegeldächern. Sieben der zwölf Blätter haben ein Format von etwa 30 × 42 cm. Öffnen Sie ein Werk, um alle Fotos, das Format und das Entstehungsjahr zu sehen."
+      ]
+    }
+  },
+  "artworks": {
+    "affectionate-farewell-cap-dantibes": {
+      "title": "Zärtlicher Abschied, Cap d'Antibes, Frankreich",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Die müde Sonne nahm zärtlich Abschied vom Meer.",
+        "Noch kräuselte sich das Blau des Tages, doch sanft und unaufhaltsam sog die Dämmerung es auf.",
+        "Ein lautloses Vorrücken, eine süße Gefangenschaft.",
+        "An Bord der Jachten wurde das Abendessen zubereitet, und Weißwein in durchscheinenden Gläsern hielt die schon blasse Sonne, die auf ihrem Grund ruhte.",
+        "Bald würde Antibes im Schimmer seiner Lichter verführerisch werden, doch mit den Sternen konnten sie sich nicht messen."
+      ],
+      "images_alt": [
+        "Zärtlicher Abschied, Cap d'Antibes, Frankreich, Öl auf Leinwand von Polina Shvedko",
+        "Zärtlicher Abschied, Cap d'Antibes, Frankreich, an einer Schlafzimmerwand",
+        "Zärtlicher Abschied, Cap d'Antibes, Frankreich, an einer Schlafzimmerwand, Seitenansicht",
+        "Zärtlicher Abschied, Cap d'Antibes, Frankreich, Detail 1",
+        "Zärtlicher Abschied, Cap d'Antibes, Frankreich, Detail 2",
+        "Zärtlicher Abschied, Cap d'Antibes, Frankreich, Detail 3"
+      ],
+      "seo_title": "Zärtlicher Abschied, Cap d'Antibes | Polina Shvedko",
+      "story_html": "<p>Jedes Bild beginnt im Kleinen. Bei <em>Zärtlicher Abschied, Cap d'Antibes, Frankreich</em> begann es mit einer Skizze im Postkartenformat, die ich auf einem Felsen an der Spitze der Halbinsel Cap d'Antibes zeichnete, während ich zusah, wie das Morgenlicht über das Meer wanderte.</p>\n<p>Ich hatte nicht vor, ein großes Bild daraus zu machen. Doch etwas an dieser besonderen Qualität des Lichts (wie das Mittelmeer das Kap umschließt, die Silhouetten der Pinien vor dem Dunst) schien Raum zum Atmen zu brauchen. Eine Postkarte reichte nicht aus.</p>\n<h2>Warum ein Panoramaformat?</h2>\n<p>Das Kap erlebt man in der Horizontalen. Man steht an der Spitze, und der Blick schweift von links nach rechts: Antibes im Osten, das Esterel-Massiv im Westen, dazwischen das tiefe Blau. Eine quadratische oder hochformatige Leinwand hätte genau das abgeschnitten, was ich bewahren wollte.</p>\n<p>Das endgültige Format beträgt 190 × 45 cm, ein Seitenverhältnis von mehr als 4:1. Für Öl auf Leinwand ist das ein ungewöhnliches Format, und es brachte praktische Herausforderungen mit sich: Eine so breite Leinwand lässt sich nur mit zusätzlichen Verstrebungen verzugsfrei aufspannen, und die waagerechte Pinselführung muss den Blick über fast zwei Meter Fläche tragen, ohne an Schwung zu verlieren.</p>\n<figure><img src=\"img/gallery/picture32_5.jpg\" alt=\"Detail des Ölgemäldes vom Cap d'Antibes: Meer und Landspitze\"><figcaption>Detailansicht: die geschichteten Blautöne des Meeres</figcaption></figure>\n<h2>Die Palette</h2>\n<p>Das Licht Südfrankreichs hat im Herbst eine besondere Qualität. Es ist warm, aber nicht grell: Die Sonne steht tiefer, und in den Schatten liegt Farbe. Ich arbeitete mit einer begrenzten Palette: Titanweiß, Coelinblau, Ultramarin, Ocker, gebrannte Siena und ein wenig Viridian für die Piniennadeln.</p>\n<p>Das Wasser brauchte vier Sitzungen. Die ersten drei fühlten sich falsch an: zu grün, dann zu violett, dann zu grau. Die endgültige Fassung malte ich größtenteils in einer Sitzung, nass in nass, und das gab ihr die Weichheit, nach der ich gesucht hatte.</p>\n<h2>Was „zärtlicher Abschied“ bedeutet</h2>\n<p>Als ich die erste Skizze machte, reiste ich am nächsten Tag aus Frankreich ab. Der letzte Morgen an einem schönen Ort hat immer etwas Bittersüßes: Man schaut genauer hin als die ganze Woche zuvor. Das Bild ist der Versuch, diesen Blick festzuhalten.</p>\n<blockquote>Die Aufgabe eines Malers ist nicht, abzubilden, was da ist, sondern sich daran zu erinnern, wie es sich anfühlte, dort zu sein.</blockquote>"
+    },
+    "turquoise-silence-of-the-verdon-gorge": {
+      "title": "Türkisfarbene Stille der Verdonschlucht",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Das Gemälde entführt in die stille Umarmung eines verborgenen Canyonsees, über dessen Wasser sich steile, zerklüftete Felswände dramatisch erheben. Paddler gleiten einsam über das leuchtende Blau, winzig vor der monumentalen Architektur der Natur. Das Bild strahlt eine meditative Ruhe aus und verbindet Stille mit dem Staunen über ursprüngliche, unberührte Schönheit."
+      ],
+      "images_alt": [
+        "Türkisfarbene Stille der Verdonschlucht, Öl auf Leinwand von Polina Shvedko",
+        "Türkisfarbene Stille der Verdonschlucht, Detail 1",
+        "Türkisfarbene Stille der Verdonschlucht, Detail 2",
+        "Türkisfarbene Stille der Verdonschlucht, Detail 3",
+        "Türkisfarbene Stille der Verdonschlucht, an einer Wohnzimmerwand neben „Flüstern des Küstenwindes“"
+      ]
+    },
+    "whispers-of-the-coastal-wind": {
+      "title": "Flüstern des Küstenwindes",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Das Bild zeigt eine stille Bucht, in der sanfte Wellen den Sand küssen und verwitterte Boote in ruhiger Erwartung liegen. Eine schroffe Felsformation, gekrönt von windgebeugten Bäumen, wacht über die Bucht als Zeichen der Beständigkeit der Natur. Das weiche Spiel von Sonnenlicht und Schatten weckt Nostalgie, als ob die Zeit an diesem friedlichen Ufer langsamer verginge."
+      ],
+      "images_alt": [
+        "Flüstern des Küstenwindes, Öl auf Leinwand von Polina Shvedko",
+        "Flüstern des Küstenwindes, Detail 1",
+        "Flüstern des Küstenwindes, an einer Wohnzimmerwand neben „Türkisfarbene Stille der Verdonschlucht“"
+      ]
+    },
+    "vibrant-cliffs-of-the-brava-coast": {
+      "title": "Leuchtende Klippen der Brava-Küste",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Dieses Ölgemälde (inspiriert von P. Molina) fängt die warme Dämmerung an einer zerklüfteten Mittelmeerküste ein. In Öl auf einer Leinwand von 18 × 24 cm gemalt, verschmelzen goldene Töne mit tiefem Blau und erzeugen die Gelassenheit des ausklingenden Tages. Geschichtete Pinselstriche betonen den Reiz der Küste und laden ein, die flüchtige Schönheit der Natur zu genießen."
+      ],
+      "images_alt": [
+        "Leuchtende Klippen der Brava-Küste, Öl auf Leinwand von Polina Shvedko",
+        "Leuchtende Klippen der Brava-Küste, neben „Cala Secreta: Ein verborgener Winkel der Costa Brava“"
+      ]
+    },
+    "cala-secreta-a-costa-brava-hideaway": {
+      "title": "Cala Secreta: Ein verborgener Winkel der Costa Brava",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Das Bild (inspiriert von P. Molina) zeigt eine abgelegene Bucht, umarmt von sonnengeküssten Felsen. Leuchtende Orange- und Rottöne beleben die felsige Landschaft, während das türkisfarbene Wasser in sanftem Kontrast schimmert. Weiche Pinselstriche fangen den traumhaften Zauber dieses verborgenen Juwels ein. Das Gemälde lädt Sie ein, in die ruhige Harmonie der leuchtenden Farben der Natur einzutauchen."
+      ],
+      "images_alt": [
+        "Cala Secreta: Ein verborgener Winkel der Costa Brava, Öl auf Leinwand von Polina Shvedko",
+        "Cala Secreta: Ein verborgener Winkel der Costa Brava, neben „Leuchtende Klippen der Brava-Küste“"
+      ],
+      "seo_title": "Cala Secreta, Costa Brava - Ölgemälde | Polina Shvedko"
+    },
+    "boats-in-the-bay-of-roses": {
+      "title": "Boote in der Bucht von Roses",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Dieses Ölgemälde (inspiriert von P. Molina) zeigt einen ruhigen Moment der Rast. In Öl auf einer Leinwand von 30 × 24 cm gemalt, schaffen sanfte Pinselstriche und weiches Sonnenlicht eine Atmosphäre von Wärme und Gelassenheit. Gedämpfte Farbtöne und feine Details laden dazu ein, innezuhalten und die beruhigende Ausstrahlung des Bildes auf sich wirken zu lassen."
+      ],
+      "images_alt": [
+        "Boote in der Bucht von Roses, Öl auf Leinwand von Polina Shvedko",
+        "Boote in der Bucht von Roses, neben „Abendglühen am Ufer der Brava“"
+      ]
+    },
+    "evening-glow-on-the-brava-shore": {
+      "title": "Abendglühen am Ufer der Brava",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Das Bild (inspiriert von P. Molina) taucht einen stillen Hafen in einen zarten Rosaton. Ein warmer Dämmerhimmel hüllt die vertäuten Boote in sanfte Spiegelungen, während eine gemütliche Villa am Ufer im schwindenden Licht schimmert. Leuchtende Blüten verstärken die verträumte Abendstimmung und verbinden die Farben der Natur mit dem Reiz der Architektur. Die weichen Pinselstriche laden zur stillen Betrachtung ein und dazu, im Moment zwischen Tag und Nacht zu verweilen."
+      ],
+      "images_alt": [
+        "Abendglühen am Ufer der Brava, Öl auf Leinwand von Polina Shvedko",
+        "Abendglühen am Ufer der Brava, neben „Boote in der Bucht von Roses“"
+      ]
+    },
+    "sunset-in-a-honey-dream": {
+      "title": "Sonnenuntergang im Honigtraum",
+      "medium": "Öl auf Leinwand",
+      "frame": null,
+      "description": [
+        "Das Bild fängt das sanfte Leuchten des späten Abends ein, während ein Segelboot über das ruhige, sonnenbeschienene Wasser gleitet. Weiche Spiegelungen tanzen auf der Oberfläche, und ein Hauch von Koralle und Honig färbt den Himmel in heiterer Schönheit. Dieser flüchtige Moment der Dämmerung lädt ein, innezuhalten und die Ruhe des ausklingenden Tages zu genießen. Malgrund: synthetisches Papier (auf Polymerbasis) auf einem Holzrahmen, 90 × 60 cm."
+      ],
+      "images_alt": [
+        "Sonnenuntergang im Honigtraum, Öl auf Leinwand von Polina Shvedko"
+      ]
+    },
+    "fishing-village": {
+      "title": "Fischerdorf",
+      "medium": "Pastell auf Papier",
+      "frame": null,
+      "description": [
+        "Dieses Pastell fängt den Charme eines malerischen Dorfes am Wasser ein. Leuchtende Farben erwecken die Häuser, die blühenden Bäume und die vertäuten Boote zum Leben, während ihre zarten Spiegelungen auf der Wasseroberfläche tanzen. Die ausdrucksstarken Striche und die traumhafte Stimmung lassen die Schönheit eines ruhigen Hafens spüren. Das Bild feiert den zeitlosen Reiz des Lebens in einem kleinen Küstenort, mit einem Hauch künstlerischer Verspieltheit."
+      ],
+      "images_alt": [
+        "Fischerdorf, Pastell auf Papier von Polina Shvedko"
+      ]
+    },
+    "hortensien": {
+      "title": "Hortensien",
+      "medium": "Pastell auf Papier",
+      "frame": "Gerahmt (Holz und Glas)",
+      "description": [
+        "Dieses Pastell zeigt ein leuchtendes Arrangement voll erblühter Hortensien in einem schlichten, aber eleganten Topf. Die satten Violett- und Blautöne der Blüten bilden einen schönen Kontrast zu den üppig grünen Blättern, während die sanften Grautöne des Hintergrunds ihre Leuchtkraft verstärken. Das feine Spiel von Licht und Schatten auf der gefliesten Fläche verleiht der Komposition Tiefe und Wirklichkeitsnähe. Das Bild fängt die stille Schönheit eines Moments im Garten ein und strahlt Ruhe und Anmut aus."
+      ],
+      "images_alt": [
+        "Hortensien, Pastell auf Papier von Polina Shvedko",
+        "Hortensien, gerahmt",
+        "Hortensien, gerahmt, im Freien neben einer Hortensie",
+        "Hortensien, gerahmte Werke an einer Esszimmerwand"
+      ],
+      "preview_alt": "Hortensien, Pastell auf Papier von Polina Shvedko"
+    },
+    "bouquet-of-wild-flowers": {
+      "title": "Wildblumenstrauß",
+      "medium": "Pastell auf Papier",
+      "frame": null,
+      "description": [
+        "Dieses Pastell fängt die zarte Schönheit eines Wildblumenstraußes in einer weichen, runden Vase ein. Die leuchtenden Gelb-, Rosa- und Weißtöne der Blüten heben sich von einem warmen, gedämpften Hintergrund ab und erzeugen natürliche Eleganz. Feine Lichter auf der Vase setzen einen hellen Akzent und vollenden diese ruhige, zeitlose Komposition."
+      ],
+      "images_alt": [
+        "Wildblumenstrauß, Pastell auf Papier von Polina Shvedko"
+      ]
+    },
+    "hamburg-main-railway-station": {
+      "title": "Hamburg, Hauptbahnhof",
+      "medium": "Pastell auf Papier",
+      "frame": "Gerahmt (Kunststoff und Glas)",
+      "description": [
+        "Dieses Pastell zeigt den berühmten Hamburger Hauptbahnhof, ein Meisterwerk historischer Architektur vor einem dramatischen Himmel. Die feinen Details des Uhrturms und der gewölbten Glasdächer werden mit reichen Texturen und leuchtenden Pastelltönen lebendig. Die weichen Farben des Abendhimmels bringen Ruhe in das Bild und halten der Größe dieses belebten Wahrzeichens die Waage. Eine Hommage an Hamburgs lebendige Geschichte und seinen zeitlosen Charme."
+      ],
+      "images_alt": [
+        "Hamburg, Hauptbahnhof, Pastell auf Papier von Polina Shvedko",
+        "Hamburg, Hauptbahnhof, ungerahmt, mit Pastellkreiden und einem Bleistift",
+        "Hamburg, Hauptbahnhof, Skizzenbuchzeichnung vor dem Bahnhof"
+      ]
+    },
+    "afternoon-ride-in-the-countryside": {
+      "title": "Nachmittagsfahrt über Land",
+      "medium": "Pastell auf Papier",
+      "frame": null,
+      "description": [
+        "Dieses Pastell zeigt zwei Radfahrer auf gemächlicher Fahrt entlang eines baumgesäumten Weges, umgeben von sanften grünen Hügeln. Feine Farbnuancen und weiche Pastellstriche lassen die milde Wärme des späten Nachmittags spüren. Die Szene strahlt Ruhe und einfache Freude aus und lädt Sie ein, den friedlichen Rhythmus des Landlebens zu teilen."
+      ],
+      "images_alt": [
+        "Nachmittagsfahrt über Land, Pastell auf Papier von Polina Shvedko"
+      ]
+    },
+    "blossoms-in-a-blue-pot": {
+      "title": "Blüten im blauen Topf",
+      "medium": "Pastell auf Papier",
+      "frame": "Gerahmt (Holz und Glas), 50 × 40 cm",
+      "description": [
+        "Dieses Pastell fängt die leuchtende Schönheit rosa Hortensien in voller Blüte ein, arrangiert in einem schlichten blauen Topf. Das weiche Ineinanderfließen von Texturen und Farben betont das üppige Grün und die zarten Blütenblätter. Vor einem gedämpften, warmen Hintergrund strahlt die Komposition zeitlosen Charme aus und lädt Sie ein, die Ruhe und natürliche Eleganz der Szene zu genießen."
+      ],
+      "images_alt": [
+        "Blüten im blauen Topf, Pastell auf Papier von Polina Shvedko",
+        "Blüten im blauen Topf, gerahmt"
+      ]
+    },
+    "forget-me-nots-in-glass": {
+      "title": "Vergissmeinnicht im Glas",
+      "medium": "Pastell auf Papier",
+      "frame": "Gerahmt (Holz und Glas), 50 × 40 cm",
+      "description": [
+        "Dieses Pastell zeigt zart einen Strauß leuchtend blauer Vergissmeinnicht in einem schlichten Glas. Die weichen Striche erwecken die feinen Blüten zum Leben, während der warme, strukturierte Hintergrund Tiefe und Kontrast schafft. Sanfte Lichter auf dem Glas und den Blättern vermitteln Helligkeit und Leichtigkeit und unterstreichen die natürliche Eleganz des Bildes. Das Werk fängt die zeitlose Schönheit eines bescheidenen und doch von Herzen kommenden Blumenarrangements ein."
+      ],
+      "images_alt": [
+        "Vergissmeinnicht im Glas, Pastell auf Papier von Polina Shvedko",
+        "Vergissmeinnicht im Glas, gerahmte Werke an einer Esszimmerwand"
+      ]
+    },
+    "lilacs-in-bloom": {
+      "title": "Blühender Flieder",
+      "medium": "Pastell auf Papier",
+      "frame": "Gerahmt (Holz und Glas), 50 × 40 cm",
+      "description": [
+        "Dieses Pastell fängt die zeitlose Schönheit von Flieder in einer zarten Glasvase ein. Die weichen Violett- und Weißtöne der Blüten stehen im Kontrast zu den satten grünen Blättern und ergeben eine harmonische, leuchtende Komposition. Feine Lichter und Schatten verleihen dem Strauß Tiefe und Struktur, während der gedämpfte Hintergrund seine Eleganz betont. Das Bild weckt ein Gefühl von Frische und vom flüchtigen Zauber des Frühlings."
+      ],
+      "images_alt": [
+        "Blühender Flieder, Pastell auf Papier von Polina Shvedko",
+        "Blühender Flieder, gerahmte Werke an einer Esszimmerwand"
+      ]
+    },
+    "elegance-in-roses": {
+      "title": "Eleganz in Rosen",
+      "medium": "Pastell auf Papier",
+      "frame": "Gerahmt (Holz und Glas), 50 × 40 cm",
+      "description": [
+        "Dieses Pastell verströmt die zarte Schönheit sanft rosa und zartrot getönter Rosen in einem anmutigen Strauß. Feine Lichter und weiche Texturen erwecken die Blütenblätter zum Leben, während leuchtend grüne Blätter einen frischen Kontrast bilden. Der verträumte, gedämpfte Hintergrund in Flieder- und Grautönen verstärkt den ätherischen Reiz der Komposition. Das Bild fängt die zeitlose Eleganz und den romantischen Zauber blühender Rosen ein."
+      ],
+      "images_alt": [
+        "Eleganz in Rosen, Pastell auf Papier von Polina Shvedko",
+        "Eleganz in Rosen, gerahmte Werke an einer Esszimmerwand"
+      ]
+    },
+    "winter-magic-a-goettingen-holiday-tribute": {
+      "title": "Winterzauber: Eine Hommage an die Göttinger Festtage",
+      "medium": "Pastell und Tusche auf Papier",
+      "frame": null,
+      "description": [
+        "Diese Pastellbilder, entstanden für die Copernicus GmbH, fangen die festliche Stimmung der Feiertage wunderbar ein. Das erste Werk zeigt den reizvollen Blick auf ein historisches Gebäude mit winterlichem Schmuck, dessen festliche Atmosphäre ein funkelndes Emblem und immergrüne Zweige unterstreichen. Das zweite Bild führt den Betrachter eine verschneite, von leuchtenden Laternen erhellte Straße entlang, wo eine verspielte Weihnachtsmannfigur der ruhigen Nachtszene Wärme verleiht. Gemeinsam lassen die Werke den Zauber und Charme winterlicher Traditionen und weihnachtlicher Freude spüren."
+      ],
+      "images_alt": [
+        "Winterzauber: Eine Hommage an die Göttinger Festtage, Pastell und Tusche auf Papier von Polina Shvedko",
+        "Winterzauber: Eine Hommage an die Göttinger Festtage, das zweite Bild des Paares"
+      ],
+      "seo_title": "Winterzauber in Göttingen - Pastell | Polina Shvedko"
+    },
+    "blossoms-at-the-biergarten": {
+      "title": "Blütenpracht im Biergarten",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Tusche und Aquarell fängt die stille Schönheit eines ruhigen Biergartens in voller Blüte ein. Leuchtende Tupfer rosa Blüten kontrastieren mit den klaren schwarzen Tuschelinien der leeren Stühle und Tische und schaffen ein feines Gleichgewicht zwischen Natur und Struktur. Die weich verstreuten Blütenblätter setzen einen verspielten Akzent und lassen den friedlichen Charme eines Frühlingstages unter blühenden Bäumen spüren. Die Szene lädt dazu ein, sich einen ruhigen Moment an diesem malerischen Ort vorzustellen."
+      ],
+      "images_alt": [
+        "Blütenpracht im Biergarten, Aquarell und Tusche von Polina Shvedko",
+        "Blütenpracht im Biergarten, im Passepartout"
+      ]
+    },
+    "springtime-along-the-canal": {
+      "title": "Frühling am Kanal",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Aquarell und Tusche fängt den stillen Charme einer Straße am Kanal ein, gesäumt von rosa und violett blühenden Bäumen. Die weichen Farbtupfer bilden einen schönen Kontrast zu den klaren Linien der Backsteinmauern und Laternen und schaffen ein harmonisches Gleichgewicht zwischen Natur und Architektur. Das ruhige Wasser spiegelt die leuchtenden Blüten und verstärkt die gelassene, traumhafte Stimmung eines friedlichen Frühlingstages."
+      ],
+      "images_alt": [
+        "Frühling am Kanal, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "golden-hour-on-the-corner": {
+      "title": "Goldene Stunde an der Ecke",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses lebhafte Aquarell zeigt ein sonnenbeschienenes Eckhaus, dessen elegante Balkone und warme Fassade im weichen Licht der goldenen Stunde leuchten. Schwungvolle Pinselstriche und Farbspritzer verleihen der Szene Energie und Tiefe, während das Spiel von Licht und Schatten die feinen architektonischen Details des Gebäudes hervorhebt. Die Komposition lädt ein, den Charme und die Lebendigkeit der Stadt in ihrem malerischsten Moment zu erleben."
+      ],
+      "images_alt": [
+        "Goldene Stunde an der Ecke, Aquarell und Tusche von Polina Shvedko",
+        "Goldene Stunde an der Ecke, während der Entstehung"
+      ]
+    },
+    "st-albani-in-the-afternoon": {
+      "title": "St. Albani am Nachmittag",
+      "medium": "Aquarell und Tusche",
+      "frame": "Gerahmt (Kunststoff und Glas)",
+      "description": [
+        "Dieses Bild in Aquarell und Tusche zeigt den historischen Charme der St.-Albani-Kirche in weichem Tageslicht. Die detailreiche Pinselführung betont die zeitlose Architektur des Gebäudes, während der leuchtende Himmel Ruhe und Weite vermittelt. Ein im Vordergrund geparkter Motorroller setzt einen modernen Akzent und verbindet in dieser ruhigen Stadtszene Vergangenheit und Gegenwart. Die Komposition lädt ein, die stille Schönheit eines friedlichen Moments vor einem geschichtsträchtigen Wahrzeichen zu genießen."
+      ],
+      "images_alt": [
+        "St. Albani am Nachmittag, Aquarell und Tusche von Polina Shvedko",
+        "St. Albani am Nachmittag, während der Entstehung",
+        "St. Albani am Nachmittag, ohne Passepartout"
+      ]
+    },
+    "by-the-old-watermill": {
+      "title": "An der alten Wassermühle",
+      "medium": "Aquarell und Tusche",
+      "frame": "Gerahmt (Kunststoff und Glas)",
+      "description": [
+        "Dieses Bild in Aquarell und Tusche fängt den ruhigen Charme einer historischen Wassermühle ein. Sanfte Violett- und Blautöne spiegeln sich im stillen Wasser, während feine Linien die architektonischen Details der Mühle und der Brücke lebendig werden lassen. Ein einzelner Radfahrer auf der Brücke bringt einen Hauch modernen Lebens in die friedliche, zeitlose Szene. Das Bild weckt stille Nostalgie und ein Gefühl der Verbundenheit mit der Vergangenheit."
+      ],
+      "images_alt": [
+        "An der alten Wassermühle, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "cafe-on-a-sunny-corner": {
+      "title": "Café an einer sonnigen Ecke",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Aquarell fängt den lebendigen Charme eines belebten Cafés mit leuchtend roten Markisen im sanften Schatten der Bäume ein. Weiche, fließende Pinselstriche lassen die Wärme eines sonnigen Tages lebendig werden, während das feine Spiel von Licht und Schatten den Charakter des Gebäudes betont. Die Szene lädt ein, innezuhalten und die entspannte Stimmung eines vollkommenen Moments in einer malerischen Stadtecke zu genießen."
+      ],
+      "images_alt": [
+        "Café an einer sonnigen Ecke, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "the-street-of-timeless-charm": {
+      "title": "Die Straße von zeitlosem Charme",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Aquarell und Tusche fängt die Eleganz einer ruhigen städtischen Straßenecke ein. Die warmen Töne des Gebäudes bilden einen schönen Kontrast zu den kühlen Blautönen der Umgebung und erzeugen eine friedliche und zugleich lebendige Stimmung. Feine Linien und weiche Lasuren betonen den zeitlosen Charakter der Architektur und laden ein, durch diese reizvolle Straße zu schlendern."
+      ],
+      "images_alt": [
+        "Die Straße von zeitlosem Charme, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "under-the-red-awning": {
+      "title": "Unter der roten Markise",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Aquarell und Tusche zeigt den gemütlichen Charme eines Cafés an einer ruhigen Straßenecke, eingerahmt von einer leuchtend roten Markise. Vorübergehende Silhouetten bringen Leben und Bewegung in die Szene. Weiche Farblasuren und zarte Spiegelungen auf dem Boden lassen die stille Schönheit eines regnerischen Nachmittags in der Stadt spüren. Die Komposition lädt ein, innezuhalten und die Wärme eines flüchtigen Moments zu genießen."
+      ],
+      "images_alt": [
+        "Unter der roten Markise, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "the-corner-cafe-in-perspective": {
+      "title": "Das Eckcafé aus der Vogelperspektive",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Aquarell und Tusche zeigt eine lebhafte Stadtszene aus der Vogelperspektive: ein Café mit auffallend roten Markisen an einer Straßenecke. Kräftige Linien und weiche Lasuren in Blau und Grau schaffen Tiefe, während das leuchtende Rot inmitten der belebten Straßen den Blick bündelt. Das Spiel von Licht und Schatten erzeugt eine lebendige Großstadtstimmung und lädt ein, die Energie dieser architektonischen Komposition zu entdecken."
+      ],
+      "images_alt": [
+        "Das Eckcafé aus der Vogelperspektive, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "the-lone-windmill": {
+      "title": "Die einsame Windmühle",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Tusche und Aquarell fängt den rustikalen Charme einer einzelnen Windmühle vor einem minimalistischen Hintergrund ein. Kräftige, ausdrucksstarke Linien betonen die Konstruktion der Mühle, während weiche Lasuren in Grau und gedämpften Tönen eine stille, nostalgische Stimmung erzeugen. Das Werk lädt ein, über die beständige Schönheit schlichter ländlicher Landschaften nachzudenken."
+      ],
+      "images_alt": [
+        "Die einsame Windmühle, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "a-quiet-stroll-in-the-park": {
+      "title": "Ein stiller Spaziergang im Park",
+      "medium": "Aquarell und Tusche",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Tusche und Aquarell fängt den ruhigen Charme einer friedlichen Parkszene ein. Die sanften Kurven des Weges führen den Blick durch die Komposition, vorbei an kahlen Bäumen und schlichten Bänken. Weiche Lasuren in Grau und zarte Farbakzente erzeugen eine ruhige, besinnliche Stimmung und laden ein, über die stille Schönheit eines gemächlichen Spaziergangs in der Natur nachzudenken."
+      ],
+      "images_alt": [
+        "Ein stiller Spaziergang im Park, Aquarell und Tusche von Polina Shvedko"
+      ]
+    },
+    "sunny-village-square": {
+      "title": "Sonniger Dorfplatz",
+      "medium": "Aquarell",
+      "frame": null,
+      "description": [
+        "Dieses Bild in Aquarell und Tusche fängt die Wärme und den Charme eines ruhigen, sonnenbeschienenen Dorfplatzes ein. Die rustikalen Steinhäuser mit ihren roten Ziegeldächern schaffen eine gemütliche, einladende Atmosphäre. Weiche Farblasuren und feine architektonische Details beleben die Szene, während gemächlich schlendernde Figuren die Einfachheit des Alltags spüren lassen. Das Werk lässt die zeitlose Schönheit des Landlebens lebendig werden."
+      ],
+      "images_alt": [
+        "Sonniger Dorfplatz, Aquarell von Polina Shvedko"
+      ]
+    }
+  },
+  "socialmedia_alt": {
+    "img/gallery/picture30_1_preview.jpg": "Türkisfarbene Stille der Verdonschlucht",
+    "img/gallery/picture31_1_preview.jpg": "Flüstern des Küstenwindes",
+    "img/gallery/picture11_1_preview.jpeg": "Leuchtende Klippen der Brava-Küste",
+    "img/gallery/picture14_1_preview.jpeg": "Cala Secreta: Ein verborgener Winkel der Costa Brava",
+    "img/gallery/picture13_1.jpeg": "Boote in der Bucht von Roses",
+    "img/gallery/picture15_1_preview.jpeg": "Abendglühen am Ufer der Brava",
+    "img/gallery/picture16_1_preview.jpeg": "Sonnenuntergang im Honigtraum",
+    "img/gallery/picture12_1.jpeg": "Fischerdorf",
+    "img/gallery/picture2_1_preview.jpg": "Hortensien",
+    "img/gallery/picture3_1_preview.jpg": "Wildblumenstrauß",
+    "img/gallery/picture10_1_preview.jpg": "Hamburg, Hauptbahnhof",
+    "img/gallery/picture17_1_preview.jpeg": "Nachmittagsfahrt über Land",
+    "img/gallery/picture18_1_preview.jpeg": "Blüten im blauen Topf",
+    "img/gallery/picture19_1_preview.jpg": "Vergissmeinnicht im Glas",
+    "img/gallery/picture20_1_preview.jpg": "Blühender Flieder",
+    "img/gallery/picture21_1_preview.jpg": "Eleganz in Rosen",
+    "img/gallery/picture_22_1_preview.jpg": "Winterzauber: Eine Hommage an die Göttinger Festtage",
+    "img/gallery/picture1_1.JPG": "Blütenpracht im Biergarten",
+    "img/gallery/picture4_1.jpg": "Frühling am Kanal",
+    "img/gallery/picture5_1.jpg": "Goldene Stunde an der Ecke",
+    "img/gallery/picture6_1.png": "St. Albani am Nachmittag",
+    "img/gallery/picture9_1.jpg": "An der alten Wassermühle",
+    "img/gallery/picture23_1_preview.jpeg": "Café an einer sonnigen Ecke",
+    "img/gallery/picture24_1_preview.jpeg": "Die Straße von zeitlosem Charme",
+    "img/gallery/picture25_1_preview.jpeg": "Unter der roten Markise",
+    "img/gallery/picture26_1_preview.jpeg": "Das Eckcafé aus der Vogelperspektive",
+    "img/gallery/picture27_1_preview.jpeg": "Die einsame Windmühle",
+    "img/gallery/picture28_1_preview.jpeg": "Ein stiller Spaziergang im Park",
+    "img/gallery/picture29_1_preview.jpeg": "Sonniger Dorfplatz",
+    "img/gallery/picture32_1.jpg": "Zärtlicher Abschied, Cap d'Antibes, Frankreich"
+  },
+  "legal": {
+    "_note": "TEMPLATE, NOT LEGAL ADVICE: the owner must verify these texts (address placeholders in [brackets], host log retention, GA retention, supervisory authority) before publishing. German is the binding version.",
+    "imprint_html": "<h2>Angaben gemäß § 5 DDG</h2>\n<p>Polina Shvedko<br>[Straße Hausnummer]<br>[PLZ Ort]<br>Deutschland</p>\n<h2>Kontakt</h2>\n<p>E-Mail: <a href=\"mailto:polina.shvedko.artist@gmail.com\">polina.shvedko.artist@gmail.com</a></p>\n<h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>\n<p>Polina Shvedko<br>[Straße Hausnummer]<br>[PLZ Ort]</p>\n<h2>EU-Streitschlichtung</h2>\n<p>Die Plattform der EU-Kommission zur Online-Streitbeilegung (OS) wurde am 20. Juli 2025 eingestellt. Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>\n<h2>Haftung für Inhalte</h2>\n<p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen. Als Diensteanbieterin bin ich für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Ich bin jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Sobald mir entsprechende Rechtsverletzungen bekannt werden, entferne ich diese Inhalte umgehend.</p>\n<h2>Haftung für Links</h2>\n<p>Diese Website enthält Links zu externen Websites Dritter (zum Beispiel Instagram, Facebook, LinkedIn und Etsy), auf deren Inhalte ich keinen Einfluss habe. Für diese fremden Inhalte kann ich daher keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets die jeweilige Anbieterin oder der jeweilige Anbieter verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft; rechtswidrige Inhalte waren nicht erkennbar. Eine ständige Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Sobald mir Rechtsverletzungen bekannt werden, entferne ich derartige Links umgehend.</p>\n<h2>Urheberrecht</h2>\n<p>Alle Kunstwerke, Fotos und Texte auf dieser Website sind urheberrechtlich geschützt und, soweit nicht anders angegeben, Werke von Polina Shvedko. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der vorherigen schriftlichen Zustimmung. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Sollten Sie auf eine Urheberrechtsverletzung aufmerksam werden, bitte ich um einen Hinweis; entsprechende Inhalte entferne ich umgehend.</p>",
+    "privacy_html": "<h2>1. Verantwortliche</h2>\n<p>Verantwortlich für die Datenverarbeitung auf dieser Website im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:</p>\n<p>Polina Shvedko<br>[Straße Hausnummer]<br>[PLZ Ort]<br>Deutschland<br>E-Mail: <a href=\"mailto:polina.shvedko.artist@gmail.com\">polina.shvedko.artist@gmail.com</a></p>\n<h2>2. Hosting und Server-Logdateien</h2>\n<p>Diese Website wird bei der checkdomain GmbH, Große Burgstraße 27/28, 23552 Lübeck, Deutschland, gehostet (Plesk-Server in Deutschland). Beim Aufruf jeder Seite verarbeitet der Server automatisch Daten, die Ihr Browser übermittelt, und speichert sie in Server-Logdateien: IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Adresse, übertragene Datenmenge, HTTP-Statuscode, Referrer-URL sowie Browser und Betriebssystem (User-Agent). Diese Daten sind nötig, um die Website auszuliefern und ihre Sicherheit und Stabilität zu gewährleisten, etwa um Angriffe zu erkennen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; mein berechtigtes Interesse liegt im sicheren und fehlerfreien Betrieb der Website. Die Logdateien werden vom Hoster nach [Speicherdauer laut Hoster, z. B. 7 Tagen] gelöscht. Mit dem Hoster besteht ein Vertrag über Auftragsverarbeitung nach Art. 28 DSGVO.</p>\n<h2>3. Ihre Cookie-Auswahl (localStorage)</h2>\n<p>Beim ersten Besuch fragt ein Hinweis am unteren Bildschirmrand, ob Sie Google Analytics zulassen. Ihre Entscheidung („Akzeptieren“ oder „Ablehnen“) wird im lokalen Speicher Ihres Browsers (localStorage, Eintrag <code>cookie_consent_v2</code>) gespeichert, damit der Hinweis nicht bei jedem Seitenaufruf erneut erscheint. Diese Information verlässt Ihr Gerät nicht. Die Speicherung ist für die Verwaltung Ihrer Einwilligung unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG; Art. 6 Abs. 1 lit. c DSGVO in Verbindung mit Art. 7 Abs. 1 DSGVO). Sie können den Eintrag jederzeit über die Einstellungen Ihres Browsers löschen.</p>\n<h2>4. Google Analytics 4 (nur mit Ihrer Einwilligung)</h2>\n<p>Wenn Sie einwilligen, nutzt diese Website Google Analytics 4, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland („Google“). Vor Ihrer Einwilligung wird kein Skript von Google geladen und kein Analyse-Cookie gesetzt. Die Website verwendet den Einwilligungsmodus von Google (Consent Mode v2): Alle Speicherarten sind standardmäßig abgelehnt, nach „Akzeptieren“ wird nur <code>analytics_storage</code> freigegeben; Werbefunktionen sind nicht aktiviert.</p>\n<p>Google Analytics setzt Cookies (<code>_ga</code>, <code>_ga_*</code>, Speicherdauer bis zu 2 Jahre) und erfasst pseudonyme Nutzungsdaten, zum Beispiel aufgerufene Seiten, Verweildauer, ungefährer Standort (Land, Stadt), Gerätetyp, Browser, Referrer sowie Klicks auf die E-Mail-Links (Ereignis <code>contact_click</code>) und den Start des Videos (<code>hero_video_play</code>). In Google Analytics 4 werden IP-Adressen nicht protokolliert oder gespeichert; Google verwendet sie innerhalb der EU nur kurzfristig, um den ungefähren Standort abzuleiten. Die Daten werden nach [Aufbewahrungsdauer in Google Analytics, z. B. 2 Monaten] gelöscht.</p>\n<p>Zweck ist, zu verstehen, wie Besucherinnen und Besucher die Website nutzen, um sie zu verbessern. Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG. Mit Google besteht ein Vertrag über Auftragsverarbeitung. Es kann nicht ausgeschlossen werden, dass Daten an die Google LLC in den USA übermittelt werden. Die Google LLC ist nach dem EU-US Data Privacy Framework zertifiziert; für die USA besteht damit ein Angemessenheitsbeschluss der EU-Kommission (Art. 45 DSGVO). Zusätzlich hat Google Standardvertragsklauseln abgeschlossen.</p>\n<p><strong>Widerruf:</strong> Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen: Klicken Sie unten auf jeder Seite auf „Cookie-Einstellungen“ und wählen Sie „Ablehnen“. Google Analytics wird dann deaktiviert und die <code>_ga</code>-Cookies werden gelöscht. Weitere Informationen: <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener\">Datenschutzerklärung von Google</a>.</p>\n<h2>5. YouTube-Video auf der Startseite</h2>\n<p>Auf der Startseite läuft im Kopfbereich ein stummes Hintergrundvideo von YouTube, einem Dienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Das Video wird im erweiterten Datenschutzmodus über <code>www.youtube-nocookie.com</code> eingebunden und startet beim Aufruf der Startseite automatisch (nicht, wenn Ihr Gerät „Bewegung reduzieren“ eingestellt hat). Dabei wird bereits beim Laden der Seite eine Verbindung zu Servern von Google hergestellt, und Google erhält insbesondere Ihre IP-Adresse, die aufgerufene Seite sowie technische Angaben zu Browser und Gerät. Im erweiterten Datenschutzmodus setzt YouTube nach eigenen Angaben keine Cookies, bevor Sie mit dem Video interagieren; das Video kann aber Daten im Speicher Ihres Browsers ablegen. Eine Übermittlung an die Google LLC in den USA ist möglich (siehe Data Privacy Framework oben).</p>\n<p>Zweck ist eine ansprechende Darstellung der Startseite. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; mein berechtigtes Interesse liegt in der Präsentation meiner Arbeit. Soweit dabei Informationen auf Ihrem Endgerät gespeichert oder ausgelesen werden, stützt sich dies auf § 25 Abs. 2 Nr. 2 TDDDG. Mit der Schaltfläche im Video können Sie es jederzeit anhalten. Weitere Informationen: <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener\">Datenschutzerklärung von Google</a>.</p>\n<h2>6. Kontakt per E-Mail</h2>\n<p>Wenn Sie mir eine E-Mail schreiben, verarbeite ich Ihre E-Mail-Adresse, Ihren Namen (falls angegeben) und den Inhalt Ihrer Nachricht, um Ihre Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn Ihre Anfrage auf einen Vertrag zielt (zum Beispiel den Erwerb eines Werks), sonst Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen). Die E-Mails werden über Google Mail (Google Ireland Limited) empfangen. Ich lösche Ihre Daten, sobald sie für die Bearbeitung nicht mehr nötig sind, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.</p>\n<h2>7. Links zu sozialen Netzwerken</h2>\n<p>Die Symbole für Instagram, Facebook, LinkedIn und Etsy sind einfache Links. Erst wenn Sie einen davon anklicken, öffnet sich die Seite des jeweiligen Anbieters, der dann eigenverantwortlich Daten verarbeitet.</p>\n<h2>8. Ihre Rechte</h2>\n<p>Sie haben jederzeit das Recht auf Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO), auf Berichtigung (Art. 16 DSGVO), auf Löschung (Art. 17 DSGVO), auf Einschränkung der Verarbeitung (Art. 18 DSGVO) und auf Datenübertragbarkeit (Art. 20 DSGVO). Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3 DSGVO).</p>\n<p><strong>Widerspruchsrecht (Art. 21 DSGVO):</strong> Soweit ich Daten auf Grundlage berechtigter Interessen (Art. 6 Abs. 1 lit. f DSGVO) verarbeite, können Sie aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit widersprechen.</p>\n<p>Sie haben außerdem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO), insbesondere in dem Bundesland Ihres Wohnorts oder des mutmaßlichen Verstoßes. Für mich zuständig ist: [Name und Anschrift der Landesdatenschutzbehörde].</p>\n<p>Für die Ausübung Ihrer Rechte genügt eine E-Mail an <a href=\"mailto:polina.shvedko.artist@gmail.com\">polina.shvedko.artist@gmail.com</a>.</p>\n<h2>9. Keine Pflicht zur Bereitstellung</h2>\n<p>Sie sind weder gesetzlich noch vertraglich verpflichtet, mir personenbezogene Daten bereitzustellen. Ohne die technisch nötigen Verbindungsdaten (Abschnitt 2) kann die Website jedoch nicht angezeigt werden, und ohne Ihre E-Mail-Adresse kann ich Ihnen nicht antworten. Eine automatisierte Entscheidungsfindung einschließlich Profiling (Art. 22 DSGVO) findet nicht statt.</p>\n<p>Stand: Oktober 2026</p>"
+  }
+}

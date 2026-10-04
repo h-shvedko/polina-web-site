@@ -4,8 +4,8 @@
 }}
 {{> head}}
 <main id="main" class="page page--not-found">
-<h1 class="page__title">Page not found</h1>
-<p class="page__text">Sorry, this page does not exist. These pages may help:</p>
+<h1 class="page__title">{{t.not_found}}</h1>
+<p class="page__text">{{t.not_found_text}}</p>
 <ul class="page__links">
 {{#links}}
 <li class="page__links-item"><a class="page__link" href="{{href}}">{{label}}</a></li>

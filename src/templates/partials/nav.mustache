@@ -2,14 +2,25 @@
   Sticky site navigation (SPEC section 8). Home starts with site-nav--hidden (nav.js shows it after the hero),
   every other page with site-nav--visible. The link of the current page has aria-current="page".
   Labels of more than one word keep the rest in span.site-nav__more, which phones hide visually ("Oil").
+  Language switch: ul.site-nav__langs (one flag per language, the current one with aria-current) at the right end;
+  phones (up to 680 px) show instead the flag of the other language as the last item of the scrolling link row,
+  so the hub links keep their room (site.css hides one of the two).
 }}
-<nav id="site-nav" class="site-nav {{nav.state_class}}" aria-label="Site navigation">
+<nav id="site-nav" class="site-nav {{nav.state_class}}" aria-label="{{t.nav_label}}">
 <div class="site-nav__inner">
-<a class="site-nav__logo" href="/">{{site.name}}</a>
+<a class="site-nav__logo" href="{{nav.home}}">{{site.name}}</a>
 <ul class="site-nav__links">
 {{#nav.items}}
 <li class="site-nav__item"><a class="site-nav__link" href="{{href}}"{{#current}} aria-current="page"{{/current}}>{{first}}{{#more}}<span class="site-nav__more">{{more}}</span>{{/more}}</a></li>
 {{/nav.items}}
+{{#nav.langs}}{{^current}}
+<li class="site-nav__item site-nav__item--lang"><a class="site-nav__link site-nav__lang" href="{{href}}" hreflang="{{code}}" lang="{{code}}" aria-label="{{label}}">{{{flag}}}</a></li>
+{{/current}}{{/nav.langs}}
+</ul>
+<ul class="site-nav__langs" aria-label="{{t.lang_label}}">
+{{#nav.langs}}
+<li class="site-nav__lang-item"><a class="site-nav__lang" href="{{href}}" hreflang="{{code}}" lang="{{code}}" aria-label="{{label}}"{{#current}} aria-current="true"{{/current}}>{{{flag}}}</a></li>
+{{/nav.langs}}
 </ul>
 </div>
 </nav>

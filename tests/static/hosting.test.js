@@ -50,6 +50,7 @@ describe('13. hosting files (.htaccess, robots.txt)', () => {
     const h = fs.readFileSync(SRC_HTACCESS, 'utf8');
     const want = [
       [/^\s*ErrorDocument\s+404\s+\/404\.html\s*$/m, 'ErrorDocument 404 /404.html'],
+      [/<If "%\{REQUEST_URI\} =~ m#\^\/de\(\/\|\$\)#">\s*ErrorDocument\s+404\s+\/de\/404\.html\s*<\/If>/, 'ErrorDocument 404 /de/404.html for /de/ (German 404 page)'],
       [/^\s*Options\s+-Indexes\s*$/m, 'Options -Indexes'],
       [/^\s*DirectoryIndex\s+index\.html\s*$/m, 'DirectoryIndex index.html'],
       [/^\s*RewriteEngine\s+On\s*$/m, 'RewriteEngine On'],

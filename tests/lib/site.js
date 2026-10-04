@@ -13,6 +13,10 @@ const { cpLen } = require('./checks');
 const ROOT = path.resolve(__dirname, '..', '..');
 const APP_DIR = path.resolve(ROOT, process.env.APP_DIR || 'app');
 const DATA_FILE = path.join(ROOT, 'data.json');
+const DATA_DE_FILE = path.join(ROOT, 'data.de.json');
+const LANGS = ['en', 'de'];
+/** URL prefix of a language: English at the root, German below /de/. */
+const LANG_PREFIX = { en: '', de: '/de' };
 const MANIFEST_FILE = path.join(ROOT, 'src', 'img', 'manifest.json');
 const DEFAULT_SITE_URL = 'https://polina-shvedko.art';
 
@@ -30,6 +34,19 @@ function loadData() {
   return dataCache;
 }
 
+let dataDeCache = null;
+function loadDataDe() {
+  if (!dataDeCache) dataDeCache = JSON.parse(fs.readFileSync(DATA_DE_FILE, 'utf8'));
+  return dataDeCache;
+}
+
+/** data.json with the German texts in place (the build's own localizeData(), so the tests see what it renders). */
+function localizedData(lang, data = loadData()) {
+  if (lang === 'en') return data;
+  const { localizeData } = require('../../scripts/build-site.js');
+  return localizeData(data, loadDataDe());
+}
+
 function loadManifest() {
   if (!fs.existsSync(MANIFEST_FILE)) return null;
   return JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8'));
@@ -44,18 +61,29 @@ function siteHost(data = loadData()) {
 }
 
 /** Display size string used on pages and in meta descriptions: "29.7 × 42 cm" (U+00D7). */
-function sizeText(artwork) {
-  return `${artwork.width_cm} × ${artwork.height_cm} cm`;
+function sizeText(artwork, lang = 'en') {
+  const n = (v) => (lang === 'de' ? String(v).replace('.', ',') : String(v));
+  return `${n(artwork.width_cm)} × ${n(artwork.height_cm)} cm`;
 }
 
 /**
  * Every page the build must produce, from data.json (SPEC sections 3 and 4).
  * Page: { type, key, path, url, file (relative to APP_DIR, posix), indexable, hub?, artwork?, index?, prev?, next? }
  */
-function sitePages(data = loadData()) {
-  const base = siteUrl(data);
+function sitePages(data = loadData(), langs = LANGS) {
   const pages = [];
-  const add = (p) => { pages.push({ ...p, url: base + p.path }); };
+  for (const lang of langs) pages.push(...langPages(lang === 'en' ? data : localizedData(lang, data), lang));
+  return pages;
+}
+
+/** The pages of one language (data: localized data.json); keys and files carry the /de prefix for German. */
+function langPages(data, lang) {
+  const base = siteUrl(data);
+  const P = LANG_PREFIX[lang];
+  const F = P ? `${P.slice(1)}/` : '';
+  const K = lang === 'en' ? '' : `${lang}:`;
+  const pages = [];
+  const add = (p) => { pages.push({ ...p, lang, data, key: K + p.key, path: P + p.path, file: F + p.file, url: base + P + p.path }); };
   add({ type: 'home', key: 'home', path: '/', file: 'index.html', indexable: true });
   for (const hub of data.hubs || []) {
     add({ type: 'hub', key: `hub:${hub.key}`, path: `/${hub.path}/`, file: `${hub.path}/index.html`, indexable: true, hub });
@@ -86,12 +114,12 @@ function sitePages(data = loadData()) {
   return pages;
 }
 
-function indexablePages(data = loadData()) {
-  return sitePages(data).filter((p) => p.indexable);
+function indexablePages(data = loadData(), langs = LANGS) {
+  return sitePages(data, langs).filter((p) => p.indexable);
 }
 
-function artworkPath(hub, artwork) {
-  return `/${hub.path}/${artwork.slug}/`;
+function artworkPath(hub, artwork, lang = 'en') {
+  return `${LANG_PREFIX[lang]}/${hub.path}/${artwork.slug}/`;
 }
 
 /** Artwork <title> candidates (SPEC section 6); returns the expected title. */
@@ -99,8 +127,8 @@ function expectedArtworkTitle(hub, artwork) {
   if (artwork.seo_title) return artwork.seo_title;
   const suffix = ' | Polina Shvedko';
   const candidates = [
-    `${artwork.title} — ${hub.medium_label}, ${artwork.year}${suffix}`,
-    `${artwork.title} — ${hub.medium_label}${suffix}`,
+    `${artwork.title} - ${hub.medium_label}, ${artwork.year}${suffix}`,
+    `${artwork.title} - ${hub.medium_label}${suffix}`,
     `${artwork.title}${suffix}`,
   ];
   for (const c of candidates) if (cpLen(c) <= 60) return c;
@@ -108,7 +136,7 @@ function expectedArtworkTitle(hub, artwork) {
 }
 
 /** Expected <title> for a page, or null when only the shape can be checked. */
-function expectedTitle(page, data = loadData()) {
+function expectedTitle(page, data = page.data || loadData()) {
   switch (page.type) {
     case 'home': return data.site && data.site.seo_title;
     case 'hub': return page.hub.seo_title;
@@ -119,7 +147,7 @@ function expectedTitle(page, data = loadData()) {
 }
 
 /** Expected meta description (exact) or, for artworks, the fixed prefix the generated text starts with. */
-function expectedDescription(page, data = loadData()) {
+function expectedDescription(page, data = page.data || loadData()) {
   switch (page.type) {
     case 'home': return { exact: data.site && data.site.seo_description };
     case 'hub': return { exact: page.hub.seo_description };
@@ -127,6 +155,7 @@ function expectedDescription(page, data = loadData()) {
     case 'artwork': {
       const a = page.artwork;
       if (a.seo_description) return { exact: a.seo_description };
+      if (page.lang === 'de') return { prefix: `${a.title}, ${a.medium} von Polina Shvedko (${a.year}), ${sizeText(a, 'de')}.` };
       return { prefix: `${a.title}, ${String(a.medium).toLowerCase()} by Polina Shvedko (${a.year}), ${sizeText(a)}.` };
     }
     default: return {};
@@ -272,6 +301,11 @@ module.exports = {
   ROOT,
   APP_DIR,
   DATA_FILE,
+  DATA_DE_FILE,
+  LANGS,
+  LANG_PREFIX,
+  loadDataDe,
+  localizedData,
   MANIFEST_FILE,
   DEFAULT_SITE_URL,
   ALLOWED_STATUS,

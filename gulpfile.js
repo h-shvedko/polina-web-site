@@ -42,10 +42,10 @@ const FONT_GLOBS = ['src/css/webfonts/**'];
 const JS_GLOBS = ['src/js/**/*.js'];
 const STATIC_GLOBS = ['src/static/**', 'src/static/**/.*'];
 // scripts/*.js: an edited build script is loaded again on the next rebuild (see fresh())
-const PAGE_INPUTS = ['src/templates/**/*.mustache', 'data.json', 'src/img/manifest.json', 'scripts/build-site.js', 'scripts/file-owner.js'];
+const PAGE_INPUTS = ['src/templates/**/*.mustache', 'data.json', 'data.de.json', 'src/img/manifest.json', 'scripts/build-site.js', 'scripts/file-owner.js'];
 
 /* Top-level names a site build contains (besides the hub folders from data.json and the files of src/static/). */
-const BUILD_ENTRIES = ['img', 'css', 'js', '.htaccess', 'robots.txt', 'sitemap.xml', 'index.html', '404.html', 'about', 'contact', 'imprint', 'privacy'];
+const BUILD_ENTRIES = ['img', 'css', 'js', '.htaccess', 'robots.txt', 'sitemap.xml', 'index.html', '404.html', 'about', 'contact', 'imprint', 'privacy', 'de'];
 
 /**
  * Refuse output directories whose cleaning would delete anything but an old build: the repository, src/, a
@@ -168,7 +168,7 @@ function watchFiles() {
   gulp.watch(JS_GLOBS, opts, gulp.series(js, pages, reload));
   gulp.watch(STATIC_GLOBS, opts, gulp.series(statics, reload));
   gulp.watch(PAGE_INPUTS, opts, gulp.series(pages, reload));
-  console.log(`watching src/ and data.json; livereload on port ${LIVERELOAD_PORT}; output ${APP_DIR}`);
+  console.log(`watching src/, data.json and data.de.json; livereload on port ${LIVERELOAD_PORT}; output ${APP_DIR}`);
   return Promise.resolve();
 }
 

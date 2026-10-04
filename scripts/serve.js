@@ -9,7 +9,7 @@
 // Behaviour (close to the production Apache):
 //   - directory with trailing slash  -> its index.html
 //   - directory without trailing slash -> 301 to the same path with a slash (query kept)
-//   - unknown path -> status 404 with <root>/404.html (plain text when there is no 404.html)
+//   - unknown path -> status 404 with <root>/404.html, below /de/ with <root>/de/404.html (plain text when there is no 404.html)
 //   - query strings (?v=1a2b3c4d) are ignored for the file lookup
 //   - .ht* files (.htaccess) -> 403, like Apache; paths outside the root -> 403
 //   - correct Content-Type for html, css, js, json, xml, txt, images, fonts, video
@@ -118,7 +118,9 @@ function startServer(options = {}) {
     }
 
     const send404 = () => {
-      const notFound = path.join(root, '404.html');
+      // /de/... gets the German 404 page when the build has one (like the .htaccess <If> rule)
+      const german = /^\/de(\/|$)/.test(rawPath || '') && fs.existsSync(path.join(root, 'de', '404.html'));
+      const notFound = german ? path.join(root, 'de', '404.html') : path.join(root, '404.html');
       const head = req.method === 'HEAD';
       fs.readFile(notFound, (err, body) => {
         if (err) {

@@ -5,13 +5,13 @@
 <section class="contact" id="contact"{{#contact.heading}} aria-labelledby="contact-heading"{{/contact.heading}}>
 <div class="contact__inner">
 {{#contact.heading}}
-<h2 class="contact__heading" id="contact-heading">Contact me</h2>
+<h2 class="contact__heading" id="contact-heading">{{t.contact_heading}}</h2>
 {{/contact.heading}}
 <div class="contact__person">
 {{#contact.portrait}}{{> picture}}{{/contact.portrait}}
 <p class="contact__name">{{site.name}}</p>
 </div>
-<p class="contact__email"><strong>E-mail:</strong> <a class="contact__email-link" href="{{site.mailto}}" data-track="contact" data-location="contact">{{site.email}}</a></p>
+<p class="contact__email"><strong>{{t.email}}</strong> <a class="contact__email-link" href="{{site.mailto}}" data-track="contact" data-location="contact">{{site.email}}</a></p>
 <ul class="social">
 {{#contact.social}}
 <li class="social__item"><a class="social__link social__link--{{key}}" href="{{url}}" target="_blank" rel="noopener" aria-label="{{label}}">{{{icon}}}</a></li>

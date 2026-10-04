@@ -72,12 +72,12 @@ describe('1. pages exist (expected list from data.json)', () => {
 });
 
 describe('2. head and SEO tags of every page', () => {
-  test('<html lang="en"> on every page (indexable pages and 404)', () => {
+  test('<html lang="en"> on every English page, <html lang="de"> on every German page below /de/ (indexable pages and 404)', () => {
     expectNone(checkPages(pages, (page, doc) => {
       const html = qs(doc, 'html');
       const lang = html ? attr(html, 'lang') : null;
-      return lang === 'en' ? [] : [`<html lang> is ${lang === null ? 'missing' : `"${lang}"`}`];
-    }), '<html lang="en"> missing or wrong');
+      return lang === page.lang ? [] : [`<html lang> is ${lang === null ? 'missing' : `"${lang}"`}, expected "${page.lang}"`];
+    }), '<html lang> missing or wrong');
   });
 
   test('exactly one <h1> per page', () => {
@@ -111,9 +111,9 @@ describe('2. head and SEO tags of every page', () => {
     expectNone(problems, '<title> problems');
   });
 
-  test('<title> follows data.json: seo_title of home/hubs/about/contact; artworks: "<title> — <medium_label>, <year> | Polina Shvedko" rule or seo_title', () => {
+  test('<title> follows data.json: seo_title of home/hubs/about/contact; artworks: "<title> - <medium_label>, <year> | Polina Shvedko" rule or seo_title (German texts from data.de.json on /de/ pages)', () => {
     expectNone(checkPages(indexable, (page, doc) => {
-      const want = S.expectedTitle(page, data);
+      const want = S.expectedTitle(page);
       const t = normSpace(text(qs(doc, 'title')));
       if (want) return t === want ? [] : [`<title> is "${t}", expected "${want}"`];
       if (page.type === 'artwork') {
@@ -137,7 +137,7 @@ describe('2. head and SEO tags of every page', () => {
     expectNone(checkPages(indexable, (page, doc) => {
       const d = attr(qs(doc, 'meta[name="description"]'), 'content');
       if (d === null) return ['no meta description'];
-      const want = S.expectedDescription(page, data);
+      const want = S.expectedDescription(page);
       const out = [];
       if (/[<>]/.test(d)) out.push('description contains HTML');
       if (want.exact && d !== want.exact) out.push(`description is "${d}", expected "${want.exact}"`);

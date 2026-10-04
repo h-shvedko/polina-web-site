@@ -3,8 +3,8 @@
   socialmedia_images (one big tile, four small ones). The whole mosaic is one link to the Instagram profile.
 }}
 <section class="instagram" id="instagram" aria-labelledby="instagram-heading">
-<h2 class="instagram__heading" id="instagram-heading">Follow me on <a class="instagram__link" href="{{instagram.url}}" target="_blank" rel="noopener">instagram</a></h2>
-<a class="instagram__mosaic" href="{{instagram.url}}" target="_blank" rel="noopener" aria-label="More paintings by Polina Shvedko on Instagram">
+<h2 class="instagram__heading" id="instagram-heading">{{t.instagram_follow}} <a class="instagram__link" href="{{instagram.url}}" target="_blank" rel="noopener">instagram</a></h2>
+<a class="instagram__mosaic" href="{{instagram.url}}" target="_blank" rel="noopener" aria-label="{{t.instagram_mosaic}}">
 {{#instagram.tiles}}
 <span class="instagram__tile{{#big}} instagram__tile--big{{/big}}">{{#image}}{{> picture}}{{/image}}</span>
 {{/instagram.tiles}}

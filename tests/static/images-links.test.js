@@ -243,13 +243,13 @@ describe('8. internal links', () => {
     const problems = [...missingNote(missing, list.length)];
     for (const p of present) {
       const links = pageLinks(p.doc, p.path);
-      const hubPath = `/${p.hub.path}/`;
+      const hubPath = `${S.LANG_PREFIX[p.lang]}/${p.hub.path}/`;
       if (!links.some((l) => l.r.path === hubPath && !l.r.hash)) problems.push(`${p.path}: no link to its hub ${hubPath}`);
       const relLinks = (rel) => links.filter((l) => (attr(l.el, 'rel') || '').split(/\s+/).includes(rel)).map((l) => l.r.path);
       const check = (rel, want, wrap) => {
         const got = relLinks(rel);
-        const wantPath = want ? S.artworkPath(p.hub, want) : null;
-        const wrapPath = wrap ? S.artworkPath(p.hub, wrap) : null;
+        const wantPath = want ? S.artworkPath(p.hub, want, p.lang) : null;
+        const wrapPath = wrap ? S.artworkPath(p.hub, wrap, p.lang) : null;
         if (wantPath) {
           if (!got.includes(wantPath)) problems.push(`${p.path}: no <a rel="${rel}" href="${wantPath}"> (found: ${got.join(', ') || 'none'})`);
         } else if (got.length && !(wrapPath && got.every((g) => g === wrapPath))) {

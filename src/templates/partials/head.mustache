@@ -5,7 +5,7 @@
   Never write Mustache tags inside a comment: the first closing braces end the comment.
 }}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{page.lang}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,8 +17,15 @@
 {{#page.canonical}}
 <link rel="canonical" href="{{page.canonical}}">
 {{/page.canonical}}
+{{#page.alternates}}
+<link rel="alternate" hreflang="{{hreflang}}" href="{{href}}">
+{{/page.alternates}}
 {{#page.og}}
 <meta property="og:type" content="website">
+<meta property="og:locale" content="{{page.locale}}">
+{{#page.locale_alt}}
+<meta property="og:locale:alternate" content="{{locale}}">
+{{/page.locale_alt}}
 <meta property="og:site_name" content="{{site.name}}">
 <meta property="og:title" content="{{title}}">
 <meta property="og:description" content="{{description}}">
@@ -49,6 +56,6 @@
 {{/jsonld}}
 </head>
 <body class="site site--{{page.type}}">
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main">{{t.skip}}</a>
 {{> consent}}
 {{> nav}}
