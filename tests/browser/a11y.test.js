@@ -44,3 +44,81 @@ describe('browser 9: accessibility (axe-core)', () => {
     }
   }
 });
+
+describe('browser 9b: keyboard, link names, contrast themes and no JavaScript', () => {
+  const S = require('../lib/site');
+  const data = S.loadData();
+  const art = S.allArtworks(data);
+  const privateWork = art.find((x) => x.artwork.status === 'private-collection');
+  let env;
+  before(async () => { env = await B.startEnv(); });
+  after(async () => { if (env) await env.close(); });
+
+  for (const vp of B.VIEWPORT_NAMES) {
+    test(`${vp}: the first Tab stop is a visible "Skip to content" link; Enter moves on to the main content`, { timeout: 60000 }, async () => {
+      const ctx = await B.newContext(env, vp, { consent: 'denied' });
+      try {
+        const page = await ctx.newPage();
+        await B.gotoPage(page, env.url(S.artworkPath(art[0].hub, art[0].artwork)), { idle: false });
+        await page.keyboard.press('Tab');
+        const skip = await page.evaluate(() => {
+          const a = document.activeElement;
+          const b = a.getBoundingClientRect();
+          return { cls: a.className, href: a.getAttribute('href'), text: a.textContent.trim(), inView: b.top >= 0 && b.bottom <= innerHeight && b.width > 0 };
+        });
+        assert.equal(skip.cls, 'skip-link', `the first Tab stop is ${JSON.stringify(skip)}`);
+        assert.ok(skip.inView, 'the focused skip link is not visible');
+        await page.keyboard.press('Enter');
+        await page.keyboard.press('Tab');
+        const next = await page.evaluate(() => Boolean(document.activeElement && document.activeElement.closest('main')));
+        assert.ok(next, 'after the skip link, Tab should go to the first control in <main>');
+      } finally { await ctx.close(); }
+    });
+  }
+
+  test('card links are named by the title (plus "Private collection"), not by the image alt, title and MORE', { timeout: 60000 }, async () => {
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    try {
+      const page = await ctx.newPage();
+      await B.gotoPage(page, env.url('/'), { idle: false });
+      const problems = [];
+      for (const { artwork } of [art[0], art[1], privateWork]) {
+        const name = artwork.status === 'private-collection' ? `${artwork.title} Private collection` : artwork.title;
+        const n = await page.getByRole('link', { name, exact: true }).count();
+        if (n !== 1) problems.push(`${n} links named exactly "${name}"`);
+      }
+      expectNone(problems, 'card link names');
+    } finally { await ctx.close(); }
+  });
+
+  test('forced colours (Windows contrast themes): both consent buttons keep a visible border', { timeout: 60000 }, async () => {
+    const ctx = await env.browser.newContext({ viewport: { width: 1366, height: 900 }, forcedColors: 'active' });
+    try {
+      await ctx.route((url) => !env.isLocal(url.href), (r) => r.abort('blockedbyclient'));
+      const page = await ctx.newPage();
+      await B.gotoPage(page, env.url('/'), { idle: false });
+      await page.locator('#cookie-consent').waitFor({ state: 'visible', timeout: 5000 });
+      const borders = await page.evaluate(() => ['cookie-accept', 'cookie-decline'].map((id) => {
+        const st = getComputedStyle(document.getElementById(id));
+        return { id, width: parseFloat(st.borderTopWidth), style: st.borderTopStyle, color: st.borderTopColor };
+      }));
+      expectNone(borders.filter((b) => !(b.width >= 1 && b.style !== 'none' && !/rgba\(0, 0, 0, 0\)|transparent/.test(b.color))).map((b) => `#${b.id}: border ${b.width}px ${b.style} ${b.color}`), 'consent buttons without a visible border in forced colours');
+    } finally { await ctx.close(); }
+  });
+
+  for (const p of ['/', S.artworkPath(art[0].hub, art[0].artwork)]) {
+    test(`without JavaScript ${p}: no control that needs it is shown (Cookie settings, play, full-screen view)`, { timeout: 60000 }, async () => {
+      const ctx = await env.browser.newContext({ viewport: { width: 1366, height: 900 }, javaScriptEnabled: false });
+      try {
+        await ctx.route((url) => !env.isLocal(url.href), (r) => r.abort('blockedbyclient'));
+        const page = await ctx.newPage();
+        await B.gotoPage(page, env.url(p), { idle: false });
+        const shown = [];
+        for (const sel of ['#cookie-settings', '.hero__play', '.artwork__zoom', '#cookie-consent']) {
+          if (await page.locator(sel).first().isVisible().catch(() => false)) shown.push(sel);
+        }
+        expectNone(shown, `controls without a function shown without JavaScript on ${p}`);
+      } finally { await ctx.close(); }
+    });
+  }
+});

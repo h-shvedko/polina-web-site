@@ -178,7 +178,7 @@ describe('9. JSON-LD structured data', () => {
     }), 'hub structured data');
   });
 
-  test('artworks: VisualArtwork (url = canonical, creator Person, dateCreated, artMedium, artform, artworkSurface, width/height Distance, no offers) + BreadcrumbList Home > hub > title', () => {
+  test('artworks: VisualArtwork (url = canonical, creator Person, dateCreated, artMedium, artform, artworkSurface, width/height QuantitativeValue in cm, no offers) + BreadcrumbList Home > hub > title', () => {
     expectNone(forPages(indexable.filter((p) => p.type === 'artwork'), (page, nodes) => {
       const a = page.artwork;
       const out = [];
@@ -205,10 +205,12 @@ describe('9. JSON-LD structured data', () => {
       if (v.artMedium !== a.medium) out.push(`artMedium is ${JSON.stringify(v.artMedium)}, expected ${JSON.stringify(a.medium)}`);
       if (v.artform !== page.hub.artform) out.push(`artform is ${JSON.stringify(v.artform)}, expected ${JSON.stringify(page.hub.artform)}`);
       if (v.artworkSurface !== a.surface) out.push(`artworkSurface is ${JSON.stringify(v.artworkSurface)}, expected ${JSON.stringify(a.surface)}`);
+      // schema.org 30.0 made Distance a text data type: {"@type": "Distance", "name": ...} is an unknown field
+      // there, so the sizes are QuantitativeValue with the UN/CEFACT unit code for centimetres (CMT).
       for (const [key, value] of [['width', a.width_cm], ['height', a.height_cm]]) {
         const d = asArray(v[key])[0];
-        if (!d || !typesOf(d).includes('Distance')) out.push(`${key} is ${JSON.stringify(v[key])}, expected a Distance`);
-        else if (d.name !== `${value} cm`) out.push(`${key}.name is ${JSON.stringify(d.name)}, expected "${value} cm"`);
+        if (!d || !typesOf(d).includes('QuantitativeValue')) out.push(`${key} is ${JSON.stringify(v[key])}, expected a QuantitativeValue`);
+        else if (d.value !== value || d.unitCode !== 'CMT' || d.unitText !== 'cm' || 'name' in d) out.push(`${key} is ${JSON.stringify(d)}, expected {"@type":"QuantitativeValue","value":${value},"unitCode":"CMT","unitText":"cm"}`);
       }
       if (hasKeyDeep(v, 'offers')) out.push('VisualArtwork has offers');
       return [...out, ...checkBreadcrumb(nodes, [...homeTrail(), [page.hub.label, `${SITE}/${page.hub.path}/`], [a.title, page.url]])];

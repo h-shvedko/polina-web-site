@@ -255,7 +255,7 @@ function dataImageRefs(data = loadData()) {
       add(a.preview, `${a.slug}.preview`);
       add(a.preview_hover, `${a.slug}.preview_hover`);
       (a.images || []).forEach((im, n) => add(im && im.src, `${a.slug}.images[${n}]`));
-      (a.story_images || []).forEach((im, n) => add(im && im.src, `${a.slug}.story_images[${n}]`));
+      for (const m of String(a.story_html || '').matchAll(/<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)) add(m[1], `${a.slug}.story_html`);
     }
   }
   (data.socialmedia_images || []).forEach((im, n) => add(im && im.src, `socialmedia_images[${n}]`));

@@ -4,7 +4,9 @@
 // printed as test diagnostics and written to $SCREEN_DIR/performance.json.
 //
 // LCP is measured with network throttling (LCP_NETWORK, default "fast4g" = Chrome DevTools "Fast 4G":
-// 9 Mbit/s, 165 ms latency); without throttling a local server makes every page fast.
+// 9 Mbit/s, 165 ms latency); without throttling a local server makes every page fast. It is measured on the
+// SPEC phone (390 px, DPR 3) and on Lighthouse's mobile emulation (412 px, DPR 1.75: the lab data of PageSpeed
+// Insights), where the images take other srcset variants.
 const { describe, test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { expectNone } = require('../lib/checks');
@@ -15,6 +17,10 @@ const CLS_MAX = 0.1;
 const LCP_MAX = 2500;
 const NETWORK = process.env.LCP_NETWORK || 'fast4g';
 const PAGES = B.samplePages().filter((p) => p.type === 'home' || p.type === 'artwork');
+const LCP_PHONES = {
+  mobile: 'mobile',
+  'Lighthouse phone': { viewport: { width: 412, height: 823 }, deviceScaleFactor: 1.75, isMobile: true, hasTouch: true },
+};
 const results = {};
 
 async function measureLoad(env, vp, p) {
@@ -41,10 +47,10 @@ async function measureLoad(env, vp, p) {
   }
 }
 
-async function measureLcp(env, p, profileName) {
+async function measureLcp(env, p, profileName, phone = 'mobile') {
   const profile = B.NETWORK_PROFILES[profileName];
   if (profile === undefined) throw new Error(`Unknown LCP_NETWORK "${profileName}" (use ${Object.keys(B.NETWORK_PROFILES).join(', ')})`);
-  const ctx = await B.newContext(env, 'mobile');
+  const ctx = await B.newContext(env, phone);
   await ctx.addInitScript(B.PERF_OBSERVER_SCRIPT);
   try {
     const page = await ctx.newPage();
@@ -98,18 +104,20 @@ describe('browser 8: page weight, LCP and CLS', () => {
     }
   }
 
-  for (const p of PAGES) {
-    test(`mobile ${p.path}: LCP < ${LCP_MAX / 1000} s and CLS < ${CLS_MAX} with the "${NETWORK}" network profile`, { timeout: 180000 }, async (t) => {
-      const m = await measureLcp(env, p, NETWORK);
-      results[`mobile ${p.path} lcp (${NETWORK})`] = { status: m.status, lcp_ms: m.lcp ? Math.round(m.lcp.t) : null, lcp_element: m.lcp && m.lcp.el, lcp_url: m.lcp && m.lcp.url, loaded: m.loaded, cls: Number(m.cls.toFixed(4)) };
-      t.diagnostic(`mobile ${p.path} (${NETWORK}): LCP ${m.lcp ? `${Math.round(m.lcp.t)} ms on ${m.lcp.el}${m.lcp.url ? ` ${B.pathOf(m.lcp.url)}` : ''}` : 'none'}, CLS ${m.cls.toFixed(3)}${m.loaded ? '' : ', load event not reached in 25 s'}`);
-      assert.equal(m.status, 200, `HTTP ${m.status} for ${p.path}`);
-      const problems = [];
-      if (!m.loaded) problems.push(`the load event did not fire within 25 s on the "${NETWORK}" network, so LCP is not final (page too heavy; last candidate ${m.lcp ? `${Math.round(m.lcp.t)} ms on ${m.lcp.el}` : 'none'})`);
-      if (!m.lcp) problems.push('no largest-contentful-paint entry');
-      else if (m.lcp.t >= LCP_MAX) problems.push(`LCP ${Math.round(m.lcp.t)} ms >= ${LCP_MAX} ms (element ${m.lcp.el}${m.lcp.url ? `, ${B.pathOf(m.lcp.url)}` : ''})`);
-      if (m.cls >= CLS_MAX) problems.push(`CLS ${m.cls.toFixed(3)} >= ${CLS_MAX}; shifts: ${m.shifts.slice(0, 5).map((s) => `${s.v.toFixed(3)} at ${Math.round(s.t)} ms (${s.sources.join(', ')})`).join('; ')}`);
-      expectNone(problems, `mobile ${p.path}`);
-    });
+  for (const [phoneName, phone] of Object.entries(LCP_PHONES)) {
+    for (const p of PAGES) {
+      test(`${phoneName} ${p.path}: LCP < ${LCP_MAX / 1000} s and CLS < ${CLS_MAX} with the "${NETWORK}" network profile`, { timeout: 180000 }, async (t) => {
+        const m = await measureLcp(env, p, NETWORK, phone);
+        results[`${phoneName} ${p.path} lcp (${NETWORK})`] = { status: m.status, lcp_ms: m.lcp ? Math.round(m.lcp.t) : null, lcp_element: m.lcp && m.lcp.el, lcp_url: m.lcp && m.lcp.url, loaded: m.loaded, cls: Number(m.cls.toFixed(4)) };
+        t.diagnostic(`${phoneName} ${p.path} (${NETWORK}): LCP ${m.lcp ? `${Math.round(m.lcp.t)} ms on ${m.lcp.el}${m.lcp.url ? ` ${B.pathOf(m.lcp.url)}` : ''}` : 'none'}, CLS ${m.cls.toFixed(3)}${m.loaded ? '' : ', load event not reached in 25 s'}`);
+        assert.equal(m.status, 200, `HTTP ${m.status} for ${p.path}`);
+        const problems = [];
+        if (!m.loaded) problems.push(`the load event did not fire within 25 s on the "${NETWORK}" network, so LCP is not final (page too heavy; last candidate ${m.lcp ? `${Math.round(m.lcp.t)} ms on ${m.lcp.el}` : 'none'})`);
+        if (!m.lcp) problems.push('no largest-contentful-paint entry');
+        else if (m.lcp.t >= LCP_MAX) problems.push(`LCP ${Math.round(m.lcp.t)} ms >= ${LCP_MAX} ms (element ${m.lcp.el}${m.lcp.url ? `, ${B.pathOf(m.lcp.url)}` : ''})`);
+        if (m.cls >= CLS_MAX) problems.push(`CLS ${m.cls.toFixed(3)} >= ${CLS_MAX}; shifts: ${m.shifts.slice(0, 5).map((s) => `${s.v.toFixed(3)} at ${Math.round(s.t)} ms (${s.sources.join(', ')})`).join('; ')}`);
+        expectNone(problems, `${phoneName} ${p.path}`);
+      });
+    }
   }
 });

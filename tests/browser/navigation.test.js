@@ -1,5 +1,6 @@
 'use strict';
-// SPEC browser 12.3 (navigation), 12.4 (artwork gallery) and 12.6 (hero video facade), behaviour from SPEC 9.
+// SPEC browser 12.3 (navigation), 12.4 (artwork gallery and its full-screen view) and 12.6 (hero video facade),
+// behaviour from SPEC 9.
 const { describe, test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { expectNone } = require('../lib/checks');
@@ -209,13 +210,142 @@ describe('browser 4: artwork image gallery', () => {
   });
 });
 
+describe('browser 4b: full-screen view of the artwork images (the old popup zoom)', () => {
+  let env;
+  before(async () => { env = await B.startEnv(); });
+  after(async () => { if (env) await env.close(); });
+
+  const zoomState = (page) => page.evaluate(() => {
+    const d = document.getElementById('artwork-zoom');
+    const img = d && d.querySelector('.zoom__stage img');
+    const visible = [...document.querySelectorAll('.artwork__main picture')].findIndex((p) => !p.hidden);
+    return {
+      open: Boolean(d && d.open),
+      alt: img ? img.alt : null,
+      width: img ? Number((/-(\d+)\.(?:webp|jpg)$/.exec(img.currentSrc) || [0, 0])[1]) : 0, // the variant (naturalWidth is in CSS px)
+      prevHidden: d && d.querySelector('.zoom__prev') ? d.querySelector('.zoom__prev').hidden : null,
+      visible,
+      focus: document.activeElement ? document.activeElement.className : '',
+      scrollLocked: document.documentElement.classList.contains('zoom-open'),
+    };
+  });
+  /** The focused element (id, else first class) and whether it shows a focus ring (:focus-visible with an outline). */
+  const focusRing = (page) => page.evaluate(() => {
+    const a = document.activeElement;
+    if (!a) return { focus: '', ring: false };
+    const st = getComputedStyle(a);
+    return { focus: a.id || String(a.className).split(' ')[0], ring: a.matches(':focus-visible') && st.outlineStyle !== 'none' && parseFloat(st.outlineWidth) > 0 };
+  });
+
+  for (const vp of B.VIEWPORT_NAMES) {
+    test(`${vp} ${GALLERY_PATH}: a ${vp === 'mobile' ? 'tap' : 'click'} on the main image opens it full screen (the large variant); arrows and keys switch; Escape closes and the page shows the image viewed last`, { timeout: 60000 }, async () => {
+      const { ctx, page, rec } = await open(env, vp, GALLERY_PATH);
+      try {
+        const box = await page.locator('.artwork__main').boundingBox();
+        const x = box.x + box.width / 2;
+        const y = box.y + box.height * 0.3; // above the prev/next buttons
+        if (vp === 'mobile') await page.touchscreen.tap(x, y); else await page.mouse.click(x, y);
+        await page.locator('#artwork-zoom .zoom__stage img').waitFor({ state: 'visible', timeout: 5000 });
+        await page.waitForFunction(() => { const i = document.querySelector('#artwork-zoom .zoom__stage img'); return i && i.complete && i.naturalWidth > 0; }, null, { timeout: 10000 });
+        let s = await zoomState(page);
+        const problems = [];
+        const imgs = GALLERY.artwork.images;
+        if (!s.open) problems.push('the dialog did not open');
+        if (s.alt !== imgs[0].alt) problems.push(`full-screen image alt ${JSON.stringify(s.alt)}, expected the first image`);
+        if (s.width < 1200) problems.push(`the full-screen view shows the ${s.width} px variant (the 1200/1920 px variant expected)`);
+        if (s.prevHidden !== true) problems.push('"previous" is shown on the first image');
+        if (!s.scrollLocked) problems.push('the page behind can still scroll (html.zoom-open missing)');
+        // the dialog itself has the focus: browsing with the arrow keys after a mouse or touch open draws no focus
+        // ring (showModal() alone focuses the cross, which then shows its ring on the first key press)
+        let f = await focusRing(page);
+        if (f.focus !== 'artwork-zoom') problems.push(`after opening, the focus is on "${f.focus}", expected the dialog`);
+        await page.keyboard.press('ArrowRight');
+        s = await zoomState(page);
+        if (s.alt !== imgs[1].alt) problems.push(`after ArrowRight the alt is ${JSON.stringify(s.alt)}, expected image 2`);
+        f = await focusRing(page);
+        if (f.ring) problems.push(`after ArrowRight a focus ring is drawn on "${f.focus}"`);
+        await page.keyboard.press('Tab');
+        f = await focusRing(page);
+        if (f.focus !== 'zoom__close' || !f.ring) problems.push(`Tab should move the focus to the cross with a visible ring, got "${f.focus}" (ring ${f.ring})`);
+        await page.locator('#artwork-zoom .zoom__next').click();
+        s = await zoomState(page);
+        if (s.alt !== imgs[2].alt) problems.push(`after the next button the alt is ${JSON.stringify(s.alt)}, expected image 3`);
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('Escape');
+        await page.waitForTimeout(200);
+        s = await zoomState(page);
+        if (s.open) problems.push('Escape did not close the dialog');
+        if (s.visible !== 1) problems.push(`after closing, the page shows image ${s.visible + 1}, expected image 2 (the one viewed last)`);
+        if (!/artwork__zoom/.test(s.focus)) problems.push(`focus after closing is on "${s.focus}", expected the image (button.artwork__zoom)`);
+        if (s.scrollLocked) problems.push('html.zoom-open is left after closing');
+        problems.push(...rec.pageErrors, ...rec.consoleErrors);
+        expectNone(problems, `full-screen view at ${vp}`);
+      } finally { await ctx.close(); }
+    });
+  }
+
+  test('mobile: a swipe in the full-screen view shows the next image; the cross closes it; a single-image artwork opens without arrows', { timeout: 60000 }, async () => {
+    const { ctx, page } = await open(env, 'mobile', GALLERY_PATH);
+    try {
+      await page.locator('button.artwork__zoom').tap();
+      await page.locator('#artwork-zoom .zoom__stage img').waitFor({ state: 'visible', timeout: 5000 });
+      await swipe(page, '#artwork-zoom .zoom__stage', -200);
+      await page.waitForTimeout(200);
+      let s = await zoomState(page);
+      assert.equal(s.alt, GALLERY.artwork.images[1].alt, 'a left swipe in the full-screen view should show image 2');
+      await page.locator('#artwork-zoom .zoom__close').tap();
+      await page.waitForTimeout(200);
+      s = await zoomState(page);
+      assert.equal(s.open, false, 'the cross did not close the dialog');
+      const single = S.allArtworks(data).find((x) => x.artwork.images.length === 1);
+      await B.gotoPage(page, env.url(S.artworkPath(single.hub, single.artwork)));
+      await page.locator('button.artwork__zoom').tap();
+      await page.locator('#artwork-zoom .zoom__stage img').waitFor({ state: 'visible', timeout: 5000 });
+      assert.equal(await page.locator('#artwork-zoom .zoom__prev, #artwork-zoom .zoom__next').count(), 0, 'a single image needs no arrows');
+    } finally { await ctx.close(); }
+  });
+});
+
+/* A stand-in for the youtube-nocookie.com player: it answers "listening" with the playing state (as the IFrame
+   API does) and reports the commands it gets back to the page. */
+const PLAYER_STUB = `<!doctype html><html lang="en"><title>player</title><script>
+window.addEventListener('message', function (e) {
+  var d; try { d = JSON.parse(e.data); } catch (err) { return; }
+  if (d.event === 'listening') {
+    parent.postMessage(JSON.stringify({ event: 'onReady', info: null, id: 1, channel: 'widget' }), '*');
+    parent.postMessage(JSON.stringify({ event: 'onStateChange', info: 1, id: 1, channel: 'widget' }), '*');
+  }
+  if (d.event === 'command') parent.postMessage(JSON.stringify({ event: 'stubCommand', func: d.func }), '*');
+});
+</script></html>`;
+
+/* A player that answers "listening" with an error (a removed or not embeddable video). */
+const PLAYER_ERROR_STUB = `<!doctype html><html lang="en"><title>player</title><script>
+window.addEventListener('message', function (e) {
+  var d; try { d = JSON.parse(e.data); } catch (err) { return; }
+  if (d.event === 'listening') parent.postMessage(JSON.stringify({ event: 'onError', info: 150, id: 1, channel: 'widget' }), '*');
+});
+</script></html>`;
+
 describe('browser 6: hero video facade', () => {
   let env;
   before(async () => { env = await B.startEnv(); });
   after(async () => { if (env) await env.close(); });
 
+  const heroState = (page) => page.evaluate(() => {
+    const frame = document.querySelector('iframe.hero__video');
+    const poster = document.querySelector('.hero__poster img');
+    const button = document.querySelector('.hero__play');
+    return {
+      frame: Boolean(frame),
+      frameOpacity: frame ? Number(getComputedStyle(frame).opacity) : null,
+      posterShown: Boolean(poster && poster.getClientRects().length),
+      label: button ? button.getAttribute('aria-label') : null,
+    };
+  });
+
   for (const vp of B.VIEWPORT_NAMES) {
-    test(`${vp}: no YouTube request on load; clicking .hero__play inserts a youtube-nocookie.com iframe (autoplay, muted, loop, no controls) and tracks hero_video_play`, { timeout: 60000 }, async () => {
+    test(`${vp}: no YouTube request on load; the play button inserts the youtube-nocookie.com player (autoplay, muted, loop, no controls); while the player does not play (here: blocked) the poster stays, and the button stops it again`, { timeout: 60000 }, async () => {
       const { ctx, page, rec } = await open(env, vp, '/', { consent: 'granted' });
       try {
         expectNone(rec.youtube().map((r) => r.url), 'YouTube requests before the click');
@@ -230,13 +360,95 @@ describe('browser 6: hero video facade', () => {
         const problems = [];
         if (u.host !== 'www.youtube-nocookie.com') problems.push(`iframe host ${u.host}`);
         if (u.pathname !== `/embed/${YT}`) problems.push(`iframe path ${u.pathname}, expected /embed/${YT}`);
-        const want = { autoplay: '1', mute: '1', loop: '1', playlist: YT, controls: '0', playsinline: '1', rel: '0' };
+        const want = { autoplay: '1', mute: '1', loop: '1', playlist: YT, controls: '0', playsinline: '1', rel: '0', enablejsapi: '1' };
         for (const [k, v] of Object.entries(want)) if (u.searchParams.get(k) !== v) problems.push(`iframe ${k}=${u.searchParams.get(k)}, expected ${v}`);
         if (!title || !title.trim()) problems.push('iframe has no title');
         const events = B.findEvents(await B.readDataLayer(page), 'hero_video_play');
         if (events.length !== 1) problems.push(`hero_video_play events: ${events.length}`);
+        await page.waitForTimeout(1200);
+        let s = await heroState(page);
+        if (!s.posterShown) problems.push('the poster is gone although the player never played (a blocked player must leave the poster)');
+        if (s.frameOpacity !== 0) problems.push(`the player that never played is visible (opacity ${s.frameOpacity})`);
+        if (s.label !== 'Pause the video') problems.push(`after the click the button reads ${JSON.stringify(s.label)}, expected "Pause the video"`);
+        await B.clickOn(page, 'button.hero__play', 'hero pause button');
+        s = await heroState(page);
+        if (s.frame) problems.push('the button did not stop the video that had not started');
+        if (s.label !== 'Play the video' || !s.posterShown) problems.push(`after stopping: ${JSON.stringify(s)}`);
         expectNone(problems, 'hero video problems');
       } finally { await ctx.close(); }
     });
   }
+
+  test('desktop: a player that never answers (blocked) is removed after about 10 s: the button reads "Play the video" again over the poster, nothing is sent to it any more, and Play starts it again', { timeout: 60000 }, async () => {
+    const { ctx, page } = await open(env, 'desktop', '/');
+    try {
+      const messages = []; // Chromium warns for every message posted to the blocked frame (its error page)
+      page.on('console', (m) => { if (/postMessage/.test(m.text())) messages.push(m.text()); });
+      await B.clickOn(page, 'button.hero__play', 'hero play button');
+      const clicked = Date.now();
+      await page.locator('iframe.hero__video').waitFor({ state: 'attached', timeout: 5000 });
+      const gone = await page.waitForFunction(() => !document.querySelector('iframe.hero__video'), null, { timeout: 20000 }).then(() => true, () => false);
+      if (!gone) assert.fail(`the player that never answered is still there 20 s after the click; the button reads ${JSON.stringify((await heroState(page)).label)}`);
+      const waited = Date.now() - clicked;
+      const s = await heroState(page);
+      const sent = messages.length;
+      await page.waitForTimeout(1000);
+      const problems = [];
+      if (waited < 8000) problems.push(`the player was removed after ${waited} ms (it must get about 10 s to answer)`);
+      if (s.label !== 'Play the video') problems.push(`after the player gave up the button reads ${JSON.stringify(s.label)}`);
+      if (!s.posterShown) problems.push('the poster is gone');
+      if (messages.length !== sent) problems.push(`${messages.length - sent} messages were posted after the player was removed`);
+      await B.clickOn(page, 'button.hero__play', 'hero play button, second time');
+      const again = await heroState(page);
+      if (!again.frame || again.label !== 'Pause the video') problems.push(`a second click does not start the player again: ${JSON.stringify(again)}`);
+      expectNone(problems, 'blocked hero player');
+    } finally { await ctx.close(); }
+  });
+
+  test('desktop: a player that reports an error is removed at once and the button reads "Play the video"', { timeout: 60000 }, async () => {
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    try {
+      await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\/embed\//, (r) => r.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: PLAYER_ERROR_STUB }));
+      const page = await ctx.newPage();
+      await B.gotoPage(page, env.url('/'));
+      await B.clickOn(page, 'button.hero__play', 'hero play button');
+      await page.waitForFunction(() => !document.querySelector('iframe.hero__video'), null, { timeout: 5000 }).catch(() => {});
+      const s = await heroState(page);
+      expectNone([
+        ...(s.frame ? ['the player that reported an error is still there'] : []),
+        ...(s.label !== 'Play the video' ? [`the button reads ${JSON.stringify(s.label)}`] : []),
+        ...(!s.posterShown ? ['the poster is gone'] : []),
+      ], 'hero player error');
+    } finally { await ctx.close(); }
+  });
+
+  test('desktop: once the player reports that it plays, the video shows over the poster; the button pauses and resumes it (pauseVideo / playVideo)', { timeout: 60000 }, async () => {
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    try {
+      await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\/embed\//, (r) => r.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: PLAYER_STUB }));
+      await ctx.addInitScript(() => {
+        window.__playerMessages = [];
+        window.addEventListener('message', (e) => { if (e.origin === 'https://www.youtube-nocookie.com') window.__playerMessages.push(String(e.data)); });
+      });
+      const page = await ctx.newPage();
+      await B.gotoPage(page, env.url('/'));
+      await B.clickOn(page, 'button.hero__play', 'hero play button');
+      await page.waitForFunction(() => document.querySelector('.hero__media').classList.contains('hero__media--playing'), null, { timeout: 10000 });
+      await page.waitForTimeout(800); // the fade-in
+      let s = await heroState(page);
+      const problems = [];
+      if (s.frameOpacity !== 1) problems.push(`the playing video has opacity ${s.frameOpacity}`);
+      if (s.label !== 'Pause the video') problems.push(`while playing the button reads ${JSON.stringify(s.label)}`);
+      await B.clickOn(page, 'button.hero__play', 'pause');
+      await page.waitForTimeout(300);
+      s = await heroState(page);
+      if (s.label !== 'Play the video') problems.push(`after pausing the button reads ${JSON.stringify(s.label)}`);
+      await B.clickOn(page, 'button.hero__play', 'play');
+      await page.waitForTimeout(300);
+      const commands = (await page.evaluate(() => window.__playerMessages)).map((m) => { try { return JSON.parse(m); } catch (e) { return {}; } }).filter((m) => m.event === 'stubCommand').map((m) => m.func);
+      if (commands.join(',') !== 'pauseVideo,playVideo') problems.push(`the player got the commands [${commands.join(', ')}], expected [pauseVideo, playVideo]`);
+      if (!(await heroState(page)).frame) problems.push('the player was removed');
+      expectNone(problems, 'hero video controls');
+    } finally { await ctx.close(); }
+  });
 });

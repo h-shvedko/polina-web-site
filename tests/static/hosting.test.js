@@ -31,6 +31,16 @@ describe('13. hosting files (.htaccess, robots.txt)', () => {
     expectNone(problems, 'static files not copied');
   });
 
+  test('CI checks the built site before the upload: build, then test:static and images.js --check, then lftp', () => {
+    const wf = fs.readFileSync(path.join(S.ROOT, '.github', 'workflows', 'deploy.yml'), 'utf8');
+    const at = (re) => { const m = re.exec(wf); return m ? m.index : -1; };
+    const build = at(/run:\s*npx gulp build:site/);
+    const check = at(/run:\s*npm run test:static && node scripts\/images\.js --check/);
+    const upload = at(/lftp -e/);
+    assert.ok(build >= 0 && check >= 0 && upload >= 0, 'deploy.yml lacks the build, the check or the lftp step');
+    assert.ok(build < check && check < upload, 'the static checks must run after the build and before the upload');
+  });
+
   test('the repository root has no .htaccess (it never deployed; the source is src/static/.htaccess)', () => {
     assert.ok(!fs.existsSync(path.join(S.ROOT, '.htaccess')), `${path.join(S.ROOT, '.htaccess')} still exists; move it to src/static/.htaccess`);
   });

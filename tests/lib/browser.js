@@ -98,13 +98,14 @@ async function startEnv() {
 }
 
 /**
- * New browser context for a viewport. Options:
+ * New browser context for a viewport: a name of VIEWPORTS, or the context options of another device
+ * ({ viewport, deviceScaleFactor, isMobile, hasTouch }). Options:
  *   consent: null (first visit) | 'granted' | 'denied' — stored in localStorage before every page load
  *   route: true — stub googletagmanager.com and abort other third-party requests (false: only the DNS block)
  */
 async function newContext(env, vpName, { consent = null, route = true } = {}) {
   const ctx = await env.browser.newContext({
-    ...VIEWPORTS[vpName],
+    ...(typeof vpName === 'string' ? VIEWPORTS[vpName] : vpName),
     locale: 'en-US',
     timezoneId: 'Europe/Berlin',
     colorScheme: 'light',
@@ -170,6 +171,21 @@ async function gotoPage(page, url, { waitUntil = 'load', idle = true, timeout = 
   const resp = await page.goto(url, { waitUntil, timeout });
   if (idle) await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
   return resp;
+}
+
+/**
+ * Wait until the site font (Jost, every @font-face of that family) is loaded and applied. document.fonts.ready
+ * alone can resolve before layout has asked for a face, and text measured then has the fallback font's widths
+ * (the swap comes later), so line breaks and wrapped rows differ from one run to the next.
+ */
+async function fontsReady(page) {
+  await page.evaluate(async () => {
+    if (!document.fonts) return;
+    const faces = [...document.fonts].filter((f) => f.family.replace(/["']/g, '') === 'Jost');
+    await Promise.all(faces.map((f) => f.load().catch(() => null)));
+    await document.fonts.ready;
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
 }
 
 /** window.dataLayer as JSON (gtag() pushes Arguments objects; they become arrays). */
@@ -302,6 +318,7 @@ module.exports = {
   newContext,
   trackPage,
   gotoPage,
+  fontsReady,
   readDataLayer,
   findEvents,
   clickOn,

@@ -3,7 +3,7 @@
 // the JavaScript and the browser tests rely on. Exact texts come from data.json and SPEC section 1.
 const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
-const { qsa, qs, attr, hasAttr, classes, text, normSpace, closest, describe: desc } = require('../lib/html');
+const { qsa, qs, attr, hasAttr, classes, text, rawText, normSpace, closest, describe: desc } = require('../lib/html');
 const { expectNone } = require('../lib/checks');
 const S = require('../lib/site');
 
@@ -481,4 +481,128 @@ describe('markup contract: about, contact and 404', () => {
 
 test('markup contract helper sanity: data.json provides the texts the contract needs', () => {
   assert.ok(site.email && site.youtube_id && site.ga_measurement_id && year.length === 4, 'site.email, site.youtube_id, site.ga_measurement_id and site.lastmod are required');
+});
+
+describe('markup contract: reading and focus order, link names, no-JS, full-screen view, typography', () => {
+  const firstElement = (el) => (el.children || []).find((c) => c.type === 'element');
+
+  test('every page: <body> starts with a.skip-link to #main, then the consent banner, then the nav; #main holds the h1', () => {
+    expectNone(forPages(pages, (page, doc) => {
+      const out = [];
+      const body = qs(doc, 'body');
+      const first = body && firstElement(body);
+      if (!first || first.tag !== 'a' || !classes(first).includes('skip-link') || attr(first, 'href') !== '#main') out.push(`the first element in <body> is ${first ? desc(first) : 'missing'}, expected <a class="skip-link" href="#main">`);
+      const banner = qs(doc, '#cookie-consent');
+      const nav = qs(doc, '#site-nav');
+      if (banner && nav && banner.start > nav.start) out.push('#cookie-consent comes after #site-nav (keyboard and screen-reader users meet the choice last)');
+      const main = qs(doc, '#main');
+      if (!main || main.tag !== 'main') out.push('no <main id="main"> (skip link target)');
+      else if (!qs(main, 'h1')) out.push('the h1 is outside <main id="main">');
+      return out;
+    }), 'document start problems');
+  });
+
+  test('home hero: the e-mail link and Explore Artworks come before the play button in the source (Tab order follows the reading order)', () => {
+    expectNone(forPages(pages.filter((p) => p.type === 'home'), (page, doc) => {
+      const cta = qs(doc, 'a.hero__cta');
+      const email = qs(doc, 'a.hero__email');
+      const play = qs(doc, 'button.hero__play');
+      if (!cta || !email || !play) return ['hero links or play button missing'];
+      return play.start < cta.start || play.start < email.start ? ['button.hero__play comes before the hero links'] : [];
+    }), 'hero order problems');
+  });
+
+  test('cards: a.card__link is named by its title (and the badge) through aria-labelledby; span.card__more is aria-hidden', () => {
+    expectNone(forPages(pages.filter((p) => p.type === 'home' || p.type === 'hub'), (page, doc) => {
+      const out = [];
+      const ids = new Map(qsa(doc, '[id]').map((el) => [attr(el, 'id'), el]));
+      for (const card of qsa(doc, 'article.card')) {
+        const link = qs(card, 'a.card__link');
+        const title = qs(card, '.card__title');
+        const badge = qs(card, '.card__badge');
+        if (!link || !title) continue; // reported by the card contract test
+        const refs = (attr(link, 'aria-labelledby') || '').split(/\s+/).filter(Boolean);
+        const want = [attr(title, 'id'), ...(badge ? [attr(badge, 'id')] : [])];
+        if (want.some((id) => !id) || refs.join(' ') !== want.join(' ')) out.push(`card "${t(title)}": aria-labelledby="${refs.join(' ')}", expected the ids of the title${badge ? ' and the badge' : ''}`);
+        for (const id of refs) if (!ids.has(id) || closest(ids.get(id), 'article.card') !== card) out.push(`card "${t(title)}": aria-labelledby refers to ${id}, which is not in the card`);
+        const more = qs(card, 'span.card__more');
+        if (more && attr(more, 'aria-hidden') !== 'true') out.push(`card "${t(title)}": span.card__more needs aria-hidden="true"`);
+      }
+      const all = qsa(doc, '[id]').map((el) => attr(el, 'id'));
+      const dup = all.filter((id, i) => all.indexOf(id) !== i);
+      if (dup.length) out.push(`duplicate ids: ${[...new Set(dup)].join(', ')}`);
+      return out;
+    }), 'card link name problems');
+  });
+
+  test('card images use data.json preview_alt / preview_hover_alt when set (a crop can show something else than its source photo)', () => {
+    const withAlt = S.allArtworks(data).filter(({ artwork }) => artwork.preview_alt || artwork.preview_hover_alt);
+    assert.ok(withAlt.length > 0, 'no artwork sets preview_alt (Hortensien does)');
+    expectNone(forPages(pages.filter((p) => p.type === 'home' || p.type === 'hub'), (page, doc) => {
+      const out = [];
+      for (const { hub, artwork } of withAlt) {
+        const link = qsa(doc, 'a.card__link').find((a) => linkPath(a, '/') === S.artworkPath(hub, artwork));
+        if (!link) continue;
+        const main = qs(link, 'picture.card__img:not(.card__img--hover) img');
+        const hover = qs(link, 'picture.card__img--hover img');
+        if (artwork.preview_alt && attr(main, 'alt') !== artwork.preview_alt) out.push(`${artwork.slug}: card image alt ${JSON.stringify(attr(main, 'alt'))}, expected preview_alt`);
+        if (artwork.preview_hover_alt && attr(hover, 'alt') !== artwork.preview_hover_alt) out.push(`${artwork.slug}: hover image alt ${JSON.stringify(attr(hover, 'alt'))}, expected preview_hover_alt`);
+      }
+      return out;
+    }), 'card image alt problems');
+  });
+
+  test('every page: without JavaScript the Cookie settings item is hidden (a noscript style; consent.js would handle the button)', () => {
+    expectNone(forPages(pages, (page, doc) => {
+      const css = qsa(doc, 'noscript style').map((s) => rawText(s)).join('');
+      const settings = qs(doc, '#cookie-settings');
+      const item = settings && closest(settings, 'li');
+      if (!item || !classes(item).includes('site-footer__item--settings')) return ['#cookie-settings is not inside li.site-footer__item--settings'];
+      return /\.site-footer__item--settings\s*\{\s*display\s*:\s*none/.test(css) ? [] : ['no <noscript><style> that hides .site-footer__item--settings'];
+    }), 'no-JS problems');
+  });
+
+  test('artwork pages: button.artwork__zoom (hidden in the HTML, shown by artwork.js) over the main image and dialog#artwork-zoom with a close button (+ previous/next when there is more than one image)', () => {
+    expectNone(forPages(pages.filter((p) => p.type === 'artwork'), (page, doc) => {
+      const out = [];
+      const zoom = qs(doc, '.artwork__stage > button.artwork__zoom');
+      if (!zoom) out.push('no .artwork__stage > button.artwork__zoom');
+      else {
+        if (!hasAttr(zoom, 'hidden')) out.push('button.artwork__zoom must carry hidden (artwork.js shows it; without JS it would do nothing)');
+        if (attr(zoom, 'type') !== 'button' || !(attr(zoom, 'aria-label') || '').trim()) out.push('button.artwork__zoom needs type="button" and an aria-label');
+        if (attr(zoom, 'aria-controls') !== 'artwork-zoom') out.push('button.artwork__zoom needs aria-controls="artwork-zoom"');
+      }
+      const dialog = qs(doc, 'dialog#artwork-zoom');
+      if (!dialog) return [...out, 'no dialog#artwork-zoom'];
+      if (hasAttr(dialog, 'open')) out.push('dialog#artwork-zoom must be closed in the HTML');
+      if (!(attr(dialog, 'aria-label') || '').trim()) out.push('dialog#artwork-zoom needs an aria-label');
+      if (!qs(dialog, '.zoom__stage') || !qs(dialog, 'button.zoom__close[aria-label]')) out.push('dialog#artwork-zoom needs .zoom__stage and button.zoom__close');
+      const arrows = qsa(dialog, 'button.zoom__prev, button.zoom__next').length;
+      if (page.artwork.images.length > 1 ? arrows !== 2 : arrows !== 0) out.push(`${arrows} previous/next buttons in the dialog for ${page.artwork.images.length} image(s)`);
+      return out;
+    }), 'full-screen view markup problems');
+  });
+
+  test('visible sizes and initials never break across lines: no plain space inside "<w> × <h> cm" or after an initial ("P. Molina", "St. Albani"), in any visible text of any page', () => {
+    // Every text node in <body> (facts such as "Framed (wood and glass), 50 × 40 cm", titles in cards, h1,
+    // breadcrumb and pager, descriptions, hub intros), not a list of known places: a new field that shows a size
+    // without keepTogether() fails here.
+    const PLAIN = /\d ×|× \d|\d (?:cm|mm)\b|\b(?:[A-Z]|St)\. (?=[A-Z])/;
+    const HIDDEN = new Set(['script', 'style', 'template', 'noscript']);
+    expectNone(forPages(pages, (page, doc) => {
+      const out = [];
+      const visit = (node) => {
+        if (node.type === 'text') {
+          const m = PLAIN.exec(node.text);
+          if (m) out.push(`${desc(node.parent, false)}: "${m[0]}" has a breaking space (use U+00A0; build-site.js keepTogether())`);
+        } else if (node.type === 'element' && !HIDDEN.has(node.tag)) {
+          node.children.forEach(visit);
+        }
+      };
+      const body = qs(doc, 'body');
+      if (!body) return ['no <body>'];
+      visit(body);
+      return out;
+    }), 'breaking spaces in sizes or initials');
+  });
 });

@@ -247,4 +247,43 @@ describe('2. head and SEO tags of every page', () => {
       return robots && /noindex|none/i.test(robots) ? [`robots meta "${robots}" blocks indexing`] : [];
     }), 'indexable pages blocked from indexing');
   });
+
+  test('indexable pages allow large image previews (<meta name="robots" content="max-image-preview:large">)', () => {
+    expectNone(checkPages(indexable, (page, doc) => {
+      const metas = qsa(doc, 'meta[name="robots"]');
+      if (metas.length !== 1) return [`${metas.length} robots meta elements`];
+      const robots = attr(metas[0], 'content') || '';
+      return /(^|,)\s*max-image-preview:large\s*(,|$)/.test(robots) ? [] : [`robots meta is "${robots}", expected max-image-preview:large`];
+    }), 'large image previews not allowed');
+  });
+
+  test('artwork meta descriptions use their characters well: no repeated title after the facts, no cut on a function word or an abbreviation', () => {
+    const DANGLING = new Set('a an the of in on at to into onto over under and or but nor as by with without for from than that this these those its their his her our your my is are was were be which who whose where when while'.split(' '));
+    expectNone(checkPages(indexable.filter((p) => p.type === 'artwork' && !p.artwork.seo_description), (page, doc) => {
+      const a = page.artwork;
+      const d = attr(qs(doc, 'meta[name="description"]'), 'content') || '';
+      const out = [];
+      const rest = d.slice(S.expectedDescription(page, data).prefix.length).trim();
+      if (rest.toLowerCase().replace(/^["“]/, '').startsWith(a.title.toLowerCase())) out.push(`the text after the facts repeats the title: "${rest.slice(0, 60)}..."`);
+      const last = /(\S+?)…$/.exec(d);
+      if (last && (DANGLING.has(last[1].toLowerCase()) || /^(?:[A-Z]|St|Dr|Mr|Mrs|Ms|Mt|No)$/.test(last[1]))) out.push(`ends on "${last[1]}…": "...${d.slice(-50)}"`);
+      if (/[\s,;:(-]…$/.test(d)) out.push(`ends with punctuation before the ellipsis: "...${d.slice(-30)}"`);
+      return out;
+    }), 'weak artwork meta descriptions');
+  });
+
+  test('artwork meta and og:description keep the credit the artist wrote after the title ("(Inspired by P. Molina)"): only the repeated title is dropped', () => {
+    const CREDIT = /\(\s*((?:inspired by|after)\b[^)]*?)\s*\)/i;
+    const norm = (s) => String(s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    const credited = indexable.filter((p) => p.type === 'artwork' && !p.artwork.seo_description && CREDIT.test(String(p.artwork.description[0])));
+    expectNone(checkPages(credited, (page, doc) => {
+      const credit = CREDIT.exec(String(page.artwork.description[0]))[1]; // data.json paragraphs are plain text
+      const out = [];
+      for (const sel of ['meta[name="description"]', 'meta[property="og:description"]']) {
+        const d = attr(qs(doc, sel), 'content') || '';
+        if (!norm(d).includes(norm(credit))) out.push(`${sel} lacks "${credit}": "${d}"`);
+      }
+      return out;
+    }), 'artwork descriptions without the credit of their first paragraph');
+  });
 });

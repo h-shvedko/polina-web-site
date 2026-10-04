@@ -32,7 +32,15 @@ describe('browser 11: screenshots', () => {
           const resp = await B.gotoPage(page, env.url(p.path));
           await B.settleForScreenshot(page);
           const file = path.join(B.SCREEN_DIR, `${vp}-${p.key}.png`);
-          await page.screenshot({ path: file, fullPage: true, animations: 'disabled' });
+          try {
+            await page.screenshot({ path: file, fullPage: true, animations: 'disabled' });
+          } catch (e) {
+            // the phone home page is about 64,000 device px tall at DPR 3 (a 300 MB bitmap): under memory pressure
+            // Chromium cannot always allocate it ("Unable to capture screenshot"), so it is taken in CSS pixels
+            if (!/Unable to capture screenshot/i.test(String(e && e.message))) throw e;
+            await page.screenshot({ path: file, fullPage: true, animations: 'disabled', scale: 'css' });
+            t.diagnostic('taken in CSS pixels: the device-pixel capture failed');
+          }
           const status = resp ? resp.status() : null;
           index[`${vp}-${p.key}`] = { file: path.basename(file), path: p.path, status, bytes: fs.statSync(file).size };
           t.diagnostic(file);

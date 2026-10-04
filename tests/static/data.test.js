@@ -4,8 +4,11 @@ const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 const { expectNone, cpLen, findCyrillic, findForbidden, FORBIDDEN_PATTERNS, imageSize, isIsoDate } = require('../lib/checks');
 const S = require('../lib/site');
+const { ARTWORK_FIELDS } = require('../../scripts/build-site.js');
+const IMAGES = require('../../scripts/images.js');
 
 const data = S.loadData();
 const VARIANT_WIDTHS = [600, 1200, 1920];
@@ -110,8 +113,10 @@ describe('12. data.json and image manifest', () => {
       else a.images.forEach((im, i) => { if (!im || !isStr(im.src) || !isStr(im.alt)) p(`images[${i}] needs src and a non-empty alt`); });
       if (a.story_html !== null && typeof a.story_html !== 'string') p('story_html must be null or a string');
       if (typeof a.story_confirmed !== 'boolean') p('story_confirmed must be true or false');
-      if (a.story_images !== undefined && (!Array.isArray(a.story_images) || a.story_images.some((im) => !im || !isStr(im.src) || !isStr(im.alt)))) p('story_images must be a list of {src, alt}');
-      for (const k of ['seo_title', 'seo_description']) if (a[k] !== null && a[k] !== undefined && !isStr(a[k])) p(`${k} must be a string or null`);
+      for (const k of ['seo_title', 'seo_description', 'preview_alt', 'preview_hover_alt']) if (a[k] !== null && a[k] !== undefined && !isStr(a[k])) p(`${k} must be a string or null`);
+      // only fields the build reads (a documented field without effect, or a typo, would sit there unnoticed)
+      const unknown = Object.keys(a).filter((k) => !ARTWORK_FIELDS.has(k));
+      if (unknown.length) p(`unknown field(s) ${unknown.join(', ')}; scripts/build-site.js ARTWORK_FIELDS lists the data model`);
       if (a.updated !== undefined && !isIsoDate(a.updated)) p(`updated "${a.updated}" is not YYYY-MM-DD`);
     }
     (data.socialmedia_images || []).forEach((im, i) => { if (!im || !isStr(im.src) || !isStr(im.alt)) problems.push(`socialmedia_images[${i}] needs src and a non-empty alt`); });
@@ -148,6 +153,29 @@ describe('12. data.json and image manifest', () => {
     expectNone(problems, 'images missing in src/img');
   });
 
+  test('no source image that data.json references is ignored by git (a new photo must reach the repository with a plain git add)', (t) => {
+    const files = [...new Set(S.dataImageRefs(data).map((r) => `src/${r.src}`))];
+    const res = spawnSync('git', ['check-ignore', '--no-index', '--verbose', '--stdin'], { cwd: S.ROOT, input: files.join('\n'), encoding: 'utf8' });
+    if (res.error || (res.status !== 0 && res.status !== 1)) {
+      t.skip(`git check-ignore is not available here (${res.error ? res.error.code : (res.stderr || '').trim()})`);
+      return;
+    }
+    expectNone(res.stdout.split('\n').filter(Boolean), 'referenced source images matched by an ignore rule (rule, then file)');
+  });
+
+  test('files that tools generate in the checkout are ignored by git (a plain "git add -A" cannot commit them)', (t) => {
+    // Python bytecode of scripts/seo-report.py (written when /seo-report imports it), installed packages, and
+    // screenshots that browser tools drop into the repository root.
+    const generated = ['scripts/__pycache__/seo-report.cpython-314.pyc', 'scripts/seo-report.pyc', 'node_modules/gulp/package.json', 'screenshot.jpeg'];
+    const res = spawnSync('git', ['check-ignore', '--no-index', '--stdin'], { cwd: S.ROOT, input: generated.join('\n'), encoding: 'utf8' });
+    if (res.error || (res.status !== 0 && res.status !== 1)) {
+      t.skip(`git check-ignore is not available here (${res.error ? res.error.code : (res.stderr || '').trim()})`);
+      return;
+    }
+    const ignored = new Set(res.stdout.split('\n').filter(Boolean));
+    expectNone(generated.filter((f) => !ignored.has(f)), 'generated files that .gitignore does not ignore');
+  });
+
   test('every image path in data.json has a manifest entry whose WebP and JPEG variant files exist in app/', () => {
     const manifest = manifestOrFail();
     const problems = [];
@@ -166,26 +194,38 @@ describe('12. data.json and image manifest', () => {
     expectNone(problems, 'manifest/variant problems');
   });
 
-  test('manifest entries follow SPEC section 5: sorted keys, sizes, widths 600/1200/1920 (never upscaled), bytes and pixel widths match the files', () => {
+  test('every image has a variant at most 1.6x wider than the next smaller one from 600 px up (a phone at DPR 1.75-2 that draws an image 650 px wide must not get the 1200 px file)', () => {
+    const manifest = manifestOrFail();
+    const problems = [];
+    for (const [src, entry] of Object.entries(manifest)) {
+      const widths = [...new Set((entry.webp || []).map((v) => v.w))].sort((a, b) => a - b).filter((w) => w >= 600);
+      for (let i = 1; i < widths.length; i++) {
+        if (widths[i] / widths[i - 1] > 1.6 + 1e-9) problems.push(`${src}: ${widths[i - 1]} -> ${widths[i]} px (${(widths[i] / widths[i - 1]).toFixed(2)}x)`);
+      }
+    }
+    expectNone(problems, 'gaps in the variant widths');
+  });
+
+  test('manifest entries follow SPEC section 5: sorted keys, sizes, widths 600/1200/1920 (never upscaled) plus the 900 px step and the role widths, bytes and pixel widths match the files', () => {
     const manifest = manifestOrFail();
     const problems = [];
     const keys = Object.keys(manifest);
     const sorted = [...keys].sort();
     if (keys.join('\n') !== sorted.join('\n')) problems.push('manifest keys are not sorted');
+    const roles = IMAGES.imageRoles(data);
     for (const [src, entry] of Object.entries(manifest)) {
       const p = (msg) => problems.push(`${src}: ${msg}`);
       if (!Number.isInteger(entry.width) || !Number.isInteger(entry.height) || entry.width <= 0 || entry.height <= 0) { p(`width/height ${entry.width}x${entry.height}`); continue; }
-      // Two readings of "widths [600, 1200, 1920], never upscaled" are accepted: targets wider than the
-      // original are skipped ([600] for 1024 px), or clamped to the original width ([600, 1024]).
-      const skipped = entry.width < VARIANT_WIDTHS[0] ? [entry.width] : VARIANT_WIDTHS.filter((w) => w <= entry.width);
-      const clamped = [...new Set(VARIANT_WIDTHS.map((w) => Math.min(w, entry.width)))];
+      // SPEC 600/1200/1920 clamped to the original width, plus 900 (scripts/images.js SETTINGS.widths) and the
+      // widths of the image's roles: 160/320 for gallery thumbnails, 2560/3200 for wide card images (ROLE_WIDTHS)
+      const base = [...new Set(VARIANT_WIDTHS.map((w) => Math.min(w, entry.width)))];
+      const expected = IMAGES.variantWidths(entry.width, roles.get(src) || []);
       const dir = path.posix.dirname(`/${src}`);
       for (const kind of ['webp', 'jpg']) {
         const list = entry[kind] || [];
-        const widths = list.map((v) => v.w).join(',');
-        if (widths !== skipped.join(',') && widths !== clamped.join(',')) {
-          p(`${kind} widths [${widths}], expected [${clamped.join(', ')}] (or [${skipped.join(', ')}]) for an original ${entry.width} px wide`);
-        }
+        const widths = list.map((v) => v.w);
+        if (widths.join(',') !== expected.join(',')) p(`${kind} widths [${widths.join(', ')}], expected [${expected.join(', ')}] for an original ${entry.width} px wide (roles: ${[...(roles.get(src) || [])].join(', ') || 'none'})`);
+        if (!base.every((w) => widths.includes(w))) p(`${kind} lacks a SPEC width of [${base.join(', ')}]`);
         for (const v of list) {
           if (typeof v.src !== 'string' || !v.src.startsWith(`${dir}/`) || !v.src.endsWith(`-${v.w}.${kind}`) || v.src !== v.src.toLowerCase()) {
             p(`${kind} variant src "${v.src}" should be "${dir}/<lowercase base>-${v.w}.${kind}"`);
