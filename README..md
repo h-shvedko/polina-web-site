@@ -17,4 +17,4 @@ Details: `CLAUDE.md` (architecture, commands, data model) and `ADR/` (decisions)
 - `npm run serve` -> http://127.0.0.1:7001
 - `npm test` (static checks, Playwright browser checks, Apache redirect checks in Docker)
 
-A push to `main` deploys the site.
+A push to `main` deploys the site (CI builds it and runs `npm run test:static` first; a failure stops the deploy).

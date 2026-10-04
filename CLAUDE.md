@@ -24,7 +24,7 @@ npm run server-watch          # gulp watch: build:site, then rebuild on changes 
 npm run serve                 # dependency-free static server for app/ on http://127.0.0.1:7001 (404.html, 301 to slash)
 npm test                      # test:static && test:browser && test:apache
 npm run test:static           # file checks over the built app/ (fast, ~2 s)
-npm run test:browser          # Playwright Chromium, desktop 1366x900 + mobile 390x844 (~3.5 min)
+npm run test:browser          # Playwright Chromium, desktop 1366x900 + mobile 390x844 (~4.5 min)
 npm run test:apache           # .htaccess on httpd:2.4 in Docker (skips with a message without Docker)
 npm run validate-html         # html-validate over app/**/*.html with .htmlvalidate.json
 npm run sitemap               # alias of the pages task (the sitemap is written by build-site.js)
@@ -41,13 +41,16 @@ node scripts/serve.js --root <dir> --port <n> [--host 0.0.0.0] [--quiet]   # por
 docker-compose up -d          # http://localhost:7000, livereload 35729
 ```
 
-After pulling a branch that changes `package.json`, restart the container so `npm install` runs again.
+After pulling a branch that changes `package.json`, restart the container so `npm install` runs again. The container
+runs as root on a bind mount; the build scripts give what they write the owner of the checkout
+(`scripts/file-owner.js`). A checkout that an older build left with root-owned files is repaired once with
+`sudo chown -R "$(id -u):$(id -g)" app src/img`.
 
 ### Environment variables
 
 | Variable | Used by | Meaning |
 |---|---|---|
-| `APP_DIR` | gulp tasks, `build-site.js`, `images.js`, `serve.js`, all tests | output / test directory (default `app`, relative to the repo root or absolute). `clean` keeps `<APP_DIR>/img`, also when it is a symlink, and refuses dangerous values |
+| `APP_DIR` | gulp tasks, `build-site.js`, `images.js`, `serve.js`, all tests | output / test directory (default `app`, relative to the repo root or absolute). `clean` keeps `<APP_DIR>/img`, also when it is a symlink, and refuses the repository, its folders, a parent and any existing folder (other than `app`) that holds anything but a site build (the build's names, the hub folders and the files of `src/static/`; a folder whose `sitemap.xml` lists this site counts as an earlier build, so a file since removed from `src/static/` does not block it) |
 | `GULP_PORT`, `GULP_HOST`, `GULP_OPEN` | `gulp server` | dev server port (default 7000), address (default 0.0.0.0), `GULP_OPEN=0` = do not open a browser |
 | `LIVERELOAD_PORT` | `gulp watch` | livereload port (default 35729, mapped by docker-compose) |
 | `PORT` | `scripts/serve.js` | port when `--port` is not given (default 7001) |
@@ -68,7 +71,7 @@ anything but the dev server.
 
 | Task | Does |
 |---|---|
-| `clean` | delete everything in `APP_DIR` except `img/` |
+| `clean` | delete everything in `APP_DIR` except `img/` (refuses a folder that is not a site build, see `APP_DIR`) |
 | `css` | `src/css/**/*.css` → `app/css/` (`site.css` is the only stylesheet) |
 | `fonts` | `src/css/webfonts/**` → `app/css/webfonts/` |
 | `js` (alias `babel`) | `src/js/**/*.js` → `app/js/` (copied, not transpiled; the scripts are ES5) |
@@ -77,18 +80,22 @@ anything but the dev server.
 | `img` | `scripts/images.js`: WebP/JPEG variants into `app/img/` + `src/img/manifest.json` |
 | `build:site` | `clean` → parallel(`css`, `fonts`, `js`, `static`) → `pages` |
 | `build` | `img` → `build:site` |
-| `watch` | `build:site`, then watch `src/css`, `src/js`, `src/templates`, `src/static`, `data.json`, `src/img/manifest.json` (polling, works in Docker) |
+| `watch` | `build:site`, then watch `src/css`, `src/js`, `src/templates`, `src/static`, `data.json`, `src/img/manifest.json` and `scripts/build-site.js` (polling, works in Docker; the build script is loaded again on every rebuild) |
 | `server` / `default` | dev server for `app/` / `watch` then `server` |
 
 `scripts/build-site.js` (CommonJS, `build({ root, outDir })`, also a CLI) loads `data.json` and
 `src/img/manifest.json`, builds the view models, renders `src/templates/pages/*.mustache` with the partials in
 `src/templates/partials/*.mustache` and writes the pages and `sitemap.xml`. It writes a file only when its content
-changes, and the output is deterministic (byte-identical on every machine; no timestamps). It **throws** (exit 1) on:
-a missing manifest entry for a referenced image, a duplicate or malformed slug, an unknown or incomplete hub, an
-unknown status, a `<title>` over 60 characters or a duplicate title, a meta description outside 120–155 characters,
-invalid JSON-LD, a missing template, stylesheet or script. Constants worth knowing (top of the file): `STATUS` texts,
-`SIZES` / `ARTWORK_BOX` (the `sizes` attributes; change them together with the layout in `site.css`),
-`SITE_IMAGE_ALT`, `CONSENT_TEXT`, `SOCIAL_ORDER`, `MOSAIC_TILES`, `LEGAL`.
+changes, and the output is deterministic (byte-identical on every machine; no timestamps; templates are read with LF
+and the `?v=` hashes ignore CR, so a CRLF checkout builds the same bytes). It **throws** (exit 1) on: a missing
+manifest entry for a referenced image, a duplicate or malformed slug, an unknown or incomplete hub, an unknown
+status, an artwork field it does not read (typo or leftover), a `<title>` over 60 characters or a duplicate title, a
+meta description outside 120–155 characters, invalid JSON-LD, a missing template, stylesheet or script, and a
+`{{> partial}}` that names no file in `partials/` (also inside sections the current data does not render). Constants worth knowing (top of the file): `STATUS` texts,
+`SIZES` / `COVER_BOXES` / `ARTWORK_BOX` (the `sizes` attributes; change them together with the layout in
+`site.css`; for images cropped with `object-fit: cover` the box width is multiplied by the image's own aspect ratio,
+see `coverSizes()`), `ARTWORK_FIELDS` (the artwork data model), `SITE_IMAGE_ALT`, `CONSENT_TEXT`, `SOCIAL_ORDER`,
+`MOSAIC_TILES`, `LEGAL`, the `NOSCRIPT_*` styles (pages without JavaScript).
 
 - CSS and JS URLs carry a content hash (`/css/site.css?v=<8 hex>`), computed from `src/`.
 - All asset URLs are root-relative (`/img/...`); the 404 page works at any path.
@@ -106,17 +113,29 @@ invalid JSON-LD, a missing template, stylesheet or script. Constants worth knowi
 | Imprint / Privacy | `app/imprint/`, `app/privacy/` | only when `legal.imprint_html` / `legal.privacy_html` is set (today both are `null`) |
 | 404 | `app/404.html` | Apache `ErrorDocument`; `noindex`, no canonical, not in the sitemap |
 
-Canonical = `https://polina-shvedko.art` + path with a trailing slash. Every page has `lang="en"`, one `h1`, a unique
-`<title>` (≤ 60 characters), a meta description (120–155), canonical, Open Graph (`og:image` = absolute 1200 px JPEG
-with its width/height), `twitter:card`, sticky nav, footer, consent banner and JSON-LD:
+Canonical = `https://polina-shvedko.art` + path with a trailing slash. Every indexable page has `lang="en"`, one `h1`
+(inside `<main id="main">`), a unique `<title>` (≤ 60 characters), a meta description (120–155),
+`<meta name="robots" content="max-image-preview:large">`, canonical, Open Graph (`og:image` = absolute URL of the
+1200 px JPEG variant, or of the largest variant when the original is narrower, with its width/height; an artwork
+page uses its main image, each hub the main image of its first artwork, so it shares the `og:image` with that
+artwork page; home uses `site.images.og_default`, the Cap d'Antibes photo, so home, the oil hub and that page share
+one image), `twitter:card`, a "Skip to content" link, the consent banner
+(first after the skip link in the source, fixed at the bottom), sticky nav, footer and JSON-LD:
 home `WebSite` + `Person` (`https://polina-shvedko.art/#person`, `sameAs` = the four social URLs); hub
-`CollectionPage` + `ItemList` + `BreadcrumbList`; artwork `VisualArtwork` (no `offers`) + `BreadcrumbList`; about
-`AboutPage`; contact `ContactPage`.
+`CollectionPage` + `ItemList` + `BreadcrumbList`; artwork `VisualArtwork` (no `offers`; `width`/`height` as
+`QuantitativeValue` with `unitCode` `CMT`, because schema.org 30.0 made `Distance` a text type) + `BreadcrumbList`;
+about `AboutPage`; contact `ContactPage`. The 404 page has `noindex` and no canonical, Open Graph or JSON-LD.
 
 Artwork `<title>`: the first candidate of at most 60 characters of `<title> — <medium_label>, <year> | Polina Shvedko`,
 `<title> — <medium_label> | Polina Shvedko`, `<title> | Polina Shvedko`, `<title cut at a word>… | Polina Shvedko`,
-unless `seo_title` is set. Meta description (unless `seo_description`): `<title>, <medium> by Polina Shvedko (<year>),
-<w> × <h> cm. <first description paragraph>`, cut at a word to ≤ 155; below 120 the status sentence is appended.
+unless `seo_title` is set (12 of the 30 titles carry medium and year today). Meta description (unless
+`seo_description`): `<title>, <medium> by Polina Shvedko (<year>), <w> × <h> cm. <first description paragraph>`; a
+paragraph that opens with the title again starts with "It" instead, and a credit after the title stays as the artist
+wrote it (`"Title" (Inspired by P. Molina) captures ...` -> `Inspired by P. Molina, it captures ...`). Fitted
+to ≤ 155 at the last sentence end that keeps ≥ 120, else cut at a word with "…" (never after "a", "of", "St" and the
+like); below 120 the status sentence is appended. Sizes and initials keep a no-break space (`keepTogether()`) in all
+visible text the build writes: descriptions, hub intros, every fact (also the frame), titles in cards, `h1`,
+breadcrumb and pager (a static test scans every text node of every page).
 
 ### Data (`data.json`)
 
@@ -132,10 +151,13 @@ unless `seo_title` is set. Meta description (unless `seo_description`): `<title>
 - Artwork: `slug` (stable URL part; **never change it after release**), `title`, `year`, `medium` (English,
   e.g. `Oil on canvas`), `surface` (JSON-LD), `width_cm`, `height_cm` (numbers, width × height), `frame` (string or
   `null`), `description[]` (plain-text paragraphs, no HTML), `status` (`available` | `private-collection`), `card`
-  (`wide` | `standard`), `preview` and `preview_hover` (card image and hover image), `images[]` (`src`, `alt`; the
-  first is the main image), `story_html` + `story_confirmed` (a "Story" section is rendered only when
-  `story_confirmed` is `true`), `story_images[]`, optional `seo_title`, `seo_description`, `updated` (`YYYY-MM-DD`,
-  sitemap `lastmod`).
+  (`wide` | `standard`), `preview` and `preview_hover` (card image and hover image; their alt is the alt of the
+  `images[]` entry with the same file or the one the `_preview` crop was cut from, unless the optional `preview_alt` /
+  `preview_hover_alt` is set, e.g. when the crop shows the painting without the frame of its source photo),
+  `images[]` (`src`, `alt`; the first is the main image), `story_html` + `story_confirmed` (a "Story" section is
+  rendered only when `story_confirmed` is `true`; its images are the `<img>` tags in `story_html`), optional
+  `seo_title`, `seo_description`, `updated` (`YYYY-MM-DD`, sitemap `lastmod`). Any other artwork field fails the build
+  (`ARTWORK_FIELDS` in `scripts/build-site.js`).
 - `socialmedia_images[]` (`src`, `alt`): the first five fill the Instagram mosaic on home.
 - `legal`: `imprint_html`, `privacy_html` (`null` = page not generated, not linked, not in the sitemap).
 
@@ -147,18 +169,24 @@ Alt texts: main image `<title> — <medium> by Polina Shvedko`; further images d
 **Adding an artwork:** put the photos into `src/img/gallery/`, add the artwork object to its hub in `data.json`
 (new unique `slug`), run `npm run image` (writes the variants and the manifest), then `npm run build:site` and
 `npm test`. Commit `data.json`, the source photos, `src/img/manifest.json` and the changed `app/` files (variants and
-pages). No template editing.
+pages). No template editing. (`.gitignore` ignores `*.jpeg` only in the repository root, and Python caches; a test
+checks that no referenced source photo is ignored and that those generated files are.)
 
 ### Images (`scripts/images.js`)
 
 - `src/img/` is the source of truth. The pipeline processes exactly the images `data.json` references (also
   `<img src>` inside `story_html`). Unreferenced files in `src/img/` are not deployed.
 - Variants `app/img/<subdir>/<stem>-<w>.webp` and `.jpg` (stem = file name without extension, lowercased) at
-  600 / 1200 / 1920 px, never upscaled; EXIF auto-orient, sRGB, flattened on white, no metadata; WebP q75, mozjpeg
+  600 / 900 / 1200 / 1920 px (`SETTINGS.widths`: the SPEC's three plus 900, so a phone at DPR 1.75-2 that draws an
+  image 650-750 px wide does not get the 1200 px file; no step above 1.6x, a test checks it), never upscaled, plus
+  `ROLE_WIDTHS` by how `data.json` uses the image (`imageRoles()`):
+  160 / 320 px for the photos of artworks with more than one image (gallery thumbnails), 2560 / 3200 px for the card
+  images of a `wide` card; EXIF auto-orient, sRGB, flattened on white, no metadata; WebP q75, mozjpeg
   q75 progressive. Everything else in `app/img/` is deleted, except the icons copied as-is (`favicon.ico`,
   `avatar_152x147.png`, `avatar_270x262.png`).
 - `src/img/manifest.json` (committed) holds per image the original size and every variant (`w`, `h`, `src`,
-  `bytes`) plus a source digest, so CI never needs `sharp` and an unchanged image is never regenerated.
+  `bytes`) plus a source digest (source bytes and encoder settings, not the widths: a new width writes only its own
+  files), so CI never needs `sharp` and an unchanged image is never regenerated.
 - Templates use only manifest images: `<picture>` with a WebP source and a JPEG `<img>` (`srcset`, `sizes`,
   `width`/`height` of the original, `loading="lazy"` except above-the-fold images).
 - A full run takes about 70 s; a run with nothing to do about 1 s. The hero poster is the YouTube thumbnail
@@ -167,17 +195,19 @@ pages). No template editing.
 ### Templates (`src/templates/`)
 
 - `pages/`: `home`, `hub`, `artwork`, `about`, `contact`, `404`, `legal`. Each starts with `{{> head}}` (doctype,
-  `<head>`, `<body class="site site--<type>">`, nav) and ends with `{{> foot}}` (footer, consent, closing tags).
+  `<head>`, `<body class="site site--<type>">`, skip link, consent banner, nav) and ends with `{{> foot}}` (footer,
+  closing tags). On home the hero is the start of `<main id="main">`.
 - `partials/`: `head`, `nav`, `foot`, `footer`, `consent`, `breadcrumb`, `picture` (one manifest image), `card`,
   `hero`, `intro`, `gallery`, `about-me`, `instagram`, `contact`, `icon-*` (inline SVG). Partials are referenced by
-  name (`{{> card}}`), no paths.
+  name (`{{> card}}`), no paths; an unknown name stops the build.
 - Use `{{var}}` for text (the build's escaper keeps `/` readable) and `{{{var}}}` only for HTML the build produced
   (JSON-LD, `story_html`, `legal`). Never put Mustache tags inside a `{{! }}` comment: the first `}}` ends it.
 - Class names are BEM (`card__title`, `artwork__thumb`). Hooks that JS and tests rely on: `#site-nav`
   (`site-nav--hidden` / `--visible`), `header.hero#top`, `.hero__play[data-youtube-id]`, `section.gallery#gallery-<key>`,
-  `article.card > a.card__link`, `#artwork-images.artwork__main > picture[data-index]`,
-  `button.artwork__thumb[data-index][aria-current]`, `.artwork__prev/.artwork__next`, `#cookie-consent`,
-  `#cookie-accept`, `#cookie-decline`, `#cookie-settings`, `[data-track="contact"][data-location]`
+  `article.card > a.card__link[aria-labelledby]` (title + badge ids), `#artwork-images.artwork__main > picture[data-index]`,
+  `button.artwork__thumb[data-index][aria-current]`, `.artwork__prev/.artwork__next`, `button.artwork__zoom` +
+  `dialog#artwork-zoom` (full-screen view), `a.skip-link`, `#cookie-consent`, `#cookie-accept`, `#cookie-decline`,
+  `#cookie-settings` (in `li.site-footer__item--settings`), `[data-track="contact"][data-location]`
   (+ `data-artwork-slug` on the artwork CTA). `tests/static/markup-contract.test.js` lists them all.
 
 ### CSS and font
@@ -188,6 +218,15 @@ swap, pills, sticky nav, hero, cookie bar, footer) with the old breakpoints (≥
 weights are mapped (300/375/425/485/565 for the old 300/400/500/600/700) and the vertical metrics overridden. Every
 `*.woff2` in `src/css/webfonts/` is preloaded by the build, so do not add unused fonts. Keep `[hidden]` rules for
 `.cookie-consent`, the artwork slides and the prev/next buttons (author `display` rules override the attribute).
+Additions to the old look: the open consent banner reserves its height (`html.consent-open`, `--consent-h`) at the
+page end; the hero play button (new) sits 30 px above the bottom of the window, also when a short window makes the
+hero taller, and above the open banner; on phones it sits at the hero bottom and, while the banner is open, in the
+top corner (in split-screen phone windows and 961-1060 px short windows, where the title reaches a corner, see the
+comments in `site.css`); touch screens (`hover: none`) never render the card hover image; below
+681 px the nav row has tighter spacing, snaps to link starts (after the left fade) and fades at each edge that cuts
+a label (`--fade-start` 20 px, `--fade-end` 32 px), below 641 px a long label shows its first word ("Oil"); the 404
+links wrap into balanced rows (6, 3 + 3, 2 + 2 + 2, one column) and the headings that wrap are balanced; the
+full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons, cross).
 
 ### Behaviour (`src/js/`, vanilla ES5, deferred, no libraries)
 
@@ -195,25 +234,41 @@ weights are mapped (300/375/425/485/565 for the old 300/400/500/600/700) and the
   `cookie_consent_v2` = `granted` | `denied`. Nothing is requested from Google before Accept. Accept → Consent Mode v2
   defaults denied, `update analytics_storage: granted`, then `gtag.js`. Decline or a later withdrawal → GA disabled
   and `_ga*` cookies deleted. `#cookie-settings` (footer) reopens the banner. `window.siteConsent = { status(), open() }`.
+  While the banner is open, `<html>` has `consent-open` and `--consent-h` (its height, kept current by a ResizeObserver).
 - `analytics.js` (every page): `contact_click` for every `[data-track="contact"]` click (`link_location`,
   `artwork_slug` on artwork CTAs) and `hero_video_play` (from `hero.js`), only with consent. The old events
   (`artwork_view`, `cart_order`, `purchase_inquiry`, `gallery_filter`) are gone.
-- `nav.js` (every page): home shows the nav once the hero has left the viewport; other pages always.
-- `hero.js` (home): the play button replaces the poster with the `youtube-nocookie.com` player (no YouTube request
-  before the click).
-- `artwork.js` (artwork pages): thumbnails, prev/next, arrow keys and swipe switch the main image. Without JS a
-  `<noscript>` style shows all images.
+- `nav.js` (every page): home shows the nav once the hero has left the viewport; other pages always. An edge of the
+  nav row that cuts a label gets `site-nav__links--more-start` (left) or `site-nav__links--more-end` (right), and
+  `site.css` fades it; a link that gets keyboard focus (not a mouse or touch press) while cut off or under a fade
+  scrolls to the row start, just after the left fade.
+- `hero.js` (home): the play button inserts the `youtube-nocookie.com` player over the poster (no YouTube request
+  before the click; `enablejsapi=1`). The player stays transparent until it reports that it plays (IFrame API
+  messages), so a blocked player leaves the poster; the same button then pauses and resumes it (`pauseVideo` /
+  `playVideo`; before the player plays, it removes the player again). A player that never answers (about 10 s) or
+  reports an error is removed, and the button reads "Play the video" again.
+- `artwork.js` (artwork pages): thumbnails, prev/next, arrow keys and swipe switch the main image; `button.artwork__zoom`
+  (over the main image, shown by the script) opens `dialog#artwork-zoom`: the current image with `sizes="100vw"`,
+  previous/next, arrow keys, swipe, Escape / cross / click beside the image to close; the page then shows the image
+  viewed last. The dialog (`tabindex="-1"`) takes the focus itself when it opens, so browsing with the arrow keys
+  after a mouse or touch open draws no focus ring on the cross; Tab reaches the cross and the arrows. Without JS a `<noscript>` style shows all images and hides the controls that need the script (also the
+  footer "Cookie settings" on every page).
 
 ### Hosting
 
-- Production: Plesk at checkdomain.de, nginx in front of Apache. CI (`deploy.yml`) runs `npm ci --legacy-peer-deps`
-  and `npx gulp build:site`, then `lftp mirror --reverse --delete ./app` over SFTP: `app/` is the whole site, and
-  files missing from `app/` are deleted on the server.
+- Production: Plesk at checkdomain.de, nginx in front of Apache. CI (`deploy.yml`) runs `npm ci --legacy-peer-deps`,
+  `npx gulp build:site`, then `npm run test:static && node scripts/images.js --check` (a failure stops the deploy),
+  then `lftp mirror --reverse --delete ./app` over SFTP: `app/` is the whole site, and files missing from `app/` are
+  deleted on the server.
 - `src/static/.htaccess` (copied to `app/`): `ErrorDocument 404 /404.html`; `/blog/cap-dantibes/` → 301 to the
   Cap d'Antibes artwork page; `/blog/**` → 301 `/`; `/partials/**` → 410; `/index.html` and `/<dir>/index.html` →
-  301 to the folder URL; `www` → apex and `http` → `https` (also via `X-Forwarded-Proto`), each in one hop.
-  Requests that nginx answers itself (static files) never reach `.htaccess`; the Plesk settings
-  "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and "Preferred domain: polina-shvedko.art" cover those.
+  301 to the folder URL; a folder without the trailing slash → 301 to the URL with it (one hop, also from `http://`
+  and `www.`, instead of mod_dir's second hop); repeated slashes → 301 to one slash; `www` → apex and `http` →
+  `https` (also via `X-Forwarded-Proto`), each in one hop. `Cache-Control` for what Apache serves: CSS/JS one year
+  `immutable` (their URLs carry `?v=<hash>`), the font one year (give a changed font a new file name), images 30 days,
+  HTML/XML/TXT `no-cache`. Requests that nginx answers itself (static files) never reach `.htaccess`; the Plesk settings
+  "Permanent SEO-safe 301 redirect from HTTP to HTTPS", "Preferred domain: polina-shvedko.art" and the nginx
+  "Expires" setting cover those.
 - `src/static/robots.txt` points to `https://polina-shvedko.art/sitemap.xml`.
 
 ### Tests (`tests/`, Node's built-in `node:test`, no framework)
@@ -221,13 +276,28 @@ weights are mapped (300/375/425/485/565 for the old 300/400/500/600/700) and the
 - `tests/static/` (over the built `APP_DIR`): pages exist, meta and headings, sitemap and robots, forbidden content
   (old framework names, shop words, retired events, Cyrillic), no `partials/` or `blog/`, images (`alt`, `width`,
   `height`, ratio, WebP source, every referenced file exists), internal links and click depth, JSON-LD,
-  html-validate, data model and manifest, hosting files, build determinism, the markup contract.
+  html-validate, data model and manifest (also: no step above 1.6x between variant widths, no referenced source
+  photo ignored by git, generated caches ignored), hosting files, build determinism, the markup contract (incl.
+  reading order, card link names, no-JS styles, the full-screen view, no breaking space in a visible size or after an
+  initial), meta descriptions that keep a credit, `build.test.js` (a mistyped partial or an unknown field stops the
+  build, the text helpers, CRLF checkouts build the same bytes, file ownership as root, `gulp clean` safety, a second
+  private build after `src/static/` changed, `gulp watch` reloading the build script).
 - `tests/browser/` (Playwright Chromium 1.63.0 from `~/.cache/ms-playwright`; every non-local request is blocked
   and recorded): page loads without errors or third-party requests, consent, navigation and the image gallery,
-  contact tracking, hero facade, 390 px layout (no horizontal scroll, tap targets ≥ 24 px, text ≥ 12 px), budgets
-  (home < 3 MB, artwork < 1.5 MB, LCP < 2.5 s at 390 px, CLS < 0.1), axe (no critical/serious; `color-contrast` only
-  warns because the colours are the old design), custom 404, screenshots into `SCREEN_DIR`.
-- `tests/apache/`: the redirect matrix on a real Apache (Docker `httpd:2.4`, `app/` mounted read-only).
+  contact tracking, hero facade (with stand-in players for the play/pause messages and for an error; a blocked
+  player is removed after about 10 s), full-screen view (also: no focus ring on the cross while browsing with the
+  arrow keys), 390 px layout (no horizontal scroll, tap targets ≥ 24 px, text ≥ 12 px), `layout.test.js` (the open
+  banner hides neither content nor focus, the hero play button at common, short and split-screen window sizes with
+  the banner open and closed,
+  both edges of the nav row on phones after a swipe and with keyboard focus, hero pill and arrow at small and short
+  windows, breadcrumb, pager, headings, balanced 404 link rows from 280 to 1100 px), `images.test.js` (every
+  `object-fit: cover` image gets the variant of its drawn size at DPR 1–3; the artwork main image at Lighthouse's
+  phone emulation and at DPR 2; touch screens never load hover images), budgets (home < 3 MB, artwork < 1.5 MB, LCP
+  < 2.5 s at 390 px and at Lighthouse's 412 px DPR 1.75, CLS < 0.1), axe (no critical/serious; `color-contrast` only warns because the colours are the old design), skip
+  link, card link names, forced colours, no JavaScript, custom 404, screenshots into `SCREEN_DIR`.
+- `tests/apache/`: the redirect matrix on a real Apache (Docker `httpd:2.4`, `app/` mounted read-only), every https
+  case twice: over a TLS listener (self-signed test certificate) and as plain HTTP with `X-Forwarded-Proto`; plus
+  the `Cache-Control` headers.
 - The test groups are loaded through `tests/<group>/index.js`; one file: `node --test --test-reporter=spec tests/browser/consent.test.js`.
 - `.htmlvalidate.json` extends `html-validate:recommended` and `html-validate:document`; it switches no rule off.
   The reasons for its two rule options are in the header of `tests/static/html-validate.test.js`.
@@ -240,17 +310,22 @@ weights are mapped (300/375/425/485/565 for the old 300/400/500/600/700) and the
 | `scripts/build-site.js` | HTML pages + sitemap from `data.json` |
 | `scripts/images.js` | image variants + `src/img/manifest.json` |
 | `scripts/serve.js` | static server used by `npm run serve` and the tests |
+| `scripts/file-owner.js` | gives generated files the checkout's owner when a build runs as root (dev container) |
 | `src/templates/pages/`, `src/templates/partials/` | Mustache templates |
 | `src/css/site.css` | the only stylesheet |
 | `src/js/*.js` | consent, analytics, nav, hero, artwork |
 | `src/static/.htaccess`, `src/static/robots.txt` | hosting files copied to `app/` |
-| `.github/workflows/deploy.yml` | build + SFTP deploy on push to `main` |
+| `.github/workflows/deploy.yml` | build, static checks + SFTP deploy on push to `main` |
 | `ADR/` | decisions; `ADR0000-index.md` has the trackers |
 | `.claude/commands/seo-report.md`, `scripts/seo-report.py` | `/seo-report` (Search Console + GA4) |
 
 ## Key Conventions
 
 - Edit `src/` and `data.json`, never `app/` by hand; `app/` is generated and committed (CI does not run `sharp`).
+- Line endings are LF everywhere (`.gitattributes`: `* text=auto eol=lf`, images and fonts binary). A checkout made
+  with `core.autocrlf=true` before that rule is refreshed once, with a clean working tree only: `git reset --hard`
+  discards every uncommitted change to tracked files, so commit or `git stash -u` first, then
+  `git rm -r --cached . && git reset --hard` (then `git stash pop` if you stashed).
 - All visible text is English; no Cyrillic characters anywhere (a test checks it).
 - No sales wording: no prices, `€`, "buy", "shop", "cart", "checkout", "sold", delivery or commission claims (tests
   check `app/`). The only lead path is e-mail (`mailto:` links tracked as `contact_click`). The Etsy profile link stays.

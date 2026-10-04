@@ -130,15 +130,15 @@ for the open questions and the slug list are in [ADR-0003 → Implementation](AD
 |---|---|
 | One page per artwork (30), three medium hubs, about, contact, custom 404 | **Done** — `scripts/build-site.js`, `src/templates/pages/` |
 | Old framework, shop and blog code removed | **Done** — checked by `npm run test:static` |
-| Redirects and hosting files (`src/static/.htaccess`, `robots.txt`) | **Done** — tested on Apache 2.4 (`npm run test:apache`) |
+| Redirects and hosting files (`src/static/.htaccess`, `robots.txt`) | **Done** — one hop for every tested form (also without the trailing slash, through `http://`/`www.`, with repeated slashes), `Cache-Control` for what Apache serves; tested on Apache 2.4 with a TLS listener and with `X-Forwarded-Proto` (`npm run test:apache`) |
 | Sitemap with every page (36 URLs) | **Done** |
-| Image pipeline (WebP/JPEG 600/1200/1920, originals not deployed) | **Done** — `scripts/images.js`, `src/img/manifest.json` |
+| Image pipeline (WebP/JPEG 600/900/1200/1920, + 160/320 for gallery thumbnails and 2560/3200 for the wide card; originals not deployed) | **Done** — `scripts/images.js`, `src/img/manifest.json`; `sizes` follow the drawn size of cropped images |
 | Consent before analytics (Accept / Decline, Consent Mode v2) | **Done** — `src/js/consent.js`; banner text needs owner approval |
-| Structured data (`Person`, `VisualArtwork`, `CollectionPage`, breadcrumbs) | **Done** |
-| Tests (`npm test`: static, browser, Apache) | **Done** |
+| Structured data (`Person`, `VisualArtwork`, `CollectionPage`, breadcrumbs) | **Done** — validator.schema.org: 0 errors, 0 warnings on one page per type (2026-10-04); Google's Rich Results Test (needs a login): **owner** |
+| Tests (`npm test`: static, browser, Apache) | **Done** — CI runs the static checks before every deploy |
 | Slugs, sizes, media, hub texts, Cap d'Antibes story, consent text | **Owner approval** |
 | Impressum and privacy policy | **Owner** — legal text needed; pages are generated once it is in `data.json` |
-| Release (merge to `main` = deploy), Plesk redirect switches, Search Console and GA4 steps | **Owner** |
+| Release (merge to `main` = deploy), Plesk redirect switches and static-file "Expires", one-time LF refresh of the main checkout, Search Console and GA4 steps | **Owner** |
 | Measure with `/seo-report` three weeks after the release | **Owner** |
 
 ---

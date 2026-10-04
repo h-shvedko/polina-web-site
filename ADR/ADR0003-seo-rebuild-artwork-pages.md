@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-03
 **Status:** Implemented on branch adr-0003-seo-rebuild (not deployed) — see [Implementation](#implementation-branch-adr-0003-seo-rebuild)
-**Supersedes:** ADR-0001 item 4.3 (blog system), ADR-0002 items about the popup inquiry and the cart
+**Supersedes:** ADR-0001 items 1.2 and 1.3 (popup and cart events) and 4.3 (blog system); ADR-0002 H2 (inquiry button in the popup), H3 (gallery filter) and the cart
 **Evidence:** `/seo-report` baseline of 2026-10-03 (snapshots in `~/.local/state/polina-shvedko.art-seo/`)
 
 ---
@@ -111,7 +111,7 @@ Each `/<medium-hub>/<slug>/index.html` contains:
 - Status line without price: "Available — ask about this work" or "In a private collection" (see Open Questions).
 - One contact call to action: `mailto:` link with the subject prefilled (the existing inquiry pattern), tracked as `contact_click` with `artwork_slug`.
 - Previous / next artwork in the same medium, a link back to the hub, a breadcrumb.
-- JSON-LD: `VisualArtwork` (`name`, `creator`, `dateCreated`, `artMedium`, `width`, `height` as `Distance`, `image`, `url` = own URL, no `offers`) and `BreadcrumbList`.
+- JSON-LD: `VisualArtwork` (`name`, `creator`, `dateCreated`, `artMedium`, `width`, `height` as `QuantitativeValue` in centimetres, `image`, `url` = own URL, no `offers`) and `BreadcrumbList`. (Written as `Distance` first; schema.org 30.0 made `Distance` a text data type, see Implementation.)
 
 The Cap d'Antibes blog text moves into the "Story" section of
 `/oil-paintings/affectionate-farewell-cap-dantibes/` **after the artist confirms the facts**
@@ -175,7 +175,7 @@ only lead path left, so `contact_click` becomes the conversion event.
 | 7.2 | `html` task renders only page templates; partials are not emitted (`!src/templates/partials/**`). `mirror --delete` then removes `/partials/` from the host | `gulpfile.js` |
 | 7.3 | Sitemap generated from `data.json` (home, hubs, artworks, about, contact) with `lastmod`; `robots.txt` keeps the `Sitemap:` line | `gulpfile.js` |
 | 7.4 | `.htaccess` moves to `src/static/` and is copied to `app/`: http → https, `www` → apex (one 301 hop), `/index.html` → `/`, blog redirects, `410` for `/partials/` | `src/static/.htaccess` |
-| 7.5 | Image pipeline: WebP + JPEG at 600 / 1200 / 1920 px, `srcset`, originals kept out of `app/`. Target: home page < 3 MB, artwork page < 1.5 MB, LCP < 2.5 s at 390 px | `gulpfile.js` (`img` task), `data.json` image paths |
+| 7.5 | Image pipeline: WebP + JPEG at 600 / 1200 / 1920 px, `srcset`, originals kept out of `app/`. Target: home page < 3 MB, artwork page < 1.5 MB, LCP < 2.5 s at 390 px (implemented with a 900 px step as well, see Implementation) | `gulpfile.js` (`img` task), `data.json` image paths |
 | 7.6 | Consent: gtag loads only after "Accept"; banner with "Accept" and "Decline" on every page; Consent Mode v2 defaults `denied`. GA4 numbers drop after this release — record the date | `head.html`, `footer.html`, `analytics.js` |
 | 7.7 | `<html lang="en">` on every page; one `h1` per page | all page templates |
 | 7.8 | Replace Cyrillic `х` with `x` in 25 `dimensions` values; split into numeric `width_cm`, `height_cm` for JSON-LD | `data.json` |
@@ -323,7 +323,69 @@ the old grid plus an "All …" link to the hub; home `h1` "Polina Shvedko Art" w
 pastels & watercolours"; hero poster = the YouTube thumbnail of the video, the video (youtube-nocookie.com) loads on
 click; footer link row with "Cookie settings"; custom 404 page; the old font is replaced by **Jost** (SIL OFL), the
 closest of 20 open-licence candidates, with mapped weights and metrics; the old floating back-to-top button was not
-rebuilt (not part of this ADR).
+rebuilt (not part of this ADR). Artwork `<title>`: the implementation spec turned §2 into a cascade, the first of at
+most 60 characters of `<title> — <medium>, <year> | Polina Shvedko`, `<title> — <medium> | Polina Shvedko`,
+`<title> | Polina Shvedko`, `<title cut at a word>… | Polina Shvedko` (`seo_title` overrides it), so the year goes
+first and then the medium, before the title is shortened: today 12 titles have medium and year, 11 the medium only,
+6 neither, and Cap d'Antibes has its own `seo_title` without them. Owner: say if every title should keep the medium
+(the cascade can try `<title> — <medium>, <year>` without the name suffix first).
+
+Changes after the first review round (2026-10-04), beyond the text of this ADR:
+
+- Structured data: `width`/`height` are `{"@type": "QuantitativeValue", "value": 42, "unitCode": "CMT", "unitText": "cm"}`.
+  Since schema.org 30.0 `Quantity` (the parent of `Distance`) is a data type, and the validator reported the object
+  form `{"@type": "Distance", "name": "42 cm"}` as an unknown field on all 30 artwork pages.
+- Images: on top of 600/1200/1920 px, the photos of artworks with more than one image get 160 and 320 px variants
+  (the 40–60 px gallery thumbnails loaded 600 px files and delayed LCP on phones), and the card images of the wide
+  card get 2560 and 3200 px (the card is drawn up to about 1620 CSS px wide). The `sizes` of every image cropped with
+  `object-fit: cover` (cards, Instagram tiles, thumbnails) is computed from its own aspect ratio, so wide images are
+  no longer upscaled. Touch screens do not download the card hover images.
+- Artwork page: the full-screen view of the old popup (zoom) is back: a click or tap on the main image opens the
+  image as large as the window allows, with previous/next, arrow keys, swipe and close.
+- Hero: after Play, the same button pauses and resumes the video (YouTube IFrame API messages, `enablejsapi=1`), and
+  the poster stays until the player reports that it plays (a blocked player no longer leaves a black hero).
+- Accessibility: a "Skip to content" link, the consent banner first in the reading order, the page keeps room for
+  the open banner (it no longer covers the footer or keyboard focus; the hero play button is handled in the second
+  round, below), card links named by the title, the hero text before the play button in the Tab order, a visible
+  border on Accept in forced colours.
+- Navigation on phones: "Oil" instead of "Oil paintings" below 641 px (the full name stays for screen readers),
+  tighter spacing, the row snaps to link starts and fades at the cut edge, keyboard focus scrolls a link into view.
+- Meta: `max-image-preview:large` on every indexable page; generated artwork descriptions replace a repeated title
+  with "It", end at a sentence when one fits, and never end on "a", "of", "St" and the like.
+- Hosting: one hop also for a folder URL without the trailing slash (and through `http://`/`www.`), for
+  `/blog/cap-dantibes/index.html` and for repeated slashes; `Cache-Control` for the responses Apache sends (CSS/JS one
+  year, images 30 days, pages revalidated). CI runs `npm run test:static` and `images.js --check` before the upload.
+- Build: a mistyped partial or an unknown artwork field stops the build; `gulp clean` refuses a folder that is not a
+  site build; `gulp watch` reloads an edited build script; builds in the root-run dev container keep the
+  repository owner on generated files; `.gitattributes` forces LF (the owner's checkout has `core.autocrlf=true`)
+  and the `?v=` hashes ignore CR; `*.jpeg` in `.gitignore` is anchored to the root, so source photos can be added.
+
+Changes after the second review round (2026-10-04):
+
+- Hero play button: the first-round lift above the open banner was measured from the hero, so in short windows
+  (1366x768 and 1280x800 laptops, landscape phones), where the hero is taller than the window, the button stayed
+  under the banner, and on phones the lifted button sat on the Explore Artworks pill. Now the button sits 30 px above
+  the bottom of the window (also with the banner closed, so short windows show it in the first screen) and above the
+  open banner; on phones it sits at the hero bottom and, while the banner is open, in the top corner of the hero.
+  In split-screen phone windows (about 330-480 px wide, up to 440 px tall) the title reaches that corner, so there the
+  button waits under the open banner; in 961-1060 px windows up to 500 px tall it takes the top corner. Short phone
+  windows keep the pill and the arrow clear of the button with the banner closed. Tested at 21 window sizes with
+  the banner open and 27 with it closed, and in a scan of windows from 280 to 1960 px wide.
+- Images: a 900 px step between 600 and 1200 px for every image (848 variants, `app/img/` 80.5 MiB). Phones at
+  DPR 1.75-2 (Lighthouse's mobile emulation, 2x iPhones) drew a full-width image at 650-750 px and took the 1200 px
+  file; "Blossoms at the Biergarten" had an LCP of 2.6 s in Lighthouse. The widths are no longer part of the image
+  digest, so a new width writes only its own files.
+- Navigation on phones: both edges of the scrolling row fade when they cut a label (left 20 px, right 32 px, also a
+  stronger cue at 375 px); after a swipe to the end no label fragment shows a hard cut next to the logo, and links
+  snap just after the left fade.
+- 404 page: the six links wrap into balanced rows at every width (6, 3 + 3, 2 + 2 + 2, one column).
+- Full-screen view: the dialog takes the focus itself, so the arrow keys after a mouse open draw no focus ring.
+- Hero video: a player that never answers (blocked) is removed after about 10 s and one that reports an error at
+  once, so the button no longer says "Pause the video" over a still poster.
+- Meta descriptions keep the credit after a repeated title ("Inspired by P. Molina, it reveals ..."); sizes and
+  initials keep a no-break space in every visible text (the frame fact, titles with "St.").
+- Build: `gulp clean` accepts the files of `src/static/` and an earlier build of this site (its `sitemap.xml`), so a
+  second private build works after `src/static/` changed; Python caches are ignored by git.
 
 ### Implementation tracker
 
@@ -334,25 +396,25 @@ rebuilt (not part of this ADR).
 | R3 — no e-shop | **Done** — no prices, cart, `Offer` or sales wording (tested); the e-mail CTA is the lead path |
 | R4 — remove the blog | **Done** — `/blog/cap-dantibes/` → 301 to the Cap d'Antibes page, `/blog/**` → 301 `/` |
 | §1 URL structure | **Done** — home, 3 hubs, 30 artworks, `/about/`, `/contact/`, `404.html`; `/imprint/` and `/privacy/` wait for legal text (**owner**) |
-| §2 Artwork page | **Done** — title/description rules, canonical, OG, one `h1`, facts list, full description, all photos as `<picture>` (WebP + JPEG, `alt`, `width`, `height`, lazy after the first), status line, `mailto:` CTA tracked as `contact_click` with `artwork_slug`, prev/next, breadcrumb, `VisualArtwork` + `BreadcrumbList`. Story: **owner** confirms the facts |
+| §2 Artwork page | **Done** — title rule as a cascade (see "Other decisions": 12 of 30 titles carry medium and year), description rule, canonical, OG, one `h1`, facts list, full description, all photos as `<picture>` (WebP + JPEG, `alt`, `width`, `height`, lazy after the first) with a full-screen view, status line, `mailto:` CTA tracked as `contact_click` with `artwork_slug`, prev/next, breadcrumb, `VisualArtwork` (sizes as `QuantitativeValue`) + `BreadcrumbList`. Story: **owner** confirms the facts |
 | §3 Hubs | **Done** — `h1`, intro, all cards, `CollectionPage` + `ItemList` + `BreadcrumbList`; intro texts are drafts (**owner** approves) |
 | §3 Home | **Done** — `h1` with name and media, intro + "More about me", three hub sections, about me, Instagram, contact; video facade |
 | §3 Gallery filter | **Done** — removed |
-| §4 Stylesheet, scripts, font | **Done** — `src/css/site.css` (34 KB, 8 KB gzipped; larger than the 10–15 KB estimate because it reproduces the old design at five breakpoints), five vanilla scripts (15 KB), Jost WOFF2 (27 KB) |
+| §4 Stylesheet, scripts, font | **Done** — `src/css/site.css` (40 KB, 10 KB gzipped; larger than the 10–15 KB estimate because it reproduces the old design at five breakpoints), five vanilla scripts (24 KB with the full-screen view and the video controls), Jost WOFF2 (27 KB) |
 | §5 Shop removal | **Done** |
 | §6 Blog removal | **Done** |
 | 7.1 Page build | **Done** — `scripts/build-site.js` (`gulp pages`), deterministic, fails on bad data |
 | 7.2 No partials on the host | **Done** — no `app/partials/`; `/partials/**` → 410; `lftp mirror --delete` removes the old files |
 | 7.3 Sitemap | **Done** — 36 URLs with `lastmod`; `robots.txt` keeps the `Sitemap:` line |
-| 7.4 `.htaccess` | **Done** — `src/static/.htaccess`, tested on Apache 2.4 (15 cases, one hop each). Plesk switches for requests nginx answers itself: **owner** |
-| 7.5 Images and budgets | **Done** — 89 images → 498 variants; `app/img/` 90 MB → 67 MB, originals no longer deployed. Transfer on load: home 0.73 MB (desktop) / 1.07 MB (390 px), hubs 0.62–1.30 MB, the 30 artwork pages 0.09–0.57 MB; LCP 0.46–0.94 s at 390 px over four runs (DevTools "Fast 4G" profile); CLS 0 on every page |
+| 7.4 `.htaccess` | **Done** — `src/static/.htaccess`, tested on Apache 2.4 with a TLS listener and with `X-Forwarded-Proto` (32 cases each, one hop each, never through `http://`) plus the `Cache-Control` headers. Plesk switches for requests nginx answers itself (redirects, "Expires" for static files): **owner** |
+| 7.5 Images and budgets | **Done** — 89 images → 848 variants (600/900/1200/1920 + 160/320 thumbnails + 2560/3200 for the wide card); `app/img/` 90 MB → 80.5 MiB, originals no longer deployed. Transfer on load: home 0.78 MB (desktop) / 0.54 MB (390 px), hubs 0.66–1.36 MB, the 30 artwork pages 0.11–0.40 MB; home after a full scroll at 390 px 4.7 MB (was 5.5 MB: touch screens no longer load hover images); LCP 0.46–0.75 s at 390 px over three runs (DevTools "Fast 4G" profile), 0.49–0.63 s at Lighthouse's phone emulation (412 px, DPR 1.75; the artwork pages load the 900 px main image); CLS 0 on every page |
 | 7.6 Consent | **Done** — banner with Accept / Decline on every page, Consent Mode v2 defaults denied, GA only after Accept, withdrawal deletes `_ga*`. Banner text: **owner** approves; GA4 annotation of the release date: **owner** |
 | 7.7 `lang` and `h1` | **Done** — `lang="en"`, exactly one `h1` and no skipped heading levels on every page |
 | 7.8 Sizes | **Done** — numeric `width_cm` / `height_cm`; 5 swaps made from the photos need the artist's confirmation (**owner**) |
 | 7.9 `Person` JSON-LD | **Done** — home and about, `sameAs` Instagram, Facebook, LinkedIn, Etsy |
-| §8 Data model | **Done** — refined: `images[]` keep their file extensions and carry `alt`; `story` became `story_html` + `story_confirmed` |
-| Verification | **Done** — `npm test`: 118 static, 104 browser, 15 Apache checks pass; html-validate passes; the build is byte-identical from a clean `npm ci` |
-| Phase 7 — Rich Results Test | **After the release** — the build validates every JSON-LD block and the tests check the types; Google's Rich Results Test needs the live URLs |
+| §8 Data model | **Done** — refined: `images[]` keep their file extensions and carry `alt`; `story` became `story_html` + `story_confirmed` (the story's images are the `<img>` tags in it); `col_class` became `card` (`wide` / `standard`), `preview1`/`preview2` became `preview` / `preview_hover` (+ optional `preview_alt` / `preview_hover_alt` when a crop shows something else than its source photo); added `surface`, `frame`, `seo_title`, `seo_description`, `updated`. The build fails on any other artwork field |
+| Verification | **Done** — `npm test`: 142 static, 163 browser, 65 Apache checks pass (second review round; browser suite run twice); html-validate passes; the build is byte-identical on rebuilds and from a checkout with `core.autocrlf=true` |
+| Phase 7 — structured data validation | **Done for schema.org** — validator.schema.org on the built home, hub, two artwork, about and contact pages (2026-10-04): 0 errors, 0 warnings. Google's Rich Results Test also takes pasted code (Code tab) before the release, but it asks for a Google login: **owner** (of these types only `BreadcrumbList` is a Google rich result; `VisualArtwork` is not) |
 | Phase 8 — release | **Owner** — merge to `main` (= deploy) after approval, then re-run the browser checks against the live site |
 | Phase 9 — measure | **Owner** — `/seo-report` three weeks after the release |
 
@@ -393,9 +455,18 @@ rebuilt (not part of this ADR).
 
 1. In Plesk (Hosting Settings): enable "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and set "Preferred
    domain" to `polina-shvedko.art`. The `.htaccess` rules do the same for requests that reach Apache; these
-   switches also cover files that nginx serves directly.
-2. The steps in "Owner actions outside the repository" above (sitemap, indexing requests, `contact_click` as key
+   switches also cover files that nginx serves directly. Under "Apache & nginx Settings", set "Expires" for static
+   files (for example 30 days): nginx serves CSS, JS and images without asking Apache, so the `Cache-Control` lines in
+   `.htaccess` reach the browser only for what Apache serves.
+2. Once, in the main checkout after the merge (it has `core.autocrlf=true`; `.gitattributes` now asks for LF), with
+   a clean working tree only: `git reset --hard` discards every uncommitted change to tracked files, so commit or
+   `git stash -u` first. Then `git rm -r --cached . && git reset --hard` (and `git stash pop` if you stashed), so the
+   working files get LF and local builds equal CI. If the dev container already left root-owned files:
+   `sudo chown -R "$(id -u):$(id -g)" app src/img`.
+3. Paste the built HTML of one page per type into Google's Rich Results Test (Code tab; needs a Google login) and
+   note the result in the tracker.
+4. The steps in "Owner actions outside the repository" above (sitemap, indexing requests, `contact_click` as key
    event, annotations, bot filter); also register `link_location` and `artwork_slug` as event-scoped custom
    dimensions in GA4.
-3. After the deploy, check the live site: `http://`, `www.`, `/index.html`, `/blog/`, `/blog/cap-dantibes/` answer
+5. After the deploy, check the live site: `http://`, `www.`, `/index.html`, `/blog/`, `/blog/cap-dantibes/` answer
    one 301 each, `/partials/head.html` answers 410.

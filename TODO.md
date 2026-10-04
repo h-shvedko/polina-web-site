@@ -21,11 +21,19 @@ cart), no blog. Items below that mention the old popup, cart or prices are histo
 - [ ] **Unused source images** — 13 files in `src/img/` are not referenced (listed in the ADR-0003 tracker); delete
   them or keep them.
 - [ ] **Back-to-top button** — the old floating button is not in the rebuild; re-add it only if wanted.
+- [ ] **Artwork titles** — 12 of the 30 `<title>`s carry medium and year, 11 only the medium, 7 neither (the rule
+  drops the year, then the medium, to stay within 60 characters). Say if every title should keep the medium.
+- [ ] **Rich Results Test** — paste the built HTML of one page per type into Google's Rich Results Test (Code tab;
+  needs a Google login). validator.schema.org already reports 0 errors and 0 warnings.
 
 ## Open — after the release (owner)
 
 - [ ] Plesk: enable "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and set "Preferred domain" to
-  `polina-shvedko.art`.
+  `polina-shvedko.art`; under "Apache & nginx Settings" set "Expires" for static files (e.g. 30 days).
+- [ ] Main checkout, once after the merge, with a clean working tree only (`git reset --hard` discards every
+  uncommitted change to tracked files: commit or `git stash -u` first): `git rm -r --cached . && git reset --hard`
+  (LF line endings; the checkout has `core.autocrlf=true`), then `git stash pop` if you stashed; and
+  `sudo chown -R "$(id -u):$(id -g)" app src/img` if the dev container left root-owned files.
 - [ ] Search Console: submit `https://polina-shvedko.art/sitemap.xml`; request indexing for `/` and the three hubs.
 - [ ] GA4: mark `contact_click` as a key event; unmark `purchase_inquiry` / `cart_order`; register the event
   parameters `link_location` and `artwork_slug` as custom dimensions; annotate the release date (GA4 numbers drop
@@ -48,7 +56,10 @@ cart), no blog. Items below that mention the old popup, cart or prices are histo
 - [x] Inquire button in the artwork popup — replaced by the "Ask about this work" button on each artwork page.
 - [x] Gallery filter (available / sold) — removed by ADR-0003; the hub pages replace it.
 - [x] Artwork year in `data.json`, shown on the artwork page.
-- [x] `og:image` — every page has its own (absolute 1200 px JPEG).
+- [x] `og:image` — every indexable page has one (absolute JPEG URL: the 1200 px variant, or the original width
+  when it is narrower). Each hub uses the main image of its first artwork (so it shares the `og:image` with that
+  artwork page); home uses `site.images.og_default`, the Cap d'Antibes photo, so home, the oil hub and that page
+  share one image.
 - [x] Prices and the cart currency — obsolete: ADR-0003 removed prices and the cart.
 - [x] Footer copyright year — now taken from `site.lastmod` in `data.json`.
 - [x] "I'm a freelance artist" grammar fix in About me.

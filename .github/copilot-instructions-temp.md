@@ -32,9 +32,11 @@ docker-compose up -d
 - `scripts/build-site.js` renders `src/templates/pages/*.mustache` (home, hub, artwork, about, contact, 404, legal)
   with the partials in `src/templates/partials/*.mustache` and writes `app/**/index.html` and `app/sitemap.xml`.
   It stops with an error on a missing image variant, a duplicate slug, a title over 60 characters, a meta
-  description outside 120-155 characters or invalid JSON-LD.
-- `scripts/images.js` writes WebP and JPEG variants (600/1200/1920 px) of every image that `data.json` references
-  into `app/img/` and records them in `src/img/manifest.json`. Templates use only manifest images, in `<picture>`.
+  description outside 120-155 characters, invalid JSON-LD, an artwork field the build does not read (a typo or a
+  leftover such as `notes`) or an unknown `{{> partial}}`.
+- `scripts/images.js` writes WebP and JPEG variants (600/900/1200/1920 px, plus 160/320 for gallery thumbnails and
+  2560/3200 for the wide card) of every image that `data.json` references into `app/img/` and records them in
+  `src/img/manifest.json`. Templates use only manifest images, in `<picture>`.
 - `src/css/site.css` is the only stylesheet (BEM class names; self-hosted Jost font in `src/css/webfonts/jost/`).
 - `src/js/`: `consent.js` (cookie banner; Google Analytics loads only after Accept), `analytics.js`
   (`contact_click`, `hero_video_play`), `nav.js` (sticky nav), `hero.js` (video on click), `artwork.js`
@@ -58,5 +60,6 @@ docker-compose up -d
 
 ## Deployment
 
-A push to `main` runs `.github/workflows/deploy.yml`: `npm ci --legacy-peer-deps`, `npx gulp build:site`, then an
-SFTP mirror of `app/` to the Plesk host (files missing from `app/` are deleted on the server).
+A push to `main` runs `.github/workflows/deploy.yml`: `npm ci --legacy-peer-deps`, `npx gulp build:site`, then
+`npm run test:static && node scripts/images.js --check` (a failure stops the deploy), then an SFTP mirror of `app/`
+to the Plesk host (files missing from `app/` are deleted on the server).

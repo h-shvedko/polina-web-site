@@ -18,7 +18,8 @@ text is a focus for this run (for example "only indexing" or "compare with last 
   `scripts/build-site.js` renders the Mustache templates in `src/templates/pages/` and `src/templates/partials/`
   with `data.json` into `app/` (`npx gulp build:site`); `scripts/images.js` writes the WebP/JPEG variants and
   `src/img/manifest.json`. See `CLAUDE.md`.
-- **Deploy:** push to `main` runs `.github/workflows/deploy.yml`. It builds and mirrors `app/`
+- **Deploy:** push to `main` runs `.github/workflows/deploy.yml`. It builds, runs the static checks
+  (`npm run test:static && node scripts/images.js --check`; a failure stops the deploy) and mirrors `app/`
   to the host over SFTP (files missing from `app/` are deleted on the host). A push to `main` is a production deploy.
 - **Domain:** `https://polina-shvedko.art` (`site.url` in `data.json`; canonical and Open Graph tags on every page,
   `app/sitemap.xml`, `app/robots.txt` from `src/static/robots.txt`). The host answers 403 to the Python-urllib user agent.
