@@ -1,12 +1,17 @@
 /*
  * hero.js: video facade of the home hero (ADR-0003, SPEC section 9). Nothing is requested from YouTube before
  * the click. Activating button.hero__play (mouse, touch, Enter or Space) inserts the youtube-nocookie.com player
- * (autoplay, muted, loop, no controls) as iframe.hero__video over the poster and sends hero_video_play
- * (analytics.js, only with consent).
+ * (autoplay, muted, loop, no controls) as iframe.hero__video in div.hero__player over the poster and sends
+ * hero_video_play (analytics.js, only with consent). site.css sizes the player from div.hero__player (a size
+ * container as large as the hero), so the video covers the hero and the player's own title bar and logo lie
+ * outside it.
  * The poster stays below the player, which is transparent until it reports that it plays (YouTube IFrame API
- * messages, enablejsapi=1): a blocked or failed player leaves the poster, not a black hero. A player that never
- * answers (blocked by a content blocker or a firewall, offline) is removed again after about 10 s, and one that
- * reports an error at once, so the button never says "Pause the video" over a still poster.
+ * messages, enablejsapi=1): a blocked or failed player leaves the poster, not a black hero. A player is removed
+ * again, so the button never says "Pause the video" over a still poster, when
+ *   - its page never loads, after 20 s: a content blocker, a firewall or no connection (Firefox and Safari fire
+ *     no load event then, and a dropped connection keeps Chromium waiting for minutes);
+ *   - its page loaded but the player never answers, after about 10 s;
+ *   - it reports an error, at once.
  * The same button then stops the motion: "Pause the video" (pauseVideo; before the player plays, the player is
  * removed again) and "Play the video" (playVideo). Focus stays on the button.
  */
@@ -19,9 +24,12 @@
   var id = button && button.getAttribute('data-youtube-id');
   if (!button || !media || !id) return;
 
+  var LOAD_TIMEOUT = 20000; // ms for the player page to load before the player is removed (see above)
+  var player = null; // div.hero__player around the iframe
   var frame = null;
   var state = 'idle'; // idle -> loading -> playing <-> paused; loading -> idle (stopped before it played)
   var asking = null; // interval that asks the player for its state until it answers
+  var waiting = null; // timeout that removes a player whose page never loads
 
   function set(next) {
     state = next;
@@ -40,10 +48,17 @@
     asking = null;
   }
 
+  function stopWaiting() {
+    if (waiting) clearTimeout(waiting);
+    waiting = null;
+  }
+
   /* The IFrame API protocol: after "listening", the player posts its state (infoDelivery / onStateChange). Any
-     answer stops the asking; no answer after 40 tries (about 10 s): there is no player, so it is removed. */
+     answer stops the asking; no answer after 40 tries (about 10 s): there is no player, so it is removed.
+     Runs when the player page has loaded (the load event), which also ends the wait for the page. */
   function listen() {
     var tries = 0;
+    stopWaiting();
     stopAsking();
     send({ event: 'listening', id: 1, channel: 'widget' });
     asking = setInterval(function () {
@@ -59,6 +74,7 @@
       try { data = JSON.parse(data); } catch (err) { return; }
     }
     if (!data || typeof data !== 'object') return;
+    stopWaiting();
     stopAsking();
     if (data.event === 'onError') { // the video cannot play here (removed, not embeddable, player error)
       remove();
@@ -70,6 +86,8 @@
 
   function start() {
     var vid = encodeURIComponent(id);
+    player = document.createElement('div');
+    player.className = 'hero__player';
     frame = document.createElement('iframe');
     frame.className = 'hero__video';
     frame.title = 'Polina Shvedko Art video';
@@ -79,15 +97,19 @@
     frame.src = ORIGIN + '/embed/' + vid + '?autoplay=1&mute=1&loop=1&playlist=' + vid +
       '&controls=0&playsinline=1&rel=0&enablejsapi=1&origin=' + encodeURIComponent(window.location.origin);
     frame.addEventListener('load', listen);
+    player.appendChild(frame);
     var poster = media.querySelector('.hero__poster');
-    media.insertBefore(frame, poster ? poster.nextSibling : media.firstChild);
+    media.insertBefore(player, poster ? poster.nextSibling : media.firstChild);
     set('loading');
+    waiting = setTimeout(remove, LOAD_TIMEOUT); // the page never loaded: no load event, no answer
     if (window.siteAnalytics) window.siteAnalytics.track('hero_video_play', { video_id: id });
   }
 
   function remove() {
+    stopWaiting();
     stopAsking();
-    if (frame && frame.parentNode) frame.parentNode.removeChild(frame);
+    if (player && player.parentNode) player.parentNode.removeChild(player);
+    player = null;
     frame = null;
     set('idle');
   }
