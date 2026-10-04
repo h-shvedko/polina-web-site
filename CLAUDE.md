@@ -6,8 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Portfolio website of Polina Shvedko, an artist from Germany: oil paintings, pastels and watercolours.
 Plain static HTML generated from `data.json` by Node scripts run from Gulp 4 (Mustache templates, `sharp` for
-images). One indexable page per artwork under three medium hubs, plus home, about, contact and a 404 page. No
-framework, no shop (no prices, no cart), no blog. The architecture is described in
+images). One indexable page per artwork under three medium hubs, plus home, about, contact, imprint, privacy and a
+404 page, each in English (at the root) and German (below `/de/`, texts from `data.de.json`). No framework, no shop
+(no prices, no cart), no blog. The architecture is described in
 `ADR/ADR0003-seo-rebuild-artwork-pages.md`; ADR-0001 and ADR-0002 are history.
 
 A push to `main` is a production deploy (`.github/workflows/deploy.yml`). Work on a branch.
@@ -55,7 +56,7 @@ runs as root on a bind mount; the build scripts give what they write the owner o
 | `LIVERELOAD_PORT` | `gulp watch` | livereload port (default 35729, mapped by docker-compose) |
 | `PORT` | `scripts/serve.js` | port when `--port` is not given (default 7001) |
 | `SCREEN_DIR` | browser tests | screenshots, `performance.json`, `axe-warnings.json` (default `<os tmpdir>/polina-shvedko-screens/<timestamp>`) |
-| `BROWSER_PAGES=all` | browser tests | visit all 36 pages at both viewports in the page-load test (default: one page per type) |
+| `BROWSER_PAGES=all` | browser tests | visit all 76 pages (both languages) at both viewports in the page-load test (default: one page per type) |
 | `LCP_NETWORK` | browser tests | `fast4g` (default, DevTools "Fast 4G"), `slow4g` (Lighthouse-like) or `none` |
 | `APACHE_IMAGE` | apache test | Docker image (default `httpd:2.4`) |
 | `PLAYWRIGHT_IMAGE` | browser tests (`engines.test.js`) | Docker image for Firefox and WebKit (default `mcr.microsoft.com/playwright:v<installed Playwright version>-noble`, i.e. `v1.63.0-noble`; Linux with Docker host networking; the tests skip with a message when Docker or the image is missing) |
@@ -81,11 +82,12 @@ anything but the dev server.
 | `img` | `scripts/images.js`: WebP/JPEG variants into `app/img/` + `src/img/manifest.json` |
 | `build:site` | `clean` → parallel(`css`, `fonts`, `js`, `static`) → `pages` |
 | `build` | `img` → `build:site` |
-| `watch` | `build:site`, then watch `src/css`, `src/js`, `src/templates`, `src/static`, `data.json`, `src/img/manifest.json` and `scripts/build-site.js` (polling, works in Docker; the build script is loaded again on every rebuild) |
+| `watch` | `build:site`, then watch `src/css`, `src/js`, `src/templates`, `src/static`, `data.json`, `data.de.json`, `src/img/manifest.json` and `scripts/build-site.js` (polling, works in Docker; the build script is loaded again on every rebuild) |
 | `server` / `default` | dev server for `app/` / `watch` then `server` |
 
-`scripts/build-site.js` (CommonJS, `build({ root, outDir })`, also a CLI) loads `data.json` and
-`src/img/manifest.json`, builds the view models, renders `src/templates/pages/*.mustache` with the partials in
+`scripts/build-site.js` (CommonJS, `build({ root, outDir })`, also a CLI) loads `data.json`, `data.de.json` and
+`src/img/manifest.json`, builds the view models once per language (`createContext(..., lang)`; `localizeData()` puts
+the German texts into a copy of `data.json` and throws when one is missing), renders `src/templates/pages/*.mustache` with the partials in
 `src/templates/partials/*.mustache` and writes the pages and `sitemap.xml`. It writes a file only when its content
 changes, and the output is deterministic (byte-identical on every machine; no timestamps; templates are read with LF
 and the `?v=` hashes ignore CR, so a CRLF checkout builds the same bytes). It **throws** (exit 1) on: a missing
@@ -96,7 +98,9 @@ meta description outside 120–155 characters, invalid JSON-LD, a missing templa
 `SIZES` / `COVER_BOXES` / `ARTWORK_BOX` (the `sizes` attributes; change them together with the layout in
 `site.css`; for images cropped with `object-fit: cover` the box width is multiplied by the image's own aspect ratio,
 see `coverSizes()`), `ARTWORK_FIELDS` (the artwork data model), `SITE_IMAGE_ALT`, `CONSENT_TEXT`, `SOCIAL_ORDER`,
-`MOSAIC_TILES`, `LEGAL`, the `NOSCRIPT_*` styles (pages without JavaScript).
+`MOSAIC_TILES`, `LEGAL` (meta per language), `I18N` (per language: every interface string of the templates as `t`,
+status texts, site image alts, consent text, number format, `og:locale`), the `NOSCRIPT_*` styles (pages without
+JavaScript).
 
 - CSS and JS URLs carry a content hash (`/css/site.css?v=<8 hex>`), computed from `src/`.
 - All asset URLs are root-relative (`/img/...`); the 404 page works at any path.
@@ -111,8 +115,21 @@ see `coverSizes()`), `ARTWORK_FIELDS` (the artwork data model), `SITE_IMAGE_ALT`
 | Hub | `app/<hub.path>/index.html` | `/oil-paintings/`, `/pastels/`, `/watercolours/` |
 | Artwork | `app/<hub.path>/<slug>/index.html` | `/oil-paintings/affectionate-farewell-cap-dantibes/` |
 | About / Contact | `app/about/index.html`, `app/contact/index.html` | `/about/`, `/contact/` |
-| Imprint / Privacy | `app/imprint/`, `app/privacy/` | only when `legal.imprint_html` / `legal.privacy_html` is set (today both are `null`) |
+| Imprint / Privacy | `app/imprint/`, `app/privacy/` | `/imprint/`, `/privacy/`: only when `legal.imprint_html` / `legal.privacy_html` is set in both `data.json` and `data.de.json` (one language only stops the build) |
 | 404 | `app/404.html` | Apache `ErrorDocument`; `noindex`, no canonical, not in the sitemap |
+| German | `app/de/...` | the same paths below `/de/`: `/de/`, `/de/oil-paintings/<slug>/`, `/de/about/`, `/de/contact/`, `/de/imprint/`, `/de/privacy/`, `/de/404.html` (the `ErrorDocument` for `/de/*`) |
+
+Languages (decision): German pages keep the English folder names and slugs, so a page and its pair differ only by
+the `/de` prefix (stable URLs, one rule for the language switch, hreflang and the sitemap). Every indexable page has
+`<html lang>`, a canonical of its own language, `<link rel="alternate" hreflang>` for `en`, `de` and `x-default`
+(= English), `og:locale` + `og:locale:alternate`; the sitemap lists every URL with the same three `xhtml:link`
+alternates. 404 pages have no hreflang. The nav has the language switch: `ul.site-nav__langs` with one inline SVG
+flag link per language (`aria-label` "English" / "Deutsch", `hreflang`, `lang`, `aria-current="true"` on the current
+one), to the same page in the other language (404: its home); up to 680 px it is hidden and the flag of the other
+language is the last item of the scrolling link row (`li.site-nav__item--lang`). German artwork titles are natural
+German titles (proper and place names kept: Hortensien, Cala Secreta, St. Albani, Göttingen); German sizes use the
+decimal comma. JSON-LD: `inLanguage` per page (`WebSite`: `["en","de"]`); the German `VisualArtwork` keeps the
+English page's `@id` (one artwork), `Person` keeps one `@id` and url.
 
 Canonical = `https://polina-shvedko.art` + path with a trailing slash. Every indexable page has `lang="en"`, one `h1`
 (inside `<main id="main">`), a unique `<title>` (≤ 60 characters), a meta description (120–155),
@@ -127,10 +144,11 @@ home `WebSite` + `Person` (`https://polina-shvedko.art/#person`, `sameAs` = the 
 `QuantitativeValue` with `unitCode` `CMT`, because schema.org 30.0 made `Distance` a text type) + `BreadcrumbList`;
 about `AboutPage`; contact `ContactPage`. The 404 page has `noindex` and no canonical, Open Graph or JSON-LD.
 
-Artwork `<title>`: the first candidate of at most 60 characters of `<title> — <medium_label>, <year> | Polina Shvedko`,
-`<title> — <medium_label> | Polina Shvedko`, `<title> | Polina Shvedko`, `<title cut at a word>… | Polina Shvedko`,
+Artwork `<title>`: the first candidate of at most 60 characters of `<title> - <medium_label>, <year> | Polina Shvedko`,
+`<title> - <medium_label> | Polina Shvedko`, `<title> | Polina Shvedko`, `<title cut at a word>… | Polina Shvedko`,
 unless `seo_title` is set (12 of the 30 titles carry medium and year today). Meta description (unless
-`seo_description`): `<title>, <medium> by Polina Shvedko (<year>), <w> × <h> cm. <first description paragraph>`; a
+`seo_description`): `<title>, <medium> by Polina Shvedko (<year>), <w> × <h> cm. <first description paragraph>`
+(German: `<title>, <medium> von Polina Shvedko (<year>), <w> × <h> cm. <first paragraph>`, no "It" rule); a
 paragraph that opens with the title again starts with "It" instead, and a credit after the title stays as the artist
 wrote it (`"Title" (Inspired by P. Molina) captures ...` -> `Inspired by P. Molina, it captures ...`). Fitted
 to ≤ 155 at the last sentence end that keeps ≥ 120, else cut at a word with "…" (never after "a", "of", "St" and the
@@ -163,7 +181,11 @@ changes; `&times;`, `&nbsp;` and line breaks count) — a static test scans ever
   CTA), optional `seo_title`, `seo_description`, `updated` (`YYYY-MM-DD`, sitemap `lastmod`). Any other artwork field
   fails the build (`ARTWORK_FIELDS` in `scripts/build-site.js`).
 - `socialmedia_images[]` (`src`, `alt`): the first five fill the Instagram mosaic on home.
-- `legal`: `imprint_html`, `privacy_html` (`null` = page not generated, not linked, not in the sitemap). The HTML is
+- `legal`: `_note`, `imprint_html`, `privacy_html` (`null` = page not generated, not linked, not in the sitemap). Today
+  both are set with a **template** (Impressum per § 5 DDG with address placeholders in `[brackets]`, privacy policy
+  per DSGVO: hosting at checkdomain, consent choice, GA4 only after consent, the YouTube video that loads on page
+  load, e-mail, rights) that the owner must verify; it is not legal advice. The German text (`data.de.json`) is the
+  binding one, the English one says so. Footer and consent banner link both pages. The HTML is
   placed below the page `h1` as written (generated legal texts can be pasted; `normalizeHtml()` turns generator markup
   such as `<br />`, inline `style`, `<a name>` and blanks at line ends into the site's markup style, and
   `target="_blank"` links get `rel="noopener"`; the same applies to `story_html`), except that its headings move so the
@@ -173,8 +195,18 @@ changes; `&times;`, `&nbsp;` and line breaks count) — a static test scans ever
 
 Slug rule: lowercase; `ä→ae ö→oe ü→ue ß→ss`; other accents stripped; apostrophes removed; a trailing
 `, France` / `, Spain` / `, Germany` dropped; every other run of characters → `-`.
-Alt texts: main image `<title> — <medium> by Polina Shvedko`; further images describe what the photo shows
-(`<title> — framed`, `— detail 2`, ...).
+Alt texts: main image `<title>, <medium> by Polina Shvedko`; further images describe what the photo shows
+(`<title>, framed`, `, detail 2`, ...). German: `<Titel>, <Technik> von Polina Shvedko`, `<Titel>, Detail 2`.
+
+`data.de.json` (German pages): `site` (`seo_title`, `seo_description`), `pages.about` / `pages.contact`, `hubs.<key>`
+(`label`, `section_heading`, `h1`, `all_link`, `medium_label`, `seo_title`, `seo_description`, `intro[]`),
+`artworks.<slug>` (`title`, `medium`, `frame` when the English one is set, `description[]` with the same paragraph
+count, `images_alt[]` one per image, `preview_alt` / `preview_hover_alt` when set in English, optional `seo_title`,
+`seo_description`, `story_html` needed when `story_confirmed`), `socialmedia_alt` (by `src`), `legal`. A new
+artwork needs its German entry, or the build stops.
+
+No long dashes: no U+2013/U+2014 (or `&ndash;` / `&mdash;`) in any visible text or meta (data, templates, build
+strings); use " - ", a colon or a comma. A static test scans the built HTML and the sources.
 
 **Adding an artwork:** put the photos into `src/img/gallery/`, add the artwork object to its hub in `data.json`
 (new unique `slug`), run `npm run image` (writes the variants and the manifest), then `npm run build:site` and
@@ -210,6 +242,8 @@ checks that no referenced source photo is ignored and that those generated files
 - `partials/`: `head`, `nav`, `foot`, `footer`, `consent`, `breadcrumb`, `picture` (one manifest image), `card`,
   `hero`, `intro`, `gallery`, `about-me`, `instagram`, `contact`, `icon-*` (inline SVG). Partials are referenced by
   name (`{{> card}}`), no paths; an unknown name stops the build.
+- Interface text comes from `t` (`I18N[lang].t` in `build-site.js`), never written into a template, so both
+  languages stay complete (`{{t.skip}}`, `{{t.explore}}`, ...).
 - Use `{{var}}` for text (the build's escaper keeps `/` readable) and `{{{var}}}` only for HTML the build produced
   (JSON-LD, `story_html`, `legal`). Never put Mustache tags inside a `{{! }}` comment: the first `}}` ends it.
 - Class names are BEM (`card__title`, `artwork__thumb`). Hooks that JS and tests rely on: `#site-nav`
@@ -219,7 +253,8 @@ checks that no referenced source photo is ignored and that those generated files
   `dialog#artwork-zoom` (full-screen view), `a.skip-link`, `#cookie-consent`, `#cookie-accept`, `#cookie-decline`,
   `#cookie-settings` (in `li.site-footer__item--settings`), `[data-track="contact"][data-location]` (`hero`, `intro`,
   `artwork`, `contact`, `footer`, `imprint`, `privacy`; + `data-artwork-slug` on artwork pages), and what `hero.js`
-  inserts: `div.hero__player > iframe.hero__video`. `tests/static/markup-contract.test.js` lists them all.
+  inserts: `div.hero__player > iframe.hero__video`, its labels `data-label-play` / `data-label-pause` /
+  `data-video-title`; the language switch `ul.site-nav__langs a.site-nav__lang` and `li.site-nav__item--lang`. `tests/static/markup-contract.test.js` lists them all.
 
 ### CSS and font
 
@@ -229,7 +264,7 @@ swap, pills, sticky nav, hero, cookie bar, footer) with the old breakpoints (≥
 weights are mapped (300/375/425/485/565 for the old 300/400/500/600/700) and the vertical metrics overridden. Every
 `*.woff2` in `src/css/webfonts/` is preloaded by the build, so do not add unused fonts. Keep `[hidden]` rules for
 `.cookie-consent`, the artwork slides and the prev/next buttons (author `display` rules override the attribute).
-Additions to the old look: the open consent banner reserves its height (`html.consent-open`, `--consent-h`) at the
+Additions to the old look: the nav row is as wide as the page content (`.site-nav__inner` takes `--content-w`, the gallery grid width of each band, 20 px side margins up to 640 px), so the logo and the last item line up with the grid edges; the open consent banner reserves its height (`html.consent-open`, `--consent-h`) at the
 page end; the hero play button (new) sits 30 px above the bottom of the window, also when a short window makes the
 hero taller, and above the open banner; on phones it sits at the hero bottom and, while the banner is open, in the
 top corner of the hero, except in split-screen phone windows (326-479 px wide, up to 440 px tall), where it stays at
@@ -260,13 +295,21 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   nav row that cuts a label gets `site-nav__links--more-start` (left) or `site-nav__links--more-end` (right), and
   `site.css` fades it; a link that gets keyboard focus (not a mouse or touch press) while cut off or under a fade
   scrolls to the row start, just after the left fade.
-- `hero.js` (home): the play button inserts the `youtube-nocookie.com` player (`div.hero__player > iframe.hero__video`)
-  over the poster (no YouTube request before the click; `enablejsapi=1`). The player stays transparent until it
+- `hero.js` (home): the `youtube-nocookie.com` player (`div.hero__player > iframe.hero__video`, autoplay, muted,
+  loop, no controls, `enablejsapi=1`) is inserted over the poster **on page load**, except with
+  `prefers-reduced-motion: reduce` (then it waits for Play). The privacy policy says so. Only a start by the button
+  sends `hero_video_play`. The button pauses and resumes it (WCAG 2.2.2); its labels come from `data-label-*`. The player stays transparent until it
   reports that it plays (IFrame API messages), so a blocked player leaves the poster; the same button then pauses and
   resumes it (`pauseVideo` / `playVideo`; before the player plays, it removes the player again). The player is removed
   and the button reads "Play the video" again when its page never loads (20 s, 60 s on a connection the browser
   reports as 2G: a content blocker, a firewall or no connection; Firefox and Safari send no load event then), when its page loaded but it never answers (about 10 s), or
   at once when it reports an error.
+- Motion (none with `prefers-reduced-motion: reduce`): `site.css` opts into cross-document view transitions
+  (`@view-transition { navigation: auto }`, the nav named `site-nav`, the shown artwork image `artwork-image`);
+  `nav.js` names the clicked card image `artwork-image` on `pageswap` (and the card of the artwork just seen on
+  `pagereveal`), scrolls in-page links smoothly (also in Safari), and fades lazy images in when they load (Web
+  Animations, so no CSS transition runs while a page loads); `artwork.js` fades the new image in when it switches,
+  also in the full-screen view, which itself fades in. Opacity only: no layout shift.
 - `artwork.js` (artwork pages): thumbnails, prev/next, arrow keys and swipe switch the main image; `button.artwork__zoom`
   (over the main image, shown by the script) opens `dialog#artwork-zoom`: the current image with `sizes="100vw"`,
   previous/next, arrow keys, swipe, Escape / cross / click beside the image to close; the page then shows the image
@@ -288,7 +331,8 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   and `www.`, instead of mod_dir's second hop); repeated slashes → 301 to one slash; `www` → apex and `http` →
   `https` (also via `X-Forwarded-Proto`), each in one hop. `Cache-Control` for what Apache serves: CSS/JS one year
   `immutable` (their URLs carry `?v=<hash>`), the font one year (give a changed font a new file name), images 30 days,
-  HTML/XML/TXT `no-cache`. No Plesk setting is needed for this. Keep "Serve static files directly by nginx" off: with
+  HTML/XML/TXT `no-cache`. `/de/*` gets `ErrorDocument 404 /de/404.html` (an `<If>` block); `scripts/serve.js`
+  does the same. No Plesk setting is needed for this. Keep "Serve static files directly by nginx" off: with
   its default extension list (it includes htm, html and txt) nginx would answer `/index.html` and `/<dir>/index.html`
   with 200 instead of the tested 301, and its own headers would replace the `Cache-Control` above; if it is ever
   turned on, remove htm, html and txt from the list and set "Expires" for the remaining static files. The Plesk
@@ -306,7 +350,9 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   photo ignored by git, generated caches ignored, `.gitattributes`: LF, binary images and fonts, `*.mp4` in Git LFS),
   hosting files, build determinism, the markup contract (incl. reading order, card link names, no-JS styles, the
   full-screen view, no breaking space in a visible size or after an initial), meta descriptions that keep a credit,
-  `build.test.js` (a mistyped partial or an unknown field stops the build, the text helpers, the owner steps "confirm
+  `i18n.test.js` (every page in both languages, hreflang and canonical, sitemap alternates, the language switch,
+  German texts on German pages, decimal comma, no long dashes in the built HTML and the sources),
+  `build.test.js` (a mistyped partial or an unknown field stops the build, a missing German text stops it, the text helpers, the owner steps "confirm
   the story" and "add the legal texts" with sample texts: no breaking space, one `h1`, no skipped heading level,
   tracked `mailto:` links; CRLF checkouts build the same bytes, file ownership as root, `gulp clean` safety, a second
   private build after `src/static/` changed, `gulp watch` reloading the build script), `tools.test.js`
@@ -316,7 +362,11 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   non-local request is blocked and recorded): page loads without errors or third-party requests, consent, navigation
   and the image gallery, contact tracking, hero facade (with stand-in players for the play/pause messages and for an
   error; a player whose page loads but never answers is removed after about 10 s, one whose page never loads after
-  about 20 s, or 60 s on a 2G connection), full-screen view (also: no focus ring on the cross while browsing with the arrow keys), 390 px layout
+  about 20 s, or 60 s on a 2G connection; these run with reduced motion, where Play starts the player; the
+  autoplay on load, its German labels and that it sends no `hero_video_play` are tested without),
+  `motion.test.js` (smooth in-page scrolling, view transition names, image fades, all off with reduced motion; the
+  language switch on desktop and phone; the German 404 page), the nav row aligned with the content (logo and last
+  item at the grid edges, ±2 px, 390-1920 px), full-screen view (also: no focus ring on the cross while browsing with the arrow keys), 390 px layout
   (no horizontal scroll, tap targets ≥ 24 px, text ≥ 12 px), `layout.test.js` (the open banner hides neither content
   nor focus, the hero play button at common and short window sizes with the banner open and closed and at
   split-screen sizes with it closed, both edges of the nav row on phones after a swipe and with keyboard focus, hero
@@ -361,7 +411,8 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   go to Git LFS, as the owner set up). A checkout made with `core.autocrlf=true` before that rule is refreshed once,
   with a clean working tree only: `git reset --hard` discards every uncommitted change to tracked files, so commit or
   `git stash -u` first, then `git rm -r --cached . && git reset --hard` (then `git stash pop` if you stashed).
-- All visible text is English; no Cyrillic characters anywhere (a test checks it).
+- Visible text is English at the root and German below `/de/` (natural German, `Sie`); no Cyrillic characters
+  anywhere and no long dashes (tests check both).
 - No sales wording: no prices, `€`, "buy", "shop", "cart", "checkout", "sold", delivery or commission claims (tests
   check `app/`). The only lead path is e-mail (`mailto:` links tracked as `contact_click`). The Etsy profile link stays.
 - Meta texts: titles ≤ 60 characters, descriptions 120–155, unique.
