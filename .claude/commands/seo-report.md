@@ -69,7 +69,10 @@ text is a focus for this run (for example "only indexing" or "compare with last 
    It saves `~/.local/state/polina-shvedko.art-seo/<date>-<days>d.json` and prints the change
    against the previous run with the same period. New pages in `data.json` are picked up automatically;
    add retired URLs to `RETIRED_PAGES` in the script.
-2. For questions the script does not answer, call the same APIs with its `token()`/`call()`.
+2. For questions the script does not answer, call the same APIs with its `token()`/`call()`. Importing the script runs
+   nothing (only `python3 scripts/seo-report.py` runs the report); the file name has a hyphen, so load it with
+   `importlib.util.spec_from_file_location('seo_report', 'scripts/seo-report.py')` in `python3 -B` (no bytecode
+   cache in `scripts/`); `call(url, body)` fetches the token on its first use.
    URL inspection allows 2,000 calls a day.
 3. Separate real traffic from bots: zero engagement, 0-3 s sessions, night bursts of new Direct
    sessions, countries outside the target market. Report the target-market segment on its own.

@@ -380,12 +380,50 @@ Changes after the second review round (2026-10-04):
   snap just after the left fade.
 - 404 page: the six links wrap into balanced rows at every width (6, 3 + 3, 2 + 2 + 2, one column).
 - Full-screen view: the dialog takes the focus itself, so the arrow keys after a mouse open draw no focus ring.
-- Hero video: a player that never answers (blocked) is removed after about 10 s and one that reports an error at
+- Hero video (completed in the third round, below): a player that never answers (blocked) is removed after about 10 s and one that reports an error at
   once, so the button no longer says "Pause the video" over a still poster.
 - Meta descriptions keep the credit after a repeated title ("Inspired by P. Molina, it reveals ..."); sizes and
-  initials keep a no-break space in every visible text (the frame fact, titles with "St.").
+  initials keep a no-break space in every visible text (the frame fact, titles with "St."; the story and the legal
+  texts since the third round).
 - Build: `gulp clean` accepts the files of `src/static/` and an earlier build of this site (its `sitemap.xml`), so a
   second private build works after `src/static/` changed; Python caches are ignored by git.
+
+Changes after the third review round (2026-10-04):
+
+- Hero video: after Play the video covers the hero edge to edge like the old background video. The player was the
+  cover box of the window, not of the hero, so in short windows (where the hero is taller than the window) YouTube
+  letterboxed the video with black bands of 20-75 px, and its title bar, channel avatar and logo showed inside the
+  hero at every start, resume and loop (on landscape phones over the h1). Now the player sits in `div.hero__player`
+  (a size container as large as the hero) and is as wide as the hero's 16:9 cover box and 240 px taller, so the title
+  bar and the logo lie outside the hero, as with the old site's player (checked with the real player at 1920x1080,
+  2560x1440, 1366x900, 1024x600, 667x375 and 390x844, also paused and resumed). Browsers without container units
+  keep the earlier sizing.
+- Hero video: a player whose page never loads is removed after 20 s. Firefox and Safari (every iOS browser) send
+  no load event for a frame that a content blocker, a firewall or a missing connection stops, and a dropped
+  connection keeps Chromium waiting for minutes, so the button said "Pause the video" over a still poster. A page
+  that loads still gets about 10 s to answer.
+- WebKit (Safari, every iOS browser) runs the deferred scripts before the stylesheet in `<head>` has loaded. The
+  layout reads that `consent.js` (banner height) and `nav.js` (nav edge fades) added in the second round then
+  computed the browser's default styles, and when `site.css` arrived the nav links, the pills and the cookie buttons
+  animated from browser blue and grey and the nav slid up (17-83 transitions per page load). Both scripts now read
+  layout only once the stylesheet is in use.
+- Hero poster: `sizes` describes its drawn (cover-cropped) width, `(max-aspect-ratio: 16/9) 178vh, 100vw`; DPR 2
+  phones had taken the 900 px file since the 900 px step (a 3.6x upscale), now they take the 1280 px file.
+- Story and legal texts: confirming the story (`story_confirmed: true`) or adding the legal texts made
+  `npm run test:static` fail, which stops the deploy: their sizes and initials ("190 × 45 cm", "EU-U.S. Data") had
+  breaking spaces. The build now keeps them together in the text of that HTML (never in tags, attributes or
+  comments), moves the headings of a legal text below the page h1 (generated legal texts start with their own
+  h1), and tracks `mailto:` links to the artist there like every other one (`data-location` `imprint` / `privacy`).
+  Proven with a build that confirms the story and sets both legal texts (shaped like generated ones): all static
+  checks pass.
+- `scripts/seo-report.py`: importing it (as `/seo-report` does to reuse `token()` and `call()`) no longer runs the
+  whole report (Google API calls, the URL Inspection quota, a state file); `main()` runs it.
+- Hosting: on this server nginx passes every request to Apache (the live ETags are Apache's), so the `.htaccess`
+  covers every response and no Plesk setting is needed; the owner actions below say to keep "Serve static files
+  directly by nginx" off.
+- `.gitattributes` keeps the owner's Git LFS rule for `*.mp4` next to the line-ending rules.
+- Tests: Firefox and WebKit run in Playwright's Docker image (`tests/browser/engines.test.js`); new checks for each
+  item above.
 
 ### Implementation tracker
 
@@ -400,20 +438,20 @@ Changes after the second review round (2026-10-04):
 | §3 Hubs | **Done** — `h1`, intro, all cards, `CollectionPage` + `ItemList` + `BreadcrumbList`; intro texts are drafts (**owner** approves) |
 | §3 Home | **Done** — `h1` with name and media, intro + "More about me", three hub sections, about me, Instagram, contact; video facade |
 | §3 Gallery filter | **Done** — removed |
-| §4 Stylesheet, scripts, font | **Done** — `src/css/site.css` (40 KB, 10 KB gzipped; larger than the 10–15 KB estimate because it reproduces the old design at five breakpoints), five vanilla scripts (24 KB with the full-screen view and the video controls), Jost WOFF2 (27 KB) |
+| §4 Stylesheet, scripts, font | **Done** — `src/css/site.css` (45 KB, 11 KB gzipped; larger than the 10–15 KB estimate because it reproduces the old design at five breakpoints), five vanilla scripts (29 KB with the full-screen view and the video controls), Jost WOFF2 (27 KB) |
 | §5 Shop removal | **Done** |
 | §6 Blog removal | **Done** |
 | 7.1 Page build | **Done** — `scripts/build-site.js` (`gulp pages`), deterministic, fails on bad data |
 | 7.2 No partials on the host | **Done** — no `app/partials/`; `/partials/**` → 410; `lftp mirror --delete` removes the old files |
 | 7.3 Sitemap | **Done** — 36 URLs with `lastmod`; `robots.txt` keeps the `Sitemap:` line |
-| 7.4 `.htaccess` | **Done** — `src/static/.htaccess`, tested on Apache 2.4 with a TLS listener and with `X-Forwarded-Proto` (32 cases each, one hop each, never through `http://`) plus the `Cache-Control` headers. Plesk switches for requests nginx answers itself (redirects, "Expires" for static files): **owner** |
-| 7.5 Images and budgets | **Done** — 89 images → 848 variants (600/900/1200/1920 + 160/320 thumbnails + 2560/3200 for the wide card); `app/img/` 90 MB → 80.5 MiB, originals no longer deployed. Transfer on load: home 0.78 MB (desktop) / 0.54 MB (390 px), hubs 0.66–1.36 MB, the 30 artwork pages 0.11–0.40 MB; home after a full scroll at 390 px 4.7 MB (was 5.5 MB: touch screens no longer load hover images); LCP 0.46–0.75 s at 390 px over three runs (DevTools "Fast 4G" profile), 0.49–0.63 s at Lighthouse's phone emulation (412 px, DPR 1.75; the artwork pages load the 900 px main image); CLS 0 on every page |
+| 7.4 `.htaccess` | **Done** — `src/static/.htaccess`, tested on Apache 2.4 with a TLS listener and with `X-Forwarded-Proto` (32 cases each, one hop each, never through `http://`) plus the `Cache-Control` headers. nginx passes every request to Apache on this server, so no Plesk setting is needed; keep "Serve static files directly by nginx" off: **owner** (see below) |
+| 7.5 Images and budgets | **Done** — 89 images → 848 variants (600/900/1200/1920 + 160/320 thumbnails + 2560/3200 for the wide card); `app/img/` 90.1 MB → 84.4 MB (85.9 → 80.5 MiB), originals no longer deployed. Transfer on load: home 0.78 MB (desktop) / 0.54 MB (390 px), hubs 0.66–1.36 MB, the 30 artwork pages 0.11–0.40 MB; home after a full scroll at 390 px 4.7 MB (was 5.5 MB: touch screens no longer load hover images); LCP 0.46–0.75 s at 390 px over three runs (DevTools "Fast 4G" profile), 0.49–0.63 s at Lighthouse's phone emulation (412 px, DPR 1.75; the artwork pages load the 900 px main image); CLS 0 on every page |
 | 7.6 Consent | **Done** — banner with Accept / Decline on every page, Consent Mode v2 defaults denied, GA only after Accept, withdrawal deletes `_ga*`. Banner text: **owner** approves; GA4 annotation of the release date: **owner** |
 | 7.7 `lang` and `h1` | **Done** — `lang="en"`, exactly one `h1` and no skipped heading levels on every page |
 | 7.8 Sizes | **Done** — numeric `width_cm` / `height_cm`; 5 swaps made from the photos need the artist's confirmation (**owner**) |
 | 7.9 `Person` JSON-LD | **Done** — home and about, `sameAs` Instagram, Facebook, LinkedIn, Etsy |
 | §8 Data model | **Done** — refined: `images[]` keep their file extensions and carry `alt`; `story` became `story_html` + `story_confirmed` (the story's images are the `<img>` tags in it); `col_class` became `card` (`wide` / `standard`), `preview1`/`preview2` became `preview` / `preview_hover` (+ optional `preview_alt` / `preview_hover_alt` when a crop shows something else than its source photo); added `surface`, `frame`, `seo_title`, `seo_description`, `updated`. The build fails on any other artwork field |
-| Verification | **Done** — `npm test`: 142 static, 163 browser, 65 Apache checks pass (second review round; browser suite run twice); html-validate passes; the build is byte-identical on rebuilds and from a checkout with `core.autocrlf=true` |
+| Verification | **Done** — `npm test`: 147 static, 170 browser (Chromium, plus Firefox and WebKit in Playwright's Docker image), 65 Apache checks pass (third review round; browser suite run twice); html-validate passes; the build is byte-identical on rebuilds and from a checkout with `core.autocrlf=true`; a build with the story confirmed and both legal texts set passes every static check |
 | Phase 7 — structured data validation | **Done for schema.org** — validator.schema.org on the built home, hub, two artwork, about and contact pages (2026-10-04): 0 errors, 0 warnings. Google's Rich Results Test also takes pasted code (Code tab) before the release, but it asks for a Google login: **owner** (of these types only `BreadcrumbList` is a Google rich result; `VisualArtwork` is not) |
 | Phase 8 — release | **Owner** — merge to `main` (= deploy) after approval, then re-run the browser checks against the live site |
 | Phase 9 — measure | **Owner** — `/seo-report` three weeks after the release |
@@ -444,7 +482,8 @@ Changes after the second review round (2026-10-04):
    morning" while the painting shows the evening, and "Antibes to the east" is doubtful.
 6. Approve the consent banner text (`CONSENT_TEXT` in `scripts/build-site.js`).
 7. Provide the Impressum and the privacy policy (it must name Google Analytics and the YouTube video, which loads
-   from youtube-nocookie.com after a click).
+   from youtube-nocookie.com after a click). They go into `data.json` as HTML (`legal.imprint_html`,
+   `legal.privacy_html`); a generated text can be pasted as it is, also with its own `h1` and e-mail links.
 8. Decide about 13 unreferenced files in `src/img/` (12.3 MB, not deployed): `IMG_2993 (1).jpg`,
    `IMG_3272 (1).jpg`, `avata.webp`, `avatar_400x400.png`, `photo_2022-12-02_18- (5).png`,
    `gallery/picture13_1_preview.jpeg`, `gallery/picture13_2_preview.jpeg`, `gallery/picture30_3_preview.jpg`,
@@ -453,11 +492,15 @@ Changes after the second review round (2026-10-04):
 
 ### Owner actions at and after the release
 
-1. In Plesk (Hosting Settings): enable "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and set "Preferred
-   domain" to `polina-shvedko.art`. The `.htaccess` rules do the same for requests that reach Apache; these
-   switches also cover files that nginx serves directly. Under "Apache & nginx Settings", set "Expires" for static
-   files (for example 30 days): nginx serves CSS, JS and images without asking Apache, so the `Cache-Control` lines in
-   `.htaccess` reach the browser only for what Apache serves.
+1. Plesk: nothing to switch on. On this server nginx passes every request to Apache (the live responses carry
+   Apache's size-mtime ETags, also for CSS, images, `.html` and `robots.txt`), so the tested `.htaccess` covers CSS,
+   JS, images and pages: one-hop redirects, pages revalidated, CSS/JS one year, images 30 days. Keep "Serve static
+   files directly by nginx" (Apache & nginx Settings) off: with its default extension list, which includes htm, html
+   and txt, nginx would answer `/index.html` and `/<dir>/index.html` with 200 instead of the one-hop 301 and replace
+   the `Cache-Control` of the `.htaccess`. If it is ever switched on, remove htm, html and txt from the list and set
+   "Expires" for the remaining static files. The switches "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and
+   "Preferred domain" are optional, because the `.htaccess` already does both in one hop; if they are on, check the
+   hop count with the `curl` line in step 5.
 2. Once, in the main checkout after the merge (it has `core.autocrlf=true`; `.gitattributes` now asks for LF), with
    a clean working tree only: `git reset --hard` discards every uncommitted change to tracked files, so commit or
    `git stash -u` first. Then `git rm -r --cached . && git reset --hard` (and `git stash pop` if you stashed), so the
@@ -469,4 +512,5 @@ Changes after the second review round (2026-10-04):
    event, annotations, bot filter); also register `link_location` and `artwork_slug` as event-scoped custom
    dimensions in GA4.
 5. After the deploy, check the live site: `http://`, `www.`, `/index.html`, `/blog/`, `/blog/cap-dantibes/` answer
-   one 301 each, `/partials/head.html` answers 410.
+   one 301 each, `/partials/head.html` answers 410, and `curl -I http://www.polina-shvedko.art/oil-paintings` answers
+   one 301 straight to `https://polina-shvedko.art/oil-paintings/`.

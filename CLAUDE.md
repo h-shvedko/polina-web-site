@@ -23,8 +23,8 @@ npm run server-start          # gulp: build:site, watch + livereload, dev server
 npm run server-watch          # gulp watch: build:site, then rebuild on changes + livereload (no server)
 npm run serve                 # dependency-free static server for app/ on http://127.0.0.1:7001 (404.html, 301 to slash)
 npm test                      # test:static && test:browser && test:apache
-npm run test:static           # file checks over the built app/ (fast, ~2 s)
-npm run test:browser          # Playwright Chromium, desktop 1366x900 + mobile 390x844 (~4.5 min)
+npm run test:static           # file checks over the built app/ (about 5 s; build.test.js runs several builds into temporary folders)
+npm run test:browser          # Playwright: Chromium at 1366x900 + 390x844, Firefox and WebKit in Docker (about 6 min)
 npm run test:apache           # .htaccess on httpd:2.4 in Docker (skips with a message without Docker)
 npm run validate-html         # html-validate over app/**/*.html with .htmlvalidate.json
 npm run sitemap               # alias of the pages task (the sitemap is written by build-site.js)
@@ -58,6 +58,7 @@ runs as root on a bind mount; the build scripts give what they write the owner o
 | `BROWSER_PAGES=all` | browser tests | visit all 36 pages at both viewports in the page-load test (default: one page per type) |
 | `LCP_NETWORK` | browser tests | `fast4g` (default, DevTools "Fast 4G"), `slow4g` (Lighthouse-like) or `none` |
 | `APACHE_IMAGE` | apache test | Docker image (default `httpd:2.4`) |
+| `PLAYWRIGHT_IMAGE` | browser tests (`engines.test.js`) | Docker image for Firefox and WebKit (default `mcr.microsoft.com/playwright:v<installed Playwright version>-noble`, i.e. `v1.63.0-noble`; Linux with Docker host networking; the tests skip with a message when Docker or the image is missing) |
 
 A private build that does not touch `app/`: `X=/some/dir; mkdir -p $X && ln -sfn $PWD/app/img $X/img && APP_DIR=$X npx gulp build:site`,
 then `node scripts/serve.js --root $X --port <port>` and `APP_DIR=$X npm run test:static`. Never use port 7000 for
@@ -135,7 +136,9 @@ wrote it (`"Title" (Inspired by P. Molina) captures ...` -> `Inspired by P. Moli
 to ≤ 155 at the last sentence end that keeps ≥ 120, else cut at a word with "…" (never after "a", "of", "St" and the
 like); below 120 the status sentence is appended. Sizes and initials keep a no-break space (`keepTogether()`) in all
 visible text the build writes: descriptions, hub intros, every fact (also the frame), titles in cards, `h1`,
-breadcrumb and pager (a static test scans every text node of every page).
+breadcrumb and pager, the story section and the legal pages (`keepTogetherHtml()`: only the text between the tags
+changes; `&times;`, `&nbsp;` and line breaks count) — a static test scans every text node of every page, and
+`build.test.js` builds the story and the legal pages with sample texts to scan them too.
 
 ### Data (`data.json`)
 
@@ -155,11 +158,16 @@ breadcrumb and pager (a static test scans every text node of every page).
   `images[]` entry with the same file or the one the `_preview` crop was cut from, unless the optional `preview_alt` /
   `preview_hover_alt` is set, e.g. when the crop shows the painting without the frame of its source photo),
   `images[]` (`src`, `alt`; the first is the main image), `story_html` + `story_confirmed` (a "Story" section is
-  rendered only when `story_confirmed` is `true`; its images are the `<img>` tags in `story_html`), optional
-  `seo_title`, `seo_description`, `updated` (`YYYY-MM-DD`, sitemap `lastmod`). Any other artwork field fails the build
-  (`ARTWORK_FIELDS` in `scripts/build-site.js`).
+  rendered only when `story_confirmed` is `true`; its images are the `<img>` tags in `story_html`; its headings move
+  below the "Story" `h2`, the highest becomes `h3`; `mailto:` links to `site.email` are tracked like the artwork
+  CTA), optional `seo_title`, `seo_description`, `updated` (`YYYY-MM-DD`, sitemap `lastmod`). Any other artwork field
+  fails the build (`ARTWORK_FIELDS` in `scripts/build-site.js`).
 - `socialmedia_images[]` (`src`, `alt`): the first five fill the Instagram mosaic on home.
-- `legal`: `imprint_html`, `privacy_html` (`null` = page not generated, not linked, not in the sitemap).
+- `legal`: `imprint_html`, `privacy_html` (`null` = page not generated, not linked, not in the sitemap). The HTML is
+  placed below the page `h1` as written (generated legal texts can be pasted), except that its headings move so the
+  highest becomes `h2` (a text may start with its own `h1`), `mailto:` links to `site.email` get `data-track="contact"`
+  and `data-location="imprint"` / `"privacy"` (other addresses, e.g. a data protection authority, stay untracked),
+  and sizes and initials keep a no-break space.
 
 Slug rule: lowercase; `ä→ae ö→oe ü→ue ß→ss`; other accents stripped; apostrophes removed; a trailing
 `, France` / `, Spain` / `, Germany` dropped; every other run of characters → `-`.
@@ -207,8 +215,9 @@ checks that no referenced source photo is ignored and that those generated files
   `article.card > a.card__link[aria-labelledby]` (title + badge ids), `#artwork-images.artwork__main > picture[data-index]`,
   `button.artwork__thumb[data-index][aria-current]`, `.artwork__prev/.artwork__next`, `button.artwork__zoom` +
   `dialog#artwork-zoom` (full-screen view), `a.skip-link`, `#cookie-consent`, `#cookie-accept`, `#cookie-decline`,
-  `#cookie-settings` (in `li.site-footer__item--settings`), `[data-track="contact"][data-location]`
-  (+ `data-artwork-slug` on the artwork CTA). `tests/static/markup-contract.test.js` lists them all.
+  `#cookie-settings` (in `li.site-footer__item--settings`), `[data-track="contact"][data-location]` (`hero`, `intro`,
+  `artwork`, `contact`, `footer`, `imprint`, `privacy`; + `data-artwork-slug` on artwork pages), and what `hero.js`
+  inserts: `div.hero__player > iframe.hero__video`. `tests/static/markup-contract.test.js` lists them all.
 
 ### CSS and font
 
@@ -221,8 +230,12 @@ weights are mapped (300/375/425/485/565 for the old 300/400/500/600/700) and the
 Additions to the old look: the open consent banner reserves its height (`html.consent-open`, `--consent-h`) at the
 page end; the hero play button (new) sits 30 px above the bottom of the window, also when a short window makes the
 hero taller, and above the open banner; on phones it sits at the hero bottom and, while the banner is open, in the
-top corner (in split-screen phone windows and 961-1060 px short windows, where the title reaches a corner, see the
-comments in `site.css`); touch screens (`hover: none`) never render the card hover image; below
+top corner of the hero, except in split-screen phone windows (326-479 px wide, up to 440 px tall), where it stays at
+the hero bottom under the open banner; in 961-1060 px windows up to 500 px tall it always takes the top corner (see
+the comments in `site.css`); the hero video (after Play) is sized from `.hero__player`, a size container as large
+as the hero: the player is as wide as the 16:9 box that covers the hero and 240 px taller, so the video covers the
+hero edge to edge (also when the hero is taller than the window) and the player's own title bar and logo lie outside
+it, as with the old background video; touch screens (`hover: none`) never render the card hover image; below
 681 px the nav row has tighter spacing, snaps to link starts (after the left fade) and fades at each edge that cuts
 a label (`--fade-start` 20 px, `--fade-end` 32 px), below 641 px a long label shows its first word ("Oil"); the 404
 links wrap into balanced rows (6, 3 + 3, 2 + 2 + 2, one column) and the headings that wrap are balanced; the
@@ -235,6 +248,9 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   defaults denied, `update analytics_storage: granted`, then `gtag.js`. Decline or a later withdrawal → GA disabled
   and `_ga*` cookies deleted. `#cookie-settings` (footer) reopens the banner. `window.siteConsent = { status(), open() }`.
   While the banner is open, `<html>` has `consent-open` and `--consent-h` (its height, kept current by a ResizeObserver).
+  `consent.js` and `nav.js` read layout only once the stylesheet is in use (`whenStyled()`): WebKit (Safari, every
+  iOS browser) runs deferred scripts before the stylesheet in `<head>` has loaded, and a layout read then makes every
+  property with a transition animate from the browser's default styles when `site.css` arrives.
 - `analytics.js` (every page): `contact_click` for every `[data-track="contact"]` click (`link_location`,
   `artwork_slug` on artwork CTAs) and `hero_video_play` (from `hero.js`), only with consent. The old events
   (`artwork_view`, `cart_order`, `purchase_inquiry`, `gallery_filter`) are gone.
@@ -242,11 +258,13 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   nav row that cuts a label gets `site-nav__links--more-start` (left) or `site-nav__links--more-end` (right), and
   `site.css` fades it; a link that gets keyboard focus (not a mouse or touch press) while cut off or under a fade
   scrolls to the row start, just after the left fade.
-- `hero.js` (home): the play button inserts the `youtube-nocookie.com` player over the poster (no YouTube request
-  before the click; `enablejsapi=1`). The player stays transparent until it reports that it plays (IFrame API
-  messages), so a blocked player leaves the poster; the same button then pauses and resumes it (`pauseVideo` /
-  `playVideo`; before the player plays, it removes the player again). A player that never answers (about 10 s) or
-  reports an error is removed, and the button reads "Play the video" again.
+- `hero.js` (home): the play button inserts the `youtube-nocookie.com` player (`div.hero__player > iframe.hero__video`)
+  over the poster (no YouTube request before the click; `enablejsapi=1`). The player stays transparent until it
+  reports that it plays (IFrame API messages), so a blocked player leaves the poster; the same button then pauses and
+  resumes it (`pauseVideo` / `playVideo`; before the player plays, it removes the player again). The player is removed
+  and the button reads "Play the video" again when its page never loads (20 s: a content blocker, a firewall or no
+  connection; Firefox and Safari send no load event then), when its page loaded but it never answers (about 10 s), or
+  at once when it reports an error.
 - `artwork.js` (artwork pages): thumbnails, prev/next, arrow keys and swipe switch the main image; `button.artwork__zoom`
   (over the main image, shown by the script) opens `dialog#artwork-zoom`: the current image with `sizes="100vw"`,
   previous/next, arrow keys, swipe, Escape / cross / click beside the image to close; the page then shows the image
@@ -256,7 +274,9 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
 
 ### Hosting
 
-- Production: Plesk at checkdomain.de, nginx in front of Apache. CI (`deploy.yml`) runs `npm ci --legacy-peer-deps`,
+- Production: Plesk at checkdomain.de, nginx in front of Apache. On this server nginx passes every request to Apache
+  (the live responses carry Apache's size-mtime ETags, also for CSS, images, `.html` and `robots.txt`), so the
+  `.htaccess` below covers every response. CI (`deploy.yml`) runs `npm ci --legacy-peer-deps`,
   `npx gulp build:site`, then `npm run test:static && node scripts/images.js --check` (a failure stops the deploy),
   then `lftp mirror --reverse --delete ./app` over SFTP: `app/` is the whole site, and files missing from `app/` are
   deleted on the server.
@@ -266,9 +286,13 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   and `www.`, instead of mod_dir's second hop); repeated slashes → 301 to one slash; `www` → apex and `http` →
   `https` (also via `X-Forwarded-Proto`), each in one hop. `Cache-Control` for what Apache serves: CSS/JS one year
   `immutable` (their URLs carry `?v=<hash>`), the font one year (give a changed font a new file name), images 30 days,
-  HTML/XML/TXT `no-cache`. Requests that nginx answers itself (static files) never reach `.htaccess`; the Plesk settings
-  "Permanent SEO-safe 301 redirect from HTTP to HTTPS", "Preferred domain: polina-shvedko.art" and the nginx
-  "Expires" setting cover those.
+  HTML/XML/TXT `no-cache`. No Plesk setting is needed for this. Keep "Serve static files directly by nginx" off: with
+  its default extension list (it includes htm, html and txt) nginx would answer `/index.html` and `/<dir>/index.html`
+  with 200 instead of the tested 301, and its own headers would replace the `Cache-Control` above; if it is ever
+  turned on, remove htm, html and txt from the list and set "Expires" for the remaining static files. The Plesk
+  switches "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and "Preferred domain" are not needed either (the
+  `.htaccess` does both in one hop); if they are on, check that `curl -I http://www.polina-shvedko.art/oil-paintings`
+  still answers one 301 straight to `https://polina-shvedko.art/oil-paintings/`.
 - `src/static/robots.txt` points to `https://polina-shvedko.art/sitemap.xml`.
 
 ### Tests (`tests/`, Node's built-in `node:test`, no framework)
@@ -277,24 +301,33 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   (old framework names, shop words, retired events, Cyrillic), no `partials/` or `blog/`, images (`alt`, `width`,
   `height`, ratio, WebP source, every referenced file exists), internal links and click depth, JSON-LD,
   html-validate, data model and manifest (also: no step above 1.6x between variant widths, no referenced source
-  photo ignored by git, generated caches ignored), hosting files, build determinism, the markup contract (incl.
-  reading order, card link names, no-JS styles, the full-screen view, no breaking space in a visible size or after an
-  initial), meta descriptions that keep a credit, `build.test.js` (a mistyped partial or an unknown field stops the
-  build, the text helpers, CRLF checkouts build the same bytes, file ownership as root, `gulp clean` safety, a second
-  private build after `src/static/` changed, `gulp watch` reloading the build script).
-- `tests/browser/` (Playwright Chromium 1.63.0 from `~/.cache/ms-playwright`; every non-local request is blocked
-  and recorded): page loads without errors or third-party requests, consent, navigation and the image gallery,
-  contact tracking, hero facade (with stand-in players for the play/pause messages and for an error; a blocked
-  player is removed after about 10 s), full-screen view (also: no focus ring on the cross while browsing with the
-  arrow keys), 390 px layout (no horizontal scroll, tap targets ≥ 24 px, text ≥ 12 px), `layout.test.js` (the open
-  banner hides neither content nor focus, the hero play button at common, short and split-screen window sizes with
-  the banner open and closed,
-  both edges of the nav row on phones after a swipe and with keyboard focus, hero pill and arrow at small and short
-  windows, breadcrumb, pager, headings, balanced 404 link rows from 280 to 1100 px), `images.test.js` (every
-  `object-fit: cover` image gets the variant of its drawn size at DPR 1–3; the artwork main image at Lighthouse's
-  phone emulation and at DPR 2; touch screens never load hover images), budgets (home < 3 MB, artwork < 1.5 MB, LCP
-  < 2.5 s at 390 px and at Lighthouse's 412 px DPR 1.75, CLS < 0.1), axe (no critical/serious; `color-contrast` only warns because the colours are the old design), skip
-  link, card link names, forced colours, no JavaScript, custom 404, screenshots into `SCREEN_DIR`.
+  photo ignored by git, generated caches ignored, `.gitattributes`: LF, binary images and fonts, `*.mp4` in Git LFS),
+  hosting files, build determinism, the markup contract (incl. reading order, card link names, no-JS styles, the
+  full-screen view, no breaking space in a visible size or after an initial), meta descriptions that keep a credit,
+  `build.test.js` (a mistyped partial or an unknown field stops the build, the text helpers, the owner steps "confirm
+  the story" and "add the legal texts" with sample texts: no breaking space, one `h1`, no skipped heading level,
+  tracked `mailto:` links; CRLF checkouts build the same bytes, file ownership as root, `gulp clean` safety, a second
+  private build after `src/static/` changed, `gulp watch` reloading the build script), `tools.test.js`
+  (`scripts/seo-report.py`: importing it runs nothing; `main()` runs the whole report against stand-in API answers;
+  skips without `python3`).
+- `tests/browser/` (Playwright Chromium 1.63.0 from `~/.cache/ms-playwright`, Firefox and WebKit in Docker; every
+  non-local request is blocked and recorded): page loads without errors or third-party requests, consent, navigation
+  and the image gallery, contact tracking, hero facade (with stand-in players for the play/pause messages and for an
+  error; a player whose page loads but never answers is removed after about 10 s, one whose page never loads after
+  about 20 s), full-screen view (also: no focus ring on the cross while browsing with the arrow keys), 390 px layout
+  (no horizontal scroll, tap targets ≥ 24 px, text ≥ 12 px), `layout.test.js` (the open banner hides neither content
+  nor focus, the hero play button at common and short window sizes with the banner open and closed and at
+  split-screen sizes with it closed, both edges of the nav row on phones after a swipe and with keyboard focus, hero
+  pill and arrow at small and short windows, the hero video after Play at 14 window sizes: no black bands, the
+  player's title bar and logo outside the hero; breadcrumb, pager, headings, balanced 404 link rows from 280 to 1100
+  px), `images.test.js` (every `object-fit: cover` image, the hero poster too, gets the variant of its drawn size at
+  DPR 1–3, also on a DPR 2 phone; the artwork main image at Lighthouse's phone emulation and at DPR 2; touch screens
+  never load hover images), `engines.test.js` (Firefox and WebKit from the Playwright Docker image, see
+  `tests/lib/engines.js`; skipped with a message without Docker or the image: no CSS transition while a page loads
+  with a late stylesheet, the hero video geometry, a blocked player removed), budgets (home < 3 MB, artwork < 1.5
+  MB, LCP < 2.5 s at 390 px and at Lighthouse's 412 px DPR 1.75, CLS < 0.1), axe (no critical/serious;
+  `color-contrast` only warns because the colours are the old design), skip link, card link names, forced colours,
+  no JavaScript, custom 404, screenshots into `SCREEN_DIR`.
 - `tests/apache/`: the redirect matrix on a real Apache (Docker `httpd:2.4`, `app/` mounted read-only), every https
   case twice: over a TLS listener (self-signed test certificate) and as plain HTTP with `X-Forwarded-Proto`; plus
   the `Cache-Control` headers.
@@ -322,10 +355,10 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
 ## Key Conventions
 
 - Edit `src/` and `data.json`, never `app/` by hand; `app/` is generated and committed (CI does not run `sharp`).
-- Line endings are LF everywhere (`.gitattributes`: `* text=auto eol=lf`, images and fonts binary). A checkout made
-  with `core.autocrlf=true` before that rule is refreshed once, with a clean working tree only: `git reset --hard`
-  discards every uncommitted change to tracked files, so commit or `git stash -u` first, then
-  `git rm -r --cached . && git reset --hard` (then `git stash pop` if you stashed).
+- Line endings are LF everywhere (`.gitattributes`: `* text=auto eol=lf`, images and fonts binary; videos `*.mp4`
+  go to Git LFS, as the owner set up). A checkout made with `core.autocrlf=true` before that rule is refreshed once,
+  with a clean working tree only: `git reset --hard` discards every uncommitted change to tracked files, so commit or
+  `git stash -u` first, then `git rm -r --cached . && git reset --hard` (then `git stash pop` if you stashed).
 - All visible text is English; no Cyrillic characters anywhere (a test checks it).
 - No sales wording: no prices, `€`, "buy", "shop", "cart", "checkout", "sold", delivery or commission claims (tests
   check `app/`). The only lead path is e-mail (`mailto:` links tracked as `contact_click`). The Etsy profile link stays.

@@ -138,7 +138,7 @@ for the open questions and the slug list are in [ADR-0003 → Implementation](AD
 | Tests (`npm test`: static, browser, Apache) | **Done** — CI runs the static checks before every deploy |
 | Slugs, sizes, media, hub texts, Cap d'Antibes story, consent text | **Owner approval** |
 | Impressum and privacy policy | **Owner** — legal text needed; pages are generated once it is in `data.json` |
-| Release (merge to `main` = deploy), Plesk redirect switches and static-file "Expires", one-time LF refresh of the main checkout, Search Console and GA4 steps | **Owner** |
+| Release (merge to `main` = deploy), keep Plesk's "Serve static files directly by nginx" off (nginx passes every request to Apache, so the `.htaccess` covers everything), one-time LF refresh of the main checkout, Search Console and GA4 steps | **Owner** |
 | Measure with `/seo-report` three weeks after the release | **Owner** |
 
 ---

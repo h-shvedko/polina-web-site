@@ -17,7 +17,8 @@ cart), no blog. Items below that mention the old popup, cart or prices are histo
   contradiction and doubtful geography).
 - [ ] **Consent banner text** — approve (`CONSENT_TEXT` in `scripts/build-site.js`).
 - [ ] **Impressum and privacy policy** — provide the legal texts (`legal.imprint_html`, `legal.privacy_html`); the
-  privacy text must name Google Analytics and the YouTube video (youtube-nocookie.com, loaded on click).
+  privacy text must name Google Analytics and the YouTube video (youtube-nocookie.com, loaded on click). A generated
+  HTML text can be pasted as it is (its own `h1` and e-mail links are fine).
 - [ ] **Unused source images** — 13 files in `src/img/` are not referenced (listed in the ADR-0003 tracker); delete
   them or keep them.
 - [ ] **Back-to-top button** — the old floating button is not in the rebuild; re-add it only if wanted.
@@ -28,8 +29,11 @@ cart), no blog. Items below that mention the old popup, cart or prices are histo
 
 ## Open — after the release (owner)
 
-- [ ] Plesk: enable "Permanent SEO-safe 301 redirect from HTTP to HTTPS" and set "Preferred domain" to
-  `polina-shvedko.art`; under "Apache & nginx Settings" set "Expires" for static files (e.g. 30 days).
+- [ ] Plesk: nothing to switch on. nginx passes every request to Apache on this server, so the `.htaccess` covers
+  every response (redirects in one hop, cache headers). Keep "Serve static files directly by nginx" off; if it is
+  ever switched on, remove htm, html and txt from its extension list and set "Expires" for the remaining static
+  files. Check that `curl -I http://www.polina-shvedko.art/oil-paintings` answers one 301 straight to
+  `https://polina-shvedko.art/oil-paintings/` (also if the optional Plesk HTTPS and preferred-domain switches are on).
 - [ ] Main checkout, once after the merge, with a clean working tree only (`git reset --hard` discards every
   uncommitted change to tracked files: commit or `git stash -u` first): `git rm -r --cached . && git reset --hard`
   (LF line endings; the checkout has `core.autocrlf=true`), then `git stash pop` if you stashed; and
