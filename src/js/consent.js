@@ -11,7 +11,8 @@
  *   reopened banner without changing the choice.
  * - While the banner is open, <html> has the class consent-open and --consent-h = the banner height (kept up
  *   to date by a ResizeObserver): site.css keeps that room at the end of the page and above the hero play
- *   button, so the banner never hides content or keyboard focus.
+ *   button, so the banner never hides content or keyboard focus. The height is read only once the stylesheet
+ *   is in use (whenStyled()).
  * - window.siteConsent = { status(): "granted" | "denied" | null (no choice yet), open() }.
  */
 (function () {
@@ -87,6 +88,34 @@
     deleteGaCookies();
   }
 
+  /*
+   * Run fn once the stylesheets are in use (loaded or failed). WebKit (Safari and every iOS browser) can run
+   * this deferred script before the stylesheet in <head> has loaded; Chromium and Firefox wait for it. A layout
+   * read before then (offsetHeight) computes the browser's default styles, and when site.css arrives every
+   * property with a transition animates from them: grey cookie buttons, blue nav links, the nav sliding up.
+   * nav.js has the same helper.
+   */
+  function whenStyled(fn) {
+    var pending = [].filter.call(document.querySelectorAll('link[rel="stylesheet"]'), function (link) { return !link.sheet; });
+    if (!pending.length || document.readyState === 'complete') {
+      fn();
+      return;
+    }
+    var left = pending.length;
+    var done = false;
+    var run = function () {
+      if (done) return;
+      done = true;
+      fn();
+    };
+    var settle = function () { if (--left === 0) run(); };
+    pending.forEach(function (link) {
+      link.addEventListener('load', settle);
+      link.addEventListener('error', settle);
+    });
+    window.addEventListener('load', run); // a stylesheet that failed before this script ran sends no event
+  }
+
   /* Room for the open banner: html.consent-open + --consent-h (see site.css), removed when it closes. */
   function reserve() {
     var root = document.documentElement;
@@ -102,12 +131,13 @@
   function show(focus) {
     if (!banner) return;
     banner.hidden = false;
-    reserve();
-    if (!watching) {
+    whenStyled(function () {
+      reserve();
+      if (watching) return;
       watching = true;
       if (window.ResizeObserver) new window.ResizeObserver(reserve).observe(banner);
       else window.addEventListener('resize', reserve);
-    }
+    });
     var first = focus && banner.querySelector('button');
     if (first) first.focus();
   }

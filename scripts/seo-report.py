@@ -12,6 +12,9 @@ webmasters.readonly at ~/.config/shvedkodev-ga.json (or the path in SEO_CREDENTI
 
 GA4 traffic is reported twice: all countries, and the target market only.
 Sessions from elsewhere with zero engagement are mostly bots.
+
+Importing this file (for its token() and call()) runs nothing: no credentials are read before the first
+call(), and only main() (the command line) runs the report and writes the state file.
 """
 
 import collections
@@ -55,16 +58,15 @@ TARGET_MARKET = ['Germany', 'Austria', 'Switzerland']
 # purchase_inquiry and cart_order belonged to the removed shop; they appear only in data from before the release.
 LEAD_EVENTS = ['contact_click', 'purchase_inquiry', 'cart_order']
 
-ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
-DAYS = int(ARGS[0]) if ARGS else 28
-INDEX = '--no-index' not in sys.argv
+DAYS = 28  # report period; main() sets it from the command line (search() and analytics() use it)
 STATE_DIR = os.path.expanduser('~/.local/state/polina-shvedko.art-seo')
-summary = {'date': str(datetime.date.today()), 'days': DAYS}
 
 
 def token():
+    """A fresh OAuth access token from the stored refresh token (read-only scopes)."""
     path = os.environ.get('SEO_CREDENTIALS', os.path.expanduser('~/.config/shvedkodev-ga.json'))
-    cred = json.load(open(path))
+    with open(path) as handle:
+        cred = json.load(handle)
     body = urllib.parse.urlencode({
         'client_id': cred['client_id'], 'client_secret': cred['client_secret'],
         'refresh_token': cred['refresh_token'], 'grant_type': 'refresh_token'
@@ -72,12 +74,16 @@ def token():
     return json.load(urllib.request.urlopen('https://oauth2.googleapis.com/token', body))['access_token']
 
 
-TOKEN = token()
+_TOKEN = None  # fetched by the first call()
 
 
 def call(url, body=None):
+    """A Google API request (POST with a JSON body, else GET) with the access token; errors come back as {'error'}."""
+    global _TOKEN
+    if _TOKEN is None:
+        _TOKEN = token()
     request = urllib.request.Request(url, json.dumps(body).encode() if body else None,
-                                     {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'})
+                                     {'Authorization': 'Bearer ' + _TOKEN, 'Content-Type': 'application/json'})
     try:
         return json.load(urllib.request.urlopen(request))
     except urllib.error.HTTPError as err:
@@ -157,29 +163,30 @@ def status_code(url):
     return first_hop(url)[0]
 
 
-print('== Search Console, last %d days ==' % DAYS)
-for row in search([]):
-    print(search_line(row))
-    summary.update(clicks=row['clicks'], impressions=row['impressions'], position=round(row['position'], 1))
-dates = [row['keys'][0] for row in search(['date'], 500)]
-print('latest day with data: %s (Search Console lags 2-3 days)' % (max(dates) if dates else '-'))
-summary['latest_search_day'] = max(dates) if dates else None
-print('-- by week')
-weeks = collections.defaultdict(lambda: [0, 0])
-for row in search(['date'], 500):
-    day = datetime.date.fromisoformat(row['keys'][0])
-    week = day - datetime.timedelta(days=day.weekday())
-    weeks[week][0] += row['clicks']
-    weeks[week][1] += row['impressions']
-for week in sorted(weeks):
-    print('  %s  %3d clicks %5d impr' % (week, weeks[week][0], weeks[week][1]))
-for dimensions, limit in ((['query'], 30), (['page'], 30), (['country'], 10), (['device'], 5)):
-    print('-- by ' + dimensions[0])
-    for row in search(dimensions, limit):
-        print('  ' + search_line(row))
+def search_console(summary):
+    print('== Search Console, last %d days ==' % DAYS)
+    for row in search([]):
+        print(search_line(row))
+        summary.update(clicks=row['clicks'], impressions=row['impressions'], position=round(row['position'], 1))
+    dates = [row['keys'][0] for row in search(['date'], 500)]
+    print('latest day with data: %s (Search Console lags 2-3 days)' % (max(dates) if dates else '-'))
+    summary['latest_search_day'] = max(dates) if dates else None
+    print('-- by week')
+    weeks = collections.defaultdict(lambda: [0, 0])
+    for row in search(['date'], 500):
+        day = datetime.date.fromisoformat(row['keys'][0])
+        week = day - datetime.timedelta(days=day.weekday())
+        weeks[week][0] += row['clicks']
+        weeks[week][1] += row['impressions']
+    for week in sorted(weeks):
+        print('  %s  %3d clicks %5d impr' % (week, weeks[week][0], weeks[week][1]))
+    for dimensions, limit in ((['query'], 30), (['page'], 30), (['country'], 10), (['device'], 5)):
+        print('-- by ' + dimensions[0])
+        for row in search(dimensions, limit):
+            print('  ' + search_line(row))
 
 
-def index_coverage():
+def index_coverage(summary):
     print('\n== Index coverage ==')
     sitemap_urls = set()
     for name in SITEMAPS:
@@ -205,48 +212,73 @@ def index_coverage():
     summary['retired_ok'] = sum(1 for code, _ in hops if code in (301, 410))
 
 
-if INDEX:
-    index_coverage()
-
 METRICS = ['sessions', 'engagementRate', 'averageSessionDuration']
-for title, target_only in (('all countries', False), (', '.join(TARGET_MARKET), True)):
-    print('\n== GA4, last %d days, %s ==' % (DAYS, title))
-    for row in analytics([], METRICS + ['engagedSessions'], target_only=target_only):
-        print(sessions_line(row) + '  engaged sessions ' + row['metricValues'][3]['value'])
-        key = 'target' if target_only else 'all'
-        summary['sessions_' + key] = int(row['metricValues'][0]['value'])
-        summary['engaged_sessions_' + key] = int(row['metricValues'][3]['value'])
-    dimensions = ['sessionDefaultChannelGroup', 'landingPage', 'deviceCategory']
-    if not target_only:
-        dimensions.insert(0, 'country')
-    for dimension in dimensions:
-        print('-- by ' + dimension)
-        for row in analytics([dimension], METRICS, target_only=target_only):
-            print('  ' + sessions_line(row))
 
-print('\n== Site events, last %d days ==' % DAYS)
-for row in analytics(['eventName', 'country'], ['eventCount'], limit=30, events=LEAD_EVENTS):
-    print('  %4s  %s' % (row['metricValues'][0]['value'], ' | '.join(v['value'] for v in row['dimensionValues'])))
-print('-- key events (GA4 settings)')
-for row in analytics(['eventName'], ['keyEvents'], limit=20):
-    if float(row['metricValues'][0]['value']):
-        print('  %4s  %s' % (row['metricValues'][0]['value'], row['dimensionValues'][0]['value']))
-summary['inquiries_target'] = sum(int(row['metricValues'][0]['value']) for row in analytics(
-    ['eventName'], ['eventCount'], events=['purchase_inquiry'], target_only=True))
-summary['contact_clicks_target'] = sum(int(row['metricValues'][0]['value']) for row in analytics(
-    ['eventName'], ['eventCount'], events=['contact_click'], target_only=True))
 
-print('\n== Change since the previous saved run with %d days ==' % DAYS)
-os.makedirs(STATE_DIR, exist_ok=True)
-name = '%s-%dd.json' % (summary['date'], DAYS)
-previous = sorted(f for f in os.listdir(STATE_DIR) if f.endswith('-%dd.json' % DAYS) and f != name)
-if previous:
-    before = json.load(open(os.path.join(STATE_DIR, previous[-1])))
-    print('compared with %s:' % before['date'])
-    for key in ('clicks', 'impressions', 'position', 'indexed', 'sitemap_urls', 'sessions_all', 'sessions_target',
-                'engaged_sessions_target', 'inquiries_target', 'contact_clicks_target'):
-        if key in summary and key in before:
-            print('  %-24s %8s -> %s' % (key, before[key], summary[key]))
-else:
-    print('no previous run saved')
-json.dump(summary, open(os.path.join(STATE_DIR, name), 'w'), indent=2)
+def ga4(summary):
+    for title, target_only in (('all countries', False), (', '.join(TARGET_MARKET), True)):
+        print('\n== GA4, last %d days, %s ==' % (DAYS, title))
+        for row in analytics([], METRICS + ['engagedSessions'], target_only=target_only):
+            print(sessions_line(row) + '  engaged sessions ' + row['metricValues'][3]['value'])
+            key = 'target' if target_only else 'all'
+            summary['sessions_' + key] = int(row['metricValues'][0]['value'])
+            summary['engaged_sessions_' + key] = int(row['metricValues'][3]['value'])
+        dimensions = ['sessionDefaultChannelGroup', 'landingPage', 'deviceCategory']
+        if not target_only:
+            dimensions.insert(0, 'country')
+        for dimension in dimensions:
+            print('-- by ' + dimension)
+            for row in analytics([dimension], METRICS, target_only=target_only):
+                print('  ' + sessions_line(row))
+
+
+def site_events(summary):
+    print('\n== Site events, last %d days ==' % DAYS)
+    for row in analytics(['eventName', 'country'], ['eventCount'], limit=30, events=LEAD_EVENTS):
+        print('  %4s  %s' % (row['metricValues'][0]['value'], ' | '.join(v['value'] for v in row['dimensionValues'])))
+    print('-- key events (GA4 settings)')
+    for row in analytics(['eventName'], ['keyEvents'], limit=20):
+        if float(row['metricValues'][0]['value']):
+            print('  %4s  %s' % (row['metricValues'][0]['value'], row['dimensionValues'][0]['value']))
+    summary['inquiries_target'] = sum(int(row['metricValues'][0]['value']) for row in analytics(
+        ['eventName'], ['eventCount'], events=['purchase_inquiry'], target_only=True))
+    summary['contact_clicks_target'] = sum(int(row['metricValues'][0]['value']) for row in analytics(
+        ['eventName'], ['eventCount'], events=['contact_click'], target_only=True))
+
+
+def compare_and_save(summary):
+    print('\n== Change since the previous saved run with %d days ==' % DAYS)
+    os.makedirs(STATE_DIR, exist_ok=True)
+    name = '%s-%dd.json' % (summary['date'], DAYS)
+    previous = sorted(f for f in os.listdir(STATE_DIR) if f.endswith('-%dd.json' % DAYS) and f != name)
+    if previous:
+        with open(os.path.join(STATE_DIR, previous[-1])) as handle:
+            before = json.load(handle)
+        print('compared with %s:' % before['date'])
+        for key in ('clicks', 'impressions', 'position', 'indexed', 'sitemap_urls', 'sessions_all', 'sessions_target',
+                    'engaged_sessions_target', 'inquiries_target', 'contact_clicks_target'):
+            if key in summary and key in before:
+                print('  %-24s %8s -> %s' % (key, before[key], summary[key]))
+    else:
+        print('no previous run saved')
+    with open(os.path.join(STATE_DIR, name), 'w') as handle:
+        json.dump(summary, handle, indent=2)
+
+
+def main(argv=None):
+    """The report: python3 scripts/seo-report.py [days] [--no-index] (argv without the program name)."""
+    global DAYS
+    argv = sys.argv[1:] if argv is None else list(argv)
+    args = [a for a in argv if not a.startswith('--')]
+    DAYS = int(args[0]) if args else 28
+    summary = {'date': str(datetime.date.today()), 'days': DAYS}
+    search_console(summary)
+    if '--no-index' not in argv:
+        index_coverage(summary)
+    ga4(summary)
+    site_events(summary)
+    compare_and_save(summary)
+
+
+if __name__ == '__main__':
+    main()

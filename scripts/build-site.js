@@ -75,9 +75,11 @@ const ARTWORK_FIELDS = new Set(['slug', 'title', 'year', 'medium', 'surface', 'w
  * `sizes` attributes: the CSS width of each image box in the current design, per layout band of the
  * previous site (>=1201, 961-1200, 641-960, 481-640, <=480), as measured on the previous build.
  * Change them together with the layout in src/css/site.css.
+ * hero: the 16:9 poster covers (object-fit: cover) a hero at least as tall as the window, so in a window
+ * narrower than 16:9 it is drawn at least 177.8vh wide (a 390x844 phone: about 1500 px, not 390).
  */
 const SIZES = {
-  hero: '100vw',
+  hero: '(max-aspect-ratio: 16/9) 178vh, 100vw',
   avatar: '180px',
   portrait: '180px',
   photo: '(min-width: 641px) 374px, (min-width: 481px) 336px, 255px',
@@ -235,12 +237,72 @@ function fitText(text, min, max) {
   return best > 0 ? text.slice(0, best) : cutAtWord(text, max);
 }
 
+/*
+ * keepTogether(): the gaps that must not break. A gap is any run of white space, also written as an HTML entity
+ * (&nbsp;), and the sign of a size may be an entity too (&times;), so the same rules work for plain text and for
+ * the text between the tags of HTML (keepTogetherHtml()). Only breaking white space in a gap becomes U+00A0.
+ */
+const GAP = '(?:[\\t\\n\\f\\r \\u00a0]|&nbsp;|&#0*160;|&#[xX]0*[aA]0;)+';
+const TIMES = '(?:×|&times;|&#0*215;|&#[xX]0*[dD]7;)';
+const KEEP_SIZE_RE = new RegExp(`(\\d|\\bcm|\\bmm)(${GAP})?(${TIMES})(${GAP})?(?=\\d)`, 'g');
+const KEEP_UNIT_RE = new RegExp(`(\\d)(${GAP})(cm|mm)\\b`, 'g');
+const KEEP_INITIAL_RE = new RegExp(`\\b([A-Z]|St|Dr|Mr|Mrs|Ms|Mt)\\.(${GAP})(?=[A-Z])`, 'g');
+const noBreak = (gap) => (gap || '').replace(/[\t\n\f\r ]+/g, '\u00a0');
+
 /** Visible running text: no line break inside a size ("190 × 45 cm") or after an initial ("P. Molina"). */
 function keepTogether(text) {
   return String(text)
-    .replace(/(\d|\bcm|\bmm)[ \t]+×[ \t]+(?=\d)/g, '$1\u00a0×\u00a0')
-    .replace(/(\d)[ \t]+(cm|mm)\b/g, '$1\u00a0$2')
-    .replace(/\b([A-Z]|St|Dr|Mr|Mrs|Ms|Mt)\.[ \t]+(?=[A-Z])/g, '$1.\u00a0');
+    .replace(KEEP_SIZE_RE, (m, before, gap1, times, gap2) => `${before}${noBreak(gap1)}${times}${noBreak(gap2)}`)
+    .replace(KEEP_UNIT_RE, (m, digit, gap, unit) => `${digit}${noBreak(gap)}${unit}`)
+    .replace(KEEP_INITIAL_RE, (m, initial, gap) => `${initial}.${noBreak(gap)}`);
+}
+
+/* Markup in HTML from data.json that keepTogetherHtml() leaves as written: comments, <script>/<style> with
+   their content, tags (a ">" inside a quoted attribute value does not end a tag), doctype-like declarations. */
+const HTML_MARKUP_RE = /<!--[\s\S]*?-->|<(script|style)\b(?:"[^"]*"|'[^']*'|[^'">])*>[\s\S]*?<\/\1\s*>|<\/?[A-Za-z](?:"[^"]*"|'[^']*'|[^'">])*>|<[!?][^>]*>/gi;
+
+/** keepTogether() for HTML (story_html, the legal texts): only the text between the tags changes. */
+function keepTogetherHtml(html) {
+  const src = String(html);
+  let out = '';
+  let last = 0;
+  for (const m of src.matchAll(HTML_MARKUP_RE)) {
+    out += keepTogether(src.slice(last, m.index)) + m[0];
+    last = m.index + m[0].length;
+  }
+  return out + keepTogether(src.slice(last));
+}
+
+/**
+ * Headings of HTML from data.json moved by one step so that the highest one gets level `top` (the story: h3 below
+ * its "Story" h2; a legal text: h2 below the page h1, so a text that starts with its own <h1>, as generated legal
+ * texts do, gives no second h1), at most h6.
+ */
+function shiftHeadings(html, top) {
+  const src = String(html);
+  const levels = [...src.matchAll(/<h([1-6])(?=[\s>])/gi)].map((m) => Number(m[1]));
+  if (!levels.length) return src;
+  const step = top - Math.min(...levels);
+  return src.replace(/<(\/?)h([1-6])(?=[\s>])/gi, (m, slash, level) => `<${slash}h${Math.min(6, Number(level) + step)}`);
+}
+
+/**
+ * mailto: links to the site's address in HTML from data.json get the contact tracking of every other mailto link
+ * (data-track="contact", data-location, data-artwork-slug on artwork pages), so they count as contact_click like
+ * the links of the templates. A link that already has data-track, or another address (for example a data
+ * protection authority in the privacy text), stays as written.
+ */
+function trackMailto(html, email, attrs) {
+  return String(html).replace(/<a\b(?:"[^"]*"|'[^']*'|[^'">])*>/gi, (tag) => {
+    const m = /\shref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/i.exec(tag);
+    const href = m ? plainText(m[1] !== undefined ? m[1] : m[2] !== undefined ? m[2] : m[3]) : '';
+    if (!/^mailto:/i.test(href) || /\sdata-track\s*=/i.test(tag)) return tag;
+    let address = href.slice(7).split('?')[0];
+    try { address = decodeURIComponent(address); } catch (e) { /* keep it as written */ }
+    if (address.trim().toLowerCase() !== String(email).toLowerCase()) return tag;
+    const extra = Object.entries(attrs).map(([k, v]) => ` ${k}="${escapeHtml(v)}"`).join('');
+    return tag.replace(/\s*\/?>$/, (end) => `${extra}${end}`);
+  });
 }
 
 /**
@@ -948,9 +1010,13 @@ function createContext(root, data, manifest, assets, templates) {
     });
   }
 
-  /** Story HTML (only rendered when story_confirmed): headings one level down (below the "Story" h2), <img> -> manifest <picture>. */
+  /**
+   * Story HTML (only rendered when story_confirmed): headings below the "Story" h2 (the highest one becomes h3),
+   * <img> -> manifest <picture>, mailto: links to the artist tracked like the CTA, sizes and initials kept
+   * together as in all other visible text.
+   */
   function storyHtml(a) {
-    let html = a.story_html.replace(/<(\/?)h([1-5])(?=[\s>])/gi, (m, slash, level) => `<${slash}h${Number(level) + 1}`);
+    let html = shiftHeadings(a.story_html, 3);
     html = html.replace(/<img\b[^>]*>/gi, (tag) => {
       const attr = (name) => {
         const m = new RegExp(`\\b${name}\\s*=\\s*("([^"]*)"|'([^']*)')`, 'i').exec(tag);
@@ -960,7 +1026,8 @@ function createContext(root, data, manifest, assets, templates) {
       if (!src) fail(`${a.slug}: <img> without src in story_html`);
       return renderPicture(picture(src, { alt: attr('alt'), sizes: SIZES.story, cls: 'artwork__story-image', where: `${a.slug} story_html` })).trim();
     });
-    return html;
+    html = trackMailto(html, site.email, { 'data-track': 'contact', 'data-location': 'artwork', 'data-artwork-slug': a.slug });
+    return keepTogetherHtml(html);
   }
 
   // ---------------------------------------------------------------- about, contact, legal, 404
@@ -1033,7 +1100,9 @@ function createContext(root, data, manifest, assets, templates) {
         breadcrumbLd(trail),
       ],
     });
-    view.legal = { title: l.label, html: data.legal[l.field] };
+    // the text as written, below the page h1, with the artist's mailto: links tracked and sizes and initials kept together
+    const legalHtml = trackMailto(shiftHeadings(data.legal[l.field], 2), site.email, { 'data-track': 'contact', 'data-location': l.key });
+    view.legal = { title: l.label, html: keepTogetherHtml(legalHtml) };
     add({ type: l.key, file: `${l.key}/index.html`, href, template: 'legal', view, indexable: true });
   }
   {
@@ -1133,7 +1202,7 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
 }
 
 module.exports = {
-  build, cutAtWord, fitText, keepTogether, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
+  build, cutAtWord, fitText, keepTogether, keepTogetherHtml, shiftHeadings, trackMailto, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
   SIZES, COVER_BOXES, STATUS, ARTWORK_FIELDS, BuildError,
 };
 

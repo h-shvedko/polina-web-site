@@ -11,6 +11,7 @@
  * a marked edge (--fade-start / --fade-end), so no label shows a hard cut, and the right fade is the cue that the
  * row goes on. A link that gets keyboard focus while it is cut off or under a fade moves to the start of the row,
  * just after the left fade (a snap position: site.css scroll-padding-left = --fade-start).
+ * Nothing reads layout before the stylesheet is in use (whenStyled()).
  */
 (function () {
   'use strict';
@@ -18,6 +19,34 @@
   var nav = document.getElementById('site-nav');
   if (!nav) return;
   var hero = document.querySelector('header.hero');
+
+  /*
+   * Run fn once the stylesheets are in use (loaded or failed). WebKit (Safari and every iOS browser) can run
+   * this deferred script before the stylesheet in <head> has loaded; Chromium and Firefox wait for it. A layout
+   * read before then (getBoundingClientRect, getComputedStyle) computes the browser's default styles, and when
+   * site.css arrives every property with a transition animates from them: blue nav links, the nav sliding up,
+   * grey cookie buttons. consent.js has the same helper.
+   */
+  function whenStyled(fn) {
+    var pending = [].filter.call(document.querySelectorAll('link[rel="stylesheet"]'), function (link) { return !link.sheet; });
+    if (!pending.length || document.readyState === 'complete') {
+      fn();
+      return;
+    }
+    var left = pending.length;
+    var done = false;
+    var run = function () {
+      if (done) return;
+      done = true;
+      fn();
+    };
+    var settle = function () { if (--left === 0) run(); };
+    pending.forEach(function (link) {
+      link.addEventListener('load', settle);
+      link.addEventListener('error', settle);
+    });
+    window.addEventListener('load', run); // a stylesheet that failed before this script ran sends no event
+  }
 
   var row = nav.querySelector('.site-nav__links');
   if (row) {
@@ -35,10 +64,12 @@
       row.classList.toggle('site-nav__links--more-start', textEdges(links[0]).left < box.left - 0.5);
       row.classList.toggle('site-nav__links--more-end', textEdges(links[links.length - 1]).right > box.right + 0.5);
     };
-    row.addEventListener('scroll', edges, { passive: true });
-    window.addEventListener('resize', edges);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(edges);
-    edges();
+    whenStyled(function () {
+      edges();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(edges); // the labels again in Jost
+      row.addEventListener('scroll', edges, { passive: true });
+      window.addEventListener('resize', edges);
+    });
     row.addEventListener('focusin', function (e) {
       // keyboard focus only: a mouse or touch press focuses the link too, and scrolling then would move the
       // link away from under the pointer before the click
@@ -68,10 +99,12 @@
   var focused = false;
   function update() { set(focused || !overHero); }
 
-  new IntersectionObserver(function (entries) {
-    overHero = entries[entries.length - 1].isIntersecting;
-    update();
-  }).observe(hero);
+  whenStyled(function () {
+    new IntersectionObserver(function (entries) {
+      overHero = entries[entries.length - 1].isIntersecting;
+      update();
+    }).observe(hero);
+  });
 
   nav.addEventListener('focusin', function () {
     focused = true;

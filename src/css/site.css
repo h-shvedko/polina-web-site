@@ -271,13 +271,27 @@ html.consent-open body { padding-bottom: var(--consent-h, 0px); }
   object-fit: cover;
   object-position: 50% 50%;
 }
-/* the YouTube player (hero.js) covers the hero like the old background video */
+/* The YouTube player (hero.js: div.hero__player > iframe.hero__video) covers the hero like the old background
+   video. The player letterboxes its 16:9 video into the iframe and draws its title bar (title, channel avatar)
+   along the top edge of the iframe and its logo at the bottom right, at every start, resume and loop. So the
+   iframe is as wide as the 16:9 box that covers the hero (container units of .hero__player, which is as large as
+   the hero; the hero can be taller than the window) and 240 px taller: the video still covers the hero edge to
+   edge, and the title bar and the logo lie outside it, as with the old site's player. The vw/vh lines are for
+   browsers without container units (the window's cover box). */
+.hero__player {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  pointer-events: none;
+}
 .hero__video {
   position: absolute;
   top: 50%;
   left: 50%;
   width: max(100%, 177.78vh);
   height: max(100%, 56.25vw);
+  width: max(100cqw, 177.78cqh);
+  height: calc(max(100cqh, 56.25cqw) + 240px);
   border: 0;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -1111,6 +1125,8 @@ html.zoom-open { overflow: hidden; }
 }
 .page__legal > * + * { margin-top: 1em; }
 .page__legal h2 { font-size: 24px; font-weight: var(--fw-semibold); line-height: 1.35; margin-top: 1.5em; }
+.page__legal h3,
+.page__legal h4 { font-size: 19px; font-weight: var(--fw-semibold); line-height: 1.4; margin-top: 1.25em; }
 .page__legal a { text-decoration: underline; }
 
 /* ================================================================ 961-1200 px (container 960) */
