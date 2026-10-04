@@ -398,7 +398,8 @@ Changes after the third review round (2026-10-04):
   bar and the logo lie outside the hero, as with the old site's player (checked with the real player at 1920x1080,
   2560x1440, 1366x900, 1024x600, 667x375 and 390x844, also paused and resumed). Browsers without container units
   keep the earlier sizing.
-- Hero video: a player whose page never loads is removed after 20 s. Firefox and Safari (every iOS browser) send
+- Hero video: a player whose page never loads is removed after 20 s (60 s when the browser reports a 2G connection,
+  which Chromium also reports for "Slow 3G", where the player page needs about 35 s). Firefox and Safari (every iOS browser) send
   no load event for a frame that a content blocker, a firewall or a missing connection stops, and a dropped
   connection keeps Chromium waiting for minutes, so the button said "Pause the video" over a still poster. A page
   that loads still gets about 10 s to answer.
@@ -416,6 +417,10 @@ Changes after the third review round (2026-10-04):
   h1), and tracks `mailto:` links to the artist there like every other one (`data-location` `imprint` / `privacy`).
   Proven with a build that confirms the story and sets both legal texts (shaped like generated ones): all static
   checks pass.
+- Generated legal texts: markup that generators write and that html-validate rejects (`<br />`, `<hr />`, blanks at
+  line ends, inline `style`, `<a name>`) is normalised by the build (`normalizeHtml()` in `scripts/build-site.js`;
+  `target="_blank"` links also get `rel="noopener"`), so a pasted generator text passes the CI check. Sales words are
+  not checked in legal pages: a legal text is published as the owner pastes it.
 - `scripts/seo-report.py`: importing it (as `/seo-report` does to reuse `token()` and `call()`) no longer runs the
   whole report (Google API calls, the URL Inspection quota, a state file); `main()` runs it.
 - Hosting: on this server nginx passes every request to Apache (the live ETags are Apache's), so the `.htaccess`
@@ -483,7 +488,8 @@ Changes after the third review round (2026-10-04):
 6. Approve the consent banner text (`CONSENT_TEXT` in `scripts/build-site.js`).
 7. Provide the Impressum and the privacy policy (it must name Google Analytics and the YouTube video, which loads
    from youtube-nocookie.com after a click). They go into `data.json` as HTML (`legal.imprint_html`,
-   `legal.privacy_html`); a generated text can be pasted as it is, also with its own `h1` and e-mail links.
+   `legal.privacy_html`); a generated text can be pasted as it is, also with its own `h1`, e-mail links and the
+   usual generator markup (`<br />`, inline styles). Run `npm run build:site && npm run test:static` before pushing.
 8. Decide about 13 unreferenced files in `src/img/` (12.3 MB, not deployed): `IMG_2993 (1).jpg`,
    `IMG_3272 (1).jpg`, `avata.webp`, `avatar_400x400.png`, `photo_2022-12-02_18- (5).png`,
    `gallery/picture13_1_preview.jpeg`, `gallery/picture13_2_preview.jpeg`, `gallery/picture30_3_preview.jpg`,

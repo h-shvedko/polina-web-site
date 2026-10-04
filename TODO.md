@@ -18,7 +18,8 @@ cart), no blog. Items below that mention the old popup, cart or prices are histo
 - [ ] **Consent banner text** — approve (`CONSENT_TEXT` in `scripts/build-site.js`).
 - [ ] **Impressum and privacy policy** — provide the legal texts (`legal.imprint_html`, `legal.privacy_html`); the
   privacy text must name Google Analytics and the YouTube video (youtube-nocookie.com, loaded on click). A generated
-  HTML text can be pasted as it is (its own `h1` and e-mail links are fine).
+  HTML text can be pasted as it is (its own `h1`, e-mail links and generator markup such as `<br />` are fine); run
+  `npm run build:site && npm run test:static` before pushing.
 - [ ] **Unused source images** — 13 files in `src/img/` are not referenced (listed in the ADR-0003 tracker); delete
   them or keep them.
 - [ ] **Back-to-top button** — the old floating button is not in the rebuild; re-add it only if wanted.

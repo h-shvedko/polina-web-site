@@ -273,6 +273,55 @@ function keepTogetherHtml(html) {
   return out + keepTogether(src.slice(last));
 }
 
+/*
+ * HTML pasted into data.json (story_html, the legal texts), often from a generator, in the markup style of the rest of
+ * the site, so that html-validate and with it the CI check before the deploy accept it. What it shows stays the same:
+ * void elements lose their self-closing slash (<br /> -> <br>), blanks at line ends go, inline style attributes go
+ * (site.css styles the text), <a name="x"> becomes <a id="x"> (name is deprecated), and a link that opens a new
+ * window gets rel="noopener". Comments and the text between the tags stay as written.
+ */
+const VOID_SLASH_RE = /<(area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr)\b((?:"[^"]*"|'[^']*'|[^'">])*?)\s*\/>/gi;
+const START_TAG_RE = /^<([A-Za-z][A-Za-z0-9-]*)((?:"[^"]*"|'[^']*'|[^'">])*)>$/;
+/* one attribute with the white space before it: name, and optionally = and a quoted or unquoted value */
+const ATTR_RE = /(\s+)([^\s"'>/=]+)(?:(\s*=\s*)("[^"]*"|'[^']*'|[^\s"'>]+))?/g;
+
+function normalizeStartTag(tag) {
+  const m = START_TAG_RE.exec(tag);
+  if (!m) return tag;
+  const [, name, attrs] = m;
+  const isLink = name.toLowerCase() === 'a';
+  const items = [...attrs.matchAll(ATTR_RE)].map((a) => ({ ws: a[1], key: a[2], eq: a[3] || '', value: a[4] }));
+  const tail = /\s*$/.exec(attrs)[0];
+  const has = (key) => items.some((it) => it.key.toLowerCase() === key);
+  const kept = [];
+  for (const it of items) {
+    const key = it.key.toLowerCase();
+    if (key === 'style') continue;
+    if (isLink && key === 'name') {
+      if (!has('id')) kept.push({ ...it, key: 'id' });
+      continue;
+    }
+    kept.push(it);
+  }
+  const blank = kept.some((it) => it.key.toLowerCase() === 'target' && /^(["']?)_blank\1$/i.test(it.value || ''));
+  if (isLink && blank && !has('rel')) kept.push({ ws: ' ', key: 'rel', eq: '=', value: '"noopener"' });
+  return `<${name}${kept.map((it) => `${it.ws}${it.key}${it.value !== undefined ? it.eq + it.value : ''}`).join('')}${tail}>`;
+}
+
+function normalizeHtml(html) {
+  const src = String(html).replace(/[ \t]+(?=\r?\n|$)/g, '');
+  let out = '';
+  let last = 0;
+  for (const m of src.matchAll(HTML_MARKUP_RE)) {
+    out += src.slice(last, m.index);
+    let tag = m[0];
+    if (/^<[A-Za-z]/.test(tag) && !/^<(script|style)\b/i.test(tag)) tag = normalizeStartTag(tag.replace(VOID_SLASH_RE, '<$1$2>'));
+    out += tag;
+    last = m.index + m[0].length;
+  }
+  return out + src.slice(last);
+}
+
 /**
  * Headings of HTML from data.json moved by one step so that the highest one gets level `top` (the story: h3 below
  * its "Story" h2; a legal text: h2 below the page h1, so a text that starts with its own <h1>, as generated legal
@@ -1016,7 +1065,7 @@ function createContext(root, data, manifest, assets, templates) {
    * together as in all other visible text.
    */
   function storyHtml(a) {
-    let html = shiftHeadings(a.story_html, 3);
+    let html = shiftHeadings(normalizeHtml(a.story_html), 3);
     html = html.replace(/<img\b[^>]*>/gi, (tag) => {
       const attr = (name) => {
         const m = new RegExp(`\\b${name}\\s*=\\s*("([^"]*)"|'([^']*)')`, 'i').exec(tag);
@@ -1100,8 +1149,9 @@ function createContext(root, data, manifest, assets, templates) {
         breadcrumbLd(trail),
       ],
     });
-    // the text as written, below the page h1, with the artist's mailto: links tracked and sizes and initials kept together
-    const legalHtml = trackMailto(shiftHeadings(data.legal[l.field], 2), site.email, { 'data-track': 'contact', 'data-location': l.key });
+    // the text as written (generator markup normalised), below the page h1, with the artist's mailto: links tracked
+    // and sizes and initials kept together
+    const legalHtml = trackMailto(shiftHeadings(normalizeHtml(data.legal[l.field]), 2), site.email, { 'data-track': 'contact', 'data-location': l.key });
     view.legal = { title: l.label, html: keepTogetherHtml(legalHtml) };
     add({ type: l.key, file: `${l.key}/index.html`, href, template: 'legal', view, indexable: true });
   }
@@ -1202,7 +1252,7 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
 }
 
 module.exports = {
-  build, cutAtWord, fitText, keepTogether, keepTogetherHtml, shiftHeadings, trackMailto, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
+  build, cutAtWord, fitText, keepTogether, keepTogetherHtml, normalizeHtml, shiftHeadings, trackMailto, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
   SIZES, COVER_BOXES, STATUS, ARTWORK_FIELDS, BuildError,
 };
 

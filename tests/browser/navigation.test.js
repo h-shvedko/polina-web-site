@@ -433,6 +433,36 @@ describe('browser 6: hero video facade', () => {
     }
   });
 
+  test('desktop: on a connection the browser reports as 2G (Chromium reports "Slow 3G" so) a player page that is still loading gets 60 s, not 20 s, before it is removed', { timeout: 60000 }, async () => {
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    const hung = [];
+    try {
+      await ctx.addInitScript(() => {
+        Object.defineProperty(Navigator.prototype, 'connection', { configurable: true, get: () => ({ effectiveType: '2g' }) });
+      });
+      await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\//, (r) => { hung.push(r); }); // still loading
+      const page = await ctx.newPage();
+      await page.clock.install(); // fake timers that still run; fastForward() jumps over the waits
+      await B.gotoPage(page, env.url('/'));
+      await B.clickOn(page, 'button.hero__play', 'hero play button');
+      await page.locator('iframe.hero__video').waitFor({ state: 'attached', timeout: 5000 });
+      await page.clock.fastForward(30000);
+      const at30 = await heroState(page);
+      await page.clock.fastForward(31000);
+      const at61 = await heroState(page);
+      const problems = [];
+      if (!hung.length) problems.push('the player was never requested');
+      if (!at30.frame) problems.push('on a 2G connection the loading player was removed before 30 s');
+      if (at30.frame && at30.label !== 'Pause the video') problems.push(`at 30 s the button reads ${JSON.stringify(at30.label)}`);
+      if (at61.frame) problems.push('on a 2G connection the loading player is still there after 61 s');
+      if (at61.label !== 'Play the video' || !at61.posterShown) problems.push(`after 61 s: ${JSON.stringify(at61)}`);
+      expectNone(problems, 'hero player on a slow connection');
+    } finally {
+      for (const r of hung) await r.abort().catch(() => {});
+      await ctx.close();
+    }
+  });
+
   test('desktop: a player that reports an error is removed at once and the button reads "Play the video"', { timeout: 60000 }, async () => {
     const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
     try {

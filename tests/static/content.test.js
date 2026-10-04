@@ -17,6 +17,9 @@ function textFilesOrFail() {
   return files;
 }
 
+/** The pages generated from data.json legal.imprint_html / legal.privacy_html. */
+const LEGAL_PAGE_RE = /^(imprint|privacy)\//;
+
 function scan(labels, { skipLicenses = false } = {}) {
   const patterns = FORBIDDEN_PATTERNS.filter((p) => labels.includes(p.label));
   assert.equal(patterns.length, labels.length, 'unknown pattern label in test');
@@ -24,7 +27,9 @@ function scan(labels, { skipLicenses = false } = {}) {
   for (const f of textFilesOrFail()) {
     if (skipLicenses && LICENSE_FILE_RE.test(f.rel)) continue;
     const content = fs.readFileSync(f.abs, 'utf8');
-    for (const hit of findForbidden(content, { patterns })) {
+    // a legal text (imprint, privacy policy) is published as the owner pasted it, so sales words are allowed there;
+    // Tilda, retired events and Cyrillic are checked on every page
+    for (const hit of findForbidden(content, { patterns, skipSalesWords: LEGAL_PAGE_RE.test(f.rel) })) {
       problems.push(`${f.rel}:${hit.line} [${hit.label}] "${hit.match}" in: ${hit.excerpt}`);
     }
   }

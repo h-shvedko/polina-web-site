@@ -9,7 +9,8 @@
  * messages, enablejsapi=1): a blocked or failed player leaves the poster, not a black hero. A player is removed
  * again, so the button never says "Pause the video" over a still poster, when
  *   - its page never loads, after 20 s: a content blocker, a firewall or no connection (Firefox and Safari fire
- *     no load event then, and a dropped connection keeps Chromium waiting for minutes);
+ *     no load event then, and a dropped connection keeps Chromium waiting for minutes); after 60 s on a
+ *     connection the browser reports as 2G (Chromium reports "Slow 3G" so; the player page needs about 35 s there);
  *   - its page loaded but the player never answers, after about 10 s;
  *   - it reports an error, at once.
  * The same button then stops the motion: "Pause the video" (pauseVideo; before the player plays, the player is
@@ -24,7 +25,6 @@
   var id = button && button.getAttribute('data-youtube-id');
   if (!button || !media || !id) return;
 
-  var LOAD_TIMEOUT = 20000; // ms for the player page to load before the player is removed (see above)
   var player = null; // div.hero__player around the iframe
   var frame = null;
   var state = 'idle'; // idle -> loading -> playing <-> paused; loading -> idle (stopped before it played)
@@ -46,6 +46,13 @@
   function stopAsking() {
     if (asking) clearInterval(asking);
     asking = null;
+  }
+
+  /* ms for the player page to load before the player is removed (see above), read at each start because the
+     connection can change while the page is open */
+  function loadTimeout() {
+    var connection = navigator.connection;
+    return connection && /2g$/.test(connection.effectiveType || '') ? 60000 : 20000;
   }
 
   function stopWaiting() {
@@ -101,7 +108,7 @@
     var poster = media.querySelector('.hero__poster');
     media.insertBefore(player, poster ? poster.nextSibling : media.firstChild);
     set('loading');
-    waiting = setTimeout(remove, LOAD_TIMEOUT); // the page never loaded: no load event, no answer
+    waiting = setTimeout(remove, loadTimeout()); // the page never loaded: no load event, no answer
     if (window.siteAnalytics) window.siteAnalytics.track('hero_video_play', { video_id: id });
   }
 

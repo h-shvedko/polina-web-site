@@ -164,7 +164,9 @@ changes; `&times;`, `&nbsp;` and line breaks count) — a static test scans ever
   fails the build (`ARTWORK_FIELDS` in `scripts/build-site.js`).
 - `socialmedia_images[]` (`src`, `alt`): the first five fill the Instagram mosaic on home.
 - `legal`: `imprint_html`, `privacy_html` (`null` = page not generated, not linked, not in the sitemap). The HTML is
-  placed below the page `h1` as written (generated legal texts can be pasted), except that its headings move so the
+  placed below the page `h1` as written (generated legal texts can be pasted; `normalizeHtml()` turns generator markup
+  such as `<br />`, inline `style`, `<a name>` and blanks at line ends into the site's markup style, and
+  `target="_blank"` links get `rel="noopener"`; the same applies to `story_html`), except that its headings move so the
   highest becomes `h2` (a text may start with its own `h1`), `mailto:` links to `site.email` get `data-track="contact"`
   and `data-location="imprint"` / `"privacy"` (other addresses, e.g. a data protection authority, stay untracked),
   and sizes and initials keep a no-break space.
@@ -262,8 +264,8 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   over the poster (no YouTube request before the click; `enablejsapi=1`). The player stays transparent until it
   reports that it plays (IFrame API messages), so a blocked player leaves the poster; the same button then pauses and
   resumes it (`pauseVideo` / `playVideo`; before the player plays, it removes the player again). The player is removed
-  and the button reads "Play the video" again when its page never loads (20 s: a content blocker, a firewall or no
-  connection; Firefox and Safari send no load event then), when its page loaded but it never answers (about 10 s), or
+  and the button reads "Play the video" again when its page never loads (20 s, 60 s on a connection the browser
+  reports as 2G: a content blocker, a firewall or no connection; Firefox and Safari send no load event then), when its page loaded but it never answers (about 10 s), or
   at once when it reports an error.
 - `artwork.js` (artwork pages): thumbnails, prev/next, arrow keys and swipe switch the main image; `button.artwork__zoom`
   (over the main image, shown by the script) opens `dialog#artwork-zoom`: the current image with `sizes="100vw"`,
@@ -314,7 +316,7 @@ full-screen view (`.zoom`) copies the old popup zoom (white page, thin chevrons,
   non-local request is blocked and recorded): page loads without errors or third-party requests, consent, navigation
   and the image gallery, contact tracking, hero facade (with stand-in players for the play/pause messages and for an
   error; a player whose page loads but never answers is removed after about 10 s, one whose page never loads after
-  about 20 s), full-screen view (also: no focus ring on the cross while browsing with the arrow keys), 390 px layout
+  about 20 s, or 60 s on a 2G connection), full-screen view (also: no focus ring on the cross while browsing with the arrow keys), 390 px layout
   (no horizontal scroll, tap targets ≥ 24 px, text ≥ 12 px), `layout.test.js` (the open banner hides neither content
   nor focus, the hero play button at common and short window sizes with the banner open and closed and at
   split-screen sizes with it closed, both edges of the nav row on phones after a swipe and with keyboard focus, hero

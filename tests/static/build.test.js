@@ -9,10 +9,10 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { expectNone, headingProblems } = require('../lib/checks');
+const { expectNone, headingProblems, findForbidden, findCyrillic } = require('../lib/checks');
 const { parseHtml, qs, qsa, attr, breakingSpaceProblems } = require('../lib/html');
 const S = require('../lib/site');
-const { build, withoutTitleEcho, keepTogether, keepTogetherHtml } = require('../../scripts/build-site.js');
+const { build, withoutTitleEcho, keepTogether, keepTogetherHtml, normalizeHtml } = require('../../scripts/build-site.js');
 const { matchOwner } = require('../../scripts/file-owner.js');
 
 const GULP = path.join(S.ROOT, 'node_modules', 'gulp', 'bin', 'gulp.js');
@@ -82,6 +82,57 @@ describe('build scripts', () => {
     assert.equal(keepTogetherHtml('<p title="50 × 40 cm">50 × 40 cm, <em>St. Albani</em></p>'), '<p title="50 × 40 cm">50\u00a0×\u00a040\u00a0cm, <em>St.\u00a0Albani</em></p>');
     assert.equal(keepTogetherHtml('<a href="/x" title="a > b, P. Molina">P. Molina</a><!-- 5 cm --><style>p::after{content:"5 cm"}</style>'), '<a href="/x" title="a > b, P. Molina">P.\u00a0Molina</a><!-- 5 cm --><style>p::after{content:"5 cm"}</style>');
     assert.equal(keepTogetherHtml('190&nbsp;&times; 45 cm, 29,7 &#215;&#xA0;42&#160;cm, the EU-U.S. Data Privacy Framework'), '190&nbsp;&times;\u00a045\u00a0cm, 29,7\u00a0&#215;&#xA0;42&#160;cm, the EU-U.S.\u00a0Data Privacy Framework');
+  });
+
+  test('normalizeHtml(): generator markup in pasted HTML (<br />, trailing blanks, inline style, <a name>, target=_blank) gets the site\'s markup style; text, comments and quoted values stay as written', () => {
+    const cases = [
+      ['<p>A<br />\nB<br/>   \nC<br\n/></p>', '<p>A<br>\nB<br>\nC<br></p>'],
+      ['<hr />\n<img src="x.jpg" alt="a" />', '<hr>\n<img src="x.jpg" alt="a">'],
+      ['<p style="margin:0" class="x">t</p>', '<p class="x">t</p>'],
+      ['<a name="eu"></a><a id="k" name="k"></a>', '<a id="eu"></a><a id="k"></a>'],
+      ['<a href="https://e.org" target="_blank">x</a>', '<a href="https://e.org" target="_blank" rel="noopener">x</a>'],
+      ['<a href="https://e.org" target="_blank" rel="noreferrer">y</a>', '<a href="https://e.org" target="_blank" rel="noreferrer">y</a>'],
+      ['<!-- <br /> style="x" -->', '<!-- <br /> style="x" -->'],
+      ['<p title="a/>b, style=x">2 <br> 3</p>', '<p title="a/>b, style=x">2 <br> 3</p>'],
+    ];
+    for (const [input, want] of cases) assert.equal(normalizeHtml(input), want, `normalizeHtml(${JSON.stringify(input)})`);
+  });
+
+  test('the owner step "paste a generated legal text" (German imprint markup with <br />, <hr />, trailing blanks, inline styles, <a name>, target=_blank and words such as "shop") builds a legal page that passes html-validate and the content checks of every page', async () => {
+    const root = copyRoot();
+    const file = path.join(root, 'data.json');
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    // a sample shaped like the output of common imprint generators (not legal advice)
+    data.legal.imprint_html = [
+      '<h1>Impressum</h1>',
+      '<h2>Angaben gem&auml;&szlig; &sect; 5 DDG</h2>',
+      '<p>Polina Shvedko<br />',
+      'Musterstra&szlig;e 1<br />   ',
+      '12345 Musterstadt</p>',
+      `<p style="margin-top:10px">Telefon: +49 123 456789<br/>`,
+      `E-Mail: <a href="mailto:${data.site.email}">${data.site.email}</a></p>`,
+      '<h2><a name="streit"></a>Verbraucherstreitbeilegung</h2>',
+      '<p>Plattform der EU-Kommission: <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a>. Our Etsy shop is run by Etsy.</p>',
+      '<hr />',
+      '<p>Quelle: <a href="https://www.e-recht24.de" target="_blank" rel="noopener noreferrer">eRecht24</a></p>',
+    ].join('\n');
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    const out = tmp('out-generated-legal');
+    await build({ root, outDir: out });
+    const page = path.join(out, 'imprint', 'index.html');
+    assert.ok(fs.existsSync(page), 'imprint/index.html was not built');
+    const html = fs.readFileSync(page, 'utf8');
+    const { HtmlValidate } = require('html-validate');
+    const validator = new HtmlValidate(JSON.parse(fs.readFileSync(path.join(S.ROOT, '.htmlvalidate.json'), 'utf8')));
+    const report = await validator.validateString(html, page);
+    const problems = report.results.flatMap((r) => r.messages.map((m) => `${m.line}:${m.column} ${m.ruleId}: ${m.message}`));
+    // the content checks of tests/static/content.test.js for legal pages: no Tilda, no Cyrillic (sales words are
+    // allowed in a legal text, which must stay as the owner pasted it)
+    problems.push(...findForbidden(html, { skipSalesWords: true }).map((h) => `[${h.label}] ${h.excerpt}`));
+    problems.push(...findCyrillic(html).map((h) => `Cyrillic: ${JSON.stringify(h)}`));
+    if (!html.includes('<a id="streit"></a>')) problems.push('<a name> was not turned into <a id>');
+    if (!/href="https:\/\/ec\.europa\.eu\/consumers\/odr\/" target="_blank" rel="noopener"/.test(html)) problems.push('target=_blank link without rel="noopener"');
+    expectNone(problems, 'generated legal text');
   });
 
   test('the owner steps "confirm the story" (story_confirmed: true) and "add the legal texts" (legal.imprint_html, legal.privacy_html) build pages that keep the rules of every page: sizes and initials with a no-break space, one h1 and no skipped heading level (also for a legal text with its own h1), the artist\'s mailto: links tracked; tags, attributes and comments stay as written', async () => {
