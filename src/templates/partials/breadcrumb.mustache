@@ -1,11 +1,12 @@
 {{!
   Breadcrumb (Home › hub › artwork). The last item is the current page (no link, aria-current="page").
-  The separator is a text character, hidden from screen readers.
+  The separator is a text character, hidden from screen readers. The items flow as text: a long title wraps
+  like a sentence, and the no-break space keeps each separator with the label after it.
 }}
 <nav class="breadcrumb" aria-label="Breadcrumb">
 <ol class="breadcrumb__list">
 {{#breadcrumb}}
-<li class="breadcrumb__item">{{^first}}<span class="breadcrumb__sep" aria-hidden="true">›</span> {{/first}}{{#href}}<a class="breadcrumb__link" href="{{href}}">{{label}}</a>{{/href}}{{^href}}<span class="breadcrumb__current" aria-current="page">{{label}}</span>{{/href}}</li>
+<li class="breadcrumb__item">{{^first}}<span class="breadcrumb__sep" aria-hidden="true">›</span>&nbsp;{{/first}}{{#href}}<a class="breadcrumb__link" href="{{href}}">{{label}}</a>{{/href}}{{^href}}<span class="breadcrumb__current" aria-current="page">{{label}}</span>{{/href}}</li>
 {{/breadcrumb}}
 </ol>
 </nav>

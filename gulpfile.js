@@ -7,7 +7,8 @@
  *   gulp build        img -> build:site                                      (npm run build)
  *   gulp img          scripts/images.js: WebP/JPEG variants + src/img/manifest.json (npm run image; needs sharp)
  *   gulp pages        scripts/build-site.js: every HTML page + sitemap.xml (aliases: html, sitemap)
- *   gulp clean        delete everything in the output directory except img/
+ *   gulp clean        delete everything in the output directory except img/ (refuses a directory that
+ *                     does not look like a site build, see assertSafeAppDir)
  *   gulp css | fonts | js (alias babel) | static     copy src/ files into the output directory
  *   gulp watch        build:site, then rebuild on changes + livereload       (npm run server-watch)
  *   gulp server       dev web server for the output directory
@@ -19,6 +20,10 @@
  *   GULP_PORT        dev server port (default 7000), GULP_HOST its address (default 0.0.0.0)
  *   GULP_OPEN        0 = do not open a browser when the dev server starts (default 1)
  *   LIVERELOAD_PORT  livereload server of `gulp watch` (default 35729, the port docker-compose maps)
+ *
+ * Run as root (the docker-compose dev container on a bind mount), build-site.js and images.js give what they
+ * write, and the folders gulp.dest creates, the owner of this folder (scripts/file-owner.js), so the host user
+ * can still rebuild, pull and check out.
  */
 
 const fs = require('fs');
@@ -36,9 +41,20 @@ const CSS_GLOBS = ['src/css/**/*.css', '!src/css/webfonts/**'];
 const FONT_GLOBS = ['src/css/webfonts/**'];
 const JS_GLOBS = ['src/js/**/*.js'];
 const STATIC_GLOBS = ['src/static/**', 'src/static/**/.*'];
-const PAGE_INPUTS = ['src/templates/**/*.mustache', 'data.json', 'src/img/manifest.json'];
+// scripts/*.js: an edited build script is loaded again on the next rebuild (see fresh())
+const PAGE_INPUTS = ['src/templates/**/*.mustache', 'data.json', 'src/img/manifest.json', 'scripts/build-site.js', 'scripts/file-owner.js'];
 
-/** Refuse output directories whose cleaning would delete sources (the repository, src/, a parent, ...). */
+/* Top-level names a site build contains (besides the hub folders from data.json and the files of src/static/). */
+const BUILD_ENTRIES = ['img', 'css', 'js', '.htaccess', 'robots.txt', 'sitemap.xml', 'index.html', '404.html', 'about', 'contact', 'imprint', 'privacy'];
+
+/**
+ * Refuse output directories whose cleaning would delete anything but an old build: the repository, src/, a
+ * parent, the file system root, and any existing directory (other than <repo>/app) that holds something a
+ * site build does not contain (a mistyped APP_DIR such as $HOME or the scratch folder). A site build holds the
+ * names above, the hub folders and whatever src/static/ holds today (a Search Console verification file, ...).
+ * A folder with other names still counts as an old build of this site when its sitemap.xml lists this site's
+ * URLs: a file since removed from src/static/, or a hub folder since renamed, stays in the old build.
+ */
 function assertSafeAppDir(dir) {
   const inside = (child, parent) => {
     const rel = path.relative(parent, child);
@@ -48,6 +64,40 @@ function assertSafeAppDir(dir) {
   if (inside(ROOT, dir)) throw new Error(`APP_DIR ${dir} is the repository or one of its parents; refusing to clean it`);
   if (dir === path.parse(dir).root) throw new Error('APP_DIR must not be the file system root');
   for (const p of protectedDirs) if (inside(dir, p)) throw new Error(`APP_DIR ${dir} is inside ${p}; refusing to clean it`);
+  if (dir === path.join(ROOT, 'app') || !fs.existsSync(dir)) return;
+  let data = {};
+  try {
+    data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data.json'), 'utf8')) || {};
+  } catch {
+    /* no readable data.json: only the fixed names and src/static count */
+  }
+  const hubPaths = (Array.isArray(data.hubs) ? data.hubs : []).map((h) => h && h.path).filter(Boolean);
+  let staticNames = [];
+  try {
+    staticNames = fs.readdirSync(path.join(ROOT, 'src', 'static'));
+  } catch {
+    /* no src/static */
+  }
+  const known = new Set([...BUILD_ENTRIES, ...hubPaths, ...staticNames]);
+  const foreign = fs.readdirSync(dir).filter((name) => !known.has(name));
+  if (!foreign.length) return;
+  const siteUrl = data.site && typeof data.site.url === 'string' ? data.site.url.replace(/\/+$/, '') : '';
+  let sitemap = '';
+  try {
+    sitemap = fs.readFileSync(path.join(dir, 'sitemap.xml'), 'utf8');
+  } catch {
+    /* no sitemap: not a build of this site */
+  }
+  if (siteUrl && sitemap.includes(`<loc>${siteUrl}/</loc>`)) return; // an earlier build of this site
+  throw new Error(`APP_DIR ${dir} does not look like a site build (it holds ${foreign.slice(0, 5).join(', ')}${foreign.length > 5 ? ', ...' : ''}); refusing to clean it. Use an empty or new directory.`);
+}
+
+/** require() a build script anew, so `gulp watch` runs the current version after an edit (not the cached one). */
+function fresh(rel) {
+  for (const id of Object.keys(require.cache)) {
+    if (id.startsWith(path.join(ROOT, 'scripts') + path.sep)) delete require.cache[id];
+  }
+  return require(path.join(ROOT, rel));
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -81,11 +131,11 @@ function statics() {
 statics.displayName = 'static';
 
 function pages() {
-  return require('./scripts/build-site.js').build({ root: ROOT, outDir: APP_DIR, log: console.log });
+  return fresh('scripts/build-site.js').build({ root: ROOT, outDir: APP_DIR, log: console.log });
 }
 
 function img() {
-  return require('./scripts/images.js').run({ root: ROOT, appDir: APP_DIR });
+  return fresh('scripts/images.js').run({ root: ROOT, appDir: APP_DIR });
 }
 
 gulp.task('clean', clean);

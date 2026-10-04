@@ -2,4 +2,4 @@
   One image from src/img/manifest.json: WebP source + JPEG fallback, width/height of the original (aspect
   ratio), lazy loading unless the image is above the fold. View: scripts/build-site.js picture().
 }}
-<picture{{#class}} class="{{class}}"{{/class}}{{#data_index}} data-index="{{data_index}}"{{/data_index}}{{#aria_hidden}} aria-hidden="true"{{/aria_hidden}}{{#hidden}} hidden{{/hidden}}><source type="image/webp" srcset="{{webp_srcset}}" sizes="{{sizes}}"><img src="{{src}}" srcset="{{jpg_srcset}}" sizes="{{sizes}}" width="{{width}}" height="{{height}}" alt="{{alt}}"{{#lazy}} loading="lazy" decoding="async"{{/lazy}}{{#high}} fetchpriority="high"{{/high}}></picture>
+<picture{{#class}} class="{{class}}"{{/class}}{{#data_index}} data-index="{{data_index}}"{{/data_index}}{{#aria_hidden}} aria-hidden="true"{{/aria_hidden}}{{#hidden}} hidden{{/hidden}}><source type="image/webp" srcset="{{webp_srcset}}" sizes="{{sizes}}"><img src="{{src}}" srcset="{{jpg_srcset}}" sizes="{{sizes}}" width="{{width}}" height="{{height}}" alt="{{alt}}"{{#lazy}} loading="lazy" decoding="async"{{/lazy}}{{#high}} fetchpriority="high"{{/high}}{{#low}} fetchpriority="low"{{/low}}></picture>

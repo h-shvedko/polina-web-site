@@ -13,15 +13,21 @@
  * Source of truth is src/img/. The pipeline processes exactly the images that data.json
  * references (every string that is a local "img/....(jpg|jpeg|png|webp|gif|tif|tiff|avif)"
  * path, plus <img src> inside HTML strings such as story_html; this covers images[].src,
- * preview, preview_hover, story_images[].src, socialmedia_images[].src and site.images.*).
+ * preview, preview_hover, socialmedia_images[].src and site.images.*).
  *
  * For each referenced image it writes into <APP_DIR>/img/<same subdir>/:
  *   <stem>-<w>.webp and <stem>-<w>.jpg
  * <stem> is the source file name without extension, lowercased, every run of characters
- * outside [a-z0-9_-] replaced by "-". Widths are 600, 1200 and 1920, each clamped to the
- * original width (never upscaled), duplicates removed:
- *   original >= 1920 -> 600, 1200, 1920     original 1529 -> 600, 1200, 1529
- *   original 921     -> 600, 921            original 480  -> 480
+ * outside [a-z0-9_-] replaced by "-". Widths are 600, 900, 1200 and 1920 (the SPEC's 600/1200/
+ * 1920 plus a 900 step: phones at DPR 1.75-2.4 draw a full-width image at 650-1050 px and took
+ * the 1200 px file, twice the bytes), each clamped to the original width (never upscaled),
+ * duplicates removed:
+ *   original >= 1920 -> 600, 900, 1200, 1920     original 1529 -> 600, 900, 1200, 1529
+ *   original 921     -> 600, 900, 921            original 480  -> 480
+ * plus the ROLE_WIDTHS of how data.json uses the image (imageRoles()): the photos of an
+ * artwork with more than one image are also gallery thumbnails (40-60 px boxes) and get 160
+ * and 320; the card images of a "wide" card are drawn up to about 1620 CSS px wide
+ * (object-fit: cover; 3240 px at DPR 2) and get 2560 and 3200.
  * Every variant is auto-oriented (EXIF), converted to sRGB (embedded ICC profiles such as
  * Adobe RGB are applied), flattened on white, and stripped of all metadata. WebP quality 75
  * ("photo" preset), JPEG mozjpeg quality 75 progressive (see SETTINGS).
@@ -49,6 +55,7 @@ const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
 const crypto = require('crypto');
+const { matchOwner } = require('./file-owner');
 
 /*
  * Encoder settings (SPEC section 5: WebP ~75, mozjpeg ~75 progressive). Changing them changes
@@ -61,11 +68,22 @@ const crypto = require('crypto');
  */
 const SETTINGS = Object.freeze({
   version: 1, // bump when the processing code changes in a way the values below do not show
-  widths: Object.freeze([600, 1200, 1920]),
+  // Not part of the digest (see settingsFingerprint): a width adds or removes whole files. Consecutive widths
+  // differ by at most 1.6x, so the file a browser picks is never far larger than the size it draws.
+  widths: Object.freeze([600, 900, 1200, 1920]),
   webp: Object.freeze({ quality: 75, effort: 6, smartSubsample: true, preset: 'photo' }),
   jpeg: Object.freeze({ quality: 75, mozjpeg: true, progressive: true }),
   background: '#ffffff',
   fastShrinkOnLoad: false, // full-quality downscale: no moire on canvas texture
+});
+
+/*
+ * Extra widths by role (imageRoles), on top of SETTINGS.widths and clamped the same way. Not part of
+ * the digest either: a change here writes only the new variants.
+ */
+const ROLE_WIDTHS = Object.freeze({
+  thumb: Object.freeze([160, 320]), // artwork page thumbnails: 40 px (phones) and 60 px boxes at DPR 1-3
+  wide: Object.freeze([2560, 3200]), // card images of wide cards: 1160 px box, wider images drawn at ~1620 px
 });
 
 /* Copied byte for byte from src/ to <APP_DIR>/ (favicon and apple-touch icons). */
@@ -130,14 +148,38 @@ function outputStem(ref) {
   return `${path.posix.dirname(ref)}/${stem}`;
 }
 
-/** Target widths clamped to the original width, never upscaled, ascending, unique. */
-function variantWidths(originalWidth) {
-  const widths = [];
-  for (const target of SETTINGS.widths) {
-    const w = Math.min(target, originalWidth);
-    if (!widths.includes(w)) widths.push(w);
+/**
+ * Target widths clamped to the original width, never upscaled, ascending, unique: SETTINGS.widths plus
+ * the ROLE_WIDTHS of `roles` (an iterable of role names, see imageRoles).
+ */
+function variantWidths(originalWidth, roles = []) {
+  const targets = [...SETTINGS.widths];
+  for (const role of roles) targets.push(...(ROLE_WIDTHS[role] || []));
+  const widths = new Set(targets.map((target) => Math.min(target, originalWidth)));
+  return [...widths].sort((a, b) => a - b);
+}
+
+/**
+ * Roles of the images data.json references, as a Map "img/..." -> Set of role names:
+ *   thumb  every images[].src of an artwork with more than one image (gallery thumbnails)
+ *   wide   preview and preview_hover of an artwork with card "wide"
+ */
+function imageRoles(data) {
+  const roles = new Map();
+  const add = (src, role) => {
+    const m = typeof src === 'string' ? IMAGE_PATH_RE.exec(src) : null;
+    if (!m) return;
+    if (!roles.has(m[1])) roles.set(m[1], new Set());
+    roles.get(m[1]).add(role);
+  };
+  for (const hub of (data && data.hubs) || []) {
+    for (const a of hub.artworks || []) {
+      const images = Array.isArray(a.images) ? a.images : [];
+      if (images.length > 1) for (const im of images) add(im && im.src, 'thumb');
+      if (a.card === 'wide') { add(a.preview, 'wide'); add(a.preview_hover, 'wide'); }
+    }
   }
-  return widths;
+  return roles;
 }
 
 /** Path of one variant relative to the output root, e.g. "img/gallery/picture32_1-600.webp". */
@@ -145,8 +187,12 @@ function variantPath(ref, width, ext) {
   return `${outputStem(ref)}-${width}.${ext}`;
 }
 
+/* The encoder settings (not the widths: like ROLE_WIDTHS they add or remove whole variant files, which run() and
+   verify() compare by width, so a new width writes only its own files). */
 function settingsFingerprint() {
-  return crypto.createHash('sha256').update(JSON.stringify(SETTINGS)).digest('hex').slice(0, 16);
+  const encoder = { ...SETTINGS };
+  delete encoder.widths;
+  return crypto.createHash('sha256').update(JSON.stringify(encoder)).digest('hex').slice(0, 16);
 }
 
 /** Manifest digest of one image: changes when the source bytes or the encoder settings change. */
@@ -313,6 +359,7 @@ async function run({
   const { rootDir, appRoot, srcDir, manifestFile } = resolveDirs(root, appDir);
   const data = readJson(path.join(rootDir, 'data.json'));
   const refs = collectImageRefs(data);
+  const roles = imageRoles(data);
   checkStemCollisions(refs);
 
   const missing = await findSources(srcDir, refs);
@@ -350,8 +397,9 @@ async function run({
       const unchanged = !force && Boolean(previous) && previous.digest === digest;
       const legacy = !force && !(previous && previous.digest);
       const entry = { width, height, digest, webp: [], jpg: [] };
+      const widths = variantWidths(width, roles.get(ref) || []);
       let made = 0;
-      for (const w of variantWidths(width)) {
+      for (const w of widths) {
         for (const { key, ext } of FORMATS) {
           const rel = variantPath(ref, w, ext);
           const outFile = path.join(outImg, path.relative('img', rel));
@@ -384,7 +432,7 @@ async function run({
         }
       }
       manifest[ref] = entry;
-      if (made) log(`  + ${ref} (${width}x${height}): ${made} variant(s) written, widths ${variantWidths(width).join('/')}`);
+      if (made) log(`  + ${ref} (${width}x${height}): ${made} variant(s) written, widths ${widths.join('/')}`);
     } catch (err) {
       failures.push(`${ref}: ${err.message}`);
     }
@@ -396,7 +444,8 @@ async function run({
 
   // Manifest (only rewritten when it changes, so watchers do not loop).
   const manifestText = serializeManifest(manifest);
-  const oldManifestText = fs.existsSync(manifestFile) ? fs.readFileSync(manifestFile, 'utf8') : null;
+  // CR ignored: a checkout with CRLF line endings does not rewrite an unchanged manifest
+  const oldManifestText = fs.existsSync(manifestFile) ? fs.readFileSync(manifestFile, 'utf8').replace(/\r\n?/g, '\n') : null;
   const manifestChanged = manifestText !== oldManifestText;
   if (manifestChanged) await writeAtomic(manifestFile, manifestText);
 
@@ -432,6 +481,8 @@ async function run({
     deletedBytes += st.isFile() ? st.size : 0;
   }
   await removeEmptyDirs(outImg);
+  // Run as root (the dev container): what was written keeps the owner of the repository.
+  matchOwner(rootDir, [outImg, manifestFile]);
 
   // Totals.
   let files = 0;
@@ -459,11 +510,13 @@ async function run({
 async function verify({ root = process.cwd(), appDir = process.env.APP_DIR || 'app' } = {}) {
   const { rootDir, appRoot, srcDir, manifestFile } = resolveDirs(root, appDir);
   const problems = [];
-  const refs = collectImageRefs(readJson(path.join(rootDir, 'data.json')));
+  const data = readJson(path.join(rootDir, 'data.json'));
+  const refs = collectImageRefs(data);
+  const roles = imageRoles(data);
   const manifest = readJsonIfExists(manifestFile);
   if (!manifest) return { problems: [`missing ${path.relative(rootDir, manifestFile)}`], images: refs.length, variants: 0 };
   for (const ref of await findSources(srcDir, refs)) problems.push(`source missing in src/: ${ref}`);
-  if (serializeManifest(manifest) !== fs.readFileSync(manifestFile, 'utf8')) problems.push('manifest keys are not sorted or not in the canonical format');
+  if (serializeManifest(manifest) !== fs.readFileSync(manifestFile, 'utf8').replace(/\r\n?/g, '\n')) problems.push('manifest keys are not sorted or not in the canonical format');
   const keep = new Set(COPY_AS_IS);
   let variants = 0;
   for (const ref of refs) if (!manifest[ref]) problems.push(`no manifest entry for ${ref}`);
@@ -477,7 +530,7 @@ async function verify({ root = process.cwd(), appDir = process.env.APP_DIR || 'a
     if (source && entry.digest !== inputDigest(source)) {
       problems.push(`${ref}: ${entry.digest ? 'the source or the encoder settings changed after its variants were made' : 'no digest (written by an older images.js)'}; run npm run image`);
     }
-    const expected = variantWidths(entry.width);
+    const expected = variantWidths(entry.width, roles.get(ref) || []);
     for (const { key, ext } of FORMATS) {
       const list = Array.isArray(entry[key]) ? entry[key] : [];
       const widths = list.map((v) => v.w);
@@ -530,6 +583,7 @@ async function fetchHeroPoster({ root = process.cwd(), log = console.log } = {})
     }
     const dest = path.join(rootDir, 'src', ref);
     await writeAtomic(dest, buffer);
+    matchOwner(rootDir, [dest]);
     log(`images: hero poster ${url} (${meta.width}x${meta.height}, ${buffer.length} bytes) -> src/${ref}`);
     return { url, width: meta.width, height: meta.height, bytes: buffer.length, file: dest };
   }
@@ -541,12 +595,14 @@ module.exports = {
   verify,
   fetchHeroPoster,
   collectImageRefs,
+  imageRoles,
   outputStem,
   variantWidths,
   variantPath,
   inputDigest,
   COPY_AS_IS,
   SETTINGS,
+  ROLE_WIDTHS,
 };
 
 if (require.main === module) {

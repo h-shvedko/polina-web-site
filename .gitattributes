@@ -1,1 +1,11 @@
-*.mp4 filter=lfs diff=lfs merge=lfs -text
+# Line endings: LF in the repository and in every working tree, also when core.autocrlf is true, so a local
+# build gives the same bytes (and the same ?v= content hashes) as CI. Binary files are never converted.
+* text=auto eol=lf
+*.[jJ][pP][gG] binary
+*.[jJ][pP][eE][gG] binary
+*.[pP][nN][gG] binary
+*.webp binary
+*.gif binary
+*.avif binary
+*.ico binary
+*.woff2 binary

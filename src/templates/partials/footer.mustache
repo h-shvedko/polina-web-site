@@ -1,6 +1,7 @@
 {{!
   Footer: the current copyright line plus one small link row (hubs, About, Contact, Imprint/Privacy only when
-  generated) and the Cookie settings button that reopens the consent banner (consent.js).
+  generated) and the Cookie settings button that reopens the consent banner (consent.js; hidden without
+  JavaScript by the noscript style of build-site.js).
 }}
 <footer class="site-footer">
 <div class="site-footer__inner">
@@ -10,7 +11,7 @@
 {{#footer.items}}
 <li class="site-footer__item"><a class="site-footer__link" href="{{href}}"{{#current}} aria-current="page"{{/current}}>{{label}}</a></li>
 {{/footer.items}}
-<li class="site-footer__item"><button type="button" class="site-footer__button" id="cookie-settings">Cookie settings</button></li>
+<li class="site-footer__item site-footer__item--settings"><button type="button" class="site-footer__button" id="cookie-settings">Cookie settings</button></li>
 </ul>
 </nav>
 </div>

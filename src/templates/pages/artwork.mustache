@@ -2,7 +2,10 @@
   Artwork page "/<hub path>/<slug>/" (SPEC sections 7 and 8), laid out like the old popup: image gallery
   beside the text on desktop, stacked on phones. Order in the info column as in the popup: title,
   description, status line, facts (medium, size, frame, year), contact button.
-  artwork.js switches the images; without JavaScript all images are shown one below the other.
+  artwork.js switches the images and opens the full-screen view (dialog.zoom, like the old popup's zoom) from
+  button.artwork__zoom, which covers the main image; both stay hidden without JavaScript, and then all images
+  are shown one below the other. The dialog has tabindex="-1": it takes the focus itself when it opens (its label
+  is announced, no focus ring on the cross for a mouse user), and Tab reaches the cross and the arrows.
 }}
 {{> head}}
 <main id="main" class="artwork artwork--{{hub.key}}">
@@ -14,6 +17,7 @@
 {{#artwork.slides}}{{> picture}}
 {{/artwork.slides}}
 </div>
+<button type="button" class="artwork__zoom" aria-haspopup="dialog" aria-controls="artwork-zoom" aria-label="View the image full screen" hidden></button>
 {{#artwork.multiple}}
 <button type="button" class="artwork__prev" aria-controls="artwork-images" aria-label="Previous image" hidden>{{> icon-chevron-left}}</button>
 <button type="button" class="artwork__next" aria-controls="artwork-images" aria-label="Next image">{{> icon-chevron-right}}</button>
@@ -60,5 +64,13 @@
 {{/artwork.next}}
 </nav>
 <div class="artwork__back-wrap"><a class="artwork__back" href="/{{hub.path}}/">{{hub.all_link}}</a></div>
+<dialog class="zoom" id="artwork-zoom" tabindex="-1" aria-label="{{artwork.title}}: full-screen view">
+<div class="zoom__stage" aria-live="polite"></div>
+<button type="button" class="zoom__close" aria-label="Close the full-screen view">{{> icon-close}}</button>
+{{#artwork.multiple}}
+<button type="button" class="zoom__prev" aria-label="Previous image">{{> icon-chevron-left}}</button>
+<button type="button" class="zoom__next" aria-label="Next image">{{> icon-chevron-right}}</button>
+{{/artwork.multiple}}
+</dialog>
 </main>
 {{> foot}}

@@ -1,5 +1,6 @@
 {{!
-  Document start: <head> and the opening of <body> with the site navigation. Every page template starts
+  Document start: <head> and the opening of <body>: the skip link (first Tab stop), the consent banner (early in
+  the reading and focus order; fixed at the bottom by CSS) and the site navigation. Every page template starts
   with the "head" partial and ends with the "foot" partial. View: see scripts/build-site.js layout().
   Never write Mustache tags inside a comment: the first closing braces end the comment.
 }}
@@ -12,9 +13,7 @@
 {{#page.description}}
 <meta name="description" content="{{page.description}}">
 {{/page.description}}
-{{#page.noindex}}
-<meta name="robots" content="noindex">
-{{/page.noindex}}
+<meta name="robots" content="{{page.robots}}">
 {{#page.canonical}}
 <link rel="canonical" href="{{page.canonical}}">
 {{/page.canonical}}
@@ -50,4 +49,6 @@
 {{/jsonld}}
 </head>
 <body class="site site--{{page.type}}">
+<a class="skip-link" href="#main">Skip to content</a>
+{{> consent}}
 {{> nav}}

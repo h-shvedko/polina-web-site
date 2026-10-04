@@ -1,5 +1,9 @@
 node_modules
 .idea
 .playwright-mcp/
-*.jpeg
-
+# Screenshots that browser tools drop into the repository root. Anchored: source photos in src/img/ (many are
+# .jpeg) must stay addable with a plain `git add`.
+/*.jpeg
+# Python bytecode caches (scripts/seo-report.py imported by /seo-report)
+__pycache__/
+*.py[cod]

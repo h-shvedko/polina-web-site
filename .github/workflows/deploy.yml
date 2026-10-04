@@ -39,6 +39,13 @@ jobs:
         # src/img/manifest.json are committed (npm run image regenerates them).
         run: npx gulp build:site
 
+      - name: Check the built site
+        # A push to main is the production deploy, so app/ is checked before anything is uploaded: the static
+        # tests (pages, links, images, meta texts, JSON-LD, html-validate, markup contract; a few seconds, no
+        # browser, no sharp) and the committed image variants against src/img/manifest.json. A failure stops
+        # the job here and the live site stays as it is.
+        run: npm run test:static && node scripts/images.js --check
+
       - name: Install lftp
         run: sudo apt-get install -y lftp
 

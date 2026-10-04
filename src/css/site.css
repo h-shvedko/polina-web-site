@@ -11,8 +11,9 @@
  * Font: Jost (SIL OFL 1.1, /css/webfonts/jost/OFL.txt) replaces the old proprietary font. Jost is darker at
  * the same nominal weight, so the weights are mapped (old 300/400/500/600/700 -> Jost 300/375/425/485/565) and
  * the vertical metrics are overridden to the old font's line boxes (line-height: normal = 1.2em).
- * Sections: tokens, fonts, base, nav, hero, intro, divider, gallery and cards, pills, about me, Instagram,
- * contact, footer, cookie banner, breadcrumb, hub, artwork page, other pages, responsive bands, motion.
+ * Sections: tokens, fonts, base, skip link, nav, hero, intro, divider, gallery and cards, pills, about me,
+ * Instagram, contact, footer, cookie banner, breadcrumb, hub, artwork page, full-screen view, other pages,
+ * responsive bands, motion.
  */
 
 /* ---------------------------------------------------------------- tokens */
@@ -122,11 +123,35 @@ button {
 /* Author display rules beat the user-agent [hidden] rule: keep hidden things hidden. */
 [hidden] { display: none; }
 
+/* While the consent banner is open, consent.js sets html.consent-open and --consent-h (the banner height): the
+   page keeps that room at its end, so the footer can scroll above the banner and keyboard focus scrolling stops
+   above it; the hero play button moves above the banner (phones: to the top corner of the hero). */
+html.consent-open { scroll-padding-bottom: calc(var(--consent-h, 0px) + 8px); }
+html.consent-open body { padding-bottom: var(--consent-h, 0px); }
+
 :focus:not(:focus-visible) { outline: none; }
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
 }
+
+/* ---------------------------------------------------------------- skip link (first Tab stop, shown on focus) */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100000;
+  padding: 10px 20px;
+  border: 2px solid #000;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  transform: translateY(calc(-100% - 16px));
+}
+.skip-link:focus { transform: none; }
 
 /* ---------------------------------------------------------------- sticky navigation (old nav.css) */
 .site-nav {
@@ -179,6 +204,7 @@ button {
 .site-nav__links::-webkit-scrollbar { display: none; }
 
 .site-nav__link {
+  position: relative;
   display: block;
   height: var(--nav-h);
   padding: 0 14px;
@@ -198,6 +224,26 @@ button {
 }
 .site-nav__link:focus-visible,
 .site-nav__logo:focus-visible { outline-offset: -2px; }
+/* The row scrolls on narrow screens (see the narrow-screen rules). nav.js marks an edge that cuts a label:
+   --more-start (labels before the left edge) and --more-end (after the right edge); a cut edge fades out, so no
+   label ends in a hard cut (the old row ended mid-word). The wider right fade is the cue that the row goes on;
+   the left fade is also the snap offset, so a link that snaps to the row start is clear of it. */
+.site-nav__links {
+  --fade-start: 20px;
+  --fade-end: 32px;
+}
+.site-nav__links--more-start {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade-start));
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade-start));
+}
+.site-nav__links--more-end {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - var(--fade-end)), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - var(--fade-end)), transparent);
+}
+.site-nav__links--more-start.site-nav__links--more-end {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+}
 
 /* ---------------------------------------------------------------- hero (home) */
 .hero {
@@ -235,7 +281,10 @@ button {
   border: 0;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  opacity: 0; /* over the poster, shown when the player reports that it plays (a blocked player keeps the poster) */
+  transition: opacity .6s ease;
 }
+.hero__media--playing .hero__video { opacity: 1; }
 /* dark overlay, as before: rgba(0,0,0,.5) over the image or video */
 .hero__media::after {
   content: "";
@@ -246,10 +295,15 @@ button {
   pointer-events: none;
 }
 
+/* The play button sits 30 px above the bottom of the window, not of the hero: in short windows the hero is taller
+   than the window (--below), and the button then stays in the first screen. While the consent banner is open,
+   it also clears the banner (--lift = its height); on phones it moves to the top corner instead (see <= 640 px). */
 .hero__play {
+  --lift: 0px;
+  --below: max(0px, 100% - 100vh); /* 100%: the hero height (.hero__media is the containing block) */
   position: absolute;
   right: 40px;
-  bottom: 30px;
+  bottom: calc(30px + var(--lift) + var(--below));
   z-index: 3;
   display: flex;
   align-items: center;
@@ -263,9 +317,17 @@ button {
   opacity: .8;
   transition: opacity .2s ease, background-color .2s ease;
 }
+@supports (height: 100svh) {
+  .hero__play { --below: max(0px, 100% - 100svh); } /* the hero is at least 100svh tall */
+}
+html.consent-open .hero__play { --lift: var(--consent-h, 0px); }
 .hero__play:hover,
 .hero__play:focus-visible { opacity: 1; background: rgba(255, 255, 255, .15); }
 .hero__play .icon { width: 26px; height: 26px; margin-left: 2px; }
+/* after the click the same button pauses and resumes the video (hero.js) */
+.hero__play .icon--pause { display: none; margin-left: 0; }
+.hero__play--active .icon--play { display: none; }
+.hero__play--active .icon--pause { display: block; }
 
 .hero__content {
   position: relative;
@@ -372,6 +434,11 @@ button {
   text-align: center;
   color: var(--c-heading);
 }
+/* headings that wrap get lines of similar length (no "... by Polina / Shvedko") */
+.gallery__heading,
+.hub__title,
+.page__title,
+.artwork__title { text-wrap: balance; }
 
 .intro__text,
 .hub__intro {
@@ -471,6 +538,10 @@ a.pill:hover,
 @media (hover: hover) {
   .card__media:hover .card__img { opacity: 0; }
   .card__media:hover .card__img--hover { z-index: 3; opacity: 1; }
+}
+/* touch screens never show the hover image: not rendered, so its lazy file is never downloaded */
+@media (hover: none) {
+  .card__img--hover { display: none; }
 }
 
 /* red label, same place and shape as the old red badge (now "Private collection", two lines) */
@@ -719,7 +790,12 @@ a.pill:hover,
   white-space: nowrap;
   transition: background-color .15s, color .15s;
 }
-.cookie-consent__button--accept { background: #fff; color: var(--c-cookie); }
+.cookie-consent__button--accept {
+  padding: 9px 27px;
+  border: 1px solid transparent; /* same size; forced-colors mode (Windows contrast themes) draws it */
+  background: #fff;
+  color: var(--c-cookie);
+}
 .cookie-consent__button--accept:hover { background: #e6e6e6; }
 .cookie-consent__button--decline {
   padding: 9px 27px;
@@ -739,10 +815,11 @@ a.pill:hover,
   font-weight: var(--fw-regular);
   line-height: 24px;
 }
-.breadcrumb__list { display: flex; flex-wrap: wrap; align-items: center; }
-.breadcrumb__item { display: flex; align-items: center; min-width: 0; }
-.breadcrumb__sep { margin: 0 8px; color: var(--c-title); }
-.breadcrumb__link { display: block; color: rgba(0, 0, 0, .8); }
+/* the items flow as text: a long title wraps like a sentence (no orphaned separator, no indented block) */
+.breadcrumb__list { display: block; }
+.breadcrumb__item { display: inline; }
+.breadcrumb__sep { margin: 0 .3em; color: var(--c-title); } /* + the spaces around it: 8 px each side */
+.breadcrumb__link { display: inline-block; color: rgba(0, 0, 0, .8); } /* 24 px high tap target */
 .breadcrumb__link:hover { color: #000; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .breadcrumb__current { color: #767676; } /* new element: darkest grey of the old titles that meets AA contrast */
 /* artwork pages: the breadcrumb starts at the image column */
@@ -767,6 +844,16 @@ a.pill:hover,
 .artwork__info { min-width: 0; }
 
 .artwork__stage { position: relative; }
+/* full-screen view (artwork.js): the whole main image opens it, as in the old popup */
+.artwork__zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  cursor: zoom-in;
+}
+.artwork__zoom:focus-visible { outline-offset: -4px; }
 .artwork__image { aspect-ratio: 1 / 1; background: #fff; }
 .artwork__image[hidden] { display: none; }
 .artwork__image img { width: 100%; height: 100%; object-fit: contain; }
@@ -893,6 +980,7 @@ a.pill:hover,
   color: #000;
 }
 .artwork__pager-link--next { margin-left: auto; align-items: flex-end; text-align: right; }
+.artwork__pager-link:only-child { max-width: 100%; } /* first or last artwork: one link, the whole row */
 .artwork__pager-label {
   display: inline-flex;
   align-items: center;
@@ -924,6 +1012,56 @@ a.pill:hover,
 
 .artwork__back-wrap { margin-top: 40px; padding-bottom: 65px; text-align: center; }
 
+/* ---------------------------------------------------------------- full-screen view (old popup zoom) */
+/* white page, the image as large as the window allows, thin black chevrons and a cross (artwork.js) */
+.zoom {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+}
+.zoom::backdrop { background: #fff; }
+.zoom__stage {
+  position: absolute;
+  inset: 15px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zoom__picture { width: 100%; height: 100%; }
+.zoom__picture img { width: 100%; height: 100%; object-fit: contain; }
+.zoom__close,
+.zoom__prev,
+.zoom__next {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+}
+.zoom__close { top: 8px; right: 8px; width: 44px; height: 44px; }
+.zoom__close .icon { width: 22px; height: 22px; }
+.zoom__prev,
+.zoom__next { top: 50%; width: 44px; height: 64px; margin-top: -32px; }
+.zoom__prev { left: 10px; }
+.zoom__next { right: 10px; }
+.zoom__prev .icon,
+.zoom__next .icon { width: 13px; height: 24px; }
+.zoom__prev[hidden],
+.zoom__next[hidden] { display: none; }
+.zoom:focus-visible { outline: none; } /* the dialog itself takes focus when it opens */
+.zoom :focus-visible { outline-offset: -2px; }
+html.zoom-open { overflow: hidden; }
+
 /* ---------------------------------------------------------------- about, contact, 404 and legal pages */
 .page__title { margin-top: 30px; margin-bottom: 0; padding: 0 20px; }
 .page--contact .contact { padding-top: 60px; }
@@ -942,9 +1080,25 @@ a.pill:hover,
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  max-width: 760px;
+  max-width: 1000px; /* the six pills fit on one row on desktop */
   margin: 40px auto 0;
   padding: 0 20px 100px;
+}
+/* Narrower than one row: the row width is limited so that the pills wrap into balanced rows, 3 + 3 (tablets), then
+   2 + 2 + 2 (phones), then one column, and never leave one pill alone ("5 + 1", "3 + 2 + 1"). The pills are 101 to
+   169 px wide: one row needs 836 px, 3 + 3 423-581 px, 2 + 2 + 2 296-400 px of row. The 3 + 3 band starts at 899 px,
+   so that a desktop window with a classic scrollbar (up to about 20 px) still has room for the one row above it. */
+@media (max-width: 899px) {
+  .page__links { max-width: 560px; }
+}
+@media (max-width: 479px) {
+  .page__links { max-width: 440px; }
+}
+@media (max-width: 339px) {
+  .page__links { padding-left: 10px; padding-right: 10px; }
+}
+@media (max-width: 319px) {
+  .page__links { flex-direction: column; align-items: center; }
 }
 .page--not-found .page__title { margin-top: 90px; }
 .page__legal {
@@ -1057,7 +1211,10 @@ a.pill:hover,
   .hero__descr { padding: 0 10px; line-height: 1.45; }
   .hero__arrow { bottom: 18px; }
   .hero__arrow .icon { scale: .7; }
+  /* phones: at the bottom of the hero (in a short window the Explore Artworks pill reaches the window bottom);
+     while the tall consent banner is open, in the top corner: above the banner it would sit on the pill */
   .hero__play { right: 20px; bottom: 20px; width: 40px; height: 40px; }
+  html.consent-open .hero__play { top: 20px; bottom: auto; }
   .hero__play .icon { width: 22px; height: 22px; }
 
   .intro__heading,
@@ -1099,6 +1256,27 @@ a.pill:hover,
   .artwork__thumbs { gap: 4px; margin-top: 3px; }
   .artwork__info { padding-top: 30px; }
   .artwork__thumb { width: 40px; height: 40px; }
+
+  /* full-screen view on phones: the image uses the full width, white round arrows over it (old zoom) */
+  .zoom__stage { inset: 60px 0; }
+  .zoom__prev,
+  .zoom__next { width: 30px; height: 30px; margin-top: -15px; border-radius: 50%; background: rgba(255, 255, 255, .85); }
+  .zoom__prev { left: 10px; }
+  .zoom__next { right: 10px; }
+  .zoom__prev .icon,
+  .zoom__next .icon { width: 7px; height: 13px; }
+}
+
+/* phone windows in split screen (title from the top edge, "POLINA SHVEDKO" on one line up to the corner): the
+   play button stays at the hero bottom, under the open banner, until the banner is answered */
+@media (min-width: 326px) and (max-width: 479px) and (max-height: 440px) {
+  html.consent-open .hero__play { top: auto; bottom: 20px; }
+}
+
+/* short windows of the 961-1200 px band: the second title line ("SHVEDKO ART", 130 px) reaches the bottom
+   corner, so the play button takes the top corner (free above the title's 74 px margin) */
+@media (min-width: 961px) and (max-width: 1060px) and (max-height: 500px) {
+  .hero__play { top: 20px; bottom: auto; }
 }
 
 /* separator fades: 120 px from 600 px down */
@@ -1121,6 +1299,44 @@ a.pill:hover,
 /* the hero e-mail line is 16 px below 480 px (old rule: 28 px from 480 px up) */
 @media (max-width: 479px) {
   .hero__descr { font-size: 16px; }
+}
+
+/* below 360 px the Explore Artworks pill wraps to two lines and stays centred, as the old pill did */
+@media (max-width: 359px) {
+  .hero__cta { max-width: 100%; white-space: normal; }
+}
+
+/* short windows (laptops at 768 px, landscape phones, 200 % zoom, phones in split screen): the centred hero text
+   would reach the arrow and, on phones, the play button, so the zone at the bottom stays free (below 326 px wide
+   up to 480 px tall: the pill has two lines there) */
+@media (min-width: 961px) and (max-height: 820px), (min-width: 641px) and (max-height: 520px), (max-height: 440px), (max-width: 325px) and (max-height: 480px) {
+  .hero__content { padding-bottom: 80px; }
+}
+
+/* ================================================================ navigation row on narrow screens */
+/* The five links need about 667 px at the desktop spacing. Narrower: tighter spacing, the gap to the logo
+   outside the scrolling row (scrolled text never touches the logo), links snap to the row start just after the
+   left fade, and the first word only of a long label ("Oil" as in the old nav; the rest stays for screen
+   readers). */
+@media (max-width: 680px) {
+  .site-nav__links {
+    margin-left: 12px;
+    padding-left: 0;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--fade-start);
+  }
+  .site-nav__item { scroll-snap-align: start; }
+  .site-nav__link { padding: 0 8px; letter-spacing: .06em; }
+}
+@media (max-width: 640px) {
+  .site-nav__more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* ================================================================ motion */

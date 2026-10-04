@@ -111,12 +111,6 @@
           ],
           "story_html": "<p>Every painting starts somewhere small. For <em>Affectionate Farewell, Cap d'Antibes, France</em>, it started with a postcard-size sketch I made while sitting on a rock at the tip of the Cap d'Antibes peninsula, watching the morning light move across the sea.</p>\n<p>I didn't plan to make it large. But something about that particular quality of light — the way the Mediterranean wraps around the headland, the pine silhouettes against the haze — felt like it needed space to breathe. A postcard wasn't enough.</p>\n<h2>Why a panoramic format?</h2>\n<p>The Cape is experienced horizontally. You stand at the point and your eyes sweep left to right — Antibes to the east, the Esterel massif to the west, the deep blue in between. A square or vertical canvas would have cropped exactly the thing I was trying to keep.</p>\n<p>The final dimensions are 190 × 45 cm — more than 4:1 ratio. This is an unusual format for oil on canvas, and it created practical challenges: stretching a canvas that wide without warping requires extra bracing, and the horizontal brushwork has to carry the eye across almost two metres of surface without losing momentum.</p>\n<figure><img src=\"img/gallery/picture32_5.jpg\" alt=\"Detail of Cap d'Antibes oil painting — sea and headland\"><figcaption>Detail view — the layered blues of the sea</figcaption></figure>\n<h2>The palette</h2>\n<p>Southern French light has a particular quality in autumn. It's warm but not harsh — the sun is lower, and the shadows have colour in them. I worked with a limited palette: titanium white, cerulean blue, ultramarine, yellow ochre, burnt sienna, and a small amount of viridian for the pine needles.</p>\n<p>The water went through four sessions. The first three felt wrong — too green, then too purple, then too grey. The final version was painted mostly in one sitting, wet-on-wet, which gave it the softness I was looking for.</p>\n<h2>What \"affectionate farewell\" means</h2>\n<p>I was leaving France the next day when I made the original sketch. There's always something bittersweet about the last morning somewhere beautiful — you look harder than you looked all week. The painting is an attempt to hold that look.</p>\n<blockquote>A painter's job is not to copy what's there, but to remember how it felt to be there.</blockquote>",
           "story_confirmed": false,
-          "story_images": [
-            {
-              "src": "img/gallery/picture32_5.jpg",
-              "alt": "Detail of Cap d'Antibes oil painting — sea and headland"
-            }
-          ],
           "seo_title": "Affectionate Farewell, Cap d'Antibes | Polina Shvedko",
           "seo_description": null
         },
@@ -160,7 +154,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -196,7 +189,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -228,7 +220,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -260,7 +251,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -292,7 +282,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -324,7 +313,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -352,7 +340,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         }
@@ -400,7 +387,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -420,6 +406,7 @@
           "card": "standard",
           "preview": "img/gallery/picture2_1_preview.jpg",
           "preview_hover": "img/gallery/picture2_2.jpg",
+          "preview_alt": "Hortensien — Pastel on paper by Polina Shvedko",
           "images": [
             {
               "src": "img/gallery/picture2_0.jpg",
@@ -440,7 +427,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -468,7 +454,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -504,7 +489,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -532,7 +516,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -564,7 +547,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -596,7 +578,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -628,7 +609,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -660,7 +640,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -692,7 +671,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         }
@@ -708,10 +686,10 @@
       "medium_label": "Watercolour",
       "artform": "Painting",
       "seo_title": "Watercolour and Ink Paintings | Polina Shvedko",
-      "seo_description": "Watercolour and ink paintings by Polina Shvedko: cafés with red awnings, a Biergarten in bloom, St. Albani Church, an old watermill and quiet streets.",
+      "seo_description": "Watercolour and ink paintings by Polina Shvedko: cafés with red awnings, a beer garden in bloom, St. Albani Church, an old watermill and quiet streets.",
       "intro": [
         "Most of these works combine watercolour washes with fine ink lines. \"Every day I am in search of new ideas, forms, new materials and techniques!\" Polina Shvedko writes. All twelve sheets date from 2023 and 2024.",
-        "The subjects are streets, cafés and corners: a Biergarten in bloom, a canal-side street in spring, St. Albani Church in the afternoon, an old watermill with a cyclist on the bridge, and three cafés with red awnings, one of them seen from above.",
+        "The subjects are streets, cafés and corners: a beer garden in bloom, a canal-side street in spring, St. Albani Church in the afternoon, an old watermill with a cyclist on the bridge, and three cafés with red awnings, one of them seen from above.",
         "Quieter scenes show a lone windmill, a park path with bare trees and benches, and a sunny village square with red-tiled roofs. Seven of the twelve are on sheets of about 30 × 42 cm. Open a work to see all its photos, its size and its year."
       ],
       "intro_status": "draft",
@@ -744,7 +722,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -772,7 +749,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -804,7 +780,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -840,7 +815,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -868,7 +842,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -896,7 +869,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -924,7 +896,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -952,7 +923,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -980,7 +950,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -1008,7 +977,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -1036,7 +1004,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         },
@@ -1064,7 +1031,6 @@
           ],
           "story_html": null,
           "story_confirmed": false,
-          "story_images": [],
           "seo_title": null,
           "seo_description": null
         }

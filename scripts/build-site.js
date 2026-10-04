@@ -21,13 +21,17 @@
  * The build throws (CLI: exit code 1) on a missing manifest entry for a referenced image, a duplicate or
  * malformed slug, an unknown or incomplete hub, an unknown artwork status, a <title> over 60 characters or a
  * duplicate title, a meta description outside 120-155 characters, invalid JSON-LD, and a missing template,
- * stylesheet or script.
+ * partial, stylesheet or script (a mistyped {{> name}} would otherwise render as nothing).
+ *
+ * Line endings do not matter: templates are read with LF and the ?v= hashes ignore CR, so a checkout with CRLF
+ * builds the same bytes. Run as root (the dev container), the output gets the owner of the repository.
  */
 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const Mustache = require('mustache');
+const { matchOwner } = require('./file-owner');
 
 const DEFAULT_ROOT = path.resolve(__dirname, '..');
 
@@ -61,6 +65,11 @@ const STATUS = {
   },
 };
 const CARD_TYPES = ['wide', 'standard'];
+/* The artwork fields of data.json (CLAUDE.md "Data"); any other field fails the build, so a typo or an unused
+   field cannot sit in the data unnoticed. */
+const ARTWORK_FIELDS = new Set(['slug', 'title', 'year', 'medium', 'surface', 'width_cm', 'height_cm', 'frame', 'description',
+  'status', 'card', 'preview', 'preview_hover', 'preview_alt', 'preview_hover_alt', 'images', 'story_html', 'story_confirmed',
+  'seo_title', 'seo_description', 'updated']);
 
 /*
  * `sizes` attributes: the CSS width of each image box in the current design, per layout band of the
@@ -68,17 +77,25 @@ const CARD_TYPES = ['wide', 'standard'];
  * Change them together with the layout in src/css/site.css.
  */
 const SIZES = {
-  card: '(min-width: 1201px) 360px, (min-width: 961px) 300px, (min-width: 641px) 280px, (min-width: 481px) calc(50vw - 30px), calc(100vw - 40px)',
-  // the wide card keeps its full row on two-column layouts (site.css; the old half-width card was a defect)
-  cardWide: '(min-width: 1201px) 1160px, (min-width: 961px) 940px, (min-width: 641px) 600px, calc(100vw - 40px)',
   hero: '100vw',
   avatar: '180px',
   portrait: '180px',
   photo: '(min-width: 641px) 374px, (min-width: 481px) 336px, 255px',
-  mosaicBig: '(min-width: 1201px) 570px, (min-width: 961px) 460px, (min-width: 641px) 600px, calc(100vw - 40px)',
-  mosaicSmall: '(min-width: 1201px) 275px, (min-width: 961px) 220px, (min-width: 641px) 295px, calc(50vw - 25px)',
-  thumb: '(max-width: 640px) 40px, 60px',
   story: '(min-width: 1201px) 760px, (min-width: 641px) 580px, calc(100vw - 40px)',
+};
+/*
+ * Boxes that crop their image with object-fit: cover (site.css .card__media, .instagram__tile, .artwork__thumb):
+ * the box width per band ([min-width or null, CSS width]) and the box ratio width / height. An image wider than
+ * its box is drawn at the box height, so its `sizes` is the box width times (image ratio / box ratio); see
+ * coverSizes(). The old site served the originals here, so a box-width `sizes` made wide images blurry.
+ */
+const COVER_BOXES = {
+  card: { ratio: 1 / 0.97222, bands: [[1201, '360px'], [961, '300px'], [641, '280px'], [481, 'calc(50vw - 30px)'], [null, 'calc(100vw - 40px)']] },
+  // the wide card keeps its full row on two-column layouts (site.css; the old half-width card was a defect)
+  cardWide: { ratio: 1 / 0.32407, bands: [[1201, '1160px'], [961, '940px'], [641, '600px'], [null, 'calc(100vw - 40px)']] },
+  mosaicBig: { ratio: 1, bands: [[1201, '570px'], [961, '460px'], [641, '600px'], [null, 'calc(100vw - 40px)']] },
+  mosaicSmall: { ratio: 1, bands: [[1201, '275px'], [961, '220px'], [641, '295px'], [null, 'calc(50vw - 25px)']] },
+  thumb: { ratio: 1, bands: [[641, '60px'], [null, '40px']] },
 };
 /* Square main image box of the artwork page (the old popup): box width per band; see artworkSizes(). */
 const ARTWORK_BOX = [[1201, 560], [961, 460], [641, 580]];
@@ -98,14 +115,18 @@ const SOCIAL_ORDER = ['facebook', 'instagram', 'linkedin', 'etsy'];
 const MOSAIC_TILES = 5;
 
 /*
- * Artwork pages without JavaScript (SPEC section 7: "without JS all images remain reachable"): the hidden
- * slides are shown one below the other and the switcher controls, which need artwork.js, are hidden.
- * Rendered as <noscript><style> in <head>, so it applies only when scripting is off.
+ * Styles for pages without JavaScript, rendered as <noscript><style> in <head> (they apply only when scripting
+ * is off). Every page: the footer "Cookie settings" button needs consent.js, so its list item is hidden.
+ */
+const NOSCRIPT_BASE_CSS = '.site-footer__item--settings{display:none}';
+/*
+ * Artwork pages (SPEC section 7: "without JS all images remain reachable"): the hidden slides are shown one
+ * below the other and the switcher controls, which need artwork.js, are hidden.
  */
 const NOSCRIPT_GALLERY_CSS = '.artwork__main picture[hidden]{display:block}.artwork__prev,.artwork__next,.artwork__thumbs{display:none}';
 /*
- * Home without JavaScript: nav.js never reveals the sticky nav (it starts hidden above the hero), and the video
- * play button needs hero.js. So the nav is shown from the start and the play button is hidden.
+ * Home: nav.js never reveals the sticky nav (it starts hidden above the hero), and the video play button needs
+ * hero.js. So the nav is shown from the start and the play button is hidden.
  */
 const NOSCRIPT_HOME_CSS = '#site-nav{transform:none}.hero__play{display:none}';
 
@@ -165,7 +186,16 @@ function plainText(html) {
     .trim();
 }
 
-/** Cut a text at a word boundary so that it has at most `max` characters including the ellipsis. */
+/* Words a cut text must not end on ("…charm of a…"), and abbreviations whose dot the cut removes ("…of St…"). */
+const DANGLING_WORDS = new Set(('a an the of in on at to into onto over under and or but nor as by with without for from '
+  + 'than that this these those its their his her our your my is are was were be which who whose where when while').split(' '));
+const ABBREVIATION_RE = /^(?:[A-Z]|St|Dr|Mr|Mrs|Ms|Mt|No)$/;
+const SENTENCE_END_RE = /[.!?]["”’)]?(?=\s|$)/g;
+
+/**
+ * Cut a text at a word boundary so that it has at most `max` characters including the ellipsis. The cut never
+ * ends on punctuation, an article, a preposition, a conjunction or an abbreviation.
+ */
 function cutAtWord(text, max, ellipsis = '…') {
   const chars = [...text];
   if (chars.length <= max) return text;
@@ -175,11 +205,78 @@ function cutAtWord(text, max, ellipsis = '…') {
     const space = cut.search(/\s\S*$/);
     if (space > 0) cut = cut.slice(0, space);
   }
-  cut = cut.replace(/[\s,;:.!?…\-–—(]+$/u, '');
+  const trim = (s) => s.replace(/[\s,;:.!?…\-–—("“'‘]+$/u, '');
+  cut = trim(cut);
+  for (;;) {
+    const m = /(\s)(\S+)$/.exec(cut);
+    if (!m || cut.slice(0, m.index).split(/\s+/).length < 3) break;
+    if (!DANGLING_WORDS.has(m[2].toLowerCase()) && !ABBREVIATION_RE.test(m[2])) break;
+    cut = trim(cut.slice(0, m.index));
+  }
   return `${cut}${ellipsis}`;
 }
 
-const sha8 = (buffer) => crypto.createHash('sha256').update(buffer).digest('hex').slice(0, 8);
+/**
+ * Fit a text into `max` characters: as is when it fits; else at the last sentence end that keeps at least
+ * `min` characters (no ellipsis); else cut at a word with "…". A dot after an initial or an abbreviation
+ * ("P. Molina", "St. Albani") is not a sentence end.
+ */
+function fitText(text, min, max) {
+  if (cpLen(text) <= max) return text;
+  let best = -1;
+  for (const m of text.matchAll(SENTENCE_END_RE)) {
+    const end = m.index + m[0].length;
+    const word = /(\S+)$/.exec(text.slice(0, m.index + 1));
+    if (word && ABBREVIATION_RE.test(word[1].replace(/[.!?]$/, ''))) continue;
+    const n = cpLen(text.slice(0, end));
+    if (n > max) break;
+    if (n >= min) best = end;
+  }
+  return best > 0 ? text.slice(0, best) : cutAtWord(text, max);
+}
+
+/** Visible running text: no line break inside a size ("190 × 45 cm") or after an initial ("P. Molina"). */
+function keepTogether(text) {
+  return String(text)
+    .replace(/(\d|\bcm|\bmm)[ \t]+×[ \t]+(?=\d)/g, '$1\u00a0×\u00a0')
+    .replace(/(\d)[ \t]+(cm|mm)\b/g, '$1\u00a0$2')
+    .replace(/\b([A-Z]|St|Dr|Mr|Mrs|Ms|Mt)\.[ \t]+(?=[A-Z])/g, '$1.\u00a0');
+}
+
+/**
+ * A first description paragraph that opens with the title (quoted or not) and goes on with a verb: the title
+ * becomes "It". A credit after the title stays, as the artist wrote it: '"Cala Secreta" (Inspired by P. Molina)
+ * reveals ...' -> 'Inspired by P. Molina, it reveals ...'. Other paragraphs come back unchanged.
+ */
+function withoutTitleEcho(title, text) {
+  const esc = String(title).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const credit = '(?:\\s*\\(((?:inspired by|after)\\b[^)]*)\\))?';
+  const m = new RegExp(`^["“]?${esc}${credit}["”]?${credit}\\s+`, 'i').exec(text);
+  const rest = m ? text.slice(m[0].length) : '';
+  if (!m || !/^[a-z]/.test(rest)) return text;
+  const by = (m[1] || m[2] || '').trim();
+  return by ? `${by.charAt(0).toUpperCase()}${by.slice(1)}, it ${rest}` : `It ${rest}`;
+}
+
+/**
+ * `sizes` of an image shown with object-fit: cover in a box of COVER_BOXES: each band width times
+ * max(1, (image width / height) / box ratio), the width the browser really draws the image at.
+ */
+function coverSizes(box, width, height) {
+  const { ratio, bands } = COVER_BOXES[box];
+  const k = Number(Math.max(1, width / height / ratio).toFixed(3));
+  const scale = (w) => {
+    if (k === 1) return w;
+    const px = /^(\d+(?:\.\d+)?)px$/.exec(w);
+    if (px) return `${Math.round(Number(px[1]) * k)}px`;
+    const calc = /^calc\((.*)\)$/.exec(w);
+    return `calc((${calc ? calc[1] : w}) * ${k})`;
+  };
+  return bands.map(([min, w]) => (min ? `(min-width: ${min}px) ${scale(w)}` : scale(w))).join(', ');
+}
+
+/** CR is ignored, so a checkout with CRLF line endings gets the same ?v= hashes as CI. */
+const sha8 = (buffer) => crypto.createHash('sha256').update(Buffer.from(buffer.toString('utf8').replace(/\r\n?/g, '\n'), 'utf8')).digest('hex').slice(0, 8);
 
 function readJson(file, what) {
   let text;
@@ -220,7 +317,7 @@ function loadTemplates(root) {
     for (const name of fs.readdirSync(d).sort()) {
       if (!name.endsWith('.mustache')) continue;
       const key = name.slice(0, -'.mustache'.length);
-      let text = fs.readFileSync(path.join(d, name), 'utf8');
+      let text = fs.readFileSync(path.join(d, name), 'utf8').replace(/\r\n?/g, '\n');
       // Inline partials (used inside a line, e.g. a <picture> in a button) must not add a line break.
       if (sub === 'partials' && INLINE_PARTIAL_RE.test(key)) text = text.replace(/\s+$/, '');
       map[key] = text;
@@ -228,6 +325,37 @@ function loadTemplates(root) {
     return map;
   };
   return { pages: read('pages'), partials: read('partials') };
+}
+
+/** Every {{> name}} in every template must name an existing partial (Mustache renders an unknown one as ''). */
+function checkPartialRefs(templates) {
+  const problems = [];
+  const visit = (tokens, file) => {
+    for (const token of tokens) {
+      if (token[0] === '>' && !Object.prototype.hasOwnProperty.call(templates.partials, token[1])) problems.push(`${file}: {{> ${token[1]}}}`);
+      if (Array.isArray(token[4])) visit(token[4], file);
+    }
+  };
+  for (const [kind, map] of Object.entries(templates)) {
+    for (const [name, text] of Object.entries(map)) {
+      let tokens;
+      try {
+        tokens = Mustache.parse(text);
+      } catch (e) {
+        fail(`src/templates/${kind}/${name}.mustache does not parse: ${e.message}`);
+      }
+      visit(tokens, `src/templates/${kind}/${name}.mustache`);
+    }
+  }
+  if (problems.length) fail(`unknown partial(s), no such file in src/templates/partials/:\n  ${problems.join('\n  ')}`);
+}
+
+/** Partials for Mustache.render: a lookup that throws on an unknown name instead of rendering nothing. */
+function partialLookup(templates) {
+  return (name) => {
+    if (!Object.prototype.hasOwnProperty.call(templates.partials, name)) fail(`unknown partial "${name}" (src/templates/partials/${name}.mustache does not exist)`);
+    return templates.partials[name];
+  };
 }
 
 /** Content hashes of the stylesheet and scripts (computed from src/, so outDir may be empty). */
@@ -312,6 +440,11 @@ function validateData(data) {
         requireString(im, 'alt', `${aw} images[${n}]`);
       });
       if (a.updated !== undefined && a.updated !== null && !DATE_RE.test(a.updated)) fail(`${aw}: updated "${a.updated}" must be YYYY-MM-DD`);
+      for (const k of ['preview_alt', 'preview_hover_alt']) {
+        if (a[k] !== undefined && a[k] !== null && (typeof a[k] !== 'string' || !a[k].trim())) fail(`${aw}: ${k} must be null or a non-empty string`);
+      }
+      const unknown = Object.keys(a).filter((k) => !ARTWORK_FIELDS.has(k));
+      if (unknown.length) fail(`${aw}: unknown field(s) ${unknown.join(', ')} (the build reads only: ${[...ARTWORK_FIELDS].join(', ')})`);
     });
   });
   if (!Array.isArray(data.socialmedia_images)) fail('data.json socialmedia_images must be a list');
@@ -355,7 +488,9 @@ function validateJsonLd(obj, where, siteUrl) {
         need('creator', (v) => v && v['@id'] && v.name);
         need('dateCreated', (v) => typeof v === 'string' && /^\d{4}$/.test(v));
         for (const k of ['artMedium', 'artform', 'artworkSurface']) need(k);
-        for (const k of ['width', 'height']) need(k, (v) => v && v['@type'] === 'Distance' && /^\d+(\.\d+)? cm$/.test(v.name));
+        // QuantitativeValue in centimetres (UN/CEFACT CMT): since schema.org 30.0 Distance is a text data type, so the
+        // object form {"@type": "Distance", "name": "42 cm"} is reported as an unknown "name" field.
+        for (const k of ['width', 'height']) need(k, (v) => v && v['@type'] === 'QuantitativeValue' && typeof v.value === 'number' && v.value > 0 && v.unitCode === 'CMT' && v.unitText === 'cm');
       }
       if (t.includes('BreadcrumbList')) {
         need('itemListElement', (items) => Array.isArray(items) && items.length > 0
@@ -426,17 +561,28 @@ function createContext(root, data, manifest, assets, templates) {
       alt: opts.alt,
       lazy: opts.lazy !== false,
       high: Boolean(opts.high),
+      low: Boolean(opts.low),
     };
   }
-  const renderPicture = (vm) => Mustache.render(templates.partials.picture, vm, templates.partials, { escape: escapeHtml });
+  const renderPicture = (vm) => Mustache.render(templates.partials.picture, vm, partialLookup(templates), { escape: escapeHtml });
+  /** `sizes` of an image in one of COVER_BOXES, from its manifest size. */
+  const coverSizesOf = (box, src, where) => {
+    const m = entry(src, where);
+    return coverSizes(box, m.width, m.height);
+  };
 
   const hubUrl = (hub) => `/${hub.path}/`;
   const artworkUrl = (hub, a) => `/${hub.path}/${a.slug}/`;
   const sizeText = (a) => `${a.width_cm} × ${a.height_cm} cm`;
   const mailto = (subject) => `mailto:${site.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
 
-  /** Alt text for a card image: the artwork image with the same file, or whose file the preview was cut from. */
-  function cardAlt(a, src) {
+  /**
+   * Alt text for a card image: data.json preview_alt / preview_hover_alt when set (a crop can show something else
+   * than the photo it was cut from, e.g. the painting without the frame), else the artwork image with the same
+   * file, or the one whose file the preview was cut from, else the main image's alt.
+   */
+  function cardAlt(a, src, override) {
+    if (typeof override === 'string' && override.trim()) return override;
     const stem = (p) => p.replace(/\.[^./]+$/, '').replace(/_preview$/i, '').toLowerCase();
     const exact = a.images.find((im) => im.src === src);
     if (exact) return exact.alt;
@@ -444,17 +590,27 @@ function createContext(root, data, manifest, assets, templates) {
     return crop ? crop.alt : a.images[0].alt;
   }
 
+  /**
+   * Card view. The link is named by the title (and the badge) through aria-labelledby: without it, screen readers
+   * read the image alt, the title and MORE, so every title twice.
+   */
   function card(hub, a, { h2 = false } = {}) {
     const wide = a.card === 'wide';
-    const sizes = wide ? SIZES.cardWide : SIZES.card;
+    const box = wide ? 'cardWide' : 'card';
+    const badge = STATUS[a.status].badge;
+    const titleId = `card-${a.slug}`;
+    const badgeId = `card-${a.slug}-badge`;
     return {
       href: artworkUrl(hub, a),
       wide,
-      title: a.title,
+      title: keepTogether(a.title),
+      title_id: titleId,
+      badge_id: badgeId,
+      labelledby: badge ? `${titleId} ${badgeId}` : titleId,
       h2,
-      badge: STATUS[a.status].badge,
-      image: picture(a.preview, { alt: cardAlt(a, a.preview), sizes, cls: 'card__img', where: `${a.slug} preview` }),
-      hover: picture(a.preview_hover, { alt: cardAlt(a, a.preview_hover), sizes, cls: 'card__img card__img--hover', ariaHidden: true, where: `${a.slug} preview_hover` }),
+      badge,
+      image: picture(a.preview, { alt: cardAlt(a, a.preview, a.preview_alt), sizes: coverSizesOf(box, a.preview, `${a.slug} preview`), cls: 'card__img', where: `${a.slug} preview` }),
+      hover: picture(a.preview_hover, { alt: cardAlt(a, a.preview_hover, a.preview_hover_alt), sizes: coverSizesOf(box, a.preview_hover, `${a.slug} preview_hover`), cls: 'card__img card__img--hover', ariaHidden: true, where: `${a.slug} preview_hover` }),
     };
   }
 
@@ -478,11 +634,18 @@ function createContext(root, data, manifest, assets, templates) {
     for (const c of candidates) if (cpLen(c) <= TITLE_MAX) return c;
     return `${cutAtWord(a.title, TITLE_MAX - cpLen(suffix))}${suffix}`;
   }
+  /**
+   * Meta description: the facts, then the first description paragraph. When that paragraph opens with the title
+   * again ('"Cala Secreta: ..." (Inspired by P. Molina) reveals a cove'), the title becomes "It" and the credit
+   * stays ('Inspired by P. Molina, it reveals a cove'), so the characters go to the description. Fitted to 155
+   * characters: at a sentence end when one keeps 120.
+   */
   function artworkDescription(a) {
     if (a.seo_description) return a.seo_description;
-    const first = plainText(a.description[0]);
-    let d = cutAtWord(plainText(`${a.title}, ${a.medium.toLowerCase()} by ${site.name} (${a.year}), ${sizeText(a)}. ${first}`), DESCRIPTION_MAX);
-    if (cpLen(d) < DESCRIPTION_MIN) d = cutAtWord(`${d}${STATUS[a.status].descriptionSuffix}`, DESCRIPTION_MAX);
+    const first = withoutTitleEcho(a.title, plainText(a.description[0]));
+    const text = plainText(`${a.title}, ${a.medium.toLowerCase()} by ${site.name} (${a.year}), ${sizeText(a)}. ${first}`);
+    let d = fitText(text, DESCRIPTION_MIN, DESCRIPTION_MAX);
+    if (cpLen(d) < DESCRIPTION_MIN) d = fitText(`${d}${STATUS[a.status].descriptionSuffix}`, DESCRIPTION_MIN, DESCRIPTION_MAX);
     return d;
   }
 
@@ -564,7 +727,9 @@ function createContext(root, data, manifest, assets, templates) {
         title,
         description: description || '',
         noindex,
-        noscript_css: '',
+        // indexable pages allow large image previews in Search and Discover (an image-first site)
+        robots: noindex ? 'noindex' : 'max-image-preview:large',
+        noscript_css: NOSCRIPT_BASE_CSS,
         canonical: noindex ? '' : `${SITE}${href}`,
         og: og ? {
           title,
@@ -586,7 +751,11 @@ function createContext(root, data, manifest, assets, templates) {
       jsonld: jsonld.map((obj) => ({ json: serializeJsonLd(obj) })),
       nav: {
         state_class: type === 'home' ? 'site-nav--hidden' : 'site-nav--visible',
-        items: navItems.map((n) => ({ ...n, current: current(n.href) })),
+        // "Oil paintings": phones show the first word only (site.css .site-nav__more; screen readers get the full name)
+        items: navItems.map((n) => {
+          const [first, ...more] = n.label.split(' ');
+          return { ...n, first, more: more.length ? ` ${more.join(' ')}` : '', current: current(n.href) };
+        }),
       },
       footer: {
         year,
@@ -594,7 +763,7 @@ function createContext(root, data, manifest, assets, templates) {
         items: footerItems.map((n) => ({ ...n, current: current(n.href) })),
       },
       consent: { text: CONSENT_TEXT, privacy_href: privacy ? `/${privacy.key}/` : '' },
-      breadcrumb: breadcrumb ? breadcrumb.map((b, i) => ({ label: b.label, href: i === breadcrumb.length - 1 ? '' : b.href, first: i === 0 })) : [],
+      breadcrumb: breadcrumb ? breadcrumb.map((b, i) => ({ label: keepTogether(b.label), href: i === breadcrumb.length - 1 ? '' : b.href, first: i === 0 })) : [],
     };
   }
 
@@ -620,7 +789,7 @@ function createContext(root, data, manifest, assets, templates) {
         { '@context': 'https://schema.org', ...person() },
       ],
     });
-    view.page.noscript_css = NOSCRIPT_HOME_CSS;
+    view.page.noscript_css += NOSCRIPT_HOME_CSS;
     view.hero = {
       poster: picture(site.images.hero_poster, { alt: SITE_IMAGE_ALT.hero_poster, sizes: SIZES.hero, cls: 'hero__poster', lazy: false, high: true, where: 'site.images.hero_poster' }),
       cta_href: `#gallery-${data.hubs[0].key}`,
@@ -639,7 +808,7 @@ function createContext(root, data, manifest, assets, templates) {
       url: instagram.url,
       tiles: tiles.map((im, i) => ({
         big: i === 0,
-        image: picture(im.src, { alt: im.alt, sizes: i === 0 ? SIZES.mosaicBig : SIZES.mosaicSmall, cls: 'instagram__img', where: `socialmedia_images[${i}]` }),
+        image: picture(im.src, { alt: im.alt, sizes: coverSizesOf(i === 0 ? 'mosaicBig' : 'mosaicSmall', im.src, `socialmedia_images[${i}]`), cls: 'instagram__img', where: `socialmedia_images[${i}]` }),
       })),
     };
     view.contact = contact({ heading: true, lazy: true });
@@ -685,7 +854,7 @@ function createContext(root, data, manifest, assets, templates) {
     view.hub = {
       key: hub.key,
       h1: hub.h1,
-      intro: hub.intro.map(plainText),
+      intro: hub.intro.map((t) => keepTogether(plainText(t))),
       cards: hub.artworks.map((a) => card(hub, a, { h2: true })),
     };
     add({ type: 'hub', file: `${hub.path}/index.html`, href: hubUrl(hub), template: 'hub', view, indexable: true });
@@ -714,14 +883,16 @@ function createContext(root, data, manifest, assets, templates) {
         number: n + 1,
         count: a.images.length,
         current: n === 0 ? 'true' : 'false',
-        image: picture(im.src, { alt: im.alt, sizes: SIZES.thumb, cls: 'artwork__thumb-img', where: `${a.slug} thumbnail ${n + 1}` }),
+        // small, low-priority files: the 160/320 px variants (scripts/images.js ROLE_WIDTHS.thumb), not the main image's
+        image: picture(im.src, { alt: im.alt, sizes: coverSizesOf('thumb', im.src, `${a.slug} thumbnail ${n + 1}`), cls: 'artwork__thumb-img', low: true, where: `${a.slug} thumbnail ${n + 1}` }),
       })) : [];
+      // every value is visible running text: a size in any of them ("Framed (wood and glass), 50 × 40 cm") keeps together
       const facts = [
         { key: 'medium', label: 'Medium', value: a.medium },
         { key: 'size', label: 'Size', value: sizeText(a) },
         ...(a.frame ? [{ key: 'frame', label: 'Frame', value: a.frame }] : []),
         { key: 'year', label: 'Year', value: String(a.year) },
-      ];
+      ].map((f) => ({ ...f, value: keepTogether(f.value) }));
       let story = false;
       if (a.story_confirmed === true && typeof a.story_html === 'string' && a.story_html.trim()) {
         story = { html: storyHtml(a) };
@@ -749,20 +920,20 @@ function createContext(root, data, manifest, assets, templates) {
             artMedium: a.medium,
             artform: hub.artform,
             artworkSurface: a.surface,
-            width: { '@type': 'Distance', name: `${a.width_cm} cm` },
-            height: { '@type': 'Distance', name: `${a.height_cm} cm` },
+            width: { '@type': 'QuantitativeValue', value: a.width_cm, unitCode: 'CMT', unitText: 'cm' },
+            height: { '@type': 'QuantitativeValue', value: a.height_cm, unitCode: 'CMT', unitText: 'cm' },
           },
           breadcrumbLd(atrail),
         ],
       });
-      if (multiple) view2.page.noscript_css = NOSCRIPT_GALLERY_CSS;
+      if (multiple) view2.page.noscript_css += NOSCRIPT_GALLERY_CSS;
       view2.hub = { key: hub.key, path: hub.path, label: hub.label, all_link: hub.all_link, pager_label: `More ${hub.label.toLowerCase()}` };
       view2.artwork = {
         slug: a.slug,
-        title: a.title,
+        title: keepTogether(a.title), // h1 and the dialog label ("St. Albani ...")
         status: a.status,
         status_text: st.text,
-        description: a.description.map(plainText),
+        description: a.description.map((t) => keepTogether(plainText(t))),
         facts,
         multiple,
         slides,
@@ -770,8 +941,8 @@ function createContext(root, data, manifest, assets, templates) {
         cta_href: mailto(`${st.ctaSubject}${a.title}`),
         cta_label: st.ctaLabel,
         story,
-        prev: prev ? { href: artworkUrl(hub, prev), title: prev.title } : false,
-        next: next ? { href: artworkUrl(hub, next), title: next.title } : false,
+        prev: prev ? { href: artworkUrl(hub, prev), title: keepTogether(prev.title) } : false,
+        next: next ? { href: artworkUrl(hub, next), title: keepTogether(next.title) } : false,
       };
       add({ type: 'artwork', file: `${hub.path}/${a.slug}/index.html`, href, template: 'artwork', view: view2, indexable: true, artwork: a });
     });
@@ -936,6 +1107,7 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
   for (const name of ['picture']) {
     if (!templates.partials[name]) fail(`missing partial src/templates/partials/${name}.mustache`);
   }
+  checkPartialRefs(templates);
   const assets = loadAssets(rootDir);
   const { pages } = createContext(rootDir, data, manifest, assets, templates);
   validateMeta(pages);
@@ -945,7 +1117,7 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
     for (const block of p.view.jsonld) validateJsonLd(JSON.parse(block.json), p.file, data.site.url);
     let html;
     try {
-      html = Mustache.render(templates.pages[p.template], p.view, templates.partials, { escape: escapeHtml });
+      html = Mustache.render(templates.pages[p.template], p.view, partialLookup(templates), { escape: escapeHtml });
     } catch (e) {
       fail(`rendering ${p.file} with pages/${p.template}.mustache failed: ${e.message}`);
     }
@@ -955,11 +1127,15 @@ async function build({ root = DEFAULT_ROOT, outDir, log = () => {} } = {}) {
 
   let written = 0;
   for (const r of rendered) if (writeIfChanged(path.join(out, ...r.file.split('/')), r.content)) written++;
+  matchOwner(rootDir, [out]); // run as root (dev container): the output keeps the owner of the repository
   log(`build-site: ${pages.length} pages + sitemap.xml (${pages.filter((p) => p.indexable).length} URLs) -> ${out} (${written} file(s) changed)`);
   return { outDir: out, pages: pages.length, written, files: rendered.map((r) => r.file) };
 }
 
-module.exports = { build, cutAtWord, escapeHtml, plainText, serializeJsonLd, validateJsonLd, SIZES, STATUS, BuildError };
+module.exports = {
+  build, cutAtWord, fitText, keepTogether, withoutTitleEcho, coverSizes, escapeHtml, plainText, serializeJsonLd, validateJsonLd,
+  SIZES, COVER_BOXES, STATUS, ARTWORK_FIELDS, BuildError,
+};
 
 if (require.main === module) {
   const args = process.argv.slice(2);

@@ -1,16 +1,18 @@
 {{!
-  Home hero (SPEC sections 1 and 8): poster picture + play button (facade; hero.js replaces the poster with the
-  youtube-nocookie.com video on click), h1 with the tagline, e-mail link, Explore Artworks pill, arrow.
+  Home hero (SPEC sections 1 and 8): h1 with the tagline, e-mail link, Explore Artworks pill, then the media
+  (poster picture + play button; hero.js plays the youtube-nocookie.com video over the poster on click and the
+  same button then pauses and resumes it), arrow. The media comes after the text in the source, so the Tab
+  order is e-mail, Explore Artworks, play; CSS places it behind the text as before.
 }}
 <header class="hero" id="top">
-<div class="hero__media">
-{{#hero.poster}}{{> picture}}{{/hero.poster}}
-<button type="button" class="hero__play" data-youtube-id="{{site.youtube_id}}" aria-label="Play the video">{{> icon-play}}</button>
-</div>
 <div class="hero__content">
 <h1 class="hero__title">Polina Shvedko Art <span class="hero__tagline">Oil paintings, pastels &amp; watercolours</span></h1>
 <p class="hero__descr"><a class="hero__email" href="{{site.mailto}}" data-track="contact" data-location="hero">{{site.email}}</a></p>
 <div class="hero__buttons"><a class="hero__cta" href="{{hero.cta_href}}">Explore Artworks</a></div>
+</div>
+<div class="hero__media">
+{{#hero.poster}}{{> picture}}{{/hero.poster}}
+<button type="button" class="hero__play" data-youtube-id="{{site.youtube_id}}" aria-label="Play the video">{{> icon-play}}{{> icon-pause}}</button>
 </div>
 <span class="hero__arrow" aria-hidden="true">{{> icon-arrow-down}}</span>
 </header>
