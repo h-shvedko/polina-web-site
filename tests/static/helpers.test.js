@@ -198,6 +198,18 @@ describe('helpers: HTML parser and selectors', () => {
   });
 });
 
+describe('helpers: breaking spaces in visible text', () => {
+  test('a plain space or line break inside a size or after an initial is found in visible text only; U+00A0 and &nbsp; pass', () => {
+    const doc = H.parseHtml('<body><p>190&nbsp;×\n45&nbsp;cm by P.&nbsp;Molina</p><p>50&nbsp;&times;&nbsp;40&nbsp;cm, St.\u00a0Albani, a 4:1 ratio</p>'
+      + '<script>var size = "50 × 40 cm";</script><noscript><p>5 cm</p></noscript><p title="P. Molina">ok</p></body>');
+    const found = H.breakingSpaceProblems(H.qs(doc, 'body'));
+    assert.equal(found.length, 1, found.join('\n'));
+    assert.match(found[0], /^p: "×\\n4" has a breaking space/, 'the line break after the sign');
+    for (const t of ['29.7 cm', 'Dr. Who', 'Mrs. Brown', '50 × 40', '× 2']) assert.ok(C.BREAKING_SPACE_RE.test(t), t);
+    for (const t of ['29.7\u00a0cm', 'St.\u00a0Albani', 'EU.', 'cm 5', 'the 5th']) assert.ok(!C.BREAKING_SPACE_RE.test(t), t);
+  });
+});
+
 describe('helpers: site model from data.json', () => {
   test('page list: home, hubs, every artwork, about, contact (36 indexable while legal texts are null) and 404', () => {
     const data = S.loadData();

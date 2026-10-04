@@ -405,6 +405,34 @@ describe('browser 6: hero video facade', () => {
     } finally { await ctx.close(); }
   });
 
+  test('desktop: a player page that never loads (a firewall that drops the packets: no load event, no answer) is removed after about 20 s; the button reads "Play the video" again over the poster', { timeout: 90000 }, async () => {
+    const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
+    const hung = [];
+    try {
+      await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\//, (r) => { hung.push(r); }); // never answered
+      const page = await ctx.newPage();
+      await B.gotoPage(page, env.url('/'));
+      await B.clickOn(page, 'button.hero__play', 'hero play button');
+      const clicked = Date.now();
+      await page.locator('iframe.hero__video').waitFor({ state: 'attached', timeout: 5000 });
+      const gone = await page.waitForFunction(() => !document.querySelector('iframe.hero__video'), null, { timeout: 35000 }).then(() => true, () => false);
+      const waited = Date.now() - clicked;
+      const s = await heroState(page);
+      const problems = [];
+      if (!hung.length) problems.push('the player was never requested');
+      if (!gone) problems.push(`the player whose page never loaded is still there 35 s after the click; the button reads ${JSON.stringify(s.label)}`);
+      else {
+        if (waited < 15000) problems.push(`the player was removed after ${waited} ms (a page that is still loading must get about 20 s)`);
+        if (s.label !== 'Play the video') problems.push(`after the player was removed the button reads ${JSON.stringify(s.label)}`);
+        if (!s.posterShown) problems.push('the poster is gone');
+      }
+      expectNone(problems, 'hero player without an answer from the network');
+    } finally {
+      for (const r of hung) await r.abort().catch(() => {});
+      await ctx.close();
+    }
+  });
+
   test('desktop: a player that reports an error is removed at once and the button reads "Play the video"', { timeout: 60000 }, async () => {
     const ctx = await B.newContext(env, 'desktop', { consent: 'denied' });
     try {

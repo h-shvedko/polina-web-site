@@ -1,5 +1,5 @@
 'use strict';
-// Small, lenient HTML parser for the static tests (no dependencies).
+// Small, lenient HTML parser for the static tests (no npm dependencies).
 // It never throws on bad markup (the old Tilda pages must parse too); html-validate does the strict checks.
 //
 //   const doc = parseHtml(source);
@@ -11,6 +11,8 @@
 //
 // Selector support: type, *, #id, .class, [attr], [attr=v], [attr~=v], [attr^=v], [attr$=v], [attr*=v],
 // [attr|=v] (optional " i" flag), :not(<compound>), descendant (space) and child (>) combinators, groups (a, b).
+
+const { BREAKING_SPACE_RE } = require('./checks');
 
 const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param',
   'source', 'track', 'wbr', 'keygen', 'command', 'basefont', 'bgsound', 'frame']);
@@ -464,6 +466,31 @@ function lineOf(node) {
   return root && root.lineOf ? root.lineOf(node.start || 0) : 0;
 }
 
+/** Text nodes a reader sees under `root`: not inside script, style, template or noscript (shown only without JS). */
+function visibleTextNodes(root) {
+  const hidden = new Set([...TEXT_EXCLUDED, 'noscript']);
+  const out = [];
+  const visit = (node) => {
+    if (node.type === 'text') out.push(node);
+    else if (node.type === 'document' || (node.type === 'element' && !hidden.has(node.tag))) (node.children || []).forEach(visit);
+  };
+  if (root) visit(root);
+  return out;
+}
+
+/**
+ * Visible text under `root` (usually <body>) with a breaking space inside a size or after an initial
+ * (checks.js BREAKING_SPACE_RE), as messages: 'p: "0 ×" has a breaking space ...'.
+ */
+function breakingSpaceProblems(root) {
+  const out = [];
+  for (const node of visibleTextNodes(root)) {
+    const m = BREAKING_SPACE_RE.exec(node.text);
+    if (m) out.push(`${describe(node.parent, false)}: ${JSON.stringify(m[0])} has a breaking space (use U+00A0; build-site.js keepTogether())`);
+  }
+  return out;
+}
+
 /** Short CSS-like description of an element for messages, e.g. a.card__link[href="/x/"] (line 120). */
 function describe(el, withLine = true) {
   if (!el || el.type !== 'element') return String(el);
@@ -494,6 +521,8 @@ module.exports = {
   normSpace,
   lineOf,
   describe,
+  visibleTextNodes,
+  breakingSpaceProblems,
   walkElements,
   VOID,
 };

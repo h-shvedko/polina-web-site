@@ -101,6 +101,16 @@ function findCyrillic(content) {
 }
 
 // ---------------------------------------------------------------------------------------------------
+// Line breaks in visible text
+
+/**
+ * A breaking space where visible text must keep a no-break space (U+00A0, scripts/build-site.js keepTogether()):
+ * inside a size ("190 × 45 cm", "29.7 cm") and after an initial or a short title ("P. Molina", "St. Albani",
+ * "U.S. Data"). Any HTML white space counts: a line break in the source wraps like a space.
+ */
+const BREAKING_SPACE_RE = /\d[\t\n\f\r ]+×|×[\t\n\f\r ]+\d|\d[\t\n\f\r ]+(?:cm|mm)\b|\b(?:[A-Z]|St|Dr|Mr|Mrs|Ms|Mt)\.[\t\n\f\r ]+(?=[A-Z])/;
+
+// ---------------------------------------------------------------------------------------------------
 // Headings
 
 /**
@@ -343,6 +353,7 @@ module.exports = {
   findForbidden,
   findCyrillic,
   CYRILLIC_RE,
+  BREAKING_SPACE_RE,
   headingProblems,
   parseSrcset,
   cssUrls,

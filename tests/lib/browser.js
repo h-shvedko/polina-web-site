@@ -296,6 +296,45 @@ const PERF_OBSERVER_SCRIPT = () => {
   window.addEventListener('load', () => { window.__perf.loadAt = performance.now(); });
 };
 
+/**
+ * Runs in the page after Play: the hero player's frame against the hero. The player letterboxes its 16:9 video
+ * into the frame and draws its title bar along the top edge of the frame and its logo at the bottom right.
+ */
+function heroVideoGeometry() {
+  const f = document.querySelector('iframe.hero__video').getBoundingClientRect();
+  const hb = document.querySelector('.hero').getBoundingClientRect();
+  const letterbox = f.width / f.height < 16 / 9;
+  const vw = letterbox ? f.width : f.height * 16 / 9;
+  const vh = letterbox ? f.width * 9 / 16 : f.height;
+  const vl = f.left + (f.width - vw) / 2;
+  const vt = f.top + (f.height - vh) / 2;
+  return {
+    hero: `${Math.round(hb.width)}x${Math.round(hb.height)}`,
+    frame: `${Math.round(f.width)}x${Math.round(f.height)}`,
+    bands: [vt - hb.top, hb.bottom - (vt + vh), vl - hb.left, hb.right - (vl + vw)],
+    zoom: vw / Math.max(hb.width, hb.height * 16 / 9),
+    above: hb.top - f.top,
+    below: f.bottom - hb.bottom,
+  };
+}
+
+/**
+ * Problems in a heroVideoGeometry() result: like the old background video, the video covers the hero edge to edge
+ * (no black bands; the hero can be taller than the window) without needless zoom, and the frame reaches at least
+ * 100 px above and below the hero, so the title bar and the logo stay outside it.
+ */
+function heroVideoProblems(g, where) {
+  const out = [];
+  const at = `${where} (hero ${g.hero}, player frame ${g.frame})`;
+  if (g.bands.some((b) => b > 0.5)) out.push(`${at}: black bands top/bottom/left/right ${g.bands.map((b) => Math.max(0, Math.round(b))).join('/')} px`);
+  if (g.zoom > 1.01) out.push(`${at}: the video is drawn ${g.zoom.toFixed(2)}x larger than needed to cover the hero`);
+  if (g.above < 100 || g.below < 100) out.push(`${at}: the player frame reaches only ${Math.round(g.above)} px above and ${Math.round(g.below)} px below the hero (its title bar and logo show inside it)`);
+  return out;
+}
+
+/** A stand-in page for the youtube-nocookie.com player (geometry tests: only the frame's box matters). */
+const BLANK_PLAYER = '<!doctype html><html lang="en"><title>player</title></html>';
+
 function formatBytes(n) {
   return n >= 1e6 ? `${(n / 1e6).toFixed(2)} MB` : `${(n / 1e3).toFixed(0)} kB`;
 }
@@ -329,5 +368,8 @@ module.exports = {
   writeArtifact,
   clsFromShifts,
   PERF_OBSERVER_SCRIPT,
+  heroVideoGeometry,
+  heroVideoProblems,
+  BLANK_PLAYER,
   formatBytes,
 };

@@ -3,7 +3,7 @@
 // the JavaScript and the browser tests rely on. Exact texts come from data.json and SPEC section 1.
 const { describe, test } = require('node:test');
 const assert = require('node:assert/strict');
-const { qsa, qs, attr, hasAttr, classes, text, rawText, normSpace, closest, describe: desc } = require('../lib/html');
+const { qsa, qs, attr, hasAttr, classes, text, rawText, normSpace, closest, describe: desc, breakingSpaceProblems } = require('../lib/html');
 const { expectNone } = require('../lib/checks');
 const S = require('../lib/site');
 
@@ -13,7 +13,7 @@ const pages = S.sitePages(data);
 const hubs = data.hubs || [];
 const hubPaths = hubs.map((h) => `/${h.path}/`);
 const NAV_TARGETS = [...hubPaths, '/about/', '/contact/'];
-const MAIL_LOCATIONS = ['hero', 'intro', 'artwork', 'contact', 'footer'];
+const MAIL_LOCATIONS = ['hero', 'intro', 'artwork', 'contact', 'footer', 'imprint', 'privacy'];
 const STATUS_TEXT = { available: 'Available — ask about this work', 'private-collection': 'In a private collection' };
 const CTA = {
   available: { subject: 'Inquiry: ', label: 'Ask about this work' },
@@ -224,13 +224,18 @@ describe('markup contract: every page (SPEC 1, 7, 8)', () => {
     }), 'footer problems');
   });
 
-  test(`every mailto: link goes to ${site.email} and carries data-track="contact" and data-location (${MAIL_LOCATIONS.join('|')})`, () => {
+  test(`every mailto: link goes to ${site.email} and carries data-track="contact" and data-location (${MAIL_LOCATIONS.join('|')}); a legal text may also name another address (not tracked)`, () => {
     expectNone(forPages(pages, (page, doc) => {
       const out = [];
       for (const a of qsa(doc, 'a[href^="mailto:"]')) {
         const href = attr(a, 'href');
         const address = decodeURIComponent(href.slice(7).split('?')[0]);
-        if (address !== site.email) out.push(`${desc(a)} mails ${address}, expected ${site.email}`);
+        if (address !== site.email) {
+          // e.g. a data protection authority in the privacy text (data.json legal.*_html): not a contact of the artist
+          if (!closest(a, '.page__legal')) out.push(`${desc(a)} mails ${address}, expected ${site.email}`);
+          else if (attr(a, 'data-track') !== null) out.push(`${desc(a)} mails ${address} (not the artist) but carries data-track`);
+          continue;
+        }
         if (attr(a, 'data-track') !== 'contact') out.push(`${desc(a)} needs data-track="contact"`);
         if (!MAIL_LOCATIONS.includes(attr(a, 'data-location'))) out.push(`${desc(a)} has data-location=${JSON.stringify(attr(a, 'data-location'))}`);
       }
@@ -585,24 +590,12 @@ describe('markup contract: reading and focus order, link names, no-JS, full-scre
 
   test('visible sizes and initials never break across lines: no plain space inside "<w> × <h> cm" or after an initial ("P. Molina", "St. Albani"), in any visible text of any page', () => {
     // Every text node in <body> (facts such as "Framed (wood and glass), 50 × 40 cm", titles in cards, h1,
-    // breadcrumb and pager, descriptions, hub intros), not a list of known places: a new field that shows a size
-    // without keepTogether() fails here.
-    const PLAIN = /\d ×|× \d|\d (?:cm|mm)\b|\b(?:[A-Z]|St)\. (?=[A-Z])/;
-    const HIDDEN = new Set(['script', 'style', 'template', 'noscript']);
+    // breadcrumb and pager, descriptions, hub intros, the story and the legal pages when they are shown), not a
+    // list of known places: a new field that shows a size without keepTogether() fails here. build.test.js runs
+    // the same scan over a build with the story confirmed and the legal texts set.
     expectNone(forPages(pages, (page, doc) => {
-      const out = [];
-      const visit = (node) => {
-        if (node.type === 'text') {
-          const m = PLAIN.exec(node.text);
-          if (m) out.push(`${desc(node.parent, false)}: "${m[0]}" has a breaking space (use U+00A0; build-site.js keepTogether())`);
-        } else if (node.type === 'element' && !HIDDEN.has(node.tag)) {
-          node.children.forEach(visit);
-        }
-      };
       const body = qs(doc, 'body');
-      if (!body) return ['no <body>'];
-      visit(body);
-      return out;
+      return body ? breakingSpaceProblems(body) : ['no <body>'];
     }), 'breaking spaces in sizes or initials');
   });
 });

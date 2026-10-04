@@ -1,16 +1,18 @@
 'use strict';
-// The build scripts themselves: failures that must stop a build, line endings, file ownership in the dev
-// container, the safety of `gulp clean`, and `gulp watch` picking up an edited build script. Independent of
-// APP_DIR: every build here goes into a temporary directory.
+// The build scripts themselves: failures that must stop a build, the text helpers, the documented owner steps
+// (confirm the story, add the legal texts), line endings, file ownership in the dev container, the safety of
+// `gulp clean`, and `gulp watch` picking up an edited build script. Independent of APP_DIR: every build here
+// goes into a temporary directory.
 const { describe, test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { expectNone } = require('../lib/checks');
+const { expectNone, headingProblems } = require('../lib/checks');
+const { parseHtml, qs, qsa, attr, breakingSpaceProblems } = require('../lib/html');
 const S = require('../lib/site');
-const { build, withoutTitleEcho, keepTogether } = require('../../scripts/build-site.js');
+const { build, withoutTitleEcho, keepTogether, keepTogetherHtml } = require('../../scripts/build-site.js');
 const { matchOwner } = require('../../scripts/file-owner.js');
 
 const GULP = path.join(S.ROOT, 'node_modules', 'gulp', 'bin', 'gulp.js');
@@ -75,6 +77,53 @@ describe('build scripts', () => {
     assert.equal(withoutTitleEcho('Whispers', 'This painting is called Whispers.'), 'This painting is called Whispers.');
     assert.equal(keepTogether('Framed (wood and glass), 50 × 40 cm'), 'Framed (wood and glass), 50\u00a0×\u00a040\u00a0cm');
     assert.equal(keepTogether('St. Albani in the Afternoon, after P. Molina'), 'St.\u00a0Albani in the Afternoon, after P.\u00a0Molina');
+    assert.equal(keepTogether('190 ×\n45\tcm'), '190\u00a0×\u00a045\u00a0cm', 'a line break in the source wraps like a space');
+    // HTML (story_html, legal texts): only the text between tags changes; entities count as the characters they stand for
+    assert.equal(keepTogetherHtml('<p title="50 × 40 cm">50 × 40 cm, <em>St. Albani</em></p>'), '<p title="50 × 40 cm">50\u00a0×\u00a040\u00a0cm, <em>St.\u00a0Albani</em></p>');
+    assert.equal(keepTogetherHtml('<a href="/x" title="a > b, P. Molina">P. Molina</a><!-- 5 cm --><style>p::after{content:"5 cm"}</style>'), '<a href="/x" title="a > b, P. Molina">P.\u00a0Molina</a><!-- 5 cm --><style>p::after{content:"5 cm"}</style>');
+    assert.equal(keepTogetherHtml('190&nbsp;&times; 45 cm, 29,7 &#215;&#xA0;42&#160;cm, the EU-U.S. Data Privacy Framework'), '190&nbsp;&times;\u00a045\u00a0cm, 29,7\u00a0&#215;&#xA0;42&#160;cm, the EU-U.S.\u00a0Data Privacy Framework');
+  });
+
+  test('the owner steps "confirm the story" (story_confirmed: true) and "add the legal texts" (legal.imprint_html, legal.privacy_html) build pages that keep the rules of every page: sizes and initials with a no-break space, one h1 and no skipped heading level (also for a legal text with its own h1), the artist\'s mailto: links tracked; tags, attributes and comments stay as written', async () => {
+    const root = copyRoot();
+    const file = path.join(root, 'data.json');
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const story = data.hubs.flatMap((hub) => hub.artworks.map((artwork) => ({ hub, artwork }))).find((x) => typeof x.artwork.story_html === 'string');
+    assert.ok(story, 'no artwork in data.json has a story_html');
+    story.artwork.story_confirmed = true;
+    // sample texts (not legal advice), shaped like generated legal texts: an own <h1>, the artist's e-mail as a
+    // mailto: link, another address, a size, initials, an attribute and a comment that must stay as written
+    const LINK = '<a href="https://example.org/" title="St. Albani, 50 × 40 cm">P. Molina</a>';
+    data.legal.imprint_html = `<h1>Imprint</h1>\n<h2>Contact</h2>\n<p>E-mail: <a href="mailto:${data.site.email}">${data.site.email}</a></p>\n<p>Works such as St. Albani in the Afternoon (42 × 29.7 cm) after ${LINK}.</p>`;
+    data.legal.privacy_html = '<h2>Google Analytics</h2>\n<p>Google LLC is certified under the EU-U.S. Data Privacy Framework.</p>\n<h3>Your rights</h3>\n<p>Authority: <a href="mailto:office@authority.example">office@authority.example</a></p>\n<p>A size written with entities: 190&nbsp;&times; 45\ncm.</p><!-- 50 × 40 cm -->';
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    const out = tmp('out-story-legal');
+    await build({ root, outDir: out });
+    const pages = [`${story.hub.path}/${story.artwork.slug}/index.html`, 'imprint/index.html', 'privacy/index.html'];
+    const problems = [];
+    const html = {};
+    for (const f of pages) {
+      if (!fs.existsSync(path.join(out, f))) { problems.push(`${f}: not built`); continue; }
+      html[f] = fs.readFileSync(path.join(out, f), 'utf8');
+      const doc = parseHtml(html[f]);
+      problems.push(...breakingSpaceProblems(qs(doc, 'body')).map((p) => `${f}: ${p}`));
+      // the rules of every page (pages.test.js, markup-contract.test.js): one h1, no skipped level, tracked mailto: links
+      const levels = qsa(doc, 'h1, h2, h3, h4, h5, h6').map((h) => Number(h.tag[1]));
+      if (levels.filter((l) => l === 1).length !== 1) problems.push(`${f}: ${levels.filter((l) => l === 1).length} h1 elements`);
+      problems.push(...headingProblems(levels).map((p) => `${f}: ${p} (outline ${levels.map((l) => `h${l}`).join(' ')})`));
+      const where = f.startsWith('imprint/') ? 'imprint' : f.startsWith('privacy/') ? 'privacy' : 'artwork';
+      for (const a of qsa(doc, `a[href^="mailto:${data.site.email}"]`)) {
+        if (attr(a, 'data-track') !== 'contact' || attr(a, 'data-location') !== where) problems.push(`${f}: ${attr(a, 'href')} has data-track=${attr(a, 'data-track')}, data-location=${attr(a, 'data-location')} (expected contact, ${where})`);
+      }
+    }
+    if (html[pages[0]] && !html[pages[0]].includes('<section class="artwork__story"')) problems.push(`${pages[0]}: no Story section`);
+    if (html['imprint/index.html'] && !/<a href="mailto:[^"]+" data-track="contact" data-location="imprint">/.test(html['imprint/index.html'])) problems.push('imprint/index.html: the mailto: link to the artist is not tracked');
+    const keep = {
+      'imprint/index.html': [LINK.replace('>P. Molina<', '>P.\u00a0Molina<')],
+      'privacy/index.html': ['<a href="mailto:office@authority.example">office@authority.example</a>', '<!-- 50 × 40 cm -->'],
+    };
+    for (const [f, list] of Object.entries(keep)) for (const want of list) if (html[f] && !html[f].includes(want)) problems.push(`${f}: ${JSON.stringify(want)} was changed`);
+    expectNone(problems, 'story and legal pages');
   });
 
   test('a checkout with CRLF line endings (core.autocrlf=true) builds byte-identical pages and ?v= hashes', async () => {

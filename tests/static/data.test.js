@@ -176,6 +176,31 @@ describe('12. data.json and image manifest', () => {
     expectNone(generated.filter((f) => !ignored.has(f)), 'generated files that .gitignore does not ignore');
   });
 
+  test('.gitattributes: text files get LF line endings, images and fonts stay binary, and videos (*.mp4) stay in Git LFS as the owner set them up', (t) => {
+    const want = {
+      'data.json': { text: 'auto', eol: 'lf' },
+      'src/js/hero.js': { text: 'auto', eol: 'lf' },
+      'src/img/gallery/picture32_1.jpg': { text: 'unset' },
+      'src/css/webfonts/jost/jost-latin-wght-normal.woff2': { text: 'unset' },
+      'video/hero.mp4': { filter: 'lfs', diff: 'lfs', merge: 'lfs', text: 'unset' },
+    };
+    const res = spawnSync('git', ['check-attr', 'text', 'eol', 'filter', 'diff', 'merge', '--', ...Object.keys(want)], { cwd: S.ROOT, encoding: 'utf8' });
+    if (res.error || res.status !== 0) {
+      t.skip(`git check-attr is not available here (${res.error ? res.error.code : (res.stderr || '').trim()})`);
+      return;
+    }
+    const got = {};
+    for (const line of res.stdout.split('\n').filter(Boolean)) {
+      const [file, name, value] = line.split(': ');
+      (got[file] = got[file] || {})[name] = value;
+    }
+    const problems = [];
+    for (const [file, attrs] of Object.entries(want)) {
+      for (const [name, value] of Object.entries(attrs)) if ((got[file] || {})[name] !== value) problems.push(`${file}: ${name} is ${(got[file] || {})[name]}, expected ${value}`);
+    }
+    expectNone(problems, '.gitattributes');
+  });
+
   test('every image path in data.json has a manifest entry whose WebP and JPEG variant files exist in app/', () => {
     const manifest = manifestOrFail();
     const problems = [];

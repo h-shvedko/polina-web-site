@@ -1,8 +1,9 @@
 'use strict';
-// Responsive images from the round-1 review: every image cropped with object-fit: cover (cards, Instagram
-// tiles, artwork thumbnails) gets the variant that fits the size it is drawn at (not upscaled like the old
-// box-width `sizes` did, not far too large like 600 px files in 40 px thumbnails), and touch screens never
-// download the card hover images they cannot show.
+// Responsive images from the review rounds: every image cropped with object-fit: cover (the hero poster, cards,
+// Instagram tiles, artwork thumbnails) gets the variant that fits the size it is drawn at (not upscaled like the
+// old box-width `sizes` did, not far too large like 600 px files in 40 px thumbnails), and touch screens never
+// download the card hover images they cannot show. The hero poster is a 16:9 frame in a hero at least as tall as
+// the window: on a portrait phone it is drawn about four times wider than the window.
 const { describe, test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { expectNone } = require('../lib/checks');
@@ -16,6 +17,7 @@ const CONTEXTS = {
   'desktop DPR 1': { viewport: { width: 1366, height: 900 }, deviceScaleFactor: 1 },
   'desktop DPR 2': { viewport: { width: 1366, height: 900 }, deviceScaleFactor: 2 },
   'tablet DPR 2': { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+  'phone DPR 2': { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
   'phone DPR 3': { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
 };
 
@@ -70,13 +72,13 @@ describe('images: object-fit cover images get the variant of their drawn size', 
   after(async () => { if (env) await env.close(); });
 
   for (const name of Object.keys(CONTEXTS)) {
-    test(`${name}: home cards (with the hover images a mouse can show) and Instagram tiles, the ${WIDE.hub.path} hub and the thumbnails of ${GALLERY.artwork.slug}`, { timeout: 180000 }, async () => {
+    test(`${name}: the home hero poster, cards (with the hover images a mouse can show) and Instagram tiles, the ${WIDE.hub.path} hub and the thumbnails of ${GALLERY.artwork.slug}`, { timeout: 180000 }, async () => {
       const ctx = await context(env, name);
       try {
         const page = await ctx.newPage();
         const problems = [];
         for (const [p, selector] of [
-          ['/', '.card__img img, .instagram__img img'],
+          ['/', '.hero__poster img, .card__img img, .instagram__img img'],
           [`/${WIDE.hub.path}/`, '.card__img img'],
           [S.artworkPath(GALLERY.hub, GALLERY.artwork), '.artwork__thumb-img img'],
         ]) {

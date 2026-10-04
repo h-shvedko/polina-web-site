@@ -382,6 +382,30 @@ describe('layout: hero at small and short windows', () => {
     }
     expectNone(problems, 'arrow over the pill');
   });
+
+  // The YouTube player letterboxes its 16:9 video into the frame and draws its title bar (title, channel avatar)
+  // along the top edge of the frame and its logo at the bottom right, at every start, resume and loop. Like the old
+  // background video, the video must cover the hero edge to edge at every window size (no black bands; the hero
+  // can be taller than the window), and the frame must reach far enough above and below the hero that these
+  // strips stay outside it. A stand-in player page: only the frame's box is measured (engines.test.js checks the
+  // same in Firefox and WebKit).
+  test('after Play, the 16:9 video area covers the hero at every window size, with no black bands, and the player\'s title bar and logo strips lie outside the hero', { timeout: 180000 }, async () => {
+    const problems = [];
+    for (const [w, h] of [[1920, 1080], [2560, 1440], [1536, 750], [1366, 900], [1366, 600], [1280, 690], [1100, 620], [1024, 600], [1000, 560], [768, 1024],
+      [844, 390], [667, 375], [390, 844], [360, 392]]) {
+      const ctx = await sizedContext(env, w, h, { consent: 'denied' });
+      try {
+        await ctx.route(/^https:\/\/www\.youtube-nocookie\.com\//, (r) => r.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: B.BLANK_PLAYER }));
+        const page = await openPage(ctx, env, '/');
+        await page.locator('.hero__play').click();
+        await page.locator('iframe.hero__video').waitFor({ state: 'attached', timeout: 5000 });
+        problems.push(...B.heroVideoProblems(await page.evaluate(B.heroVideoGeometry), `${w}x${h}`));
+      } finally {
+        await ctx.close();
+      }
+    }
+    expectNone(problems, 'hero video geometry');
+  });
 });
 
 describe('layout: breadcrumb, pager, headings and 404 links', () => {
