@@ -150,5 +150,12 @@ after it. Keep the log below short: release date, what changed, what was measure
 
 - 2026-10-03: baseline. 90 days: 5 clicks, 144 impressions, position 6.5 (Search Console to 2026-09-29);
   184 GA4 sessions, of which about 21 real target-market sessions; 0 `purchase_inquiry`.
-- 2026-10-04: ADR-0003 rebuild implemented on the branch `adr-0003-seo-rebuild` (not deployed). Record the release
-  date here when it is merged to `main`.
+- 2026-10-04: RELEASE of the ADR-0003 rebuild (merged to `main`, commit `c2b2f34`): 76 URLs (EN + DE under `/de/`),
+  imprint and privacy pages, GA only after consent, `contact_click` the only lead event. GA4 numbers before and
+  after this date are not comparable.
+- 2026-10-07: owner resubmitted the sitemap, requested indexing of home and hubs, marked `contact_click` as key
+  event, set GA4 retention to 2 months, added custom dimensions `link_location` and `artwork_slug`.
+- 2026-10-12: 39 of 76 URLs indexed (was 1); sitemap downloaded 2026-10-10, 76 URLs accepted. Search Console to
+  2026-10-09: 90 days 4 clicks, 120 impressions, position 7.1; first German topic query "tuschebilder" (pos. 13).
+  Since the release: 3 consented GA4 sessions, 3 `contact_click`. Too little data for conclusions; re-run after
+  2026-10-26.

@@ -247,21 +247,32 @@ def site_events(summary):
 
 
 def compare_and_save(summary):
+    """Print the change against earlier runs with the same period and save this run.
+
+    A run with --no-index has no index figures: it keeps those of an earlier run of the same day instead of
+    dropping them, and each figure is compared with the latest earlier run that has it.
+    """
     print('\n== Change since the previous saved run with %d days ==' % DAYS)
     os.makedirs(STATE_DIR, exist_ok=True)
     name = '%s-%dd.json' % (summary['date'], DAYS)
-    previous = sorted(f for f in os.listdir(STATE_DIR) if f.endswith('-%dd.json' % DAYS) and f != name)
-    if previous:
-        with open(os.path.join(STATE_DIR, previous[-1])) as handle:
-            before = json.load(handle)
-        print('compared with %s:' % before['date'])
+    path = os.path.join(STATE_DIR, name)
+    if os.path.exists(path):
+        with open(path) as handle:
+            for key, value in json.load(handle).items():
+                summary.setdefault(key, value)
+    runs = []
+    for f in sorted(f for f in os.listdir(STATE_DIR) if f.endswith('-%dd.json' % DAYS) and f != name):
+        with open(os.path.join(STATE_DIR, f)) as handle:
+            runs.append(json.load(handle))
+    if runs:
         for key in ('clicks', 'impressions', 'position', 'indexed', 'sitemap_urls', 'sessions_all', 'sessions_target',
                     'engaged_sessions_target', 'inquiries_target', 'contact_clicks_target'):
-            if key in summary and key in before:
-                print('  %-24s %8s -> %s' % (key, before[key], summary[key]))
+            before = next((r for r in reversed(runs) if key in r), None)
+            if key in summary and before:
+                print('  %-24s %8s -> %-8s (since %s)' % (key, before[key], summary[key], before['date']))
     else:
         print('no previous run saved')
-    with open(os.path.join(STATE_DIR, name), 'w') as handle:
+    with open(path, 'w') as handle:
         json.dump(summary, handle, indent=2)
 
 
