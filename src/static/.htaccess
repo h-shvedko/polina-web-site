@@ -28,8 +28,9 @@ RewriteRule ^(.*[^/])$ https://polina-shvedko.art/$1/ [R=301,L]
 RewriteCond %{THE_REQUEST} \s[^?\s]*//
 RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
 
-# www → apex
-RewriteCond %{HTTP_HOST} ^www\. [NC]
+# Every other host name (www., alias domains such as polina-shvedko.de) → apex
+RewriteCond %{HTTP_HOST} !^polina-shvedko\.art(:\d+)?$ [NC]
+RewriteCond %{HTTP_HOST} !^$
 RewriteRule ^ https://polina-shvedko.art%{REQUEST_URI} [R=301,L,NE]
 
 # http → https (Plesk: nginx in front of Apache may pass the scheme in X-Forwarded-Proto)

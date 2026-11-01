@@ -58,7 +58,7 @@ describe('13. hosting files (.htaccess, robots.txt)', () => {
       [/\^blog.*https:\/\/polina-shvedko\.art\/\s.*R=301/, '/blog -> / (301)'],
       [/\^partials.*\[G/, '/partials -> 410 Gone'],
       [/index\\\.html/, '/index.html -> directory URL'],
-      [/HTTP_HOST.*\^www\\\./i, 'www -> apex'],
+      [/HTTP_HOST\}\s+!\^polina-shvedko\\\.art/i, 'every other host (www, alias domains) -> apex'],
       [/X-Forwarded-Proto/i, 'http -> https (X-Forwarded-Proto aware)'],
     ];
     expectNone(want.filter(([re]) => !re.test(h)).map(([, label]) => label), 'directives missing in src/static/.htaccess');

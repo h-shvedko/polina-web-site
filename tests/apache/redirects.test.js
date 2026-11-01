@@ -23,6 +23,7 @@ const S = require('../lib/site');
 const IMAGE = process.env.APACHE_IMAGE || 'httpd:2.4';
 const data = S.loadData();
 const APEX = new URL(S.siteUrl(data)).host;
+const ALIAS = 'polina-shvedko.de'; // alias domain on the same Plesk server
 const HUB = `/${(data.hubs[0] && data.hubs[0].path) || 'oil-paintings'}/`;
 const SECOND_HUB = `/${(data.hubs[1] && data.hubs[1].path) || 'pastels'}/`;
 const ARTWORK = '/oil-paintings/affectionate-farewell-cap-dantibes/';
@@ -56,7 +57,7 @@ function patchedConf() {
     'SSLSessionCache "shmcb:/usr/local/apache2/logs/ssl_scache(512000)"',
     '<VirtualHost *:443>',
     `  ServerName ${APEX}`,
-    `  ServerAlias www.${APEX}`,
+    `  ServerAlias www.${APEX} ${ALIAS}`,
     `  DocumentRoot "${HTDOCS}"`,
     '  SSLEngine on',
     `  SSLCertificateFile "${CONF_DIR}/test.crt"`,
@@ -129,7 +130,7 @@ describe(`apache: .htaccess redirects and caching on ${IMAGE} (APP_DIR mounted r
     tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'polina-apache-'));
     fs.chmodSync(tmp, 0o777); // the container writes the test certificate here
     const cert = docker(['run', '--rm', '-v', `${tmp}:/out`, '--entrypoint', 'openssl', IMAGE, 'req', '-x509', '-newkey', 'rsa:2048', '-nodes',
-      '-keyout', '/out/test.key', '-out', '/out/test.crt', '-days', '2', '-subj', `/CN=${APEX}`, '-addext', `subjectAltName=DNS:${APEX},DNS:www.${APEX}`]);
+      '-keyout', '/out/test.key', '-out', '/out/test.crt', '-days', '2', '-subj', `/CN=${APEX}`, '-addext', `subjectAltName=DNS:${APEX},DNS:www.${APEX},DNS:${ALIAS}`]);
     if (cert.status !== 0) throw new Error(`cannot create the test certificate: ${cert.stderr}`);
     const confFile = path.join(tmp, 'httpd.conf');
     fs.writeFileSync(confFile, patchedConf());
@@ -183,10 +184,16 @@ describe(`apache: .htaccess redirects and caching on ${IMAGE} (APP_DIR mounted r
   const W = `https://www.${APEX}`;
   const HA = `http://${APEX}`;
   const HW = `http://www.${APEX}`;
+  const D = `https://${ALIAS}`;
+  const HD = `http://${ALIAS}`;
   const NO_SLASH = ARTWORK.slice(0, -1);
   // [start URL, expected status, expected Location (final URL) or null, extra]
   const cases = [
     [`${A}/`, 200],
+    // an alias domain (polina-shvedko.de points to the same server) never serves a copy: one hop to the apex
+    [`${D}/`, 301, `${A}/`],
+    [`${D}/de${ARTWORK}`, 301, `${A}/de${ARTWORK}`],
+    [`${HD}${HUB}?x=1`, 301, `${A}${HUB}?x=1`],
     [`${A}${HUB}`, 200],
     [`${A}${ARTWORK}`, 200],
     [`${A}${ARTWORK}?utm_source=x`, 200],

@@ -159,3 +159,12 @@ after it. Keep the log below short: release date, what changed, what was measure
   2026-10-09: 90 days 4 clicks, 120 impressions, position 7.1; first German topic query "tuschebilder" (pos. 13).
   Since the release: 3 consented GA4 sessions, 3 `contact_click`. Too little data for conclusions; re-run after
   2026-10-26.
+- 2026-10-18: 45 of 76 indexed; 90 days 4 clicks, 149 impressions, position 6.9; 26 new URLs with impressions.
+- 2026-10-22: 45 of 76 indexed (no growth for 4 days); first artwork-title query "affectionate farewell" (pos. 8).
+- 2026-10-27: 55 of 76 indexed; weekly impressions after the release 19 / 32 / 27 (before: about 9 a week).
+  Owner requested indexing for 11 artwork pages via a browser agent; Bing: site and sitemap OK (76 URLs),
+  29 URLs submitted, 15 indexed.
+- 2026-11-01: 66 of 76 indexed (all 30 EN artwork pages); 90 days 7 clicks, 176 impressions, position 7.1;
+  `contact_click` still 3. The last 10 DE artwork pages requested by the owner on 2026-11-01. Found
+  `https://polina-shvedko.de/` (alias domain, same server) serving a full copy with 200; fixed the same day:
+  every host other than `polina-shvedko.art` now gets one 301 to the apex (`src/static/.htaccess`).
