@@ -7,3 +7,5 @@ node_modules
 # Python bytecode caches (scripts/seo-report.py imported by /seo-report)
 __pycache__/
 *.py[cod]
+# Local secrets (API keys), never committed
+.env
