@@ -240,3 +240,7 @@ after it. Keep the log below short: release date, what changed, what was measure
   `contact_click` still 3. The last 10 DE artwork pages requested by the owner on 2026-11-01. Found
   `https://polina-shvedko.de/` (alias domain, same server) serving a full copy with 200; fixed the same day:
   every host other than `polina-shvedko.art` now gets one 301 to the apex (`src/static/.htaccess`).
+- 2026-11-03: Bing added to this command. Google: 75 of 76 indexed (only
+  `/de/watercolours/the-corner-cafe-in-perspective/` left, requested by the owner the same day); 90 days 6 clicks,
+  176 impressions, position 7.2. Bing, 28 days: 0 clicks, 12 impressions, 36 in index, crawl 28 -> 14 pages a day,
+  0 crawl issues. Manual actions and security issues: none. Next run 2026-11-15 or later.
