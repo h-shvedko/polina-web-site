@@ -43,6 +43,12 @@ text is a focus for this run (for example "only indexing" or "compare with last 
 - **Consent:** until the ADR-0003 release GA loads before consent on every page. After the release
   (`src/js/consent.js`) GA loads only after "Accept" (Consent Mode v2, defaults denied), so GA numbers before and
   after it are not comparable. Record the release date in the log below.
+- **Brand queries:** regex `polina|shvedko|шведко|artsis` (case-insensitive; "polina artsis" is a typo users make),
+  used for Google and Bing alike. Everything else is non-brand.
+- **Alias domain:** `polina-shvedko.de` points to the same server; since 2026-11-01 it answers one 301 to the apex
+  (`src/static/.htaccess`). Flag any `polina-shvedko.de` or `www.` URL in Google or Bing data.
+- **Bing Webmaster Tools:** `https://polina-shvedko.art/` is verified (sitemap 76 URLs). API key `BING_API_KEY` in
+  this project's `.env` (git-ignored, mode 600). The key belongs to the Bing account, not to the site. Never print it.
 
 ## Access
 
@@ -77,6 +83,61 @@ text is a focus for this run (for example "only indexing" or "compare with last 
 3. Separate real traffic from bots: zero engagement, 0-3 s sessions, night bursts of new Direct
    sessions, countries outside the target market. Report the target-market segment on its own.
 4. Check which events are real leads, against `src/js/analytics.js`. Look for spam bursts.
+5. **Manual actions and security issues (Google).** The Search Console API does not expose them; never infer them
+   from traffic. If the user pasted them in this conversation, use that. Otherwise do not block the report: ask the
+   user to open, for `sc-domain:polina-shvedko.art`:
+   - Search Console -> Security & Manual Actions -> **Manual actions**
+   - Search Console -> Security & Manual Actions -> **Security issues**
+
+   Report each as "No issues detected" or quote the action type, scope (site-wide / partial) and date. A manual
+   action goes first in "Итог" and becomes action 1 (fix + reconsideration request). Ask for this check
+   prominently whenever impressions fell by more than 50 % week over week while the site answers 200 and
+   robots/canonical are correct.
+6. **Bing Webmaster Tools.** A second, independent view: if Bing holds steady while Google drops, the cause is
+   Google's assessment of the site, not its technique.
+   ```bash
+   K=$(grep -m1 '^BING_API_KEY=' /srv/fast/projects/polina-web-site/.env | cut -d= -f2- | tr -d '"'"'"'\r')
+   B="https://ssl.bing.com/webmaster/api.svc/json"
+   SITE="https%3A%2F%2Fpolina-shvedko.art%2F"
+   b(){ curl -s "$B/$1?siteUrl=$SITE&apikey=$K"; }
+   ```
+   Never echo `$K` or a full request URL. Every answer is `{"d": ...}`. Dates are `/Date(<ms>)/`: convert them and
+   keep the last N days. If the key is empty or an answer is 401, say so (the user creates a key in Bing
+   Webmaster -> Settings -> API access and puts it into `.env`) and report on the rest.
+   - `b GetRankAndTrafficStats`: one row per day, `Clicks`, `Impressions` -> the trend
+   - `b GetQueryStats`: rows per query and period (`Query`, `Clicks`, `Impressions`, `AvgImpressionPosition`).
+     Sum per query across rows. Split brand / non-brand with the brand regex above. `AvgClickPosition = -1`
+     means no clicks, not a position
+   - `b GetPageStats`: same shape, the page URL is in the **`Query`** field. Count EN and `/de/` pages; flag
+     `www.` and `polina-shvedko.de`
+   - `b GetCrawlStats`: one row per day: `CrawledPages`, `InIndex`, `CrawlErrors`, `Code4xx`, `Code5xx`,
+     `InLinks`. Compare the first and the last row of the period
+   - `b GetCrawlIssues`: URLs with crawl problems (empty list = none)
+
+   Do not submit URLs through the API (`SubmitUrl*`, IndexNow) unless the user asks.
+7. **Store the extra blocks** in the snapshot the script wrote, after the report is written.
+   `compare_and_save()` in `scripts/seo-report.py` keeps keys it does not compute (it merges the same-day file),
+   so later runs of the same day keep them:
+   ```bash
+   python3 - <<'EOF'
+   import json, datetime, os
+   path = os.path.expanduser('~/.local/state/polina-shvedko.art-seo/%s-90d.json' % datetime.date.today())
+   s = json.load(open(path))
+   s['bing'] = {
+     'clicks': 0, 'impressions': 0,
+     'daily': [],  # [{"date": "YYYY-MM-DD", "clicks": 0, "impressions": 0}]
+     'brand': {'queries': 0, 'clicks': 0, 'impressions': 0},
+     'non_brand': {'queries': 0, 'clicks': 0, 'impressions': 0},
+     'pages_with_impressions': 0,
+     'crawled_per_day': {'start': 0, 'end': 0}, 'in_index': 0, 'crawl_errors': 0, 'inlinks': 0,
+     'top_queries': [],  # [{"query": "", "clicks": 0, "impressions": 0, "position": 0}]
+     'top_pages': [],    # [{"page": "", "clicks": 0, "impressions": 0, "position": 0}]
+   }
+   # only when the user reported them this run ("none" or the action type); omit it otherwise
+   # s['manual_actions'] = {'google': 'none', 'security_issues': 'none'}
+   json.dump(s, open(path, 'w'), indent=2)
+   EOF
+   ```
 
 ## Phase 2: Technical audit (code and live site)
 
@@ -122,7 +183,18 @@ Sections:
 5. **Технические проблемы:** table with page or file, issue, severity (критично / высокая / средняя / низкая), fix.
 6. **Контент:** findings and gaps, each with evidence.
 7. **Изменения:** comparison with the previous snapshot, with both dates.
-8. **Действия:** numbered imperative instructions. Mark each as a quick win (under 2 hours) or a
+8. **Ручные меры и безопасность** (Phase 1, step 5): the result, or the request to the user.
+9. **Bing:** clicks, impressions, brand vs non-brand, pages with impressions, in index and crawl per day, and one
+   table next to Google:
+
+   | | Google | Bing |
+   |---|---|---|
+   | Клики / показы | | |
+   | Показы по небрендовым запросам | | |
+   | Страницы с показами | | |
+   | Обход в день (начало и конец периода) | | |
+   | В индексе | | |
+10. **Действия:** numbered imperative instructions. Mark each as a quick win (under 2 hours) or a
    larger item. Give expected effect, effort and dependencies. Say who does it: the agent (change
    in this repository) or the user (Google UI or another external service).
 
